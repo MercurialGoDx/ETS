@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a59a259175be5a54dbc374a9f2c3c418, type: 3}
+  m_Name: Hunting
+  m_EditorClassIdentifier: 
+  upgradeName: "<color=#ffd700>\u041E\u0445\u043E\u0442\u0430</color>"
+  icon: {fileID: 21300000, guid: 0395431d46741a14d93c30da905c3463, type: 3}
+  type: 18
+  price: 1500
+  valueFlat: 0
+  valuePercent: 0
+  extraFlat: 0
+  extraPercent: 0
+  damageType: 0
+  damageTypeBasePercent: 0
+  damageTypeExtraPerWeaponPercent: 0
+  description: "\u0421 \u0432\u0435\u0440\u043E\u044F\u0442\u043D\u043E\u0441\u0442\u044C\u044E
+    <color=#ffd700>7.5%</color> \u043F\u043E\u044F\u0432\u0438\u0442\u0441\u044F
+    \u0432\u0440\u0430\u0433 \u0441 \u043C\u0435\u0442\u043A\u043E\u0439, \u043F\u0440\u0438
+    \u0443\u0431\u0438\u0439\u0441\u0442\u0432\u0435 \u0442\u0430\u043A\u043E\u0433\u043E
+    \u0432\u0440\u0430\u0433\u0430 \u0432\u044B \u043F\u043E\u043B\u0443\u0447\u0438\u0442\u0435
+    \u0434\u043E\u043F\u043E\u043B\u043D\u0438\u0442\u0435\u043B\u044C\u043D\u043E\u0435
+    \u0437\u043E\u043B\u043E\u0442\u043E.\n\u0422\u0430\u043A-\u0436\u0435 \u0443\u0432\u0435\u043B\u0438\u0447\u0438\u0432\u0430\u0435\u0442
+    \u043D\u0430\u0433\u0440\u0430\u0434\u0443 \u0437\u0430 \u0443\u0431\u0438\u0439\u0441\u0442\u0432\u0430
+    \u0432\u0440\u0430\u0433\u0430 \u043D\u0430 <color=#ffd700>1%</color> \u043C\u043E\u043D\u0435\u0442\u0443\n\n<color=#ffd700>\u0421\u0442\u043E\u0438\u043C\u043E\u0441\u0442\u044C:
+    1500</color>"
+  weight: 7
+  enemyEffect: {fileID: 11400000, guid: ae5f8525ae9e00c4bb941c99919c008d, type: 2}

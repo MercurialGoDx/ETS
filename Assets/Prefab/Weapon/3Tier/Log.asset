@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3a9287f7cdfa744ebf102da5de8f389, type: 3}
+  m_Name: Log
+  m_EditorClassIdentifier: 
+  weaponName: "<color=#ffd700>\u0411\u0440\u0435\u0432\u043D\u043E</color>"
+  icon: {fileID: 21300000, guid: 8fd78c40a85541748b817811b1b4c161, type: 3}
+  description: "\u0412\u044B\u043F\u0443\u0441\u043A\u0430\u0435\u0442 \u0431\u0440\u0435\u0432\u043D\u043E,
+    \u043A\u043E\u0442\u043E\u0440\u043E\u0435 \u043D\u0430\u043D\u043E\u0441\u0438\u0442
+    \u0443\u0440\u043E\u043D \u043F\u0440\u043E\u0442\u0438\u0432\u043D\u0438\u043A\u0430\u043C
+    \u043D\u0430 \u0441\u0432\u043E\u0435\u043C \u043F\u0443\u0442\u0438\n<color=#ffd700>\u0423\u0440\u043E\u043D:</color>
+    160\n<color=#ffd700>\u0422\u0438\u043F \u0443\u0440\u043E\u043D\u0430:</color>
+    \u0422\u044F\u0436\u0435\u043B\u044B\u0439\n<color=#ffd700>\u0421\u043A\u043E\u0440\u043E\u0441\u0442\u044C
+    \u0430\u0442\u0430\u043A\u0438:</color> 0.4\n\n<color=#ffd700>\u0421\u0442\u043E\u0438\u043C\u043E\u0441\u0442\u044C:</color>
+    1500"
+  price: 1500
+  damagePerProjectile: 160
+  fireRate: 0.4
+  projectileSpeed: 13
+  damageType: 4
+  bulletPrefab: {fileID: 7446537798224516572, guid: 0a54143786110674583c9ecd60b1951c, type: 3}
+  weight: 4
+  targetingMode: 0

@@ -1,0 +1,149 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1652208503069715880
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5649238564664423583}
+  - component: {fileID: -4042956858756600340}
+  - component: {fileID: -6360667443080413971}
+  m_Layer: 0
+  m_Name: BalistaProjectile
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5649238564664423583
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1652208503069715880}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 6431371807164649824}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &-4042956858756600340
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1652208503069715880}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.2527514, y: 2.2594836, z: 0.17231815}
+  m_Center: {x: 0.0017968714, y: 0.43497503, z: 0.0031062737}
+--- !u!114 &-6360667443080413971
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1652208503069715880}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19f8bb33918bbbd42bea17e10e01058d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 15
+  damage: 5
+  homing: 1
+  increasePlayerMaxHealthOnKill: 0
+  maxHealthIncreaseAmount: 10
+--- !u!1001 &785029369846827067
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 5649238564664423583}
+    m_Modifications:
+    - target: {fileID: 6026993431823964507, guid: d1861434b39b5f24fa7e382f70176249, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 6026993431823964507, guid: d1861434b39b5f24fa7e382f70176249, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 6026993431823964507, guid: d1861434b39b5f24fa7e382f70176249, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 6026993431823964507, guid: d1861434b39b5f24fa7e382f70176249, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6026993431823964507, guid: d1861434b39b5f24fa7e382f70176249, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6026993431823964507, guid: d1861434b39b5f24fa7e382f70176249, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6026993431823964507, guid: d1861434b39b5f24fa7e382f70176249, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6026993431823964507, guid: d1861434b39b5f24fa7e382f70176249, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6026993431823964507, guid: d1861434b39b5f24fa7e382f70176249, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6026993431823964507, guid: d1861434b39b5f24fa7e382f70176249, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6026993431823964507, guid: d1861434b39b5f24fa7e382f70176249, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6026993431823964507, guid: d1861434b39b5f24fa7e382f70176249, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6026993431823964507, guid: d1861434b39b5f24fa7e382f70176249, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6408620296710554593, guid: d1861434b39b5f24fa7e382f70176249, type: 3}
+      propertyPath: m_Name
+      value: PP_Theme_09_Throwing_Knife_003
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: -6815897607433299078, guid: d1861434b39b5f24fa7e382f70176249, type: 3}
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: d1861434b39b5f24fa7e382f70176249, type: 3}
+--- !u!4 &6431371807164649824 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6026993431823964507, guid: d1861434b39b5f24fa7e382f70176249, type: 3}
+  m_PrefabInstance: {fileID: 785029369846827067}
+  m_PrefabAsset: {fileID: 0}

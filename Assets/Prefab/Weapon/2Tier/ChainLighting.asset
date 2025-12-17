@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3a9287f7cdfa744ebf102da5de8f389, type: 3}
+  m_Name: ChainLighting
+  m_EditorClassIdentifier: 
+  weaponName: "\u0446\u0435\u043F\u044C\u043B\u0430\u0439\u0442\u0438\u043D\u0433"
+  icon: {fileID: 0}
+  description: 
+  price: 10
+  damagePerProjectile: 5
+  fireRate: 0.5
+  projectileSpeed: 10
+  damageType: 0
+  bulletPrefab: {fileID: 2390362484327582117, guid: c3225086bf4f4c44d962a9ecd6bb4f83, type: 3}
+  weight: 1111111
+  targetingMode: 0
