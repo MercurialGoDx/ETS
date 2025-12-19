@@ -179,3 +179,6 @@ MonoBehaviour:
   speed: 15
   damage: 5
   homing: 1
+  maxLifeTime: 10
+  increasePlayerMaxHealthOnKill: 0
+  maxHealthIncreaseAmount: 10
