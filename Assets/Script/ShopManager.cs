@@ -120,20 +120,20 @@ public class ShopManager : MonoBehaviour
 
     private void ToggleShopPanel()
     {
-    if (shopPanel == null)
-        return;
+        if (shopPanel == null)
+            return;
 
-    bool newState = !shopPanel.activeSelf;
-    shopPanel.SetActive(newState);
+        bool newState = !shopPanel.activeSelf;
+        shopPanel.SetActive(newState);
 
-    if (rerollButton != null)
-        rerollButton.SetActive(newState);
+        if (rerollButton != null)
+            rerollButton.SetActive(newState);
 
-    if (!newState && WeaponTooltip.Instance != null)
-    {
-        WeaponTooltip.Instance.Hide();
+        if (!newState && WeaponTooltip.Instance != null)
+        {
+            WeaponTooltip.Instance.Hide();
+        }
     }
-}
 
     // ======================== ОРУЖИЕ ========================
 
@@ -317,30 +317,30 @@ public class ShopManager : MonoBehaviour
 
     public void RerollShop()
     {
-    if (GoldManager.Instance != null && currentRerollPrice > 0)
-    {
-        if (!GoldManager.Instance.HasEnoughGold(currentRerollPrice))
-            return;
+        if (GoldManager.Instance != null && currentRerollPrice > 0)
+        {
+            if (!GoldManager.Instance.HasEnoughGold(currentRerollPrice))
+                return;
 
-        if (!GoldManager.Instance.SpendGold(currentRerollPrice))
-            return;
+            if (!GoldManager.Instance.SpendGold(currentRerollPrice))
+                return;
+        }
+
+        RandomizeShopContents();
+
+        // Увеличиваем стоимость реролла после успешного использования
+        currentRerollPrice += rerollPriceIncrease;
+
+        // Обновляем тултип кнопки реролла с новой стоимостью
+        RerollButtonTooltip rerollTooltip = FindObjectOfType<RerollButtonTooltip>();
+        if (rerollTooltip != null)
+        {
+            rerollTooltip.UpdateTooltip();
+        }
+
+        // ВАЖНО: НЕ трогаем autoRerollTimer и progressBar
+        // Авто-реролл должен жить своей жизнью
     }
-
-    RandomizeShopContents();
-
-    // Увеличиваем стоимость реролла после успешного использования
-    currentRerollPrice += rerollPriceIncrease;
-
-    // Обновляем тултип кнопки реролла с новой стоимостью
-    RerollButtonTooltip rerollTooltip = FindObjectOfType<RerollButtonTooltip>();
-    if (rerollTooltip != null)
-    {
-        rerollTooltip.UpdateTooltip();
-    }
-
-    // ВАЖНО: НЕ трогаем autoRerollTimer и progressBar
-    // Авто-реролл должен жить своей жизнью
-}
 
     /// <summary>
     /// Автоматический реролл магазина без траты золота.

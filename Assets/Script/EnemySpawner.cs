@@ -59,66 +59,66 @@ public class EnemySpawner : MonoBehaviour
 
     void SpawnWave()
     {
-    // Тип врага для этой волны
-    int enemyTypeIndex = currentWaveIndex % enemyPrefabs.Length;
-    GameObject enemyPrefab = enemyPrefabs[enemyTypeIndex];
+        // Тип врага для этой волны
+        int enemyTypeIndex = currentWaveIndex % enemyPrefabs.Length;
+        GameObject enemyPrefab = enemyPrefabs[enemyTypeIndex];
 
-    // Берём базовые статы с ПРЕФАБА (они не умножены)
-    Enemy prefabEnemy = enemyPrefab.GetComponent<Enemy>();
-    float baseHealth = prefabEnemy.maxHealth;
-    float baseDamage = prefabEnemy.damageToPlayer;
+        // Берём базовые статы с ПРЕФАБА (они не умножены)
+        Enemy prefabEnemy = enemyPrefab.GetComponent<Enemy>();
+        float baseHealth = prefabEnemy.maxHealth;
+        float baseDamage = prefabEnemy.damageToPlayer;
 
-    // Сколько *сейчас* множитель
-    float currentMult = difficultyMultiplier;
+        // Сколько *сейчас* множитель
+        float currentMult = difficultyMultiplier;
 
-    for (int i = 0; i < enemiesPerWave; i++)
-    {
-        Vector3 spawnPos = GetSpawnPositionAroundTower();
-
-        GameObject obj = Instantiate(enemyPrefab, spawnPos, Quaternion.identity);
-        Enemy enemyInstance = obj.GetComponent<Enemy>();
-
-        if (enemyInstance != null)
+        for (int i = 0; i < enemiesPerWave; i++)
         {
-            float hp = baseHealth * currentMult;
-            float dmg = baseDamage * currentMult;
+            Vector3 spawnPos = GetSpawnPositionAroundTower();
 
-            enemyInstance.InitStats(hp, dmg);
+            GameObject obj = Instantiate(enemyPrefab, spawnPos, Quaternion.identity);
+            Enemy enemyInstance = obj.GetComponent<Enemy>();
 
-            if (EnemyEffectManager.Instance != null)
+            if (enemyInstance != null)
             {
-                EnemyEffectManager.Instance.ApplyEffectsToEnemy(enemyInstance);
+                float hp = baseHealth * currentMult;
+                float dmg = baseDamage * currentMult;
+
+                enemyInstance.InitStats(hp, dmg);
+
+                if (EnemyEffectManager.Instance != null)
+                {
+                    EnemyEffectManager.Instance.ApplyEffectsToEnemy(enemyInstance);
+                }
             }
         }
+
+        // Переходим к следующей волне другого типа
+        currentWaveIndex++;
+
+        // Увеличиваем множитель: +10% от текущего
+        float k = 1f + (multiplierGrowthPercent / 100f); // 1.1 при 10%
+        difficultyMultiplier *= k;
     }
-
-    // Переходим к следующей волне другого типа
-    currentWaveIndex++;
-
-    // Увеличиваем множитель: +10% от текущего
-    float k = 1f + (multiplierGrowthPercent / 100f); // 1.1 при 10%
-    difficultyMultiplier *= k;
-}
 
     Vector3 GetSpawnPositionAroundTower()
     {
-    // Случайное направление
-    float angle = Random.Range(0f, 360f);
-    float rad = angle * Mathf.Deg2Rad;
+        // Случайное направление
+        float angle = Random.Range(0f, 360f);
+        float rad = angle * Mathf.Deg2Rad;
 
-    float x = Mathf.Cos(rad);
-    float z = Mathf.Sin(rad);
+        float x = Mathf.Cos(rad);
+        float z = Mathf.Sin(rad);
 
-    Vector3 dir = new Vector3(x, 0f, z).normalized;
+        Vector3 dir = new Vector3(x, 0f, z).normalized;
 
-    float radius = Random.Range(spawnRadiusMin, spawnRadiusMax);
+        float radius = Random.Range(spawnRadiusMin, spawnRadiusMax);
 
-    Vector3 pos = tower.position + dir * radius;
+        Vector3 pos = tower.position + dir * radius;
 
-    // Высота
-    pos.y = 6f;
+        // Высота
+        pos.y = 6f;
 
-    return pos;
+        return pos;
     }
 
 }

@@ -10,6 +10,8 @@ public class WorldGoldPopup : MonoBehaviour
     private float timer;
     private Color startColor;
 
+    private Camera cam;
+
     private void Awake()
     {
         if (text == null)
@@ -47,5 +49,4 @@ public class WorldGoldPopup : MonoBehaviour
         if (timer >= lifeTime)
             Destroy(gameObject);
     }
-    private Camera cam;
 }

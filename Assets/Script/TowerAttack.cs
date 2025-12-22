@@ -11,8 +11,6 @@ public class TowerAttack : MonoBehaviour
     [Header("Дополнительные точки огня")]
     public Transform waveFirePoint;  // ← нижняя точка для Wave
 
-    [Header("Стартовые оружия (можно оставить пустым)")]
-    public List<WeaponDefinition> startingWeapons;
     [Header("Stagger Fire (залп с задержками)")]
     [Range(0f, 1f)]
     public float volleyWindowPercent = 0.5f; // 50% от времени между атаками
@@ -27,6 +25,7 @@ public class TowerAttack : MonoBehaviour
     private bool debugDamage = true;
 
     private List<WeaponRuntime> weapons = new List<WeaponRuntime>();
+    
     public int GetTotalWeaponsOfType(WeaponDamageType type)
     {
         int total = 0;
@@ -51,32 +50,22 @@ public class TowerAttack : MonoBehaviour
         public AuraDamageZone auraInstance;
     }
 
-    private void Start()
-    {
-        foreach (var def in startingWeapons)
-        {
-            AddWeapon(def);
-        }
-    }
-
     private void Update()
     {
         if (weapons.Count == 0) return;
 
-        float dt = Time.deltaTime;
-
-        foreach (var w in weapons)
+        foreach (var weapon in weapons)
         {
             // Если это аура, башня её не "стреляет" — она работает сама по себе
-            if (w.auraInstance != null)
+            if (weapon.auraInstance != null)
                 continue;
 
-            w.cooldown -= dt;
-            if (w.cooldown <= 0f)
+            weapon.cooldown -= Time.deltaTime;
+            if (weapon.cooldown <= 0f)
             {
-                bool fired = FireWeapon(w);
+                bool fired = FireWeapon(weapon);
                 if (fired)
-                    w.cooldown = 1f / (w.def.fireRate * fireRateMultiplier);
+                    weapon.cooldown = 1f / (weapon.def.fireRate * fireRateMultiplier);
             }
         }
     }
@@ -94,6 +83,7 @@ public class TowerAttack : MonoBehaviour
         StartCoroutine(FireWeaponStaggered(weapon, enemiesInRange));
         return true; // важно: чтобы кулдаун поставился, как и раньше
     }
+
     private IEnumerator FireWeaponStaggered(WeaponRuntime weapon, List<Enemy> enemiesInRange)
     {
         int stacks = weapon.stacks;
@@ -141,6 +131,7 @@ public class TowerAttack : MonoBehaviour
             }
 
             // --- 2) Если цели нет (или режим random) — выбираем новую
+            // Разобраться в правильности нахождения candidates.
             if (target == null)
             {
                 Enemy newTarget = null;
@@ -475,7 +466,7 @@ public class TowerAttack : MonoBehaviour
         float totalBonus = timeBonus + hpBonusToMult + typeBonus + shieldBonus;
 
         // Итоговый множитель всегда >= 0 (на всякий)
-        float finalMult = Mathf.Max(0f, 1f + totalBonus);
+        float finalMult = Mathf.Max(1f, 1f + totalBonus);
         float finalDamage = baseDamage * finalMult;
 
         // Логи

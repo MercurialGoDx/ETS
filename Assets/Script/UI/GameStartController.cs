@@ -43,24 +43,24 @@ public class GameStartController : MonoBehaviour
     // КНОПКА "ГОТОВ"
     public void OnReadyClicked()
     {
-    if (isRunStarted) return;
-    isRunStarted = true;
+        if (isRunStarted) return;
+        isRunStarted = true;
 
-    if (readyPanel != null) readyPanel.SetActive(false);
+        if (readyPanel != null) readyPanel.SetActive(false);
 
-    if (enemySpawner != null) enemySpawner.enabled = true;
-    if (waveTimerUI != null) waveTimerUI.enabled = true;
+        if (enemySpawner != null) enemySpawner.enabled = true;
+        if (waveTimerUI != null) waveTimerUI.enabled = true;
 
-    if (goldManager != null) goldManager.enablePassiveIncome = true;
+        if (goldManager != null) goldManager.enablePassiveIncome = true;
 
-    Time.timeScale = 1f;
+        Time.timeScale = 1f;
 
-    if (pauseManager != null) pauseManager.SetCanPause(true);
+        if (pauseManager != null) pauseManager.SetCanPause(true);
 
-    // ✅ стартуем рост цифр
-    if (enemyStatsProgressionUI != null)
-        enemyStatsProgressionUI.StartProgression();
-    else
-        Debug.LogWarning("[GameStartController] enemyStatsProgressionUI is NOT assigned!");
-}
+        // ✅ стартуем рост цифр
+        if (enemyStatsProgressionUI != null)
+            enemyStatsProgressionUI.StartProgression();
+        else
+            Debug.LogWarning("[GameStartController] enemyStatsProgressionUI is NOT assigned!");
+    }
 }
