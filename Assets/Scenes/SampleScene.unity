@@ -10596,6 +10596,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerHealth: {fileID: 1695926638903416467}
+  playerShield: {fileID: 8371277131797966378}
   valueType: 1
   legacyText: {fileID: 1112751706}
   tmpText: {fileID: 0}
@@ -12145,6 +12146,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerHealth: {fileID: 1695926638903416467}
+  playerShield: {fileID: 8371277131797966378}
   valueType: 0
   legacyText: {fileID: 1345342535}
   tmpText: {fileID: 0}
@@ -13094,7 +13096,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cfa176c8e5423484bba202346e31358a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startGold: 500
+  startGold: 9999999
   currentGold: 0
   enablePassiveIncome: 1
   goldPerTick: 10
@@ -13129,6 +13131,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerHealth: {fileID: 1695926638903416467}
+  playerShield: {fileID: 8371277131797966378}
   towerAttack: {fileID: 7296673054036822643}
   goldUpgradeCount: 0
   damageFromMaxHealthPercent: 0
@@ -13316,6 +13319,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerHealth: {fileID: 1695926638903416467}
+  playerShield: {fileID: 0}
   damageIncreasePerMinute: 0
   healthPerTickAmount: 0
   healthTickInterval: 0
@@ -15627,6 +15631,11 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!1 &1713432141 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7816917478349367771, guid: 36d1029cdda265c468ec89641244ecca, type: 3}
+  m_PrefabInstance: {fileID: 6280978475237868333}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1713511818 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6363708409037562260, guid: e39885b587dd8e2438efc0dcb990777a, type: 3}
@@ -19092,7 +19101,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6191073058493537909, guid: 36d1029cdda265c468ec89641244ecca, type: 3}
   m_PrefabInstance: {fileID: 6280978475237868333}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 1713432141}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6fb9dcc6b3f098440821584817e1dc95, type: 3}
@@ -19193,14 +19202,17 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7816917478349367771, guid: 36d1029cdda265c468ec89641244ecca, type: 3}
+      insertIndex: 4
+      addedObject: {fileID: 8371277131797966378}
   m_SourcePrefab: {fileID: 100100000, guid: 36d1029cdda265c468ec89641244ecca, type: 3}
 --- !u!114 &7296673054036822643 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1295341177469773301, guid: 36d1029cdda265c468ec89641244ecca, type: 3}
   m_PrefabInstance: {fileID: 6280978475237868333}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 1713432141}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2da77d434b6aaba478467aad865950ee, type: 3}
@@ -19211,6 +19223,23 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6666120349311063413, guid: 36d1029cdda265c468ec89641244ecca, type: 3}
   m_PrefabInstance: {fileID: 6280978475237868333}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &8371277131797966378
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1713432141}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c74c16c8203825e4181faa532636c129, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxShield: 0
+  shieldMultiplier: 1
+  shieldRechargeTime: 10
+  shieldRechargeDelay: 10
+  shieldBarFill: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

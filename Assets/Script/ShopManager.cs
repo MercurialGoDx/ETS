@@ -26,7 +26,7 @@ public class ShopManager : MonoBehaviour
 
     [Header("Доступные товары (пул для рандома)")]
     public List<WeaponDefinition> availableWeapons;
-    public List<UpgradeDefinition> availableUpgrades;
+    public List<UpgradeBaseSO> availableUpgrades;
 
     [Header("Реролл")]
     [Tooltip("Базовая стоимость реролла магазина (золото).")]
@@ -245,7 +245,7 @@ public class ShopManager : MonoBehaviour
         }
     }
 
-    private UpgradeDefinition GetRandomUpgradeWeighted()
+    private UpgradeBaseSO GetRandomUpgradeWeighted()
     {
         if (availableUpgrades == null || availableUpgrades.Count == 0)
             return null;
@@ -284,7 +284,7 @@ public class ShopManager : MonoBehaviour
         return null;
     }
 
-    public void BuyUpgrade(UpgradeDefinition upgrade, ShopSlot slot)
+    public void BuyUpgrade(UpgradeBaseSO upgrade, ShopSlot slot)
     {
         if (upgrade == null)
             return;

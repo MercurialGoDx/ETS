@@ -12,6 +12,7 @@ public class PlayerHealthUI : MonoBehaviour
 
     [Header("Настройки")]
     public PlayerHealth playerHealth;
+    public PlayerShield playerShield;
     public ValueType valueType = ValueType.Health;
 
     [Header("UI")]
@@ -38,8 +39,8 @@ public class PlayerHealthUI : MonoBehaviour
                 break;
 
             case ValueType.Shield:
-                current = Mathf.Max(playerHealth.CurrentShield, 0f);
-                max = Mathf.Max(playerHealth.MaxShield, 0f);
+                current = Mathf.Max(playerShield.CurrentShield, 0f);
+                max = Mathf.Max(playerShield.MaxShield, 0f);
                 break;
         }
 

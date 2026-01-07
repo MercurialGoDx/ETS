@@ -6,6 +6,7 @@ public class UpgradePerTick : MonoBehaviour
 
     [Header("Ссылки")]
     public PlayerHealth playerHealth;   // повесь сюда башню в инспекторе
+    public PlayerShield playerShield;
 
     // ===== 1. Урон по времени (как было) =====
     [Header("Урон по времени")]
@@ -98,8 +99,8 @@ public class UpgradePerTick : MonoBehaviour
             {
                 shieldTickTimer -= shieldTickInterval;
 
-                playerHealth.AddMaxShield(shieldPerTickAmount);
-                Debug.Log($"[ShieldPerTick] +{shieldPerTickAmount} Shield. Max = {playerHealth.MaxShield}, Cur = {playerHealth.CurrentShield}");
+                playerShield.AddMaxShield(shieldPerTickAmount);
+                Debug.Log($"[ShieldPerTick] +{shieldPerTickAmount} Shield. Max = {playerShield.MaxShield}, Cur = {playerShield.CurrentShield}");
             }
         }
 

@@ -6,7 +6,9 @@ public class UpgradesManager : MonoBehaviour
 
     [Header("Ссылки")]
     public PlayerHealth playerHealth;
+    public PlayerShield playerShield;
     public TowerAttack towerAttack;
+    public UpgradeContextSO context;
     [Header("Прогресс золота")]
     public int goldUpgradeCount = 0;
     [Header("Урон от здоровья игрока")]
@@ -21,6 +23,7 @@ public class UpgradesManager : MonoBehaviour
     [Header("Шипы — накапливаемые за убийства шипами")]
     [Tooltip("Сколько добавлять к шипам за каждое убийство шипами.")]
     public float spikesOnKillBonus = 0f;
+
     public float GetDamageTypeMultiplier(WeaponDamageType type)
     {
         int index = (int)type;
@@ -64,7 +67,7 @@ public class UpgradesManager : MonoBehaviour
     private void Update()
     {
         // ... если у тебя тут уже что-то есть — оставляем ...
-
+        // Вынести в отдельную атаку!!!
         HandleRegenAuraDamage();
     }
     private void HandleRegenAuraDamage()
@@ -109,6 +112,7 @@ public class UpgradesManager : MonoBehaviour
         float damagePerEnemy = totalRegen * regenAuraMultiplier;
 
         // 3) Наносим урон всем врагам на сцене
+        // Хранить всех доступных врагов в одном листе
         Enemy[] enemies = Object.FindObjectsByType<Enemy>(FindObjectsSortMode.None);
 
         if (enemies.Length == 0)
@@ -124,6 +128,7 @@ public class UpgradesManager : MonoBehaviour
                   $"damage={damagePerEnemy:F1}, enemies={enemies.Length}");
     }
 
+    //Относится к щиту. Также отделить от PlayerHealth логику щита
     public float GetShieldDamageBonusMultiplier()
     {
         // нет апгрейда — нет бонуса
@@ -135,8 +140,8 @@ public class UpgradesManager : MonoBehaviour
             return 1f;
 
         // щит не активен → бонус не работает
-        if (!playerHealth.IsShieldActive)
-            return 1f;
+        //if (!playerHealth.IsShieldActive)
+        //    return 1f;
 
         // есть апгрейд и щит активен
         float percent = damageWhileShieldActivePercent / 100f; // 10 → 0.1
@@ -179,6 +184,13 @@ public class UpgradesManager : MonoBehaviour
                 damageTypeStacks[i] = 0;
         }
     }
+
+    public void ApplyUpgrade(UpgradeBaseSO upgrade)
+    {
+        if (upgrade == null) return;
+        upgrade.Apply(context);
+    }    
+
     public void ApplyUpgrade(UpgradeDefinition upgrade)
     {
         if (upgrade == null)
@@ -189,38 +201,6 @@ public class UpgradesManager : MonoBehaviour
 
         switch (upgrade.type)
         {
-            // 🔥 Глобальная скорость атаки
-            case UpgradeType.GlobalFireRate:
-                {
-                    if (towerAttack == null) break;
-
-                    float percent = upgrade.valuePercent / 100f; // 10 → 0.1
-                    towerAttack.fireRateMultiplier += percent;   // 1.0 → 1.1 → 1.2 → 1.3...
-                    break;
-                }
-
-            // ❤️ ХП
-            case UpgradeType.MaxHealthFlat:
-                {
-                    if (playerHealth == null) break;
-                    playerHealth.AddFlatMaxHealthAndHeal(upgrade.valueFlat);
-                    break;
-                }
-
-            case UpgradeType.MaxHealthPercent:
-                {
-                    if (playerHealth == null) break;
-                    float percent = upgrade.valuePercent / 100f;
-                    playerHealth.AddMaxHealthMultiplier(percent);
-                    break;
-                }
-
-            case UpgradeType.HealthRegen:
-                {
-                    if (playerHealth == null) break;
-                    playerHealth.AddHealthRegen(upgrade.valueFlat);
-                    break;
-                }
 
             // 🗡 Шипы
             case UpgradeType.SpikesBase:
@@ -238,41 +218,6 @@ public class UpgradesManager : MonoBehaviour
                     break;
                 }
 
-            // 🛡 Щит
-            case UpgradeType.ShieldMax:
-                {
-                    if (playerHealth == null) break;
-                    playerHealth.AddMaxShield(upgrade.valueFlat);
-                    break;
-                }
-
-            case UpgradeType.ShieldPercent:
-                {
-                    if (playerHealth == null) break;
-                    float percent = upgrade.valuePercent / 100f; // 100 → 1.0 (x2), 10 → 0.1 (+10%)
-                    playerHealth.AddShieldPercent(percent);
-                    break;
-                }
-
-            // 💰 Пассивный доход золота
-            case UpgradeType.GoldPerSecond:
-                {
-                    if (GoldManager.Instance != null)
-                    {
-                        // valueFlat = сколько золота/сек даёт один уровень апгрейда
-                        GoldManager.Instance.AddPassiveIncome((int)upgrade.valueFlat);
-                    }
-                    goldUpgradeCount++;
-                    break;
-                }
-            case UpgradeType.GoldGainPercent:
-                {
-                    if (GoldManager.Instance != null)
-                    {
-                        GoldManager.Instance.AddGoldGainPercent(upgrade.valuePercent);
-                    }
-                    break;
-                }
 
             // 💖 Хил за убийство врага
             case UpgradeType.HealOnKill:
@@ -313,15 +258,7 @@ public class UpgradesManager : MonoBehaviour
                     Debug.Log($"[Upgrade] SpikesScalingOnKill: base +{upgrade.valueFlat}, per kill +{upgrade.extraFlat} (total per kill = {spikesOnKillBonus})");
                     break;
                 }
-            case UpgradeType.DamagePerMinuteScaling:
-                {
-                    if (UpgradePerTick.Instance != null)
-                    {
-                        float add = upgrade.valuePercent / 100f; // 2 → 0.02
-                        UpgradePerTick.Instance.damageIncreasePerMinute += add;
-                    }
-                    break;
-                }
+
             case UpgradeType.EnemyEffectChance:
                 {
                     // 1) как было — апгрейдим шанс эффекта
@@ -426,33 +363,6 @@ public class UpgradesManager : MonoBehaviour
                         // valueFlat = сколько HP добавляем
                         // valuePercent = каждые сколько секунд
                         UpgradePerTick.Instance.AddHealthPerTick(
-                            upgrade.valueFlat,
-                            upgrade.valuePercent
-                        );
-                    }
-                    break;
-                }
-
-            case UpgradeType.MaxShieldPerTick:
-                {
-                    if (UpgradePerTick.Instance != null)
-                    {
-                        // valueFlat = сколько щита
-                        // valuePercent = каждые сколько секунд
-                        UpgradePerTick.Instance.AddShieldPerTick(
-                            upgrade.valueFlat,
-                            upgrade.valuePercent
-                        );
-                    }
-                    break;
-                }
-            case UpgradeType.RegenPerTick:
-                {
-                    if (UpgradePerTick.Instance != null)
-                    {
-                        // valueFlat = сколько регена
-                        // valuePercent = каждые сколько секунд
-                        UpgradePerTick.Instance.AddRegenPerTick(
                             upgrade.valueFlat,
                             upgrade.valuePercent
                         );

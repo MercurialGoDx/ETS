@@ -11,7 +11,7 @@ public class ShopSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHandle
 
     [Header("Данные")]
     private WeaponDefinition currentWeapon;
-    private UpgradeDefinition currentUpgrade;
+    private UpgradeBaseSO currentUpgrade;
     private ShopManager shopManager;
 
     // ==== ОРУЖИЕ ====
@@ -40,7 +40,7 @@ public class ShopSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHandle
     }
 
     // ==== УЛУЧШЕНИЕ ====
-    public void SetupUpgrade(UpgradeDefinition upgrade, ShopManager manager)
+    public void SetupUpgrade(UpgradeBaseSO upgrade, ShopManager manager)
     {
         currentWeapon = null;
         currentUpgrade = upgrade;
