@@ -1823,6 +1823,51 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7533727086368940477, guid: c189ce17a14e05443809b879e3fe6c30, type: 3}
   m_PrefabInstance: {fileID: 1870440296}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &192757770
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 192757771}
+  - component: {fileID: 192757772}
+  m_Layer: 0
+  m_Name: GameInstaller
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &192757771
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 192757770}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2077851515}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &192757772
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 192757770}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44c41f7baf8725a4a87f97666f940e0e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  upgradeContext: {fileID: 11400000, guid: e7ca8f3a1cc167a4d8b24da5db6c0fe6, type: 2}
 --- !u!4 &202041441 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3834513005343117992, guid: 78f4fda6b7fccb646bf8ac8de2537205, type: 3}
@@ -7995,39 +8040,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: b0fa8f863c4a4e749a00aefbf19fb467, type: 2}
   - {fileID: 11400000, guid: f5246d954e5ace44987eea2eb0ce4c28, type: 2}
   availableUpgrades:
-  - {fileID: 11400000, guid: a5be18a26a457424191a2eee4df6fa9b, type: 2}
-  - {fileID: 11400000, guid: 05580b1100b251f43a27753786227222, type: 2}
-  - {fileID: 11400000, guid: 940efc261655b924ba0294044aefda86, type: 2}
-  - {fileID: 11400000, guid: 4391960fce11e224bb6fb25450a17a17, type: 2}
-  - {fileID: 11400000, guid: 4367223aa0794964387fd3ecd75318c4, type: 2}
-  - {fileID: 11400000, guid: d0847597bda77de41a5c929d29ba7721, type: 2}
-  - {fileID: 11400000, guid: 9cad2a72be2091641be0a64493447901, type: 2}
-  - {fileID: 11400000, guid: 8019f2d19b037bb48a64934bc5674349, type: 2}
-  - {fileID: 11400000, guid: 2e22132f67b15ff4685a8bbf80b6954f, type: 2}
-  - {fileID: 11400000, guid: 9d622ecfbc954b740870898dfc34b15c, type: 2}
-  - {fileID: 11400000, guid: 17db250b5039c1641b990b86a7d08b8b, type: 2}
-  - {fileID: 11400000, guid: 4660ff7e4c510034ea384ca131e4496f, type: 2}
-  - {fileID: 11400000, guid: 0d0ebff75f0ce734691c492400d82e29, type: 2}
-  - {fileID: 11400000, guid: 0442f1917ce3b7f4e916181840f845ee, type: 2}
-  - {fileID: 11400000, guid: 9c88bdd12f011434bbd99677457689a1, type: 2}
-  - {fileID: 11400000, guid: 598236e631d3e464fa2854bc8776985a, type: 2}
-  - {fileID: 11400000, guid: 31b0c68e9b82e9148a4c151c734eaa9c, type: 2}
-  - {fileID: 11400000, guid: bc57b99a3fcb2044bb0ce9ab469e6b5f, type: 2}
-  - {fileID: 11400000, guid: 5647382c4821f0545a15905d63479aca, type: 2}
-  - {fileID: 11400000, guid: 2948c4bf6514089419f83dfdc9838d45, type: 2}
-  - {fileID: 11400000, guid: 0fa73e8011578c94d9a306a9f9a59d76, type: 2}
-  - {fileID: 11400000, guid: 6eb0e61c1df9a4944b63d05af5717073, type: 2}
-  - {fileID: 11400000, guid: d819df3cf398b464b9aecc9b087c84d6, type: 2}
-  - {fileID: 11400000, guid: 44c236d178cb7ac4d8488662d882a1c8, type: 2}
-  - {fileID: 11400000, guid: 3546cd3a902313845bfb86b39cff9fdd, type: 2}
-  - {fileID: 11400000, guid: 1cf6ecb200cf6af4f8bd0db6f8ef72aa, type: 2}
-  - {fileID: 11400000, guid: 8df2af0fe019c654d9ba3012498e6da2, type: 2}
-  - {fileID: 11400000, guid: e4743c96bac0d9442b032e062bb5ffa7, type: 2}
-  - {fileID: 11400000, guid: d16c2b0f54ad77848a803ea80d8264fd, type: 2}
-  - {fileID: 11400000, guid: 56ef643eafae0a442be70b7700dc94f5, type: 2}
-  - {fileID: 11400000, guid: 463aaa48a9fd8b04388cc01fa2884eb6, type: 2}
-  - {fileID: 11400000, guid: 61c04d7f0d0f5f74e88907468c6e2d8e, type: 2}
-  - {fileID: 11400000, guid: d3cfa834a1aef294e8e2e7f8ea92c162, type: 2}
+  - {fileID: 11400000, guid: 86595f89c7a243b41b850b42831bd1ed, type: 2}
+  - {fileID: 11400000, guid: 2d5583324c8055e49a7528498ef71d60, type: 2}
   rerollPrice: 10
   rerollPriceIncrease: 10
   enableRerollHotkey: 1
@@ -13133,6 +13147,7 @@ MonoBehaviour:
   playerHealth: {fileID: 1695926638903416467}
   playerShield: {fileID: 8371277131797966378}
   towerAttack: {fileID: 7296673054036822643}
+  context: {fileID: 11400000, guid: e7ca8f3a1cc167a4d8b24da5db6c0fe6, type: 2}
   goldUpgradeCount: 0
   damageFromMaxHealthPercent: 0
   damageTypeMultipliers:
@@ -18717,6 +18732,7 @@ Transform:
   - {fileID: 1420567239}
   - {fileID: 1442877242}
   - {fileID: 1717298189}
+  - {fileID: 192757771}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &2078275892 stripped
