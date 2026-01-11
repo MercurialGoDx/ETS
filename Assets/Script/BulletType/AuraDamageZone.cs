@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class AuraDamageZone : MonoBehaviour
 {
+
+
     [Header("Урон")]
     [Tooltip("Базовый урон ОТ ОДНОГО оружия за один тик")]
     public float damagePerStack = 100f;
@@ -99,11 +101,11 @@ public class AuraDamageZone : MonoBehaviour
     float dmgFromHpPercent = 0f;
 
     if (UpgradesManager.Instance != null &&
-        UpgradesManager.Instance.damageFromMaxHealthPercent > 0f &&
+        UpgradesManager.Instance.context.runtime.damageFromMaxHealthPercent > 0f &&
         UpgradesManager.Instance.playerHealth != null)
     {
         maxHp = UpgradesManager.Instance.playerHealth.MaxHealth;
-        dmgFromHpPercent = UpgradesManager.Instance.damageFromMaxHealthPercent;
+        dmgFromHpPercent = UpgradesManager.Instance.context.runtime.damageFromMaxHealthPercent;
 
         hpBonusToMult = (maxHp * dmgFromHpPercent) / 100f;
     }
@@ -116,7 +118,7 @@ public class AuraDamageZone : MonoBehaviour
     // 4) Множитель от активного щита
     float shieldMult = 1f;
     if (UpgradesManager.Instance != null)
-        shieldMult = UpgradesManager.Instance.GetShieldDamageBonusMultiplier();
+        shieldMult = UpgradesManager.Instance.playerShield.GetShieldDamageBonusMultiplier();
 
     // ===== НОВАЯ ЛОГИКА: складываем бонусы =====
     float timeBonus = timeMult - 1f;

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Upgrades/TickUpgrade/Damage Per Minute Scaling")]
+[CreateAssetMenu(menuName = "Upgrades/Tick Upgrade/Damage Per Tick Scaling")]
 public class DamagePerMinuteScalingUpgrade : UpgradeBaseSO
 {
     public float valuePercent;

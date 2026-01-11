@@ -3,7 +3,7 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Upgrades/Health/Health Regeneration")]
 public class HealthRegenUpgrade : UpgradeBaseSO
 {
-    float regenValue;
+    public float regenValue;
 
     public override void Apply(UpgradeContextSO context)
     {

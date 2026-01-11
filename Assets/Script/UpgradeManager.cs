@@ -64,102 +64,10 @@ public class UpgradesManager : MonoBehaviour
         InitDamageTypeArrays();
     }
 
-    private void Update()
-    {
-        // ... если у тебя тут уже что-то есть — оставляем ...
-        // Вынести в отдельную атаку!!!
-        HandleRegenAuraDamage();
-    }
-    private void HandleRegenAuraDamage()
-    {
-        if (!regenAuraEnabled)
-            return;
-
-        if (regenAuraMultiplier <= 0f)
-            return;
-
-        if (playerHealth == null)
-            return;
-
-        regenAuraTimer += Time.deltaTime;
-        if (regenAuraTimer < regenAuraTickInterval)
-            return;
-
-        regenAuraTimer = 0f;
-        ApplyRegenAuraDamage();
-    }
-    private void ApplyRegenAuraDamage()
-    {
-        // 1) Считаем общий реген игрока в секунду
-        float baseRegen = playerHealth.healthRegenPerSecond; // базовый реген из апгрейдов
-
-        float bonusRegen = 0f;
-        // если мы делали улучшение "реген за недостающее здоровье"
-        if (regenPer100MissingHealth > 0f)
-        {
-            float missing = playerHealth.MaxHealth - playerHealth.CurrentHealth;
-            if (missing > 0f)
-            {
-                bonusRegen = regenPer100MissingHealth * (missing / 100f);
-            }
-        }
-
-        float totalRegen = baseRegen + bonusRegen;
-        if (totalRegen <= 0f)
-            return;
-
-        // 2) Считаем урон от ауры
-        float damagePerEnemy = totalRegen * regenAuraMultiplier;
-
-        // 3) Наносим урон всем врагам на сцене
-        // Хранить всех доступных врагов в одном листе
-        Enemy[] enemies = Object.FindObjectsByType<Enemy>(FindObjectsSortMode.None);
-
-        if (enemies.Length == 0)
-            return;
-
-        foreach (var e in enemies)
-        {
-            if (e == null) continue;
-            e.TakeDamage(damagePerEnemy);
-        }
-
-        Debug.Log($"[RegenAura] Tick: regen={totalRegen:F1}, mult={regenAuraMultiplier:F2}, " +
-                  $"damage={damagePerEnemy:F1}, enemies={enemies.Length}");
-    }
-
-    //Относится к щиту. Также отделить от PlayerHealth логику щита
-    public float GetShieldDamageBonusMultiplier()
-    {
-        // нет апгрейда — нет бонуса
-        if (damageWhileShieldActivePercent <= 0f)
-            return 1f;
-
-        // нет playerHealth — подстраховка
-        if (playerHealth == null)
-            return 1f;
-
-        // щит не активен → бонус не работает
-        //if (!playerHealth.IsShieldActive)
-        //    return 1f;
-
-        // есть апгрейд и щит активен
-        float percent = damageWhileShieldActivePercent / 100f; // 10 → 0.1
-        return 1f + percent; // 10% → 1.1, 20% → 1.2 и т.д.
-    }
-
     /// <summary>
     /// Вызывается, когда враг умер именно от урона шипов.
     /// </summary>
-    public void OnEnemyKilledBySpikes()
-    {
-        if (playerHealth == null) return;
-        if (spikesOnKillBonus <= 0f) return;
 
-        playerHealth.AddSpikesDamage(spikesOnKillBonus);
-
-        Debug.Log($"[SpikesScaling] Enemy killed by spikes. +{spikesOnKillBonus} spikes. Current spikes damage = {playerHealth.SpikesDamage}");
-    }
 
     private void InitDamageTypeArrays()
     {
@@ -202,63 +110,7 @@ public class UpgradesManager : MonoBehaviour
         switch (upgrade.type)
         {
 
-            // 🗡 Шипы
-            case UpgradeType.SpikesBase:
-                {
-                    if (playerHealth == null) break;
-                    playerHealth.AddSpikesDamage(upgrade.valueFlat);
-                    break;
-                }
-
-            case UpgradeType.SpikesPercent:
-                {
-                    if (playerHealth == null) break;
-                    float percent = upgrade.valuePercent / 100f; // 10 → 0.1
-                    playerHealth.AddSpikesPercent(percent);
-                    break;
-                }
-
-
-            // 💖 Хил за убийство врага
-            case UpgradeType.HealOnKill:
-                {
-                    // каждый апгрейд добавляет, например, 10
-                    healOnKillPerEnemy += Mathf.Max(0f, upgrade.valueFlat);
-                    Debug.Log($"HealOnKill upgrade applied. Now healOnKillPerEnemy = {healOnKillPerEnemy}");
-                    break;
-                }
-
-            // 🗡 + 💖 Комбинированный апгрейд: шипы + хил при получении урона по ХП
-            case UpgradeType.AddSpikesAndHealOnHitFromEnemy:
-                {
-                    if (playerHealth == null) break;
-
-                    // valueFlat  -> урон шипов
-                    // extraFlat  -> хил за удар по ХП
-                    if (upgrade.valueFlat != 0f)
-                        playerHealth.AddSpikesDamage(upgrade.valueFlat);
-
-                    if (upgrade.extraFlat != 0f)
-                        playerHealth.AddHealOnHitFromEnemy(upgrade.extraFlat);
-
-                    break;
-                }
-            case UpgradeType.SpikesScalingOnKill:
-                {
-                    if (playerHealth == null) break;
-
-                    // valueFlat — базовое добавление шипов при покупке
-                    if (upgrade.valueFlat != 0f)
-                        playerHealth.AddSpikesDamage(upgrade.valueFlat);
-
-                    // extraFlat — сколько добавлять к шипам за каждое убийство шипами
-                    if (upgrade.extraFlat != 0f)
-                        spikesOnKillBonus += upgrade.extraFlat;
-
-                    Debug.Log($"[Upgrade] SpikesScalingOnKill: base +{upgrade.valueFlat}, per kill +{upgrade.extraFlat} (total per kill = {spikesOnKillBonus})");
-                    break;
-                }
-
+            //Пересмотреть эффекты и, возможно, внести изменения.
             case UpgradeType.EnemyEffectChance:
                 {
                     // 1) как было — апгрейдим шанс эффекта
@@ -277,47 +129,7 @@ public class UpgradesManager : MonoBehaviour
                     break;
                 }
 
-            case UpgradeType.HpForGold:
-                {
-                    if (playerHealth == null || GoldManager.Instance == null)
-                        break;
-
-                    // Сколько максимального здоровья забираем (берём из valueFlat)
-                    float healthToLose = upgrade.valueFlat;
-
-                    if (healthToLose > 0f)
-                    {
-                        // уменьшаем базовый MaxHealth (метод уже сам аккуратно клампит currentHealth)
-                        playerHealth.AddFlatMaxHealth(-healthToLose);
-                    }
-
-                    int bonusGold = 200 + 5 * goldUpgradeCount;
-
-                    GoldManager.Instance.AddGold(bonusGold);
-
-                    break;
-                }
-            case UpgradeType.MaxHealthAndDamageFromHealth:
-                {
-                    if (playerHealth == null)
-                        break;
-
-                    // 1) +% к максимальному здоровью И сразу подхиливаем на прирост
-                    float hpPercent = upgrade.valuePercent / 100f;
-                    if (hpPercent > 0f)
-                    {
-                        playerHealth.AddMaxHealthMultiplierAndHeal(hpPercent);
-                    }
-
-                    // 2) Бонус к урону от здоровья (как было)
-                    float dmgPercent = upgrade.valueFlat / 50f;
-                    if (dmgPercent > 0f)
-                    {
-                        damageFromMaxHealthPercent += dmgPercent;
-                    }
-
-                    break;
-                }
+            //Более детально разобраться с этой механикой и понять где хранить массивы с оружием
             case UpgradeType.DamageTypeScaling:
                 {
                     if (towerAttack == null)
@@ -332,6 +144,7 @@ public class UpgradesManager : MonoBehaviour
                     if (index < 0 || index >= damageTypeMultipliers.Length)
                         break;
 
+                    //посмотреть можно ли реализовать массив оружий через словари, чтобы брать лист оружий по ключу(по типу оружия)
                     // Сколько оружий этого типа уже куплено (с учётом стеков)
                     int weaponsOfThisType = towerAttack.GetTotalWeaponsOfType(dmgType);
 
@@ -354,47 +167,6 @@ public class UpgradesManager : MonoBehaviour
                         $"(оружий этого типа = {weaponsOfThisType}), " +
                         $"итоговый множитель = {damageTypeMultipliers[index]:F3}"
                     );
-                    break;
-                }
-            case UpgradeType.MaxHealthPerTick:
-                {
-                    if (UpgradePerTick.Instance != null)
-                    {
-                        // valueFlat = сколько HP добавляем
-                        // valuePercent = каждые сколько секунд
-                        UpgradePerTick.Instance.AddHealthPerTick(
-                            upgrade.valueFlat,
-                            upgrade.valuePercent
-                        );
-                    }
-                    break;
-                }
-            case UpgradeType.DamageWhileShieldActive:
-                {
-                    // valuePercent = X (например 10 = +10%)
-                    damageWhileShieldActivePercent += upgrade.valuePercent;
-
-                    Debug.Log($"[Upgrade] DamageWhileShieldActive: +{upgrade.valuePercent}% " +
-                              $"(total = {damageWhileShieldActivePercent}%)");
-                    break;
-                }
-            case UpgradeType.RegenPerMissingHealth:
-                {
-                    // valueFlat = X, то самое "X к регену за каждые 100 недостающего HP"
-                    regenPer100MissingHealth += upgrade.valueFlat;
-
-                    Debug.Log($"[Upgrade] RegenPerMissingHealth +{upgrade.valueFlat} per 100 missing HP. " +
-                              $"Total = {regenPer100MissingHealth} / 100 HP");
-                    break;
-                }
-            case UpgradeType.AuraDamagePerRegen:
-                {
-                    // valueFlat = множитель (например 2 = 2x от регена)
-                    regenAuraEnabled = true;
-                    regenAuraMultiplier += upgrade.valueFlat;
-
-                    Debug.Log($"[Upgrade] GlobalRegenAuraDamage: +{upgrade.valueFlat}x regen " +
-                              $"(total multiplier = {regenAuraMultiplier}x)");
                     break;
                 }
             default:

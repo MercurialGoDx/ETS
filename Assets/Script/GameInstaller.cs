@@ -11,6 +11,7 @@ public class GameInstaller : MonoBehaviour
         upgradeContext.playerShield = FindObjectOfType<PlayerShield>();
         upgradeContext.towerAttack = FindObjectOfType<TowerAttack>();
         upgradeContext.goldManager = FindObjectOfType<GoldManager>();
+        upgradeContext.regenAuraDamage = FindObjectOfType<RegenAuraDamage>();
         upgradeContext.runtime = new UpgradesRuntimeData();
     }
 }

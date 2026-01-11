@@ -77,6 +77,7 @@ public class EnemySpawner : MonoBehaviour
 
             GameObject obj = Instantiate(enemyPrefab, spawnPos, Quaternion.identity);
             Enemy enemyInstance = obj.GetComponent<Enemy>();
+            enemyInstance.isDead = false;
 
             if (enemyInstance != null)
             {

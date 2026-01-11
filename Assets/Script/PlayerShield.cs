@@ -8,6 +8,8 @@ public class PlayerShield : MonoBehaviour, ITakeDamageModifier
     [SerializeField] private float shieldMultiplier = 1f;   // множитель щита (1.0 -> 1.1 -> 1.2 ...)
     [SerializeField] private float shieldRechargeTime = 10f; // время полного восстановления щита
     [SerializeField] private float shieldRechargeDelay = 0f; // оставляем для совместимости, но в логике не используем
+    [SerializeField] private float damageWhileShieldActivePercent = 0f; // дополнительный урон, когда щит активен
+    [SerializeField] private float shieldRestorePerEnemyKill = 0f; // восстановление щита за убийство врага
 
     [Header("UI")]
     [SerializeField] private Image shieldBarFill;
@@ -21,6 +23,7 @@ public class PlayerShield : MonoBehaviour, ITakeDamageModifier
     public float MaxShield => maxShield * shieldMultiplier;
     public float CurrentShield => currentShield;
 
+    public float ShieldRestorePerEnemyKill => shieldRestorePerEnemyKill;
     public float ShieldRechargeTime => shieldRechargeTime;
     public float ShieldRechargeDelay => shieldRechargeDelay;
 
@@ -185,5 +188,35 @@ public class PlayerShield : MonoBehaviour, ITakeDamageModifier
         {
             return damage;
         }
+    }
+
+    public void AddDamageWhileShieldActivePercent(float amount)
+    {
+        damageWhileShieldActivePercent += amount;
+    }
+
+    public float GetShieldDamageBonusMultiplier()
+    {
+        // нет апгрейда — нет бонуса
+        if (damageWhileShieldActivePercent <= 0f)
+            return 1f;
+
+        // щит не активен → бонус не работает
+        if (IsShieldActive)
+            return 1f;
+
+        // есть апгрейд и щит активен
+        float percent = damageWhileShieldActivePercent / 100f; // 10 → 0.1
+        return 1f + percent; // 10% → 1.1, 20% → 1.2 и т.д.
+    }
+
+    public void AddShieldRestorePerEnemyKill(float amount)
+    {
+        shieldRestorePerEnemyKill += amount;
+    }
+
+    public void RestoreCurrentShield(float amount)
+    {
+        currentShield += amount;
     }
 }

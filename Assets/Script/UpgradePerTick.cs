@@ -49,6 +49,16 @@ public class UpgradePerTick : MonoBehaviour
 
     private float regenTickTimer = 0f;
 
+    // ===== 5. Золота по времени =====
+    [Header("Дополнительное золото по времени")]
+    [Tooltip("Сколько золота добавляется каждые interval.")]
+    public int goldPerTickAmount = 0;
+
+    [Tooltip("Интервал тика золота в секундах.")]
+    public float goldTickInterval = 0f;
+
+    private float goldTickTimer = 0f;
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -82,7 +92,7 @@ public class UpgradePerTick : MonoBehaviour
         if (playerHealth != null && healthPerTickAmount > 0f && healthTickInterval > 0f)
         {
             healthTickTimer += dt;
-            while (healthTickTimer >= healthTickInterval)
+            if (healthTickTimer >= healthTickInterval)
             {
                 healthTickTimer -= healthTickInterval;
 
@@ -95,7 +105,7 @@ public class UpgradePerTick : MonoBehaviour
         if (playerHealth != null && shieldPerTickAmount > 0f && shieldTickInterval > 0f)
         {
             shieldTickTimer += dt;
-            while (shieldTickTimer >= shieldTickInterval)
+            if (shieldTickTimer >= shieldTickInterval)
             {
                 shieldTickTimer -= shieldTickInterval;
 
@@ -108,12 +118,24 @@ public class UpgradePerTick : MonoBehaviour
         if (playerHealth != null && regenPerTickAmount > 0f && regenTickInterval > 0f)
         {
             regenTickTimer += dt;
-            while (regenTickTimer >= regenTickInterval)
+            if (regenTickTimer >= regenTickInterval)
             {
                 regenTickTimer -= regenTickInterval;
 
                 playerHealth.AddHealthRegen(regenPerTickAmount);
                 Debug.Log($"[RegenPerTick] +{regenPerTickAmount} regen. Total regen = {playerHealth.healthRegenPerSecond}");
+            }
+        }
+
+        // ===== 5. Золота по времени =====
+        if (goldPerTickAmount > 0f && goldTickInterval > 0f)
+        {
+            goldTickTimer += dt;
+            if(goldTickTimer >= goldTickInterval)
+            {
+                goldTickTimer -= goldTickInterval;
+
+                GoldManager.Instance.AddGold(goldPerTickAmount);
             }
         }
     }
@@ -172,5 +194,17 @@ public class UpgradePerTick : MonoBehaviour
             regenTickInterval = Mathf.Min(regenTickInterval, intervalSeconds);
 
         Debug.Log($"[RegenPerTick] Активирован. +{regenPerTickAmount} regen каждые {regenTickInterval} сек.");
+    }
+
+    public void AddGoldPerTick(int amount, float intervalSeconds)
+    {
+        if (amount <= 0f || intervalSeconds <= 0f) return;
+
+        goldPerTickAmount += amount;
+
+        if (goldTickInterval <= 0f)
+            goldTickInterval = intervalSeconds;
+        else
+            goldTickInterval = Mathf.Min(goldPerTickAmount, intervalSeconds);
     }
 }

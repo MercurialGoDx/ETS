@@ -155,6 +155,7 @@ public class BossManager : MonoBehaviour
 
         chosen.instance.SetActive(true);
         activeBossEnemy = chosen.enemy;
+        activeBossEnemy.isDead = false;
 
         Debug.Log($"[BossManager] Boss spawned ({chosen.instance.name}) | totalMult={totalMult:F2}");
     }

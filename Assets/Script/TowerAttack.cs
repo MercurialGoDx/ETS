@@ -436,11 +436,11 @@ public class TowerAttack : MonoBehaviour
         // hpBonusToMult = (maxHp * percent) / 100
         // т.е. это уже "плюс к множителю", оставляем как есть
         if (UpgradesManager.Instance != null &&
-            UpgradesManager.Instance.damageFromMaxHealthPercent > 0f &&
+            UpgradesManager.Instance.context.runtime.damageFromMaxHealthPercent > 0f &&
             UpgradesManager.Instance.playerHealth != null)
         {
             maxHp = UpgradesManager.Instance.playerHealth.MaxHealth;
-            dmgFromHpPercent = UpgradesManager.Instance.damageFromMaxHealthPercent;
+            dmgFromHpPercent = UpgradesManager.Instance.context.runtime.damageFromMaxHealthPercent;
 
             hpBonusToMult = (maxHp * dmgFromHpPercent) / 100f;
         }
@@ -453,7 +453,7 @@ public class TowerAttack : MonoBehaviour
         // 4) Множитель при активном щите (x1, x1.5, x2 ...)
         float shieldMult = 1f;
         if (UpgradesManager.Instance != null)
-            shieldMult = UpgradesManager.Instance.GetShieldDamageBonusMultiplier();
+            shieldMult = UpgradesManager.Instance.playerShield.GetShieldDamageBonusMultiplier();
 
         // ===== НОВАЯ ЛОГИКА: ВСЕ МНОЖИТЕЛИ СКЛАДЫВАЮТСЯ =====
         // Переводим множители в бонусы:

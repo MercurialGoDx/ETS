@@ -9,6 +9,7 @@ public class PlayerHealth : MonoBehaviour
     public float baseMaxHealth = 100f;
     public float maxHealthMultiplier = 1f;
     public float healthRegenPerSecond = 0f;
+    public float regenPer100MissingHealth = 0f;
 
     [Header("UI")]
     [SerializeField] private Image healthBarFill;
@@ -16,8 +17,13 @@ public class PlayerHealth : MonoBehaviour
     [Header("Шипы")]
     [SerializeField] private float spikesBase = 0f;         // базовый урон шипов
     [SerializeField] private float spikesMultiplier = 1f;   // множитель шипов
+    [SerializeField] private float spikesOnKillBonus = 0f;  // доп. урон за убийство врага
+    [SerializeField] private float spikesDamageScalePerEnemyHit = 0f;   // доп. урон за каждое получение урона от врага
     [Header("Эффекты при получении урона")]
     [SerializeField] private float healOnHitFromEnemyAmount = 0f;
+
+    [Header("Хил за убийство врага")]
+    [SerializeField] private float healOnKillPerEnemy = 0f;
 
     private float currentHealth;
     public event Action OnDied;
@@ -56,12 +62,12 @@ public class PlayerHealth : MonoBehaviour
 
             // Бонусный реген за недостающее здоровье
             if (UpgradesManager.Instance != null &&
-                UpgradesManager.Instance.regenPer100MissingHealth > 0f)
+                regenPer100MissingHealth > 0f)
             {
                 float missing = MaxHealth - currentHealth;
                 if (missing > 0f)
                 {
-                    regen += UpgradesManager.Instance.regenPer100MissingHealth * (missing / 100f);
+                    regen += regenPer100MissingHealth * (missing / 100f);
                 }
             }
 
@@ -119,6 +125,11 @@ public class PlayerHealth : MonoBehaviour
                 Heal(healOnHitFromEnemyAmount);
             }
         }
+
+        if (spikesDamageScalePerEnemyHit != 0)
+        {
+            AddSpikesDamage(spikesDamageScalePerEnemyHit);
+        }
     }
 
 
@@ -166,6 +177,7 @@ public class PlayerHealth : MonoBehaviour
     {
         AddFlatMaxHealth(amount);
     }
+
     public void AddHealOnHitFromEnemy(float amount)
     {
         healOnHitFromEnemyAmount += amount;
@@ -191,6 +203,55 @@ public class PlayerHealth : MonoBehaviour
     public void AddSpikesPercent(float amount)
     {
         spikesMultiplier += amount;
+    }
+
+    public void AddSpikesDamagePerKill(float amount)
+    {
+        spikesOnKillBonus += amount;
+    }
+
+    public void AddSpikesDamagePerEnemyHit(float amount)
+    {
+        spikesDamageScalePerEnemyHit += amount;
+    }
+
+    public void OnEnemyKilledBySpikes()
+    {
+        if (spikesOnKillBonus <= 0f) return;
+
+        AddSpikesDamage(spikesOnKillBonus);
+
+        Debug.Log($"[SpikesScaling] Enemy killed by spikes. +{spikesOnKillBonus} spikes. Current spikes damage = {SpikesDamage}");
+    }
+
+    public void AddHealOnKill(float amount)
+    {
+        healOnKillPerEnemy += amount;
+    }
+
+    public void AddRegenPer100MissingHealth(float amount)
+    {
+        regenPer100MissingHealth += amount;
+    }
+
+    public void OnEnemyKilled(bool killedBySpikes)
+    {
+        // Хил
+        if (healOnKillPerEnemy > 0f)
+        {
+            Heal(healOnKillPerEnemy);
+        }
+
+        // Шипы
+        if (killedBySpikes)
+        {
+            OnEnemyKilledBySpikes();
+        }
+
+        if(UpgradesManager.Instance.playerShield.ShieldRestorePerEnemyKill > 0)
+        {
+            UpgradesManager.Instance.playerShield.RestoreCurrentShield(UpgradesManager.Instance.playerShield.ShieldRestorePerEnemyKill);
+        }
     }
 
     // === UI ===

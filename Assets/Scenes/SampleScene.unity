@@ -13342,6 +13342,8 @@ MonoBehaviour:
   shieldTickInterval: 0
   regenPerTickAmount: 0
   regenTickInterval: 0
+  goldPerTickAmount: 0
+  goldTickInterval: 0
 --- !u!114 &1420567246
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15750,8 +15752,8 @@ MonoBehaviour:
   playerTag: Player
   spawnRadius: 20
   spawnY: 10
-  spawnEverySeconds: 300
-  waitBossDeathBeforeNextSpawn: 1
+  spawnEverySeconds: 5
+  waitBossDeathBeforeNextSpawn: 0
   enemySpawner: {fileID: 1717298188}
   bossExtraMultiplier: 1
   bossRewardUI: {fileID: 1102466065}
@@ -19222,6 +19224,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 7816917478349367771, guid: 36d1029cdda265c468ec89641244ecca, type: 3}
       insertIndex: 4
       addedObject: {fileID: 8371277131797966378}
+    - targetCorrespondingSourceObject: {fileID: 7816917478349367771, guid: 36d1029cdda265c468ec89641244ecca, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8371277131797966379}
   m_SourcePrefab: {fileID: 100100000, guid: 36d1029cdda265c468ec89641244ecca, type: 3}
 --- !u!114 &7296673054036822643 stripped
 MonoBehaviour:
@@ -19255,7 +19260,24 @@ MonoBehaviour:
   shieldMultiplier: 1
   shieldRechargeTime: 10
   shieldRechargeDelay: 10
+  damageWhileShieldActivePercent: 0
+  shieldRestorePerEnemyKill: 0
   shieldBarFill: {fileID: 0}
+--- !u!114 &8371277131797966379
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1713432141}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59d16342a013878439cf2ff664e919bb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  regenAuraEnabled: 0
+  regenAuraMultiplier: 0
+  regenAuraTickInterval: 1
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

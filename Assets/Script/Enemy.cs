@@ -34,7 +34,7 @@ public class Enemy : MonoBehaviour
     private PlayerHealth playerHealth;
 
     private float attackTimer = 0f;
-    private bool isDead = false;
+    public bool isDead = false;
     private EnemyAttackFeedback attackFeedback;
     [HideInInspector]
     public int bonusGold = 0;
@@ -214,21 +214,9 @@ public class Enemy : MonoBehaviour
             GoldManager.Instance.AddGold(goldReward, GoldSource.Kill, transform.position);
         }
 
-        // Хил за килл (если апгрейд куплен)
-        if (UpgradesManager.Instance != null && playerHealth != null)
-        {
-            float healAmount = UpgradesManager.Instance.healOnKillPerEnemy;
-            if (healAmount > 0f)
-            {
-                playerHealth.Heal(healAmount);
-            }
+        // Хил за килл + улучшение шипов (если апгрейд куплен)
 
-            // Шипы масштабируемые: если враг умер от шипов, усиливаем шипы
-            if (killedBySpikes)
-            {
-                UpgradesManager.Instance.OnEnemyKilledBySpikes();
-            }
-        }
+        playerHealth.OnEnemyKilled(killedBySpikes);
 
         OnDeath?.Invoke(this);
 
