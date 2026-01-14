@@ -10,15 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b4deb76f4eafbe64ab57ad244b4e6cc8, type: 3}
-  m_Name: BasicSpike
+  m_Name: Spike Base +60 COMPOSITE
   m_EditorClassIdentifier: 
-  upgradeName: "<color=#ffd700>\u0423\u0441\u0442\u0430\u043D\u043E\u0432\u0438\u0442\u044C
-    \u0448\u0438\u043F\u044B</color>"
-  icon: {fileID: 21300000, guid: 0640b02dbcb63204a847301c9f335ae8, type: 3}
-  price: 100
-  weight: 25
+  upgradeName: 
+  icon: {fileID: 0}
+  price: 0
+  weight: 0
   description: "\u0423\u0432\u0435\u043B\u0438\u0447\u0438\u0432\u0430\u0435\u0442
     \u0443\u0440\u043E\u043D \u043E\u0442 \u0448\u0438\u043F\u043E\u0432 \u043D\u0430
-    <color=#ffd700>15</color>\n\n<color=#ffd700>\u0421\u0442\u043E\u0438\u043C\u043E\u0441\u0442\u044C:
-    100</color>"
-  valueFlat: 15
+    60"
+  valueFlat: 60
