@@ -150,7 +150,7 @@ public class Enemy : MonoBehaviour
         if (attackTimer <= 0f)
         {
             //AttackPlayer();
-            animator.Play("Attack", 0, 0f);
+            animator.Play("Attack");
             attackTimer = attackInterval;
         }
     }
