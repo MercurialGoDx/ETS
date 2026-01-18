@@ -39,7 +39,7 @@ public class BossRewardUI : MonoBehaviour
             return;
         }
 
-        List<BossRewardDefinition> picks = provider.PickThreeUnique();
+        List<UpgradeBaseSO> picks = provider.PickThreeUnique();
         while (picks.Count < 3) picks.Add(null);
 
         if (card1 != null) card1.Bind(picks[0], OnChosen);
@@ -47,12 +47,12 @@ public class BossRewardUI : MonoBehaviour
         if (card3 != null) card3.Bind(picks[2], OnChosen);
     }
 
-    private void OnChosen(BossRewardDefinition reward)
+    private void OnChosen(UpgradeBaseSO reward)
     {
         // применяем апгрейд (через UpgradesManager, как у тебя уже в проекте)
-        if (reward != null && reward.upgrade != null && UpgradesManager.Instance != null)
+        if (reward != null && UpgradesManager.Instance != null)
         {
-            UpgradesManager.Instance.ApplyUpgrade(reward.upgrade);
+            UpgradesManager.Instance.ApplyUpgrade(reward);
         }
 
         Close();

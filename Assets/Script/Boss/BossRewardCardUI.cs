@@ -10,19 +10,19 @@ public class BossRewardCardUI : MonoBehaviour
     public TMP_Text descText;
     public Button button;
 
-    private BossRewardDefinition reward;
-    private Action<BossRewardDefinition> onClick;
+    private UpgradeBaseSO reward;
+    private Action<UpgradeBaseSO> onClick;
 
-    public void Bind(BossRewardDefinition r, Action<BossRewardDefinition> onClicked)
+    public void Bind(UpgradeBaseSO r, Action<UpgradeBaseSO> onClicked)
     {
         reward = r;
         onClick = onClicked;
 
-        if (titleText != null) titleText.text = r != null ? r.title : "—";
+        if (titleText != null) titleText.text = r != null ? r.upgradeName : "—";
         if (descText != null) descText.text = r != null ? r.description : "";
 
-        if (frameImage != null)
-            frameImage.color = GetRarityColor(r != null ? r.rarity : BossRewardRarity.Common);
+        //if (frameImage != null)
+        //    frameImage.color = GetRarityColor(r != null ? r.rarity : BossRewardRarity.Common);
 
         if (button != null)
         {

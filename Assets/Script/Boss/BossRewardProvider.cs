@@ -4,19 +4,18 @@ using UnityEngine;
 public class BossRewardProvider : MonoBehaviour
 {
     [Tooltip("Сюда руками добавляешь все BossRewardDefinition, которые могут выпадать.")]
-    public List<BossRewardDefinition> rewards = new();
+    public List<UpgradeBaseSO> rewards = new();
 
-    public List<BossRewardDefinition> PickThreeUnique()
+    public List<UpgradeBaseSO> PickThreeUnique()
     {
-        List<BossRewardDefinition> candidates = new();
+        List<UpgradeBaseSO> candidates = new();
         foreach (var r in rewards)
         {
             if (r == null) continue;
-            if (!r.enabledInPool) continue;
             candidates.Add(r);
         }
 
-        List<BossRewardDefinition> result = new(3);
+        List<UpgradeBaseSO> result = new(3);
 
         // без повторов
         for (int i = 0; i < 3; i++)
@@ -30,7 +29,7 @@ public class BossRewardProvider : MonoBehaviour
         return result;
     }
 
-    private BossRewardDefinition PickOneWeighted(List<BossRewardDefinition> list)
+    private UpgradeBaseSO PickOneWeighted(List<UpgradeBaseSO> list)
     {
         if (list == null || list.Count == 0) return null;
 
