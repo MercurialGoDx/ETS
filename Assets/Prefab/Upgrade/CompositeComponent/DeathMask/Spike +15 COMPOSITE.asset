@@ -9,12 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ebd58037d61b2964a9da28dd7e3a6603, type: 3}
-  m_Name: BossReward3
+  m_Script: {fileID: 11500000, guid: b4deb76f4eafbe64ab57ad244b4e6cc8, type: 3}
+  m_Name: Spike +15 COMPOSITE
   m_EditorClassIdentifier: 
-  upgrade: {fileID: 0}
-  title: "\u041B\u0435\u0433\u0430"
+  upgradeName: 
+  icon: {fileID: 0}
+  price: 0
+  weight: 0
   description: 
-  rarity: 2
-  weight: 10
-  enabledInPool: 1
+  valueFlat: 15

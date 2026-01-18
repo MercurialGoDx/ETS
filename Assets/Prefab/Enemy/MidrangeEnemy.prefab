@@ -241,7 +241,7 @@ PrefabInstance:
       addedObject: {fileID: 3080268454871088727}
     - targetCorrespondingSourceObject: {fileID: 19588385245968726, guid: 8ee08d04ad5df46fbb2e97260b63420b, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 9210817406393566663}
+      addedObject: {fileID: 8144769222059561126}
   m_SourcePrefab: {fileID: 100100000, guid: 8ee08d04ad5df46fbb2e97260b63420b, type: 3}
 --- !u!1 &2398899897793033779 stripped
 GameObject:
@@ -298,7 +298,7 @@ CapsuleCollider:
   m_Height: 0.9552846
   m_Direction: 1
   m_Center: {x: 0.002673924, y: 0.5374291, z: 0}
---- !u!114 &9210817406393566663
+--- !u!114 &8144769222059561126
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -311,13 +311,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 1.15
-  maxHealth: 20
-  damageToPlayer: 10
-  baseGold: 1
+  maxHealth: 12
+  damageToPlayer: 2
+  baseGold: 2
   canBeSlowed: 1
   attackType: 1
-  attackRange: 2.5
-  attackInterval: 1
+  attackRange: 1.5
+  attackInterval: 2
   overrideAttackRange: 0
   isDead: 0
   bonusGold: 0

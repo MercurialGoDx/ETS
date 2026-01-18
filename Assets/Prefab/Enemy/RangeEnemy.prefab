@@ -58,43 +58,19 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 1500939411536426, guid: 274c4c35ed05ea14c87492064b3cadfd, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 7164911917983744621}
-    - targetCorrespondingSourceObject: {fileID: 1500939411536426, guid: 274c4c35ed05ea14c87492064b3cadfd, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 6960795621373903073}
     - targetCorrespondingSourceObject: {fileID: 1500939411536426, guid: 274c4c35ed05ea14c87492064b3cadfd, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4965885443674372700}
+    - targetCorrespondingSourceObject: {fileID: 1500939411536426, guid: 274c4c35ed05ea14c87492064b3cadfd, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -7644286739984955805}
   m_SourcePrefab: {fileID: 100100000, guid: 274c4c35ed05ea14c87492064b3cadfd, type: 3}
 --- !u!1 &8024985128658178044 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1500939411536426, guid: 274c4c35ed05ea14c87492064b3cadfd, type: 3}
   m_PrefabInstance: {fileID: 8024056005086328278}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &7164911917983744621
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8024985128658178044}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8a78270391e03e844be420d0c3992e13, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 1.15
-  maxHealth: 20
-  damageToPlayer: 10
-  baseGold: 1
-  canBeSlowed: 1
-  attackType: 2
-  attackRange: 2.5
-  attackInterval: 1
-  overrideAttackRange: 0
-  isDead: 0
-  bonusGold: 0
-  returnToPoolInsteadOfDestroy: 0
 --- !u!54 &6960795621373903073
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -145,3 +121,27 @@ CapsuleCollider:
   m_Height: 2.0193052
   m_Direction: 1
   m_Center: {x: 0, y: 1.0053802, z: 0}
+--- !u!114 &-7644286739984955805
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8024985128658178044}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a78270391e03e844be420d0c3992e13, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 1.15
+  maxHealth: 8
+  damageToPlayer: 2
+  baseGold: 2
+  canBeSlowed: 1
+  attackType: 2
+  attackRange: 1.5
+  attackInterval: 2
+  overrideAttackRange: 0
+  isDead: 0
+  bonusGold: 0
+  returnToPoolInsteadOfDestroy: 0
