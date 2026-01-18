@@ -54,11 +54,14 @@ public class Enemy : MonoBehaviour
     
     private Animator animator;
 
+    private IEnemyAttack attackLogic;
+
     private void Awake()
     {
         currentHealth = maxHealth;
         currentSpeed = speed; // стартовая скорость
         animator = GetComponent<Animator>();
+        attackLogic = GetComponent<IEnemyAttack>();
     }
 
     private void Start()
@@ -121,7 +124,7 @@ public class Enemy : MonoBehaviour
         if (distance > attackRange)
         {
             MoveTowardsPlayer();
-            //animator.Play("Run");
+            animator.Play("Run");
         }
         else
         {
@@ -147,26 +150,15 @@ public class Enemy : MonoBehaviour
         if (attackTimer <= 0f)
         {
             //AttackPlayer();
-            animator.Play("Attack");
+            animator.Play("Attack", 0, 0f);
             attackTimer = attackInterval;
         }
     }
 
+    // вызывается в анимации атаки
     private void AttackPlayer()
     {
-        if (playerHealth != null)
-        {
-            playerHealth.TakeDamage(damageToPlayer);
-
-            if (attackFeedback != null)
-                attackFeedback.PlayFeedback();
-
-            // шипы
-            if (playerHealth.SpikesDamage > 0f)
-            {
-                TakeDamage(playerHealth.SpikesDamage, true);
-            }
-        }
+        attackLogic.Attack(this, player);
     }
 
     #region Урон / смерть
@@ -223,15 +215,15 @@ public class Enemy : MonoBehaviour
 
         playerHealth.OnEnemyKilled(killedBySpikes);
 
+        animator.Play("Death");
+
         OnDeath?.Invoke(this);
 
         if (returnToPoolInsteadOfDestroy)
         {
             gameObject.SetActive(false);
             return;
-        }
-
-        animator.Play("Death");
+        }        
     }
 
     #endregion

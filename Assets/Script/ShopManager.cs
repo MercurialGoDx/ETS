@@ -67,10 +67,10 @@ public class ShopManager : MonoBehaviour
 
         // При старте панель и кнопка реролла скрыты
         if (shopPanel != null)
-            shopPanel.SetActive(false);
+            shopPanel.SetActive(true);
 
         if (rerollButton != null)
-            rerollButton.SetActive(false);
+            rerollButton.SetActive(true);
     }
 
     private void Update()

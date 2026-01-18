@@ -1,4 +1,7 @@
+using UnityEditor.SearchService;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+
 
 public class StartMenu : MonoBehaviour
 {
@@ -37,11 +40,12 @@ public class StartMenu : MonoBehaviour
 
     public void ExitGame()
     {
-#if UNITY_EDITOR
-        UnityEditor.EditorApplication.isPlaying = false;
-#else
-        Application.Quit();
-#endif
+//#if UNITY_EDITOR
+//        UnityEditor.EditorApplication.isPlaying = false;
+//#else
+//        Application.Quit();
+//#endif
         Debug.Log("ExitGame pressed");
+        SceneManager.LoadScene("SampleScene");
     }
 }

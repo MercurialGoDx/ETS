@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class BossRewardUI : MonoBehaviour
 {
+    public GameObject gameSpeedPanel;
+
     [Header("Root")]
     public GameObject panelRoot;
 
@@ -23,6 +25,8 @@ public class BossRewardUI : MonoBehaviour
 
     public void Open()
     {
+        gameSpeedPanel.SetActive(false);
+
         prevTimeScale = Time.timeScale;
         Time.timeScale = 0f;
 
@@ -62,5 +66,6 @@ public class BossRewardUI : MonoBehaviour
     {
         if (panelRoot != null) panelRoot.SetActive(false);
         Time.timeScale = prevTimeScale;
+        gameSpeedPanel.SetActive(true);
     }
 }

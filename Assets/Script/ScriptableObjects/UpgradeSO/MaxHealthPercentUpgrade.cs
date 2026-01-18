@@ -7,6 +7,6 @@ public class MaxHealthPercentUpgrade : UpgradeBaseSO
 
     public override void Apply(UpgradeContextSO context)
     {
-        context.playerHealth.AddMaxHealthMultiplier(percentValue / 100f);
+        context.playerHealth.AddMaxHealthMultiplierAndHeal(percentValue / 100f);
     }
 }
