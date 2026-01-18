@@ -1,6 +1,7 @@
-using System.Collections.Generic;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 public class TowerAttack : MonoBehaviour
 {
@@ -119,7 +120,7 @@ public class TowerAttack : MonoBehaviour
                 target = weapon.lastTargets[i];
 
                 bool targetValid = false;
-                if (target != null && target.gameObject.activeInHierarchy)
+                if (target != null && !target.isDead)
                 {
                     float dist = Vector3.Distance(transform.position, target.transform.position);
                     if (dist <= range && enemiesInRange.Contains(target))
@@ -344,7 +345,7 @@ public class TowerAttack : MonoBehaviour
         {
             if (e == null) continue;
             float dist = Vector3.Distance(transform.position, e.transform.position);
-            if (dist <= range)
+            if (dist <= range && !e.isDead)
             {
                 result.Add(e);
             }

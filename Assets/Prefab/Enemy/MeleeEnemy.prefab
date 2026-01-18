@@ -68,7 +68,10 @@ PrefabInstance:
       addedObject: {fileID: 1360928680668247506}
     - targetCorrespondingSourceObject: {fileID: 1571042049591659991, guid: 61b3e3801d56a3f429556c96ea2f07d6, type: 3}
       insertIndex: -1
-      addedObject: {fileID: -7378217851132074222}
+      addedObject: {fileID: 5490738652193501060}
+    - targetCorrespondingSourceObject: {fileID: 1571042049591659991, guid: 61b3e3801d56a3f429556c96ea2f07d6, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -3494295864883813701}
   m_SourcePrefab: {fileID: 100100000, guid: 61b3e3801d56a3f429556c96ea2f07d6, type: 3}
 --- !u!1 &2604920207847695257 stripped
 GameObject:
@@ -125,7 +128,7 @@ CapsuleCollider:
   m_Height: 1.7498474
   m_Direction: 1
   m_Center: {x: -0.0049096346, y: 0.8589721, z: 0}
---- !u!114 &-7378217851132074222
+--- !u!114 &5490738652193501060
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -138,14 +141,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 1.15
-  maxHealth: 15
-  damageToPlayer: 2
-  baseGold: 2
+  maxHealth: 20
+  damageToPlayer: 10
+  baseGold: 1
   canBeSlowed: 1
   attackType: 0
-  attackRange: 1.5
-  attackInterval: 2
+  attackRange: 3.5
+  attackInterval: 1
   overrideAttackRange: 0
   isDead: 0
   bonusGold: 0
   returnToPoolInsteadOfDestroy: 0
+--- !u!114 &-3494295864883813701
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2604920207847695257}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2528bf69621f6d94ea82e8968d4b3ef0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

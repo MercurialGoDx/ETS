@@ -3,6 +3,7 @@ using UnityEngine;
 public class GameStartController : MonoBehaviour
 {
     [Header("UI")]
+    [SerializeField] private GameObject gameSpeedPanel;
     [SerializeField] private GameObject readyPanel;   // панель/кнопка "Готов"
     [SerializeField] private GameObject shopPanel;    // если магазин отдельной панелью
     [SerializeField] private EnemyStatsProgressionUI enemyStatsProgressionUI;
@@ -24,6 +25,8 @@ public class GameStartController : MonoBehaviour
         // показываем магазин + кнопку готов
         if (shopPanel != null) shopPanel.SetActive(true);
         if (readyPanel != null) readyPanel.SetActive(true);
+
+        gameSpeedPanel.SetActive(false);
 
         // стопаем время
         Time.timeScale = 0f;
@@ -52,6 +55,8 @@ public class GameStartController : MonoBehaviour
         if (waveTimerUI != null) waveTimerUI.enabled = true;
 
         if (goldManager != null) goldManager.enablePassiveIncome = true;
+
+        gameSpeedPanel.SetActive(true);
 
         Time.timeScale = 1f;
 

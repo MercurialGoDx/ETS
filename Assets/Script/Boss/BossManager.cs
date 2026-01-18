@@ -172,18 +172,18 @@ public class BossManager : MonoBehaviour
 
     private void HandleBossDeath(Enemy deadEnemy)
     {
-    if (activeBossEnemy != deadEnemy)
-        return;
+        if (activeBossEnemy != deadEnemy)
+            return;
 
-    activeBossEnemy = null;
+        activeBossEnemy = null;
 
-    if (bossRewardUI != null)
-        bossRewardUI.Open();
-    else
-        Debug.LogWarning("[BossManager] BossRewardUI not assigned");
+        if (bossRewardUI != null)
+            bossRewardUI.Open();
+        else
+            Debug.LogWarning("[BossManager] BossRewardUI not assigned");
 
-    Debug.Log("[BossManager] Boss defeated → reward selection opened");
-}
+        Debug.Log("[BossManager] Boss defeated → reward selection opened");
+    }
 
 #if UNITY_EDITOR
     private void OnDrawGizmosSelected()
