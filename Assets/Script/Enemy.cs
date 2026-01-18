@@ -51,11 +51,14 @@ public class Enemy : MonoBehaviour
     private float knockbackTimeLeft = 0f;
     public System.Action<Enemy> OnDeath;
     public bool returnToPoolInsteadOfDestroy = false;
+    
+    private Animator animator;
 
     private void Awake()
     {
         currentHealth = maxHealth;
         currentSpeed = speed; // стартовая скорость
+        animator = GetComponent<Animator>();
     }
 
     private void Start()
@@ -83,7 +86,7 @@ public class Enemy : MonoBehaviour
             }
         }
 
-        attackTimer = attackInterval;
+        attackTimer = 0f;
         attackFeedback = GetComponent<EnemyAttackFeedback>();
     }
 
@@ -118,6 +121,7 @@ public class Enemy : MonoBehaviour
         if (distance > attackRange)
         {
             MoveTowardsPlayer();
+            //animator.Play("Run");
         }
         else
         {
@@ -142,7 +146,8 @@ public class Enemy : MonoBehaviour
 
         if (attackTimer <= 0f)
         {
-            AttackPlayer();
+            //AttackPlayer();
+            animator.Play("Attack");
             attackTimer = attackInterval;
         }
     }
@@ -225,7 +230,8 @@ public class Enemy : MonoBehaviour
             gameObject.SetActive(false);
             return;
         }
-        Destroy(gameObject);
+
+        animator.Play("Death");
     }
 
     #endregion
@@ -248,5 +254,10 @@ public class Enemy : MonoBehaviour
         knockbackSpeed = distance / duration;            // юнит/сек
         knockbackTimeLeft = duration;
         isKnockedBack = true;
+    }
+
+    public void OnDeathAnimationFinished()
+    {
+        Destroy(gameObject);
     }
 }

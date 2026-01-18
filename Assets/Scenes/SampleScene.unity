@@ -15692,10 +15692,8 @@ MonoBehaviour:
   tower: {fileID: 8371277131797966377}
   waveTimerUI: {fileID: 1566690066}
   enemyPrefabs:
-  - {fileID: 1666652763914000728, guid: e2f7ef60456a6374ba3768c758d64bd2, type: 3}
-  - {fileID: 410266378630006068, guid: 00f89ce95796c734cb6277cbe58d153c, type: 3}
-  - {fileID: 2493250053704007785, guid: 5b915cce97add2b49841111c7bf7098f, type: 3}
-  enemiesPerWave: 10
+  - {fileID: 2604920207847695257, guid: 068644ded60bdde4f8d45fe16c21ffab, type: 3}
+  enemiesPerWave: 1
   timeBetweenWaves: 10
   spawnRadiusMin: 18
   spawnRadiusMax: 20

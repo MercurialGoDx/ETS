@@ -35,7 +35,7 @@ public class GameSpeedController : MonoBehaviour
     {
         float startSpeed = 1f;
         if (saveSpeed) startSpeed = PlayerPrefs.GetFloat(PrefKey, 1f);
-        ApplySpeed(startSpeed);
+        //ApplySpeed(startSpeed);
     }
 
     public void SetX1() => ApplySpeed(speedX1);
