@@ -9,4 +9,9 @@ public class SpikesPercentUpgrade : UpgradeBaseSO
     {
         context.playerHealth.AddSpikesDamage(valuePercent / 100);
     }
+
+    protected override object[] GetDescriptionArgs()
+    {
+        return new object[] { valuePercent };
+    }
 }

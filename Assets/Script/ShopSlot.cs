@@ -114,8 +114,8 @@ public class ShopSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHandle
         {
             // тут подставь реальные поля из UpgradeDefinition
             WeaponTooltip.Instance.Show(
-                currentUpgrade.upgradeName, 
-                currentUpgrade.description, 
+                currentUpgrade.GetLocalizedName(), 
+                currentUpgrade.GetLocalizedDescription(), 
                 eventData.position
             );
         }

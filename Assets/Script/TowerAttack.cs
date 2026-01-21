@@ -183,7 +183,7 @@ public class TowerAttack : MonoBehaviour
         // (BaseDamage + % от здоровья) * глобальный множитель
         float scaledDamage = GetFinalDamage(
             weapon.def.damagePerProjectile,
-            weapon.def.weaponName,
+            weapon.def.GetLocalizedName(),
             weapon.def.damageType
         );
 
@@ -398,7 +398,7 @@ public class TowerAttack : MonoBehaviour
                     auraInstance.Init(
                         def.damagePerProjectile,
                         1,
-                        def.weaponName,
+                        def.GetLocalizedName(),
                         def.damageType          // ← тип урона берём из SO оружия
                     );
                     newWeapon.auraInstance = auraInstance;

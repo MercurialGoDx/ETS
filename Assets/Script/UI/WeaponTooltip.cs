@@ -26,7 +26,7 @@ public class WeaponTooltip : MonoBehaviour
     public void Show(WeaponDefinition weapon, Vector2 screenPos)
     {
         if (weapon == null) return;
-        ShowInternal(weapon.weaponName, weapon.description, screenPos);
+        ShowInternal(weapon.GetLocalizedName(), weapon.GetLocalizedDescription(), screenPos);
     }
 
     // Новый универсальный метод — можно вызывать для апгрейдов

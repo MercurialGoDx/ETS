@@ -10,4 +10,9 @@ public class MaxShieldPerTickUpgrade : UpgradeBaseSO
     {
         UpgradePerTick.Instance.AddShieldPerTick(valueFlat, interval);
     }
+
+    protected override object[] GetDescriptionArgs()
+    {
+        return new object[] { valueFlat, interval };
+    }
 }

@@ -12,11 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67fb684f7d6fef945bca04da78b690f4, type: 3}
   m_Name: SpikeUltimate
   m_EditorClassIdentifier: 
-  upgradeName: "<color=#ffd700>\u0428\u0438\u043F\u0430\u0441\u0442\u044B\u0439 \u043F\u0430\u043D\u0446\u0438\u0440\u044C</color>"
   icon: {fileID: 21300000, guid: b893eecc1744d0b46b761b949ffbac5a, type: 3}
   price: 3000
   weight: 5
-  description: "\u0423\u0434\u0432\u0430\u0438\u0432\u0430\u0435\u0442 \u0431\u043E\u043D\u0443\u0441
-    \u0443\u0440\u043E\u043D\u0430 \u043E\u0442 \u0448\u0438\u043F\u043E\u0432\n\n<color=#ffd700>\u0421\u0442\u043E\u0438\u043C\u043E\u0441\u0442\u044C:
-    3000</color>"
+  localizationTable: {fileID: 0}
+  nameKey: spike_ultimate.name
+  descriptionKey: spike_ultimate.desc
   valuePercent: 100

@@ -7,7 +7,11 @@ public class MaxShieldFlatUpgrade : UpgradeBaseSO
 
     public override void Apply(UpgradeContextSO context)
     {
-        Debug.Log($"ZXCVBN {context}");
         context.playerShield.AddMaxShield(valueFlat);
+    }
+
+    protected override object[] GetDescriptionArgs()
+    {
+        return new object[] { valueFlat };
     }
 }

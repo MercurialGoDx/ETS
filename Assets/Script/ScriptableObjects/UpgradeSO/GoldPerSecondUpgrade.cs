@@ -9,4 +9,9 @@ public class GoldPerSecondUpgrade : UpgradeBaseSO
     {
         context.goldManager.AddPassiveIncome(goldPerSecond);
     }
+
+    protected override object[] GetDescriptionArgs()
+    {
+        return new object[] { goldPerSecond };
+    }
 }

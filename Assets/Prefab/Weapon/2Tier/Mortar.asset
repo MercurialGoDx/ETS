@@ -12,12 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3a9287f7cdfa744ebf102da5de8f389, type: 3}
   m_Name: Mortar
   m_EditorClassIdentifier: 
-  weaponName: "<color=#ffd700>\u041C\u043E\u0440\u0442\u0438\u0440\u0430</color>"
   icon: {fileID: 21300000, guid: 5212f2a7f7b6f324eb0405204fda63e1, type: 3}
-  description: "<color=#ffd700>\u0423\u0440\u043E\u043D:</color> 80\n<color=#ffd700>\u0422\u0438\u043F
-    \u0443\u0440\u043E\u043D\u0430:</color> \u0422\u044F\u0436\u0435\u043B\u044B\u0439\n<color=#ffd700>\u0421\u043A\u043E\u0440\u043E\u0441\u0442\u044C
-    \u0430\u0442\u0430\u043A\u0438:</color> 0.3\n\n<color=#ffd700>\u0421\u0442\u043E\u0438\u043C\u043E\u0441\u0442\u044C:</color>
-    400"
+  localizationTable: {fileID: 0}
+  nameKey: mortar.name
+  descriptionKey: mortar.desc
   price: 400
   damagePerProjectile: 80
   fireRate: 0.3

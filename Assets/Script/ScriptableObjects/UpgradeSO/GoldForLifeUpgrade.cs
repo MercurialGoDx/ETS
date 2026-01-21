@@ -4,6 +4,8 @@ using UnityEngine;
 public class GoldForLifeUpgrade : UpgradeBaseSO
 {
     public float lifeLoseValue;
+    public int basicGold = 200;
+    public int multGold = 5;
 
     public override void Apply(UpgradeContextSO context)
     {
@@ -11,6 +13,11 @@ public class GoldForLifeUpgrade : UpgradeBaseSO
 
         context.runtime.goldUpgradeCount++;
 
-        GoldManager.Instance.AddGold(200 + 5 * context.runtime.goldUpgradeCount);
+        GoldManager.Instance.AddGold(basicGold + multGold * context.runtime.goldUpgradeCount);
+    }
+
+    protected override object[] GetDescriptionArgs()
+    {
+        return new object[] { lifeLoseValue };
     }
 }

@@ -11,10 +11,10 @@ public class UpgradePerTick : MonoBehaviour
     // ===== 1. Урон по времени (как было) =====
     [Header("Урон по времени")]
     [Tooltip("Рост урона за минуту (0.02 = +2%) линейно.")]
-    public float damageIncreasePerMinute = 0f;
+    public float damageIncreasePerTick = 0f;
 
-    private float elapsedTime = 0f;
-    private int lastAppliedMinute = 0;
+    public float damageTickInterval = 0f;
+    public float damageTickTimer = 0f;
 
     private float damageMultiplier = 1f;   // Линейный множитель урона
     public float DamageMultiplier => damageMultiplier;
@@ -72,19 +72,21 @@ public class UpgradePerTick : MonoBehaviour
     private void Update()
     {
         float dt = Time.deltaTime;
-        elapsedTime += dt;
 
         // === 1. УРОН ПО МИНУТАМ (как раньше) ===
-        if (damageIncreasePerMinute > 0f)
+        if (damageIncreasePerTick > 0f && damageTickInterval > 0f)
         {
-            int currentMinute = Mathf.FloorToInt(elapsedTime / 60f);
 
-            if (currentMinute > lastAppliedMinute)
+            damageTickTimer += dt;
+
+            if (damageTickTimer >= damageTickInterval)
             {
-                damageMultiplier += damageIncreasePerMinute; // линейно
-                lastAppliedMinute = currentMinute;
+                damageTickTimer -= damageTickInterval;
 
-                Debug.Log($"[DamageScaler] Минута {currentMinute}. Новый множитель: {damageMultiplier:F2}");
+                //Здесь должен вызываться метод увеличения урона оружием.
+                //AddDamagePerTick(); // линейно               
+
+                Debug.Log($"[DamageScaler] Новый множитель: {damageMultiplier:F2}");
             }
         }
 
@@ -206,5 +208,17 @@ public class UpgradePerTick : MonoBehaviour
             goldTickInterval = intervalSeconds;
         else
             goldTickInterval = Mathf.Min(goldPerTickAmount, intervalSeconds);
+    }
+
+    public void AddDamagePerTick(int amount, float intervalSeconds)
+    {
+        if (amount <= 0f || intervalSeconds <= 0f) return;
+
+        damageIncreasePerTick += amount;
+
+        if (damageTickInterval <= 0f)
+            damageTickInterval = intervalSeconds;
+        else 
+            damageTickInterval = Mathf.Min(damageIncreasePerTick, intervalSeconds);
     }
 }

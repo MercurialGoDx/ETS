@@ -10,4 +10,9 @@ public class AuraDamagePerRegenUpgrade : UpgradeBaseSO
         context.regenAuraDamage.regenAuraEnabled = true;
         context.regenAuraDamage.regenAuraMultiplier += valueFlat;
     }
+
+    protected override object[] GetDescriptionArgs()
+    {
+        return new object[] { valueFlat };
+    }
 }

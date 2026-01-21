@@ -12,13 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61e4fb40263b2a74d818e0c2b9d973d0, type: 3}
   m_Name: GoldMine
   m_EditorClassIdentifier: 
-  upgradeName: "<color=#ffd700>\u0417\u043E\u043B\u043E\u0442\u0430\u044F \u0448\u0430\u0445\u0442\u0430</color>"
   icon: {fileID: 21300000, guid: e7c8fb4e9c2769e4eb9ef31d49f25fa4, type: 3}
   price: 400
   weight: 15
-  description: "\u0423\u0432\u0435\u043B\u0438\u0447\u0438\u0432\u0430\u0435\u0442
-    \u043F\u043E\u043B\u0443\u0447\u0435\u043D\u0438\u0435 \u0437\u043E\u043B\u043E\u0442\u0430
-    \u043E\u0442 \u043B\u044E\u0431\u043E\u0433\u043E \u0438\u0441\u0442\u043E\u0447\u043D\u0438\u043A\u0430
-    \u043D\u0430 <color=#ffd700>10%</color>\n\n<color=#ffd700>\u0421\u0442\u043E\u0438\u043C\u043E\u0441\u0442\u044C:
-    400</color>"
+  localizationTable: {fileID: 0}
+  nameKey: gold_mine.name
+  descriptionKey: gold_mine.desc
   valuePercent: 10

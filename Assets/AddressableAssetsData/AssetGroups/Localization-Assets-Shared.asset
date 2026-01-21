@@ -1,0 +1,38 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Localization-Assets-Shared
+  m_EditorClassIdentifier: 
+  m_GroupName: Localization-Assets-Shared
+  m_GUID: c42258c2d85aeb243bce2a27e839474b
+  m_SerializeEntries:
+  - m_GUID: 164770c6fc8794c4ba4db6f8c7e72db3
+    m_Address: Assets/Localization/Locales/Upgrade Labels/Upgrade Labels Shared Data.asset
+    m_ReadOnly: 1
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 32a974e0a609fb740a2db5dde9508098
+    m_Address: Assets/Localization/Locales/Weapon Labels/Weapon Labels Shared Data.asset
+    m_ReadOnly: 1
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a9a50c8e15fcd654e9662eb5695d4974
+    m_Address: Assets/Localization/Locales/Menu Labels Shared Data.asset
+    m_ReadOnly: 1
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 1
+  m_Settings: {fileID: 11400000, guid: fff071d97a20f834ab8a9fbfe71e94fc, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 4a44c18e7769db8489a56e7cb23b4b4b, type: 2}
+    - {fileID: 11400000, guid: 83a89e1317b265b489caa070cb57248d, type: 2}

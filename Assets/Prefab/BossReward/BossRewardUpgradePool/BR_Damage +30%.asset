@@ -12,11 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58ce36f200723104d950225e3c467578, type: 3}
   m_Name: BR_Damage +30%
   m_EditorClassIdentifier: 
-  upgradeName: "<color=#ffd700>\u0423\u0441\u0438\u043B\u0435\u043D\u0438\u0435 \u0443\u0440\u043E\u043D\u0430</color>"
   icon: {fileID: 0}
   price: 0
   weight: 1
-  description: "\u0423\u0432\u0435\u043B\u0438\u0447\u0438\u0432\u0430\u0435\u0442
-    \u0438\u0441\u0445\u043E\u0434\u044F\u0449\u0438\u0439 \u0443\u0440\u043E\u043D
-    \u043D\u0430 <color=#ffd700>30%</color>"
+  localizationTable: {fileID: 0}
+  nameKey: br_damage.name
+  descriptionKey: br_damage.desc
   valuePercent: 30
