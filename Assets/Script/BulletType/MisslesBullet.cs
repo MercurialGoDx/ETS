@@ -2,7 +2,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(Collider))]
 [RequireComponent(typeof(Rigidbody))]
-public class MissileBullet : MonoBehaviour
+public class MissileBullet : MonoBehaviour, IAttackBehaviour 
 {
     [Header("Полет")]
     public float speed = 12f;             // скорость ракеты
@@ -22,30 +22,26 @@ public class MissileBullet : MonoBehaviour
     private bool inLaunchPhase = true;
     private float lifeTimer = 0f;
 
-    public void Init(Transform newTarget)
+    public void InitAttack(AttackContext context)
     {
-        target = newTarget;
+        target = context.target;
+        damage = context.damage;
+        speed = context.projectileSpeed;
 
-        // базовое направление к цели по XZ
-        Vector3 dirToTarget = target != null
-            ? (target.position - transform.position)
-            : transform.forward;
-
+        // направление к цели по XZ
+        Vector3 dirToTarget = target != null ? target.position - context.firePoint.position : context.firePoint.forward;
         Vector3 dirXZ = dirToTarget;
         dirXZ.y = 0f;
-        if (dirXZ.sqrMagnitude < 0.0001f)
-            dirXZ = transform.forward;
+        if (dirXZ.sqrMagnitude < 0.0001f) dirXZ = context.firePoint.forward;
 
         dirXZ.Normalize();
 
-        // добавляем сильный вертикальный компонент
-        Vector3 initialDir = dirXZ + Vector3.up * verticalBias;
-        launchDir = initialDir.normalized;
+        // стартовое направление с вертикальным смещением
+        launchDir = (dirXZ + Vector3.up * verticalBias).normalized;
 
-        // смотрим носом по направлению старта
+        transform.position = context.firePoint.position;
         transform.rotation = Quaternion.LookRotation(launchDir, Vector3.up);
 
-        // на всякий случай обнулим счетчики
         launchTraveled = 0f;
         inLaunchPhase = true;
         lifeTimer = 0f;
@@ -85,29 +81,29 @@ public class MissileBullet : MonoBehaviour
         }
         else
         {
-    // --- фаза наведения ---
-    Vector3 dirToTarget;
+        // --- фаза наведения ---
+        Vector3 dirToTarget;
 
-    if (target != null)
-    {
-        dirToTarget = target.position - transform.position;
-    }
-    else
-    {
-        dirToTarget = transform.forward;
-    }
+        if (target != null)
+        {
+            dirToTarget = target.position - transform.position;
+        }
+        else
+        {
+            dirToTarget = transform.forward;
+        }
 
-    if (dirToTarget.sqrMagnitude > 0.0001f)
-    {
-        Vector3 desiredDir = dirToTarget.normalized;
-        Quaternion targetRot = Quaternion.LookRotation(desiredDir, Vector3.up);
+        if (dirToTarget.sqrMagnitude > 0.0001f)
+        {
+            Vector3 desiredDir = dirToTarget.normalized;
+            Quaternion targetRot = Quaternion.LookRotation(desiredDir, Vector3.up);
 
-        // плавный поворот носа
-        transform.rotation = Quaternion.RotateTowards(
-            transform.rotation,
-            targetRot,
-            turnSpeed * dt
-        );
+            // плавный поворот носа
+            transform.rotation = Quaternion.RotateTowards(
+                transform.rotation,
+                targetRot,
+                turnSpeed * dt
+            );
     }
 
     // Движение вперёд c ускорением 1.5×

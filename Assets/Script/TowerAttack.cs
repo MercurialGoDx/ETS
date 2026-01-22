@@ -76,7 +76,7 @@ public class TowerAttack : MonoBehaviour
         if (weapon.def.bulletPrefab == null || firePoint == null)
             return false;
 
-        List<Enemy> enemiesInRange = GetEnemiesInRange();
+        List<Enemy> enemiesInRange = EnemyManager.Instance.GetEnemiesInRange(transform.position, range);
         if (enemiesInRange.Count == 0)
             return false;
 
@@ -176,28 +176,27 @@ public class TowerAttack : MonoBehaviour
         }
     }
 
-    void SpawnBullet(WeaponRuntime weapon, Enemy target)
+    private void SpawnBullet(WeaponRuntime weapon, Enemy target)
     {
-        if (target == null) return;
+        if (target == null || target.isDead)
+        {
+            // Сбрасываем цель
+            target = null;
+            return;
+        }
 
-        // (BaseDamage + % от здоровья) * глобальный множитель
-        float scaledDamage = GetFinalDamage(
+        float damage = GetFinalDamage(
             weapon.def.damagePerProjectile,
-            weapon.def.GetLocalizedName(),
+            //weapon.def.GetLocalizedName(),
             weapon.def.damageType
         );
 
-        // ===== СПЕЦЛОГИКА ДЛЯ ЛАЗЕРА =====
-        // если префаб — лазер, и для этой цели уже есть активный луч — не создаём новый
-        LaserBeam laserPrefabComponent = weapon.def.bulletPrefab.GetComponent<LaserBeam>();
-        if (laserPrefabComponent != null)
+        LaserBeam existingBeam = LaserBeam.GetActiveBeamFor(target);
+        if (existingBeam != null)
         {
-            LaserBeam existingBeam = LaserBeam.GetActiveBeamFor(target);
-            if (existingBeam != null)
-            {
-                // Луч уже висит на этом враге — просто выходим
-                return;
-            }
+            // обновляем только параметры, не создаём новый
+            existingBeam.RefreshContext(firePoint, damage, this, weapon.def.fireRate);
+            return;
         }
 
         GameObject obj = Instantiate(
@@ -206,152 +205,26 @@ public class TowerAttack : MonoBehaviour
             Quaternion.identity
         );
 
-        // ==== 1) ЛАЗЕР ====
-        LaserBeam laser = obj.GetComponent<LaserBeam>();
-        if (laser != null)
+        IAttackBehaviour attack = obj.GetComponent<IAttackBehaviour>();
+        if (attack == null)
         {
-            laser.Init(
-                firePoint,
-                target,
-                scaledDamage,                  // ⬅ урон с учётом всех бонусов
-                this,                          // TowerAttack (для fireRateMultiplier)
-                weapon.def.fireRate            // базовая fireRate оружия
+            Debug.LogError(
+                $"{weapon.def.bulletPrefab.name} does not implement IAttackBehaviour"
             );
+            Destroy(obj);
             return;
         }
 
-        // ==== 2) НАВЕСНОЙ СНАРЯД (МОРТИРА) ====
-        ArcBullet arc = obj.GetComponent<ArcBullet>();
-        if (arc != null)
+        attack.InitAttack(new AttackContext
         {
-            arc.damage = scaledDamage;
-            arc.SetTarget(target.transform);
-            return;
-        }
+            firePoint = firePoint,
+            target = target.transform,
+            damage = damage,
+            projectileSpeed = weapon.def.projectileSpeed,
 
-        // 3) Падающий снаряд сверху
-        FallingBullet falling = obj.GetComponent<FallingBullet>();
-        if (falling != null)
-        {
-            falling.damage = scaledDamage;
-            falling.fallSpeed = weapon.def.projectileSpeed;
-            falling.SetTarget(target.transform);
-            return;
-        }
-
-        // 4) Волна (WaveBullet)
-        WaveBullet wave = obj.GetComponent<WaveBullet>();
-        if (wave != null)
-        {
-            wave.damage = scaledDamage;
-            wave.speed = weapon.def.projectileSpeed;
-            wave.Init(transform, target.transform, waveForwardOffset, waveHeightOffset);
-            return;
-        }
-
-        // 5) Прыгающая пуля
-        ChainBullet chain = obj.GetComponent<ChainBullet>();
-        if (chain != null)
-        {
-            chain.damage = scaledDamage;
-            chain.speed = weapon.def.projectileSpeed;
-            chain.Init(target.transform);   // maxBounces берём из префаба
-            return;
-        }
-
-        // 6) Обычная пуля
-        Bullet straight = obj.GetComponent<Bullet>();
-        if (straight != null)
-        {
-            straight.damage = scaledDamage;
-            straight.speed = weapon.def.projectileSpeed;
-            straight.SetTarget(target.transform);
-            return;
-        }
-
-        // 7) Ракета
-        MissileBullet missile = obj.GetComponent<MissileBullet>();
-        if (missile != null)
-        {
-            missile.damage = scaledDamage;
-            missile.speed = weapon.def.projectileSpeed;
-            missile.Init(target.transform);
-            return;
-        }
-
-        // 8) Расширяющая волна
-        SpawnBulletOffset pulse = obj.GetComponent<SpawnBulletOffset>();
-        if (pulse != null)
-        {
-            // Позиция спавна (как для волны)
-            Vector3 spawnPos = waveFirePoint != null ? waveFirePoint.position : firePoint.position;
-            pulse.Init(spawnPos);
-
-            // Пробрасываем урон во вложенный ScalingWave
-            ScalingWave scaler = obj.GetComponentInChildren<ScalingWave>();
-            if (scaler != null)
-            {
-                scaler.applyDamage = true; // бьём врагов
-                scaler.damage = scaledDamage;
-            }
-
-            return;
-        }
-
-        // 9) Катапульта от HP
-        Catapult hpArc = obj.GetComponent<Catapult>();
-        if (hpArc != null)
-        {
-            // Урон он сам считает от здоровья башни, здесь ничего передавать не нужно
-            hpArc.SetTarget(target.transform);
-            return;
-        }
-
-        // 10) Портал по цели
-        PortalBullet portal = obj.GetComponent<PortalBullet>();
-        if (portal != null)
-        {
-            portal.damage = scaledDamage;
-            portal.Init(target.transform);
-            return;
-        }
-
-        // 11) Портал в случайной точке
-        RandomSpawnPortal randomPortal = obj.GetComponent<RandomSpawnPortal>();
-        if (randomPortal != null)
-        {
-            randomPortal.damage = scaledDamage;
-            return;
-        }
-        // 12)
-        LightningChainBullet lightning = obj.GetComponent<LightningChainBullet>();
-        if (lightning != null)
-        {
-            lightning.Init(firePoint, target, scaledDamage);
-            return;
-        }
-
-        // Если компонент не опознан — удаляем
-        Destroy(obj);
-    }
-
-
-    List<Enemy> GetEnemiesInRange()
-    {
-        Enemy[] all = FindObjectsOfType<Enemy>();
-        List<Enemy> result = new List<Enemy>();
-
-        foreach (var e in all)
-        {
-            if (e == null) continue;
-            float dist = Vector3.Distance(transform.position, e.transform.position);
-            if (dist <= range && !e.isDead)
-            {
-                result.Add(e);
-            }
-        }
-
-        return result;
+            ownerTower = this,
+            weaponFireRate = weapon.def.fireRate
+        });
     }
 
     public void AddWeapon(WeaponDefinition def)
@@ -422,7 +295,7 @@ public class TowerAttack : MonoBehaviour
         }
     }
 
-    private float GetFinalDamage(float baseDamage, string weaponName, WeaponDamageType damageType)
+    private float GetFinalDamage(float baseDamage, WeaponDamageType damageType)
     {
         float maxHp = 0f;
         float dmgFromHpPercent = 0f;
@@ -471,16 +344,16 @@ public class TowerAttack : MonoBehaviour
         float finalDamage = baseDamage * finalMult;
 
         // Логи
-        Debug.Log(
-            $"<color=#00d9ff>[DamageCalc]</color> {weaponName} ({damageType}) → " +
-            $"Base={baseDamage} | " +
-            $"TimeMult={timeMult:F2} (bonus {timeBonus:F2}) | " +
-            $"MaxHP={maxHp:F0} | HP%={dmgFromHpPercent}% | HpBonus={hpBonusToMult:F2} | " +
-            $"TypeMult={typeMult:F2} (bonus {typeBonus:F2}) | " +
-            $"ShieldMult={shieldMult:F2} (bonus {shieldBonus:F2}) | " +
-            $"<b>TotalBonus={totalBonus:F2}</b> | <b>TotalMult={finalMult:F2}</b> | " +
-            $"<color=yellow>Final={finalDamage:F2}</color>"
-        );
+        //Debug.Log(
+        //    $"<color=#00d9ff>[DamageCalc]</color> {weaponName} ({damageType}) → " +
+        //    $"Base={baseDamage} | " +
+        //    $"TimeMult={timeMult:F2} (bonus {timeBonus:F2}) | " +
+        //    $"MaxHP={maxHp:F0} | HP%={dmgFromHpPercent}% | HpBonus={hpBonusToMult:F2} | " +
+        //    $"TypeMult={typeMult:F2} (bonus {typeBonus:F2}) | " +
+        //    $"ShieldMult={shieldMult:F2} (bonus {shieldBonus:F2}) | " +
+        //    $"<b>TotalBonus={totalBonus:F2}</b> | <b>TotalMult={finalMult:F2}</b> | " +
+        //    $"<color=yellow>Final={finalDamage:F2}</color>"
+        //);
 
         return finalDamage;
     }

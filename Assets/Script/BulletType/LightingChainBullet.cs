@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LightningChainBullet : MonoBehaviour
+public class LightningChainBullet : MonoBehaviour, IAttackBehaviour
 {
     [Header("Chain Lightning Settings")]
     [SerializeField] private int maxChains = 5;
@@ -33,14 +33,28 @@ public class LightningChainBullet : MonoBehaviour
     private float baseDamage;
     private HashSet<Enemy> hitEnemies = new HashSet<Enemy>();
 
-    public void Init(Transform startPoint, Enemy firstTarget, float damage)
+    public void InitAttack(AttackContext context)
     {
-        baseDamage = damage;
+        baseDamage = context.damage;
 
-        // Если вдруг не назначили outerLine — попробуем взять на корне (но у тебя линии на детях, так что лучше назначать вручную)
-        if (outerLine == null) outerLine = GetComponent<LineRenderer>();
+        // Очистка для Object Pooling
+        hitEnemies.Clear();
 
-        ApplyFlicker(); // зададим стартовую ширину
+        // Стартовая позиция
+        Transform startPoint = context.firePoint != null ? context.firePoint : context.owner;
+        if (startPoint == null)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        // Цель
+        Enemy firstTarget = context.target != null ? context.target.GetComponent<Enemy>() : null;
+        if (firstTarget == null)
+        {
+            Destroy(gameObject);
+            return;
+        }
 
         StopAllCoroutines();
         StartCoroutine(ChainRoutine(startPoint, firstTarget));

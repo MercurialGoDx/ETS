@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Bullet : MonoBehaviour
+public class Bullet : MonoBehaviour, IAttackBehaviour
 {
     [Header("Характеристики")]
     public float speed = 15f;
@@ -30,6 +30,13 @@ public class Bullet : MonoBehaviour
         {
             FindPlayerHealth();
         }
+    }
+
+    public void InitAttack(AttackContext context)
+    {
+        damage = context.damage;
+        speed = context.projectileSpeed;
+        SetTarget(context.target);
     }
 
     protected void FindPlayerHealth()

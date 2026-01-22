@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 [RequireComponent(typeof(Collider))]
 [RequireComponent(typeof(Rigidbody))]
-public class WaveBullet : MonoBehaviour
+public class WaveBullet : MonoBehaviour, IAttackBehaviour
 {
     [Header("Характеристики волны")]
     public float speed = 10f;
@@ -39,36 +39,37 @@ public class WaveBullet : MonoBehaviour
         Rigidbody rb = GetComponent<Rigidbody>();
         rb.useGravity = false;
         rb.isKinematic = true;
-        if (healPlayerOnHit)
-{
-    GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
-    if (playerObj != null)
-        playerHealth = playerObj.GetComponent<PlayerHealth>();
-}
     }
 
-    /// <summary>
-    /// tower      — трансформ башни
-    /// target     — враг, в сторону которого летим
-    /// forwardOff — насколько вынести вперёд от башни (по XZ)
-    /// heightOff  — дополнительное смещение по высоте относительно врага
-    /// </summary>
-    public void Init(Transform tower, Transform target, float forwardOff, float heightOff)
+    public void InitAttack(AttackContext context)
     {
-        ownerTransform = tower;
+        damage = context.damage;
+        ownerTransform = context.owner;
+
+        hitEnemies.Clear();
+        timer = lifeTime;
+
+        Transform tower = context.firePoint != null
+            ? context.firePoint
+            : context.owner;
+
         if (tower == null)
-            tower = transform;
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        Transform target = context.target;
 
         Vector3 towerPos = tower.position;
 
-        // Базовая точка для высоты — по врагу (если есть), иначе по башне
+        // Базовая точка для высоты
         Vector3 basePos = target != null ? target.position : tower.position;
-        float planeY = basePos.y + heightOff;
+        float planeY = basePos.y + context.heightOffset;
 
-        // Выравниваем башню и цель по одной высоте для расчёта направления
         towerPos.y = planeY;
-        Vector3 targetPos;
 
+        Vector3 targetPos;
         if (target != null)
         {
             targetPos = target.position;
@@ -76,29 +77,26 @@ public class WaveBullet : MonoBehaviour
         }
         else
         {
-            targetPos = towerPos + tower.forward; // какой-то вперёд, если цели нет
+            targetPos = towerPos + tower.forward;
         }
 
-        Vector3 dir = (targetPos - towerPos);
-        dir.y = 0f;                     // движение только в плоскости XZ
+        Vector3 dir = targetPos - towerPos;
+        dir.y = 0f;
 
         if (dir.sqrMagnitude < 0.0001f)
-            dir = Vector3.forward;      // защита от нулевого вектора
+            dir = tower.forward;
 
         moveDir = dir.normalized;
 
-        // Позиция спавна: от башни вперёд по XZ, на высоте planeY
-        Vector3 spawnPos = towerPos + moveDir * forwardOff;
+        Vector3 spawnPos = towerPos + moveDir * context.forwardOffset;
         spawnPos.y = planeY;
 
         transform.position = spawnPos;
         fixedY = planeY;
 
-        // Повернуть визуал по направлению движения
         transform.rotation = Quaternion.LookRotation(moveDir, Vector3.up);
-
-        timer = lifeTime;
     }
+
 
     private void Update()
     {
@@ -114,37 +112,44 @@ public class WaveBullet : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter(Collider other)
-{
-    Enemy enemy = other.GetComponent<Enemy>();
-    if (enemy == null)
-        return;
-
-    // если уже били этого врага этой волной — выходим
-    if (hitEnemies.Contains(enemy))
-        return;
-
-    // помечаем как уже поражённого
-    hitEnemies.Add(enemy);
-
-    // наносим урон
-    enemy.TakeDamage(damage);
-
-    // нока-бек, если включён
-    if (applyKnockback && ownerTransform != null)
+    private void FindPlayerHealth()
     {
-        enemy.ApplyKnockback(
-            ownerTransform.position,
-            knockbackDistance,
-            knockbackDuration
-        );
-    }
-    if (healPlayerOnHit && healAmountPerEnemy > 0f && playerHealth != null)
-{
-    playerHealth.Heal(healAmountPerEnemy);
-    }
-    }
-    
-    
+        if (playerHealth != null)
+            return;
 
+        GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
+        if (playerObj != null)
+            playerHealth = playerObj.GetComponent<PlayerHealth>();
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        Enemy enemy = other.GetComponent<Enemy>();
+        if (enemy == null)
+            return;
+
+        // если уже били этого врага этой волной — выходим
+        if (hitEnemies.Contains(enemy))
+            return;
+
+        // помечаем как уже поражённого
+        hitEnemies.Add(enemy);
+
+        // наносим урон
+        enemy.TakeDamage(damage);
+
+        // нока-бек, если включён
+        if (applyKnockback && ownerTransform != null)
+        {
+            enemy.ApplyKnockback(
+                ownerTransform.position,
+                knockbackDistance,
+                knockbackDuration
+            );
+        }
+        if (healPlayerOnHit && healAmountPerEnemy > 0f && playerHealth != null)
+        {
+            playerHealth.Heal(healAmountPerEnemy);
+        }
+    } 
 }

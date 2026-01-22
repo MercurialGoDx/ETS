@@ -56,6 +56,9 @@ public class Enemy : MonoBehaviour
 
     private IEnemyAttack attackLogic;
 
+    private void OnEnable() => EnemyManager.Instance?.RegisterEnemy(this);
+    private void OnDisable() => EnemyManager.Instance?.UnregisterEnemy(this);
+
     private void Awake()
     {
         currentHealth = maxHealth;

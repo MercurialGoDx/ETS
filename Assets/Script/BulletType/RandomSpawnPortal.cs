@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class RandomSpawnPortal : MonoBehaviour
+public class RandomSpawnPortal : MonoBehaviour, IAttackBehaviour
 {
     [Header("Позиция")]
     public float spawnRadius = 20f;
@@ -19,26 +19,31 @@ public class RandomSpawnPortal : MonoBehaviour
 
     private Transform tower;
 
-    private void Start()
+    public void InitAttack(AttackContext context)
     {
-        GameObject towerObj = GameObject.FindGameObjectWithTag("Player");
-        if (towerObj != null)
-        {
-            tower = towerObj.transform;
+        // Урон из контекста
+        damage = context.damage;
 
-            // 👉 рандомная позиция вокруг башни
-            Vector2 circle = Random.insideUnitCircle * spawnRadius;
-            Vector3 pos = new Vector3(
-                tower.position.x + circle.x,
-                tower.position.y,                 // подстрой при необходимости
-                tower.position.z + circle.y
-            );
-            transform.position = pos;
-        }
-        else
+        // Сброс таймеров для Object Pooling
+        timer = 0f;
+        aliveTimer = 0f;
+
+        // Определяем точку спавна
+        Transform origin = context.firePoint != null ? context.firePoint : context.owner;
+        if (origin == null)
         {
-            Debug.LogError("RandomSpawnPortal: Tower with tag 'Tower' not found!");
+            Destroy(gameObject);
+            return;
         }
+
+        // Рандомная позиция вокруг origin
+        Vector2 circle = Random.insideUnitCircle * spawnRadius;
+        Vector3 pos = new Vector3(
+            origin.position.x + circle.x,
+            origin.position.y,
+            origin.position.z + circle.y
+        );
+        transform.position = pos;
     }
 
     private void Update()

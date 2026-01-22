@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ChainBullet : MonoBehaviour
+public class ChainBullet : MonoBehaviour, IAttackBehaviour
 {
     [Header("Основные параметры")]
     public float damage = 5f;
@@ -20,13 +20,22 @@ public class ChainBullet : MonoBehaviour
     private HashSet<Enemy> hitEnemies = new HashSet<Enemy>();
     private float lifeTimer = 0f;
 
-    /// <summary>
-    /// Вызываем сразу после спавна с первой целью.
-    /// </summary>
-    public void Init(Transform firstTarget)
+    public void InitAttack(AttackContext context)
     {
+        damage = context.damage;
+        speed = context.projectileSpeed;
+
         remainingBounces = maxBounces;
-        SetTarget(firstTarget);
+        hitEnemies.Clear();
+        lifeTimer = 0f;
+
+        if (context.target == null)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        SetTarget(context.target);
     }
 
     public void SetTarget(Transform target)

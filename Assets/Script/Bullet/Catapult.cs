@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Catapult : MonoBehaviour
+public class Catapult : MonoBehaviour, IAttackBehaviour 
 {
     [Header("Базовые параметры дуги")]
     public float baseArcHeight = 3f;          // минимальная высота дуги
@@ -34,28 +34,24 @@ public class Catapult : MonoBehaviour
 
     private PlayerHealth playerHealth;
 
-    private void Awake()
+    public void InitAttack(AttackContext context)
     {
-        // Ищем PlayerHealth один раз
-        GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
-        if (playerObj != null)
-        {
-            playerHealth = playerObj.GetComponent<PlayerHealth>();
-        }
-    }
+        // Безопасно сбрасываем состояние для Object Pooling
+        t = 0f;
+        lifeTimer = 0f;
 
-    public void SetTarget(Transform newTarget)
-    {
-        target = newTarget;
-        startPos = transform.position;
+        target = context.target;
+        startPos = context.firePoint != null
+            ? context.firePoint.position
+            : context.owner.position;
 
         if (target != null)
             targetPos = target.position;
         else
-            targetPos = startPos + transform.forward * 5f;
+            targetPos = startPos + context.owner.forward * 5f;
 
-        // считаем плоскую дистанцию по XZ
-        Vector3 startFlat = startPos;  startFlat.y = 0f;
+        // плоская дистанция по XZ
+        Vector3 startFlat = startPos; startFlat.y = 0f;
         Vector3 targetFlat = targetPos; targetFlat.y = 0f;
 
         float distance = Vector3.Distance(startFlat, targetFlat);
@@ -66,11 +62,9 @@ public class Catapult : MonoBehaviour
         else
             travelTime = Mathf.Max(0.1f, distance / 10f);
 
-        // динамическая высота дуги
         currentArcHeight = baseArcHeight + distance * arcHeightMultiplier;
-
-        t = 0f;
     }
+
 
     private void Update()
     {
@@ -118,6 +112,9 @@ public class Catapult : MonoBehaviour
 
     private void Explode()
     {
+        if (playerHealth == null)
+            FindPlayerHealth();
+
         // если не нашли PlayerHealth — просто безопасно уничтожаемся
         if (playerHealth != null)
         {
@@ -141,6 +138,16 @@ public class Catapult : MonoBehaviour
         }
 
         Destroy(gameObject);
+    }
+
+    private void FindPlayerHealth()
+    {
+        if (playerHealth != null)
+            return;
+
+        GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
+        if (playerObj != null)
+            playerHealth = playerObj.GetComponent<PlayerHealth>();
     }
 
     private void OnDrawGizmosSelected()
