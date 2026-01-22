@@ -1,13 +1,14 @@
+using System;
 using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
 {
     [Header("Ссылки")]
-    public Transform tower;             // Башня (игрок)
-    public WaveTimerUI waveTimerUI;   // 🔹 ДОБАВИЛИ
+    public Transform tower;             
+    public WaveTimerUI waveTimerUI;
 
     [Header("Волны")]
-    public GameObject[] enemyPrefabs;   // 0 - type1, 1 - type2, 2 - type3
+    public GameObject[] enemyPrefabs;
     public int enemiesPerWave = 10;
     public float timeBetweenWaves = 10f;
 
@@ -15,24 +16,41 @@ public class EnemySpawner : MonoBehaviour
     public float spawnRadiusMin = 18f;
     public float spawnRadiusMax = 20f;
 
-    [Header("Прогрессия сложности")]
-    [Tooltip("Текущий множитель сложности (здоровье/урон врагов)")]
+    [Header("Прогрессия сложности (проценты)")]
     public float difficultyMultiplier = 1f;
-    [Tooltip("На сколько процентов увеличивать множитель после каждой волны")]
-    public float multiplierGrowthPercent = 10f;   // 10% = *1.1
+    public float multiplierGrowthPercent = 10f;
+
+    [Header("Прогрессия сложности (фикс. прибавка)")]
+    public float healthAddPerWave = 5f;
+    public float damageAddPerWave = 1f;
+
+    [Header("Текущее накопление (не трогать руками)")]
+    [SerializeField] private float flatHealthBonus = 0f;
+    [SerializeField] private float flatDamageBonus = 0f;
+
+    // ✅ Событие для UI: волна, множитель, фиксHP, фиксDMG
+    public event Action<int, float, float, float> OnWaveSpawned;
 
     private float waveTimer = 0f;
-    private int currentWaveIndex = 0;   // 0 -> type1, 1 -> type2, 2 -> type3 -> потом снова 0
+    private int currentWaveIndex = 0;
+
+    // ✅ Чтобы UI мог забрать актуальные значения
+    public int CurrentWaveNumber => currentWaveIndex + 1;
+    public float CurrentMultiplier => difficultyMultiplier;
+    public float CurrentFlatHealthBonus => flatHealthBonus;
+    public float CurrentFlatDamageBonus => flatDamageBonus;
 
     private void Start()
     {
         if (tower == null)
         {
-            // Если не задано в инспекторе — пробуем найти по тегу
             GameObject towerObj = GameObject.FindGameObjectWithTag("Player");
             if (towerObj != null)
                 tower = towerObj.transform;
         }
+
+        // ✅ Чтобы UI показал значения уже до первой волны
+        NotifyUI();
     }
 
     private void Update()
@@ -42,7 +60,6 @@ public class EnemySpawner : MonoBehaviour
 
         waveTimer += Time.deltaTime;
 
-        // 🔹 обновляем шкалу каждый кадр
         if (waveTimerUI != null)
             waveTimerUI.SetProgress(waveTimer / timeBetweenWaves);
 
@@ -51,7 +68,6 @@ public class EnemySpawner : MonoBehaviour
             SpawnWave();
             waveTimer = 0f;
 
-            // 🔹 после спавна волны обнуляем шкалу
             if (waveTimerUI != null)
                 waveTimerUI.SetProgress(0f);
         }
@@ -59,16 +75,13 @@ public class EnemySpawner : MonoBehaviour
 
     void SpawnWave()
     {
-        // Тип врага для этой волны
         int enemyTypeIndex = currentWaveIndex % enemyPrefabs.Length;
         GameObject enemyPrefab = enemyPrefabs[enemyTypeIndex];
 
-        // Берём базовые статы с ПРЕФАБА (они не умножены)
         Enemy prefabEnemy = enemyPrefab.GetComponent<Enemy>();
         float baseHealth = prefabEnemy.maxHealth;
         float baseDamage = prefabEnemy.damageToPlayer;
 
-        // Сколько *сейчас* множитель
         float currentMult = difficultyMultiplier;
 
         for (int i = 0; i < enemiesPerWave; i++)
@@ -77,49 +90,52 @@ public class EnemySpawner : MonoBehaviour
 
             GameObject obj = Instantiate(enemyPrefab, spawnPos, Quaternion.identity);
             Enemy enemyInstance = obj.GetComponent<Enemy>();
+            if (enemyInstance == null) continue;
+
             enemyInstance.isDead = false;
 
-            if (enemyInstance != null)
-            {
-                float hp = baseHealth * currentMult;
-                float dmg = baseDamage * currentMult;
+            float hp = (baseHealth * currentMult) + flatHealthBonus;
+            float dmg = (baseDamage * currentMult) + flatDamageBonus;
 
-                enemyInstance.InitStats(hp, dmg);
+            enemyInstance.InitStats(hp, dmg);
 
-                if (EnemyEffectManager.Instance != null)
-                {
-                    EnemyEffectManager.Instance.ApplyEffectsToEnemy(enemyInstance);
-                }
-            }
+            if (EnemyEffectManager.Instance != null)
+                EnemyEffectManager.Instance.ApplyEffectsToEnemy(enemyInstance);
         }
 
-        // Переходим к следующей волне другого типа
+        // ✅ Сообщаем UI: "эта волна заспавнена" (UI сам пересчитает по своим базовым 15/2)
+        NotifyUI();
+
+        // след. волна
         currentWaveIndex++;
 
-        // Увеличиваем множитель: +10% от текущего
-        float k = 1f + (multiplierGrowthPercent / 100f); // 1.1 при 10%
+        // рост %
+        float k = 1f + (multiplierGrowthPercent / 100f);
         difficultyMultiplier *= k;
+
+        // рост фикс
+        flatHealthBonus += healthAddPerWave;
+        flatDamageBonus += damageAddPerWave;
+    }
+
+    private void NotifyUI()
+    {
+        OnWaveSpawned?.Invoke(CurrentWaveNumber, difficultyMultiplier, flatHealthBonus, flatDamageBonus);
     }
 
     Vector3 GetSpawnPositionAroundTower()
     {
-        // Случайное направление
-        float angle = Random.Range(0f, 360f);
+        float angle = UnityEngine.Random.Range(0f, 360f);
         float rad = angle * Mathf.Deg2Rad;
 
         float x = Mathf.Cos(rad);
         float z = Mathf.Sin(rad);
 
         Vector3 dir = new Vector3(x, 0f, z).normalized;
-
-        float radius = Random.Range(spawnRadiusMin, spawnRadiusMax);
+        float radius = UnityEngine.Random.Range(spawnRadiusMin, spawnRadiusMax);
 
         Vector3 pos = tower.position + dir * radius;
-
-        // Высота
         pos.y = 6f;
-
         return pos;
     }
-
 }

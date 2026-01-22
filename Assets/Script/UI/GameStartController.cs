@@ -67,5 +67,7 @@ public class GameStartController : MonoBehaviour
             enemyStatsProgressionUI.StartProgression();
         else
             Debug.LogWarning("[GameStartController] enemyStatsProgressionUI is NOT assigned!");
+
+        
     }
 }

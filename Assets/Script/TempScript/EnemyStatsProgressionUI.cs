@@ -1,76 +1,87 @@
-using System.Collections;
 using TMPro;
 using UnityEngine;
 
 public class EnemyStatsProgressionUI : MonoBehaviour
 {
+    [Header("Links")]
+    [SerializeField] private EnemySpawner spawner;
+
     [Header("UI")]
     [SerializeField] private TMP_Text hpText;
     [SerializeField] private TMP_Text dmgText;
+    [SerializeField] private TMP_Text waveText; // можно оставить пустым
 
-    [Header("Start values")]
-    [SerializeField] private float hp = 15f;
-    [SerializeField] private float dmg = 2f;
+    [Header("Base enemy stats for UI")]
+    [SerializeField] private float baseHp = 15f;
+    [SerializeField] private float baseDmg = 2f;
 
-    [Header("Growth")]
-    [Tooltip("Интервал повышения (сек)")]
-    [SerializeField] private float intervalSeconds = 10f;
+    private bool isStarted = false;
 
-    [Tooltip("Процент роста за тик. 0.05 = +5%")]
-    [SerializeField] private float growthPercent = 0.05f;
+    /// <summary>
+    /// Вызывается из GameStartController по кнопке Ready.
+    /// Теперь не запускает корутину, а включает авто-обновление от EnemySpawner.
+    /// </summary>
+    public void StartProgression()
+    {
+        isStarted = true;
 
-    private Coroutine routine;
+        if (spawner == null)
+        {
+            Debug.LogWarning("[EnemyStatsProgressionUI] Spawner is not assigned!");
+            return;
+        }
+
+        // Подписка (на всякий случай без дублей)
+        spawner.OnWaveSpawned -= HandleWaveSpawned;
+        spawner.OnWaveSpawned += HandleWaveSpawned;
+
+        // Сразу покажем актуальные значения (до первой волны / для текущей волны)
+        UpdateFromSpawner();
+    }
 
     private void OnDisable()
     {
-        if (routine != null)
-        {
-            StopCoroutine(routine);
-            routine = null;
-        }
+        if (spawner != null)
+            spawner.OnWaveSpawned -= HandleWaveSpawned;
     }
 
-    // Вызывай это из кнопки Ready
-    public void StartProgression()
+    private void HandleWaveSpawned(int waveNumber, float mult, float flatHp, float flatDmg)
     {
-    Debug.Log($"[EnemyStats] StartProgression called. timeScale={Time.timeScale}. active={gameObject.activeInHierarchy}");
-    if (routine != null) return;
+        if (!isStarted) return; // пока не Ready — не обновляем
 
-    UpdateUI();
-    routine = StartCoroutine(GrowLoop());
-}
-
-    // Если нужно сбрасывать при выходе в меню / новой игре
-    public void ResetStats(float startHp = 15f, float startDmg = 2f)
-    {
-        hp = startHp;
-        dmg = startDmg;
-        UpdateUI();
+        UpdateUI(waveNumber, mult, flatHp, flatDmg);
     }
 
-    private IEnumerator GrowLoop()
+    public void ResetUI()
     {
-        var wait = new WaitForSeconds(intervalSeconds);
+        isStarted = false;
+        if (waveText != null) waveText.text = "Волна: -";
+        if (hpText != null) hpText.text = "Здоровье: -";
+        if (dmgText != null) dmgText.text = "Урон: -";
 
-        while (true)
-        {
-            yield return wait;
-
-            // рост "сам на себя" (компаунд)
-            hp *= (1f + growthPercent);
-            dmg *= (1f + growthPercent);
-
-            UpdateUI();
-        }
+        if (spawner != null)
+            spawner.OnWaveSpawned -= HandleWaveSpawned;
     }
 
-    private void UpdateUI()
+    public void UpdateFromSpawner()
     {
+        if (spawner == null) return;
+
+        UpdateUI(
+            spawner.CurrentWaveNumber,
+            spawner.CurrentMultiplier,
+            spawner.CurrentFlatHealthBonus,
+            spawner.CurrentFlatDamageBonus
+        );
+    }
+
+    private void UpdateUI(int waveNumber, float mult, float flatHp, float flatDmg)
+    {
+        float hp = (baseHp * mult) + flatHp;
+        float dmg = (baseDmg * mult) + flatDmg;
+
+        if (waveText != null) waveText.text = $"Волна: {waveNumber}";
         if (hpText != null) hpText.text = $"Здоровье: {Mathf.RoundToInt(hp)}";
         if (dmgText != null) dmgText.text = $"Урон: {Mathf.RoundToInt(dmg)}";
     }
-
-    // Если другим скриптам нужно брать эти значения
-    public float CurrentHp => hp;
-    public float CurrentDmg => dmg;
 }

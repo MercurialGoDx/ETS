@@ -1,4 +1,3 @@
-using MaykerStudio.Demo;
 using UnityEngine;
 
 public class EnemyRangedAttack : MonoBehaviour, IEnemyAttack

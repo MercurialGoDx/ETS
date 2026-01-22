@@ -96,7 +96,6 @@ GameObject:
   m_Component:
   - component: {fileID: 3603213746087829210}
   - component: {fileID: 8384348349726206379}
-  - component: {fileID: -632982056848670897}
   m_Layer: 0
   m_Name: Branch_03
   m_TagString: Untagged
@@ -144,28 +143,6 @@ LODGroup:
     renderers:
     - renderer: {fileID: 2502645854874770860}
   m_Enabled: 1
---- !u!64 &-632982056848670897
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4128392809708176480}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: -3626914670581009024, guid: 69e7acf836905cb458fd8183c135ca56, type: 3}
 --- !u!1 &4502971358689058251
 GameObject:
   m_ObjectHideFlags: 0
