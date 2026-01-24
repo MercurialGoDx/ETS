@@ -221,6 +221,9 @@ public class TowerAttack : MonoBehaviour
             weaponFireRate = weapon.def.fireRate,
             owner = transform,
 
+            heightOffset = waveHeightOffset,
+            forwardOffset = waveForwardOffset,
+
             weapon = weapon.def
         });
     }
