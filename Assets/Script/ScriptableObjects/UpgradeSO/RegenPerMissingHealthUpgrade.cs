@@ -11,7 +11,7 @@ public class RegenPerMissingHealthUpgrade : UpgradeBaseSO
         context.playerHealth.AddRegenPer100MissingHealth(valueFlat);
     }
 
-    protected override object[] GetDescriptionArgs()
+    protected override object[] GetSpecificDescriptionArgs()
     {
         return new object[] { valueFlat };
     }

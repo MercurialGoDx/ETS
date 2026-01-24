@@ -10,7 +10,7 @@ public class HealOnKillUpgrade : UpgradeBaseSO
         context.playerHealth.AddHealOnKill(valueFlat);
     }
 
-    protected override object[] GetDescriptionArgs()
+    protected override object[] GetSpecificDescriptionArgs()
     {
         return new object[] { valueFlat };
     }

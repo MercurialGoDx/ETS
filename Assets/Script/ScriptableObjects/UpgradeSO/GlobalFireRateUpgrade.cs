@@ -10,7 +10,7 @@ public class GlobalFireRateUpgrade : UpgradeBaseSO
         context.towerAttack.fireRateMultiplier += valuePercent / 100f;
     }
 
-    protected override object[] GetDescriptionArgs()
+    protected override object[] GetSpecificDescriptionArgs()
     {
         return new object[] { valuePercent };
     }

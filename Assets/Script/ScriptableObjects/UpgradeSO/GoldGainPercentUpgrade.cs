@@ -10,7 +10,7 @@ public class GoldGainPercentUpgrade : UpgradeBaseSO
         GoldManager.Instance.AddGoldGainPercent(valuePercent);
     }
 
-    protected override object[] GetDescriptionArgs()
+    protected override object[] GetSpecificDescriptionArgs()
     {
         return new object[] { valuePercent };
     }

@@ -10,7 +10,7 @@ public class SpikesScalingOnKillUpgrade : UpgradeBaseSO
         context.playerHealth.AddSpikesDamagePerKill(valueFlat);
     }
 
-    protected override object[] GetDescriptionArgs()
+    protected override object[] GetSpecificDescriptionArgs()
     {
         return new object[] { valueFlat };
     }

@@ -14,7 +14,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_TableCollectionName: Upgrade Labels
   m_TableCollectionNameGuidString: 164770c6fc8794c4ba4db6f8c7e72db3
-  m_Entries: []
+  m_Entries:
+  - m_Id: 1340877749596160
+    m_Key: basic_shield.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1340877875425280
+    m_Key: basic_shield.desc
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

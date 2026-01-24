@@ -10,7 +10,7 @@ public class DamageWhileShieldActivePercentUpgrade : UpgradeBaseSO
         context.playerShield.AddDamageWhileShieldActivePercent(valuePercent);
     }
 
-    protected override object[] GetDescriptionArgs()
+    protected override object[] GetSpecificDescriptionArgs()
     {
         return new object[] { valuePercent };
     }

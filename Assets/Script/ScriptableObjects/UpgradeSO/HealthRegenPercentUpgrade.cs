@@ -10,7 +10,7 @@ public class HealthRegenPercentUpgrade : UpgradeBaseSO
         context.playerHealth.AddHealthRegen(context.playerHealth.healthRegenPerSecond * (valuePercent / 100));
     }
 
-    protected override object[] GetDescriptionArgs()
+    protected override object[] GetSpecificDescriptionArgs()
     {
         return new object[] { valuePercent };
     }

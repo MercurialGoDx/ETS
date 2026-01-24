@@ -11,7 +11,7 @@ public class DamagePerTickScalingUpgrade : UpgradeBaseSO
         UpgradePerTick.Instance.damageIncreasePerTick += valuePercent / 100;
     }
 
-    protected override object[] GetDescriptionArgs()
+    protected override object[] GetSpecificDescriptionArgs()
     {
         return new object[] { valuePercent };
     }

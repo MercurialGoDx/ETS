@@ -11,7 +11,7 @@ public class RegenPerTickUpgrade : UpgradeBaseSO
         UpgradePerTick.Instance.AddRegenPerTick(valueFlat, interval);
     }
 
-    protected override object[] GetDescriptionArgs()
+    protected override object[] GetSpecificDescriptionArgs()
     {
         return new object[] { valueFlat, interval };
     }

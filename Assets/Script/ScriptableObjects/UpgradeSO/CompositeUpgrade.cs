@@ -11,7 +11,21 @@ public class CompositeUpgrade : UpgradeBaseSO
     {
         foreach (var upgrade in upgrades)
         {
-            upgrade.Apply(context);
+            try
+            {
+                if (upgrade != null)
+                    upgrade.Apply(context);
+            }
+            catch (System.NullReferenceException e)
+            {
+                Debug.LogWarning($"Ошибка в апгрейде {upgrade?.name}: {e.Message}");
+                // Продолжаем выполнение остальных апгрейдов
+            }
         }
+    }
+
+    protected override object[] GetSpecificDescriptionArgs()
+    {
+        return new object[0];
     }
 }

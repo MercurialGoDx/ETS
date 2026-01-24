@@ -16,7 +16,7 @@ public class GoldForLifeUpgrade : UpgradeBaseSO
         GoldManager.Instance.AddGold(basicGold + multGold * context.runtime.goldUpgradeCount);
     }
 
-    protected override object[] GetDescriptionArgs()
+    protected override object[] GetSpecificDescriptionArgs()
     {
         return new object[] { lifeLoseValue };
     }

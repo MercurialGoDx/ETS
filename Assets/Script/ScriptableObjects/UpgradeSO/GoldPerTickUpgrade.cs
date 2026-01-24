@@ -11,7 +11,7 @@ public class GoldPerTickUpgrade : UpgradeBaseSO
         UpgradePerTick.Instance.AddGoldPerTick(valueFlat, interval);
     }
 
-    protected override object[] GetDescriptionArgs()
+    protected override object[] GetSpecificDescriptionArgs()
     {
         return new object[] { valueFlat, interval };
     }

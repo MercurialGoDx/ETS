@@ -10,7 +10,7 @@ public class MaxShieldFlatUpgrade : UpgradeBaseSO
         context.playerShield.AddMaxShield(valueFlat);
     }
 
-    protected override object[] GetDescriptionArgs()
+    protected override object[] GetSpecificDescriptionArgs()
     {
         return new object[] { valueFlat };
     }

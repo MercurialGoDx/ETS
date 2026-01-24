@@ -10,7 +10,7 @@ public class HealthRegenUpgrade : UpgradeBaseSO
         context.playerHealth.AddHealthRegen(valueFlat);
     }
 
-    protected override object[] GetDescriptionArgs()
+    protected override object[] GetSpecificDescriptionArgs()
     {
         return new object[] { valueFlat };
     }

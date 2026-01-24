@@ -11,7 +11,7 @@ public class MaxHealthPerTickUpgrade : UpgradeBaseSO
         UpgradePerTick.Instance.AddHealthPerTick(valueFlat, interval);
     }
 
-    protected override object[] GetDescriptionArgs()
+    protected override object[] GetSpecificDescriptionArgs()
     {
         return new object[] { valueFlat, interval };
     }

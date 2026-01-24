@@ -10,7 +10,7 @@ public class ShieldPercentUpgrade : UpgradeBaseSO
         context.playerShield.AddShieldPercent(valuePercent / 100f);
     }
 
-    protected override object[] GetDescriptionArgs()
+    protected override object[] GetSpecificDescriptionArgs()
     {
         return new object[] { valuePercent };
     }

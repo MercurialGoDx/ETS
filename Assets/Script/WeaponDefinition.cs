@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Localization;
 using UnityEngine.Localization.Settings;
 using UnityEngine.Localization.Tables;
 
@@ -15,8 +16,7 @@ public class WeaponDefinition : ScriptableObject
     public Sprite icon;
 
     [Header("Название с локализацией")]
-    [TextArea]
-    public StringTable localizationTable;
+    public LocalizedStringTable localizedStringTable;
     public string nameKey;
     public string descriptionKey;
 
@@ -41,19 +41,32 @@ public class WeaponDefinition : ScriptableObject
 
     public virtual string GetLocalizedName()
     {
-        return LocalizationSettings.StringDatabase.GetLocalizedString(
-            localizationTable.TableCollectionName,
-            nameKey
-        );
+        // Получаем таблицу для текущей локали
+        var stringTable = localizedStringTable.GetTable();
+        if (stringTable == null)
+        {
+            Debug.LogError($"Localization table not found for upgrade: {name}");
+            return nameKey;
+        }
+
+        // Получаем строку по ключу
+        var entry = stringTable.GetEntry(nameKey);
+        return entry?.GetLocalizedString() ?? nameKey;
     }
 
     public virtual string GetLocalizedDescription()
     {
-        return LocalizationSettings.StringDatabase.GetLocalizedString(
-            localizationTable.TableCollectionName,
-            descriptionKey,
-            GetDescriptionArgs()
-        );
+        var stringTable = localizedStringTable.GetTable();
+        if (stringTable == null)
+        {
+            Debug.LogError($"Localization table not found for upgrade: {name}");
+            return descriptionKey;
+        }
+
+        var entry = stringTable.GetEntry(descriptionKey);
+        if (entry == null) return descriptionKey;
+
+        return entry.GetLocalizedString(GetDescriptionArgs());
     }
 
     protected virtual object[] GetDescriptionArgs()

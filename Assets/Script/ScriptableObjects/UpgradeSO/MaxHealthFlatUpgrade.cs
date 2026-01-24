@@ -10,7 +10,7 @@ public class MaxHealthFlatUpgrade : UpgradeBaseSO
         context.playerHealth.AddFlatMaxHealthAndHeal(valueFlat);
     }
 
-    protected override object[] GetDescriptionArgs()
+    protected override object[] GetSpecificDescriptionArgs()
     {
         return new object[] { valueFlat };
     }
