@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   upgradeName: "<color=#ffd700>\u041C\u0438\u0444\u0438\u0447\u0435\u0441\u043A\u0438\u0439
     \u043C\u0430\u0442\u0435\u0440\u0438\u0430\u043B</color>"
-  icon: {fileID: 21300000, guid: 7f007ff64c0b4ae43a2e4390fb7eb206, type: 3}
+  icon: {fileID: 21300000, guid: ee75202d158220e44b23ba11df6f41d2, type: 3}
   type: 19
   price: 3000
   valueFlat: 1

@@ -161,6 +161,7 @@ MonoBehaviour:
   damageToPlayer: 2
   baseGold: 1
   canBeSlowed: 1
+  canBeKnocked: 1
   attackType: 0
   attackRange: 3.5
   attackInterval: 1

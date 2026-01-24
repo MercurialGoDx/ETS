@@ -17,7 +17,15 @@ MonoBehaviour:
   m_SharedData: {fileID: 11400000, guid: 32a974e0a609fb740a2db5dde9508098, type: 2}
   m_Metadata:
     m_Items: []
-  m_TableData: []
+  m_TableData:
+  - m_Id: 1308153466576896
+    m_Localized: Shield
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1308153542074368
+    m_Localized: Shield will be increase on <color=#ffd700>{0}</color> {0}
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 082f5dbef4b17ab4494695f67461040c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lowerOffsetY: 0
+  lowerOffsetY: 5
   lifeTime: 1.5
 --- !u!1 &5140079113507543840
 GameObject:
