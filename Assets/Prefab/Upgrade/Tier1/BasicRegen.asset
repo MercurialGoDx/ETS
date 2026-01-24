@@ -12,12 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c311837e699cb9c4298230999a590d66, type: 3}
   m_Name: BasicRegen
   m_EditorClassIdentifier: 
-  upgradeName: "<color=#ffd700>\u041F\u043E\u0447\u0438\u043D\u043A\u0430</color>"
   icon: {fileID: 21300000, guid: 22561ebc45b591d4eadab753909443c6, type: 3}
   price: 100
   weight: 20
-  description: "\u0423\u0432\u0435\u043B\u0438\u0447\u0438\u0432\u0430\u0435\u0442
-    \u0440\u0435\u0433\u0435\u043D\u0435\u0440\u0430\u0446\u0438\u044E \u0437\u0434\u043E\u0440\u043E\u0432\u044C\u044F
-    \u043D\u0430 <color=#ffd700>5</color>\n\n<color=#ffd700>\u0421\u0442\u043E\u0438\u043C\u043E\u0441\u0442\u044C:
-    100</color>"
-  regenValue: 5
+  localizationTable: {fileID: 0}
+  nameKey: basic_regen.name
+  descriptionKey: basic_regen.desc
+  valueFlat: 0

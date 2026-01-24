@@ -12,14 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83083e803de790f4492a8bb14295364d, type: 3}
   m_Name: Sacrifice
   m_EditorClassIdentifier: 
-  upgradeName: "<color=#ffd700>\u0416\u0430\u0434\u043D\u043E\u0441\u0442\u044C</color>"
   icon: {fileID: 21300000, guid: f7344bac5c2546044860ebe0cf2623b7, type: 3}
   price: 0
   weight: 20
-  description: "\u041F\u043E\u0442\u0435\u0440\u044F\u0439\u0442\u0435 <color=#ffd700>50</color>
-    \u043C\u0430\u043A\u0441\u0438\u043C\u0430\u043B\u044C\u043D\u043E\u0433\u043E
-    \u0437\u0434\u043E\u0440\u043E\u0432\u044C\u044F, \u0432\u0437\u0430\u043C\u0435\u043D
-    \u043D\u0430 <color=#ffd700>200</color> \u0437\u043E\u043B\u043E\u0442\u044B\u0445
-    \u043C\u043E\u043D\u0435\u0442\n\n<color=#ffd700>\u0421\u0442\u043E\u0438\u043C\u043E\u0441\u0442\u044C:
-    0</color>"
+  localizationTable: {fileID: 0}
+  nameKey: sacrifice.name
+  descriptionKey: sacrifice.desc
   lifeLoseValue: 50
+  basicGold: 200
+  multGold: 5

@@ -22,7 +22,6 @@ public class ScalingWave : MonoBehaviour
 
     private HashSet<Enemy> hitEnemies = new HashSet<Enemy>();
 
-
     private void Awake()
     {
         // Обязательно нужен IsTrigger = true

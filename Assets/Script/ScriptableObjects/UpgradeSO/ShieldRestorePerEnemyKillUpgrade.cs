@@ -9,4 +9,9 @@ public class ShieldRestorePerEnemyKillUpgrade : UpgradeBaseSO
     {
         context.playerShield.AddShieldRestorePerEnemyKill(valueFlat);
     }
+
+    protected override object[] GetDescriptionArgs()
+    {
+        return new object[] { valueFlat };
+    }
 }

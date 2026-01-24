@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3a9287f7cdfa744ebf102da5de8f389, type: 3}
   m_Name: ChainLighting
   m_EditorClassIdentifier: 
-  weaponName: "\u0446\u0435\u043F\u044C\u043B\u0430\u0439\u0442\u0438\u043D\u0433"
   icon: {fileID: 0}
-  description: 
+  localizationTable: {fileID: 0}
+  nameKey: chain_lighting.name
+  descriptionKey: chain_lighting.desc
   price: 10
   damagePerProjectile: 5
   fireRate: 0.5

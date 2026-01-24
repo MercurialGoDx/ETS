@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class FallingBullet : MonoBehaviour
+public class FallingBullet : MonoBehaviour, IAttackBehaviour
 {
     [Header("Характеристики")]
     public float fallSpeed = 15f;          // скорость падения
@@ -26,9 +26,12 @@ public class FallingBullet : MonoBehaviour
     private bool initialized = false;
     private float lifeTimer = 0f;
 
-    public void SetTarget(Transform newTarget)
+    private WeaponDefinition sourceWeapon;
+
+    public void InitAttack(AttackContext context)
     {
-        target = newTarget;
+        damage = context.damage;
+        target = context.target;
 
         if (target == null)
         {
@@ -36,15 +39,18 @@ public class FallingBullet : MonoBehaviour
             return;
         }
 
-        // Используем позицию врага
+        // Точка падения — позиция врага
         fallPoint = target.position;
 
-        // Стартуем над врагом
-        Vector3 spawn = fallPoint;
-        spawn.y += startHeight;
-        transform.position = spawn;
+        // Старт над врагом
+        Vector3 spawnPos = fallPoint;
+        spawnPos.y += startHeight;
+        transform.position = spawnPos;
 
+        lifeTimer = 0f;
         initialized = true;
+
+        sourceWeapon = context.weapon;
     }
 
     private void Update()
@@ -85,40 +91,46 @@ public class FallingBullet : MonoBehaviour
 
     private void HitTarget()
     {
-    // Позиция удара: точка падения + небольшой оффсет по Y
-    float groundY = fallPoint.y + hitHeightOffset;
-    Vector3 hitPos = new Vector3(fallPoint.x, groundY, fallPoint.z);
+        // Позиция удара: точка падения + небольшой оффсет по Y
+        float groundY = fallPoint.y + hitHeightOffset;
+        Vector3 hitPos = new Vector3(fallPoint.x, groundY, fallPoint.z);
 
-    if (useAoe)
-    {
-        // AOE урон — ОДИН РАЗ по области
-        Collider[] hits = Physics.OverlapSphere(hitPos, aoeRadius);
-        foreach (var col in hits)
+        if (useAoe)
         {
-            Enemy enemy = col.GetComponent<Enemy>();
-            if (enemy != null)
-                enemy.TakeDamage(damage);
+            // AOE урон — ОДИН РАЗ по области
+            Collider[] hits = Physics.OverlapSphere(hitPos, aoeRadius);
+            foreach (var col in hits)
+            {
+                Enemy enemy = col.GetComponent<Enemy>();
+                if (enemy != null)
+                {
+                    enemy.TakeDamage(damage);
+                    DamageStatsManager.Instance?.RegisterDamage(sourceWeapon, damage);
+                }
+            }
         }
-    }
-    else
-    {
-        // Старый режим — прямой урон по цели
-        if (target != null)
+        else
         {
-            Enemy enemy = target.GetComponent<Enemy>();
-            if (enemy != null)
-                enemy.TakeDamage(damage);
+            // Старый режим — прямой урон по цели
+            if (target != null)
+            {
+                Enemy enemy = target.GetComponent<Enemy>();
+                if (enemy != null)
+                {
+                    enemy.TakeDamage(damage);
+                    DamageStatsManager.Instance?.RegisterDamage(sourceWeapon, damage);
+                }
+            }
         }
-    }
 
-    // VFX при ударе (как было)
-    OnHitVFX vfx = GetComponent<OnHitVFX>();
-    if (vfx != null)
-    {
-        vfx.PlayAtPosition(hitPos);
-    }
+        // VFX при ударе (как было)
+        OnHitVFX vfx = GetComponent<OnHitVFX>();
+        if (vfx != null)
+        {
+            vfx.PlayAtPosition(hitPos);
+        }
 
-    Destroy(gameObject);
-}
+        Destroy(gameObject);
+    }
 
 }

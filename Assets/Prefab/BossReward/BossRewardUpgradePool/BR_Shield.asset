@@ -12,11 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e39c060f2452ca949870185a7c3feb5a, type: 3}
   m_Name: BR_Shield
   m_EditorClassIdentifier: 
-  upgradeName: "<color=#ffd700>\u0427\u0430\u0440\u044B</color>"
   icon: {fileID: 0}
   price: 0
   weight: 1
-  description: "\u0423\u0432\u0435\u043B\u0438\u0447\u0438\u0432\u0430\u0435\u0442
-    \u043F\u043E\u043A\u0430\u0437\u0430\u0442\u0435\u043B\u044C \u044D\u043D\u0435\u0440\u0433\u0435\u0442\u0438\u0447\u0435\u0441\u043A\u043E\u0433\u043E
-    \u0449\u0438\u0442\u0430 \u043D\u0430 <color=#ffd700>50%</color>"
+  localizationTable: {fileID: 0}
+  nameKey: br_shield.name
+  descriptionKey: br_shield.desc
   valuePercent: 50

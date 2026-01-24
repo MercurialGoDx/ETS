@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Bullet : MonoBehaviour
+public class Bullet : MonoBehaviour, IAttackBehaviour
 {
     [Header("Характеристики")]
     public float speed = 15f;
@@ -24,12 +24,23 @@ public class Bullet : MonoBehaviour
     protected PlayerHealth cachedPlayerHealth;
     private float lifeTimer = 0f;
 
+    private WeaponDefinition sourceWeapon;
+
     protected virtual void Awake()
     {
         if (increasePlayerMaxHealthOnKill)
         {
             FindPlayerHealth();
         }
+    }
+
+    public void InitAttack(AttackContext context)
+    {
+        damage = context.damage;
+        speed = context.projectileSpeed;
+        SetTarget(context.target);
+
+        sourceWeapon = context.weapon;
     }
 
     protected void FindPlayerHealth()
@@ -120,6 +131,7 @@ public class Bullet : MonoBehaviour
 
             // наносим урон
             enemy.TakeDamage(damage);
+            DamageStatsManager.Instance?.RegisterDamage(sourceWeapon, damage);
 
             // хук для спец-пуль (IceBullet, ядовитые и т.п.)
             OnEnemyHit(enemy);

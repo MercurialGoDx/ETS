@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LaserBeam : MonoBehaviour
+public class LaserBeam : MonoBehaviour, IAttackBehaviour
 {
     [Header("Параметры лазера")]
     [Tooltip("Урон за один тик (будет задаваться из WeaponDefinition)")]
@@ -35,6 +35,8 @@ public class LaserBeam : MonoBehaviour
     private PlayerHealth cachedPlayerHealth;
     private float lifeTimer = 0f;
 
+    private WeaponDefinition sourceWeapon;
+
     // ====== ОДИН ЛУЧ НА ОДНОГО ВРАГА ======
     private static Dictionary<Enemy, LaserBeam> activeBeams = new Dictionary<Enemy, LaserBeam>();
 
@@ -65,6 +67,29 @@ public class LaserBeam : MonoBehaviour
         }
     }
 
+    public void InitAttack(AttackContext context)
+    {
+        Enemy enemy = context.target != null
+            ? context.target.GetComponent<Enemy>()
+            : null;
+
+        if (enemy == null)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        InitInternal(
+            context.firePoint,
+            enemy,
+            context.damage,
+            context.ownerTower,
+            context.weaponFireRate
+        );
+
+        sourceWeapon = context.weapon;
+    }
+
     /// <summary>
     /// firePoint      — точка на башне, откуда рисуем луч
     /// target         — цель (враг)
@@ -72,7 +97,7 @@ public class LaserBeam : MonoBehaviour
     /// owner          — TowerAttack, чтобы брать fireRateMultiplier
     /// weaponFireRate — базовая fireRate из WeaponDefinition (выстрелов в секунду)
     /// </summary>
-    public void Init(
+    private void InitInternal(
         Transform firePoint,
         Enemy target,
         float damagePerTick,
@@ -125,7 +150,7 @@ public class LaserBeam : MonoBehaviour
         }
 
         // если враг выключен/умер — гасим луч
-        if (!targetEnemy.gameObject.activeInHierarchy)
+        if (targetEnemy.isDead)
         {
             Destroy(gameObject);
             return;
@@ -194,6 +219,7 @@ public class LaserBeam : MonoBehaviour
 
             // наносим урон
             targetEnemy.TakeDamage(damagePerTick);
+            DamageStatsManager.Instance?.RegisterDamage(sourceWeapon, damagePerTick);
 
             // если этот тик добил врага — бафаем игрока (если включено)
             if (increasePlayerMaxHealthOnKill &&
@@ -230,5 +256,15 @@ public class LaserBeam : MonoBehaviour
 
         if (currentTickInterval < 0.05f)
             currentTickInterval = 0.05f;
+    }
+
+    public void RefreshContext(Transform firePoint, float damagePerTick, TowerAttack owner, float weaponFireRate)
+    {
+        this.firePoint = firePoint;
+        this.damagePerTick = damagePerTick;
+        this.ownerTower = owner;
+        this.baseFireRate = Mathf.Max(0.01f, weaponFireRate);
+
+        RecalculateTickInterval();
     }
 }

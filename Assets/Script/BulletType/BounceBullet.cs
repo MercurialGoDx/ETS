@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ChainBullet : MonoBehaviour
+public class ChainBullet : MonoBehaviour, IAttackBehaviour
 {
     [Header("Основные параметры")]
     public float damage = 5f;
@@ -20,13 +20,26 @@ public class ChainBullet : MonoBehaviour
     private HashSet<Enemy> hitEnemies = new HashSet<Enemy>();
     private float lifeTimer = 0f;
 
-    /// <summary>
-    /// Вызываем сразу после спавна с первой целью.
-    /// </summary>
-    public void Init(Transform firstTarget)
+    private WeaponDefinition sourceWeapon;
+
+    public void InitAttack(AttackContext context)
     {
+        damage = context.damage;
+        speed = context.projectileSpeed;
+
         remainingBounces = maxBounces;
-        SetTarget(firstTarget);
+        hitEnemies.Clear();
+        lifeTimer = 0f;
+
+        if (context.target == null)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        SetTarget(context.target);
+
+        sourceWeapon = context.weapon;
     }
 
     public void SetTarget(Transform target)
@@ -83,6 +96,7 @@ public class ChainBullet : MonoBehaviour
             {
                 hitEnemies.Add(enemy);
                 enemy.TakeDamage(damage);
+                DamageStatsManager.Instance?.RegisterDamage(sourceWeapon, damage);
             }
         }
 
@@ -110,7 +124,7 @@ public class ChainBullet : MonoBehaviour
     /// </summary>
     private void TryFindNextTarget()
     {
-        Enemy[] allEnemies = FindObjectsOfType<Enemy>();
+        List<Enemy> allEnemies = EnemyManager.Instance.GetEnemiesInRange(transform.position, searchRadius);
 
         Enemy best = null;
         float bestSqrDist = Mathf.Infinity;

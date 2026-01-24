@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class ArcBullet : MonoBehaviour
+public class ArcBullet : MonoBehaviour, IAttackBehaviour
 {
     [Header("Базовые параметры дуги")]
     public float baseArcHeight = 3f;          // минимальная высота дуги
@@ -35,9 +35,13 @@ public class ArcBullet : MonoBehaviour
     private float t = 0f;
     private float lifeTimer = 0f;
 
-    public void SetTarget(Transform newTarget)
+    private WeaponDefinition sourceWeapon;
+
+    public void InitAttack(AttackContext context)
     {
-        target = newTarget;
+        damage = context.damage;
+
+        target = context.target;
         startPos = transform.position;
 
         if (target != null)
@@ -45,22 +49,25 @@ public class ArcBullet : MonoBehaviour
         else
             targetPos = startPos + transform.forward * 5f;
 
-        // счёт плоской дистанции
+        // Плоская дистанция
         Vector3 startFlat = startPos; startFlat.y = 0f;
         Vector3 targetFlat = targetPos; targetFlat.y = 0f;
 
         float distance = Vector3.Distance(startFlat, targetFlat);
 
-        // время полёта
+        // Время полёта
         if (useFixedFlightTime)
             travelTime = Mathf.Max(0.01f, fixedFlightTime);
         else
-            travelTime = Mathf.Max(0.1f, distance / 10f);
+            travelTime = Mathf.Max(0.1f, distance / context.projectileSpeed);
 
-        // динамическая высота дуги
+        // Высота дуги
         currentArcHeight = baseArcHeight + distance * arcHeightMultiplier;
 
         t = 0f;
+        lifeTimer = 0f;
+
+        sourceWeapon = context.weapon;
     }
 
     private void Update()
@@ -77,8 +84,10 @@ public class ArcBullet : MonoBehaviour
         }
 
         // подруливание (обновляет позицию цели)
-        if (homing && target != null)
+        if (homing && target != null && target.gameObject.activeInHierarchy)
+        {
             targetPos = target.position;
+        }
 
         t += Time.deltaTime / travelTime;
 
@@ -119,7 +128,10 @@ public class ArcBullet : MonoBehaviour
             {
                 Enemy e = target.GetComponent<Enemy>();
                 if (e != null)
+                {
                     e.TakeDamage(damage);
+                    DamageStatsManager.Instance?.RegisterDamage(sourceWeapon, damage);
+                }
             }
         }
 
@@ -138,6 +150,7 @@ public class ArcBullet : MonoBehaviour
                 continue;
 
             enemy.TakeDamage(damage);
+            DamageStatsManager.Instance?.RegisterDamage(sourceWeapon, damage);
         }
     }
 

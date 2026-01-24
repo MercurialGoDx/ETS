@@ -12,12 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aebd3401ebf0bfb42b7f8e699cd66e15, type: 3}
   m_Name: PassiveGold_1Tier
   m_EditorClassIdentifier: 
-  upgradeName: "<color=#ffd700>\u0417\u043E\u043B\u043E\u0442\u0430\u044F \u043C\u043E\u043D\u0435\u0442\u0430</color>"
   icon: {fileID: 21300000, guid: ff5e46bd20088db42a761612de857e5a, type: 3}
   price: 100
   weight: 30
-  description: "\u0423\u0432\u0435\u043B\u0438\u0447\u0438\u0432\u0430\u0435\u0442
-    \u0435\u0436\u0435\u0441\u0435\u043A\u0443\u043D\u0434\u043D\u044B\u0439 \u043F\u0440\u0438\u0440\u043E\u0441\u0442
-    \u0437\u043E\u043B\u043E\u0442\u0430 \u043D\u0430 <color=#ffd700>1</color>\n\n<color=#ffd700>\u0421\u0442\u043E\u0438\u043C\u043E\u0441\u0442\u044C:
-    100</color>"
+  localizationTable: {fileID: 0}
+  nameKey: passive_gold.name
+  descriptionKey: passive_gold.desc
   goldPerSecond: 1

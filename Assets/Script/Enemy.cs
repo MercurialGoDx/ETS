@@ -18,6 +18,7 @@ public class Enemy : MonoBehaviour
 
     [Header("Эффекты")]
     public bool canBeSlowed = true;   // можно ли замедлять этого врага
+    public bool canBeKnocked = true;    // можно ли отталкивать
 
     [Header("Атака по башне")]
     public EnemyAttackType attackType = EnemyAttackType.Melee;
@@ -55,6 +56,9 @@ public class Enemy : MonoBehaviour
     private Animator animator;
 
     private IEnemyAttack attackLogic;
+
+    private void OnEnable() => EnemyManager.Instance?.RegisterEnemy(this);
+    private void OnDisable() => EnemyManager.Instance?.UnregisterEnemy(this);
 
     private void Awake()
     {
@@ -236,6 +240,7 @@ public class Enemy : MonoBehaviour
     public void ApplyKnockback(Vector3 sourcePosition, float distance, float duration)
     {
         if (isDead) return;
+        if (!canBeKnocked) return;
         if (distance <= 0f || duration <= 0f) return;
 
         // направление: от башни к врагу

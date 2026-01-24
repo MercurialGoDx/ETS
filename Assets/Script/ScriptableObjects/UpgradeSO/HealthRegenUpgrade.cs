@@ -3,10 +3,15 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Upgrades/Health/Health Regeneration")]
 public class HealthRegenUpgrade : UpgradeBaseSO
 {
-    public float regenValue;
+    public float valueFlat;
 
     public override void Apply(UpgradeContextSO context)
     {
-        context.playerHealth.AddHealthRegen(regenValue);
+        context.playerHealth.AddHealthRegen(valueFlat);
+    }
+
+    protected override object[] GetDescriptionArgs()
+    {
+        return new object[] { valueFlat };
     }
 }

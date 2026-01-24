@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PortalBullet : MonoBehaviour
+public class PortalBullet : MonoBehaviour, IAttackBehaviour
 {
     [Header("Позиционирование")]
     [Tooltip("На каком расстоянии от врага появится портал (по XZ). 0 = прямо под ним.")]
@@ -31,15 +31,17 @@ public class PortalBullet : MonoBehaviour
     private bool initialized = false;
     private bool hasStruck = false;
 
+    private WeaponDefinition sourceWeapon;
+
     /// <summary>
     /// Вызывается из TowerAttack сразу после Instantiate.
     /// </summary>
-    public void Init(Transform newTarget)
+    public void InitAttack(AttackContext context)
     {
-        target = newTarget;
+        Transform target = context.target;
 
         // базовая точка — враг, если есть
-        Vector3 basePos = (target != null) ? target.position : transform.position;
+        Vector3 basePos = (target != null) ? target.position : context.firePoint.position;
 
         // рассчитываем смещение по кругу вокруг врага в плоскости XZ
         Vector3 spawnPos = basePos;
@@ -58,11 +60,17 @@ public class PortalBullet : MonoBehaviour
         transform.position = spawnPos;
         strikePosition = spawnPos;
 
+        // получаем урон из AttackContext
+        damage = context.damage;
+
         strikeTimer = delayBeforeStrike;
-        lifeTimer   = portalLifeTime;
-        hasStruck   = false;
+        lifeTimer = portalLifeTime;
+        hasStruck = false;
         initialized = true;
+
+        sourceWeapon = context.weapon;
     }
+
 
     private void Update()
     {
@@ -102,6 +110,7 @@ public class PortalBullet : MonoBehaviour
             if (enemy != null)
             {
                 enemy.TakeDamage(damage);
+                DamageStatsManager.Instance?.RegisterDamage(sourceWeapon, damage);
             }
         }
 

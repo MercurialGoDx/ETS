@@ -9,4 +9,9 @@ public class SpikesDamageScalePerEnemyHitUpgrade : UpgradeBaseSO
     {
         context.playerHealth.AddSpikesDamagePerEnemyHit(valueFlat);
     }
+
+    protected override object[] GetDescriptionArgs()
+    {
+        return new object[] { valueFlat };
+    }
 }

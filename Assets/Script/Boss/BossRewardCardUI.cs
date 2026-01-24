@@ -1,7 +1,8 @@
+using System;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Localization.Settings;
 using UnityEngine.UI;
-using System;
 
 public class BossRewardCardUI : MonoBehaviour
 {
@@ -13,13 +14,16 @@ public class BossRewardCardUI : MonoBehaviour
     private UpgradeBaseSO reward;
     private Action<UpgradeBaseSO> onClick;
 
-    public void Bind(UpgradeBaseSO r, Action<UpgradeBaseSO> onClicked)
+    public void Bind(UpgradeBaseSO upgrade, Action<UpgradeBaseSO> onClicked)
     {
-        reward = r;
+        reward = upgrade;
         onClick = onClicked;
 
-        if (titleText != null) titleText.text = r != null ? r.upgradeName : "—";
-        if (descText != null) descText.text = r != null ? r.description : "";
+        //if (titleText != null) titleText.text = upgrade != null ? upgrade.upgradeName : "—";
+
+        titleText.text = upgrade.GetLocalizedName();
+        descText.text = upgrade.GetLocalizedDescription();
+        //if (descText != null) descText.text = upgrade != null ? upgrade.description : "";
 
         //if (frameImage != null)
         //    frameImage.color = GetRarityColor(r != null ? r.rarity : BossRewardRarity.Common);

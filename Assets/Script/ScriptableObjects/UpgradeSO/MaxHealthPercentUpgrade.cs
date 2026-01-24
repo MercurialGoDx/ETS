@@ -9,4 +9,9 @@ public class MaxHealthPercentUpgrade : UpgradeBaseSO
     {
         context.playerHealth.AddMaxHealthMultiplierAndHeal(percentValue / 100f);
     }
+
+    protected override object[] GetDescriptionArgs()
+    {
+        return new object[] { percentValue };
+    }
 }

@@ -158,7 +158,8 @@ MonoBehaviour:
   maxHealth: 150
   damageToPlayer: 5
   baseGold: 30
-  canBeSlowed: 1
+  canBeSlowed: 0
+  canBeKnocked: 0
   attackType: 1
   attackRange: 4.5
   attackInterval: 1

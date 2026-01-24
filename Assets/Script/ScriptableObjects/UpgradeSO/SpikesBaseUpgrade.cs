@@ -9,4 +9,9 @@ public class SpikesBaseUpgrade : UpgradeBaseSO
     {
         context.playerHealth.AddSpikesDamage(valueFlat);
     }
+
+    protected override object[] GetDescriptionArgs()
+    {
+        return new object[] { valueFlat };
+    }
 }

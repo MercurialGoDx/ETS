@@ -12,12 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3a9287f7cdfa744ebf102da5de8f389, type: 3}
   m_Name: Balista
   m_EditorClassIdentifier: 
-  weaponName: "<color=#ffd700>\u0411\u0430\u043B\u0438\u0441\u0442\u0430</color>"
   icon: {fileID: 21300000, guid: d1cabdfbb79868649922c5736c07e09d, type: 3}
-  description: "<color=#ffd700>\u0423\u0440\u043E\u043D:</color> 250\n<color=#ffd700>\u0422\u0438\u043F
-    \u0443\u0440\u043E\u043D\u0430:</color> \u0421\u043D\u0430\u0440\u044F\u0434\n<color=#ffd700>\u0421\u043A\u043E\u0440\u043E\u0441\u0442\u044C
-    \u0430\u0442\u0430\u043A\u0438:</color> 0.35\n\n<color=#ffd700>\u0421\u0442\u043E\u0438\u043C\u043E\u0441\u0442\u044C:</color>
-    1500"
+  localizationTable: {fileID: 0}
+  nameKey: balista.name
+  descriptionKey: balista.desc
   price: 1500
   damagePerProjectile: 250
   fireRate: 0.35

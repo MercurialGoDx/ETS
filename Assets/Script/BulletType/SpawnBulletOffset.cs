@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class SpawnBulletOffset : MonoBehaviour
+public class SpawnBulletOffset : MonoBehaviour, IAttackBehaviour
 {
     [Header("Появление")]
     [Tooltip("Насколько опустить пулю по Y относительно точки спавна")]
@@ -12,16 +12,24 @@ public class SpawnBulletOffset : MonoBehaviour
     private float timer;
     private bool initialized = false;
 
+    private WeaponDefinition sourceWeapon;
+
     /// <summary>
     /// Инициализация из TowerAttack
     /// </summary>
-    public void Init(Vector3 spawnPos)
+    public void InitAttack(AttackContext context)
     {
+        Vector3 spawnPos = context.firePoint != null
+            ? context.firePoint.position
+            : context.owner.position;
+
         spawnPos.y -= lowerOffsetY;
         transform.position = spawnPos;
 
         timer = lifeTime;
         initialized = true;
+
+        sourceWeapon = context.weapon;
     }
 
     private void Update()

@@ -9,4 +9,9 @@ public class HealPerEnemyHitUpgrade : UpgradeBaseSO
     {
         context.playerHealth.AddHealOnHitFromEnemy(valueFlat);
     }
+
+    protected override object[] GetDescriptionArgs()
+    {
+        return new object[] { valueFlat };
+    }
 }

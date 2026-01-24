@@ -9,4 +9,9 @@ public class GlobalDamagePercentUpgrade : UpgradeBaseSO
     {
         throw new System.NotImplementedException();
     }
+
+    protected override object[] GetDescriptionArgs()
+    {
+        return new object[] { valuePercent };
+    }
 }

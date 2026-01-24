@@ -9,4 +9,9 @@ public class DamageFromMaxHealthPercentUpgrade : UpgradeBaseSO
     {
         context.runtime.damageFromMaxHealthPercent += context.playerHealth.MaxHealth * (valuePercent / 100);
     }
+
+    protected override object[] GetDescriptionArgs()
+    {
+        return new object[] { valuePercent };
+    }
 }
