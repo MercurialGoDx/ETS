@@ -15,7 +15,9 @@ MonoBehaviour:
   icon: {fileID: 0}
   price: 0
   weight: 1
-  localizationTable: {fileID: 0}
+  localizedStringTable:
+    m_TableReference:
+      m_TableCollectionName: GUID:164770c6fc8794c4ba4db6f8c7e72db3
   nameKey: br_shield.name
   descriptionKey: br_shield.desc
   valuePercent: 50

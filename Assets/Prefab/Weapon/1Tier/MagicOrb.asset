@@ -13,7 +13,9 @@ MonoBehaviour:
   m_Name: MagicOrb
   m_EditorClassIdentifier: 
   icon: {fileID: 21300000, guid: 772f428b12eb82a4eb14fb509d70c1f3, type: 3}
-  localizationTable: {fileID: 0}
+  localizedStringTable:
+    m_TableReference:
+      m_TableCollectionName: GUID:32a974e0a609fb740a2db5dde9508098
   nameKey: magic_orb.name
   descriptionKey: magic_orb.desc
   price: 100

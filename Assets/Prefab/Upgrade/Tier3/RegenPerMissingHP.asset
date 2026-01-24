@@ -15,7 +15,9 @@ MonoBehaviour:
   icon: {fileID: 21300000, guid: ec811f3ec71b7cc4d9a04274a351e68e, type: 3}
   price: 1500
   weight: 7
-  localizationTable: {fileID: 0}
+  localizedStringTable:
+    m_TableReference:
+      m_TableCollectionName: GUID:164770c6fc8794c4ba4db6f8c7e72db3
   nameKey: regen_per_missing_health.name
   descriptionKey: regen_per_missing_health.desc
   valueFlat: 2

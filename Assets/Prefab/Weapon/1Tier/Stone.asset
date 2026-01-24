@@ -13,7 +13,9 @@ MonoBehaviour:
   m_Name: Stone
   m_EditorClassIdentifier: 
   icon: {fileID: 21300000, guid: 24188ad7d0440284f91b584790a3dc79, type: 3}
-  localizationTable: {fileID: 0}
+  localizedStringTable:
+    m_TableReference:
+      m_TableCollectionName: GUID:32a974e0a609fb740a2db5dde9508098
   nameKey: stone.name
   descriptionKey: stone.desc
   price: 100

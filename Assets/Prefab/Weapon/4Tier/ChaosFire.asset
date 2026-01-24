@@ -13,7 +13,9 @@ MonoBehaviour:
   m_Name: ChaosFire
   m_EditorClassIdentifier: 
   icon: {fileID: 21300000, guid: 587ed15f4552278439f4d0cba3f20590, type: 3}
-  localizationTable: {fileID: 0}
+  localizedStringTable:
+    m_TableReference:
+      m_TableCollectionName: GUID:32a974e0a609fb740a2db5dde9508098
   nameKey: chaos_fire.name
   descriptionKey: chaos_fire.desc
   price: 3000

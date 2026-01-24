@@ -13,7 +13,9 @@ MonoBehaviour:
   m_Name: Tornado
   m_EditorClassIdentifier: 
   icon: {fileID: 21300000, guid: 4fe1aa09611bfa84ead41a84e5c6b991, type: 3}
-  localizationTable: {fileID: 0}
+  localizedStringTable:
+    m_TableReference:
+      m_TableCollectionName: GUID:32a974e0a609fb740a2db5dde9508098
   nameKey: tornado.name
   descriptionKey: tornado.desc
   price: 1500

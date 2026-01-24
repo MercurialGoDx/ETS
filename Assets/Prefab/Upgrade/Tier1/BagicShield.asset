@@ -15,7 +15,9 @@ MonoBehaviour:
   icon: {fileID: 21300000, guid: 28314ba34ceee3c40940c0f04f324beb, type: 3}
   price: 100
   weight: 20
-  localizationTable: {fileID: 0}
+  localizedStringTable:
+    m_TableReference:
+      m_TableCollectionName: GUID:164770c6fc8794c4ba4db6f8c7e72db3
   nameKey: basic_shield.name
   descriptionKey: basic_shield.desc
   valueFlat: 50

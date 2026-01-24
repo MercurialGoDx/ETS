@@ -15,7 +15,9 @@ MonoBehaviour:
   icon: {fileID: 21300000, guid: f4d9b930615b8e94f924512f01fecca2, type: 3}
   price: 3000
   weight: 5
-  localizationTable: {fileID: 0}
+  localizedStringTable:
+    m_TableReference:
+      m_TableCollectionName: GUID:164770c6fc8794c4ba4db6f8c7e72db3
   nameKey: degen_aura.name
   descriptionKey: degen_aura.desc
   valueFlat: 1

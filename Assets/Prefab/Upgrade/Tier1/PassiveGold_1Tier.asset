@@ -15,7 +15,9 @@ MonoBehaviour:
   icon: {fileID: 21300000, guid: ff5e46bd20088db42a761612de857e5a, type: 3}
   price: 100
   weight: 30
-  localizationTable: {fileID: 0}
+  localizedStringTable:
+    m_TableReference:
+      m_TableCollectionName: GUID:164770c6fc8794c4ba4db6f8c7e72db3
   nameKey: passive_gold.name
   descriptionKey: passive_gold.desc
   goldPerSecond: 1

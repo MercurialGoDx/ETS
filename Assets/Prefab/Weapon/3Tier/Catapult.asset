@@ -13,7 +13,9 @@ MonoBehaviour:
   m_Name: Catapult
   m_EditorClassIdentifier: 
   icon: {fileID: 21300000, guid: d282af8c1972eda4985199842f0f836c, type: 3}
-  localizationTable: {fileID: 0}
+  localizedStringTable:
+    m_TableReference:
+      m_TableCollectionName: GUID:32a974e0a609fb740a2db5dde9508098
   nameKey: catapult.name
   descriptionKey: catapult.desc
   price: 1500

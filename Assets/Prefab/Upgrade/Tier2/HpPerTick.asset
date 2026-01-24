@@ -15,7 +15,9 @@ MonoBehaviour:
   icon: {fileID: 21300000, guid: ff46709e14860c8448ecc8b54d092ec4, type: 3}
   price: 400
   weight: 15
-  localizationTable: {fileID: 0}
+  localizedStringTable:
+    m_TableReference:
+      m_TableCollectionName: GUID:164770c6fc8794c4ba4db6f8c7e72db3
   nameKey: health_per_tick.name
   descriptionKey: health_per_tick.desc
   interval: 10

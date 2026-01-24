@@ -12,9 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec6b8a82d4b6817488c4500ebfc990a5, type: 3}
   m_Name: Heal Per Eenemy Hit +5 COMPOSITE
   m_EditorClassIdentifier: 
-  upgradeName: 
   icon: {fileID: 0}
   price: 0
   weight: 0
-  description: 
+  localizedStringTable:
+    m_TableReference:
+      m_TableCollectionName: 
+  nameKey: 
+  descriptionKey: 
   valueFlat: 5

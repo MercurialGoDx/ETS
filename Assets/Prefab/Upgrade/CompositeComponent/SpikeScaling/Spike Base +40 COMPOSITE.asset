@@ -12,11 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b4deb76f4eafbe64ab57ad244b4e6cc8, type: 3}
   m_Name: Spike Base +40 COMPOSITE
   m_EditorClassIdentifier: 
-  upgradeName: 
   icon: {fileID: 0}
   price: 0
   weight: 0
-  description: "\u0423\u0432\u0435\u043B\u0438\u0447\u0438\u0432\u0430\u0435\u0442
-    \u0443\u0440\u043E\u043D \u043E\u0442 \u0448\u0438\u043F\u043E\u0432 \u043D\u0430
-    60"
+  localizedStringTable:
+    m_TableReference:
+      m_TableCollectionName: 
+  nameKey: 
+  descriptionKey: 
   valueFlat: 40

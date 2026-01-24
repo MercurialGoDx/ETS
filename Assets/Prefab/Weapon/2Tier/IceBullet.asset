@@ -13,7 +13,9 @@ MonoBehaviour:
   m_Name: IceBullet
   m_EditorClassIdentifier: 
   icon: {fileID: 21300000, guid: 3a1a1adb5315a6a4fba5546d957a7a79, type: 3}
-  localizationTable: {fileID: 0}
+  localizedStringTable:
+    m_TableReference:
+      m_TableCollectionName: GUID:32a974e0a609fb740a2db5dde9508098
   nameKey: ice_bullet.name
   descriptionKey: ice_bullet.desc
   price: 400

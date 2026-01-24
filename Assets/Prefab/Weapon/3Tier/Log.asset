@@ -13,7 +13,9 @@ MonoBehaviour:
   m_Name: Log
   m_EditorClassIdentifier: 
   icon: {fileID: 21300000, guid: 8fd78c40a85541748b817811b1b4c161, type: 3}
-  localizationTable: {fileID: 0}
+  localizedStringTable:
+    m_TableReference:
+      m_TableCollectionName: GUID:32a974e0a609fb740a2db5dde9508098
   nameKey: log.name
   descriptionKey: log.desc
   price: 1500

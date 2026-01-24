@@ -13,7 +13,9 @@ MonoBehaviour:
   m_Name: ChaosOrb
   m_EditorClassIdentifier: 
   icon: {fileID: 21300000, guid: d29208c634bce5f40a622b6e0fc1ba56, type: 3}
-  localizationTable: {fileID: 0}
+  localizedStringTable:
+    m_TableReference:
+      m_TableCollectionName: GUID:32a974e0a609fb740a2db5dde9508098
   nameKey: chaos_orb.name
   descriptionKey: chaos_orb.desc
   price: 100

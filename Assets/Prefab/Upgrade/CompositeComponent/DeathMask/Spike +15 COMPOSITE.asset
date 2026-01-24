@@ -12,9 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b4deb76f4eafbe64ab57ad244b4e6cc8, type: 3}
   m_Name: Spike +15 COMPOSITE
   m_EditorClassIdentifier: 
-  upgradeName: 
   icon: {fileID: 0}
   price: 0
   weight: 0
-  description: 
+  localizedStringTable:
+    m_TableReference:
+      m_TableCollectionName: 
+  nameKey: 
+  descriptionKey: 
   valueFlat: 15

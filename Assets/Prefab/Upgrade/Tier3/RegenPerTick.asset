@@ -15,7 +15,9 @@ MonoBehaviour:
   icon: {fileID: 0}
   price: 0
   weight: 0
-  localizationTable: {fileID: 0}
+  localizedStringTable:
+    m_TableReference:
+      m_TableCollectionName: GUID:164770c6fc8794c4ba4db6f8c7e72db3
   nameKey: regen_per_tick.name
   descriptionKey: regen_per_tick.desc
   interval: 0

@@ -15,7 +15,9 @@ MonoBehaviour:
   icon: {fileID: 21300000, guid: c5c8c47ad84122c4c91d0229f35cd1b0, type: 3}
   price: 400
   weight: 15
-  localizationTable: {fileID: 0}
+  localizedStringTable:
+    m_TableReference:
+      m_TableCollectionName: GUID:164770c6fc8794c4ba4db6f8c7e72db3
   nameKey: heal_on_kill.name
   descriptionKey: heal_on_kill.desc
   valueFlat: 15

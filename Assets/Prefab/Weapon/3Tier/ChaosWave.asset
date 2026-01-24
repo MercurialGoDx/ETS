@@ -13,7 +13,9 @@ MonoBehaviour:
   m_Name: ChaosWave
   m_EditorClassIdentifier: 
   icon: {fileID: 21300000, guid: 170a70220832aac4391ab9e40e86ddc3, type: 3}
-  localizationTable: {fileID: 0}
+  localizedStringTable:
+    m_TableReference:
+      m_TableCollectionName: GUID:32a974e0a609fb740a2db5dde9508098
   nameKey: chaos_wave.name
   descriptionKey: chaos_wave.desc
   price: 1500

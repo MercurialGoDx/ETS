@@ -13,7 +13,9 @@ MonoBehaviour:
   m_Name: Bow
   m_EditorClassIdentifier: 
   icon: {fileID: 21300000, guid: f795f963baaabb24e909500937edaf3a, type: 3}
-  localizationTable: {fileID: 0}
+  localizedStringTable:
+    m_TableReference:
+      m_TableCollectionName: GUID:32a974e0a609fb740a2db5dde9508098
   nameKey: bow.name
   descriptionKey: bow.desc
   price: 100

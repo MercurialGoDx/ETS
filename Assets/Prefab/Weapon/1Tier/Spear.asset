@@ -13,7 +13,9 @@ MonoBehaviour:
   m_Name: Spear
   m_EditorClassIdentifier: 
   icon: {fileID: 21300000, guid: 70b15d9c2f3e33b46a71b5c8fa6327c4, type: 3}
-  localizationTable: {fileID: 0}
+  localizedStringTable:
+    m_TableReference:
+      m_TableCollectionName: GUID:32a974e0a609fb740a2db5dde9508098
   nameKey: spear.name
   descriptionKey: spear.desc
   price: 100

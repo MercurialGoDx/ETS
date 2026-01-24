@@ -13,7 +13,9 @@ MonoBehaviour:
   m_Name: Mortar
   m_EditorClassIdentifier: 
   icon: {fileID: 21300000, guid: 5212f2a7f7b6f324eb0405204fda63e1, type: 3}
-  localizationTable: {fileID: 0}
+  localizedStringTable:
+    m_TableReference:
+      m_TableCollectionName: GUID:32a974e0a609fb740a2db5dde9508098
   nameKey: mortar.name
   descriptionKey: mortar.desc
   price: 400
