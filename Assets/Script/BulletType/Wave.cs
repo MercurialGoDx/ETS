@@ -30,6 +30,8 @@ public class WaveBullet : MonoBehaviour, IAttackBehaviour
 
     private PlayerHealth playerHealth;       // закешируем, если нужно лечить
 
+    private WeaponDefinition sourceWeapon;
+
     private void Awake()
     {
         // Базовые настройки физики для триггера
@@ -95,6 +97,8 @@ public class WaveBullet : MonoBehaviour, IAttackBehaviour
         fixedY = planeY;
 
         transform.rotation = Quaternion.LookRotation(moveDir, Vector3.up);
+
+        sourceWeapon = context.weapon;
     }
 
 
@@ -137,9 +141,11 @@ public class WaveBullet : MonoBehaviour, IAttackBehaviour
 
         // наносим урон
         enemy.TakeDamage(damage);
+        DamageStatsManager.Instance?.RegisterDamage(sourceWeapon, damage);
+
 
         // нока-бек, если включён
-        if (applyKnockback && ownerTransform != null)
+        if (applyKnockback)
         {
             enemy.ApplyKnockback(
                 ownerTransform.position,

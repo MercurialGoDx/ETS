@@ -24,6 +24,8 @@ public class Bullet : MonoBehaviour, IAttackBehaviour
     protected PlayerHealth cachedPlayerHealth;
     private float lifeTimer = 0f;
 
+    private WeaponDefinition sourceWeapon;
+
     protected virtual void Awake()
     {
         if (increasePlayerMaxHealthOnKill)
@@ -37,6 +39,8 @@ public class Bullet : MonoBehaviour, IAttackBehaviour
         damage = context.damage;
         speed = context.projectileSpeed;
         SetTarget(context.target);
+
+        sourceWeapon = context.weapon;
     }
 
     protected void FindPlayerHealth()
@@ -127,6 +131,7 @@ public class Bullet : MonoBehaviour, IAttackBehaviour
 
             // наносим урон
             enemy.TakeDamage(damage);
+            DamageStatsManager.Instance?.RegisterDamage(sourceWeapon, damage);
 
             // хук для спец-пуль (IceBullet, ядовитые и т.п.)
             OnEnemyHit(enemy);

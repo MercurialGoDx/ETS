@@ -35,6 +35,8 @@ public class ArcBullet : MonoBehaviour, IAttackBehaviour
     private float t = 0f;
     private float lifeTimer = 0f;
 
+    private WeaponDefinition sourceWeapon;
+
     public void InitAttack(AttackContext context)
     {
         damage = context.damage;
@@ -64,6 +66,8 @@ public class ArcBullet : MonoBehaviour, IAttackBehaviour
 
         t = 0f;
         lifeTimer = 0f;
+
+        sourceWeapon = context.weapon;
     }
 
     private void Update()
@@ -124,7 +128,10 @@ public class ArcBullet : MonoBehaviour, IAttackBehaviour
             {
                 Enemy e = target.GetComponent<Enemy>();
                 if (e != null)
+                {
                     e.TakeDamage(damage);
+                    DamageStatsManager.Instance?.RegisterDamage(sourceWeapon, damage);
+                }
             }
         }
 
@@ -143,6 +150,7 @@ public class ArcBullet : MonoBehaviour, IAttackBehaviour
                 continue;
 
             enemy.TakeDamage(damage);
+            DamageStatsManager.Instance?.RegisterDamage(sourceWeapon, damage);
         }
     }
 

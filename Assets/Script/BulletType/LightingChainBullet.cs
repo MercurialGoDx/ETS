@@ -33,6 +33,8 @@ public class LightningChainBullet : MonoBehaviour, IAttackBehaviour
     private float baseDamage;
     private HashSet<Enemy> hitEnemies = new HashSet<Enemy>();
 
+    private WeaponDefinition sourceWeapon;
+
     public void InitAttack(AttackContext context)
     {
         baseDamage = context.damage;
@@ -58,6 +60,8 @@ public class LightningChainBullet : MonoBehaviour, IAttackBehaviour
 
         StopAllCoroutines();
         StartCoroutine(ChainRoutine(startPoint, firstTarget));
+
+        sourceWeapon = context.weapon;
     }
 
     private IEnumerator ChainRoutine(Transform start, Enemy target)
@@ -81,6 +85,7 @@ public class LightningChainBullet : MonoBehaviour, IAttackBehaviour
             {
                 SpawnImpact(currentTarget.transform.position);
                 currentTarget.TakeDamage(currentDamage);
+                DamageStatsManager.Instance?.RegisterDamage(sourceWeapon, currentDamage);
             }
 
             currentDamage *= damageMultiplierPerJump;

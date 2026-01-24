@@ -22,6 +22,8 @@ public class MissileBullet : MonoBehaviour, IAttackBehaviour
     private bool inLaunchPhase = true;
     private float lifeTimer = 0f;
 
+    private WeaponDefinition sourceWeapon;
+
     public void InitAttack(AttackContext context)
     {
         target = context.target;
@@ -45,6 +47,8 @@ public class MissileBullet : MonoBehaviour, IAttackBehaviour
         launchTraveled = 0f;
         inLaunchPhase = true;
         lifeTimer = 0f;
+
+        sourceWeapon = context.weapon;
     }
 
     private void Awake()
@@ -120,6 +124,7 @@ public class MissileBullet : MonoBehaviour, IAttackBehaviour
 
         // наносим урон
         enemy.TakeDamage(damage);
+        DamageStatsManager.Instance?.RegisterDamage(sourceWeapon, damage);
 
         // VFX при попадании (если есть)
         OnHitVFX vfx = GetComponent<OnHitVFX>();

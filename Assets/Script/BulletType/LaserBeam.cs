@@ -35,6 +35,8 @@ public class LaserBeam : MonoBehaviour, IAttackBehaviour
     private PlayerHealth cachedPlayerHealth;
     private float lifeTimer = 0f;
 
+    private WeaponDefinition sourceWeapon;
+
     // ====== ОДИН ЛУЧ НА ОДНОГО ВРАГА ======
     private static Dictionary<Enemy, LaserBeam> activeBeams = new Dictionary<Enemy, LaserBeam>();
 
@@ -84,6 +86,8 @@ public class LaserBeam : MonoBehaviour, IAttackBehaviour
             context.ownerTower,
             context.weaponFireRate
         );
+
+        sourceWeapon = context.weapon;
     }
 
     /// <summary>
@@ -215,6 +219,7 @@ public class LaserBeam : MonoBehaviour, IAttackBehaviour
 
             // наносим урон
             targetEnemy.TakeDamage(damagePerTick);
+            DamageStatsManager.Instance?.RegisterDamage(sourceWeapon, damagePerTick);
 
             // если этот тик добил врага — бафаем игрока (если включено)
             if (increasePlayerMaxHealthOnKill &&

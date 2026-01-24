@@ -19,6 +19,8 @@ public class RandomSpawnPortal : MonoBehaviour, IAttackBehaviour
 
     private Transform tower;
 
+    private WeaponDefinition sourceWeapon;
+
     public void InitAttack(AttackContext context)
     {
         // Урон из контекста
@@ -44,6 +46,8 @@ public class RandomSpawnPortal : MonoBehaviour, IAttackBehaviour
             origin.position.z + circle.y
         );
         transform.position = pos;
+
+        sourceWeapon = context.weapon;
     }
 
     private void Update()
@@ -71,6 +75,7 @@ public class RandomSpawnPortal : MonoBehaviour, IAttackBehaviour
             if (enemy != null)
             {
                 enemy.TakeDamage(damage);
+                DamageStatsManager.Instance?.RegisterDamage(sourceWeapon, damage);
             }
         }
 

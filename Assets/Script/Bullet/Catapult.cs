@@ -34,6 +34,8 @@ public class Catapult : MonoBehaviour, IAttackBehaviour
 
     private PlayerHealth playerHealth;
 
+    private WeaponDefinition sourceWeapon;
+
     public void InitAttack(AttackContext context)
     {
         // Безопасно сбрасываем состояние для Object Pooling
@@ -63,6 +65,8 @@ public class Catapult : MonoBehaviour, IAttackBehaviour
             travelTime = Mathf.Max(0.1f, distance / 10f);
 
         currentArcHeight = baseArcHeight + distance * arcHeightMultiplier;
+
+        sourceWeapon = context.weapon;
     }
 
 
@@ -133,6 +137,7 @@ public class Catapult : MonoBehaviour, IAttackBehaviour
                         continue;
 
                     enemy.TakeDamage(aoeDamage);
+                    DamageStatsManager.Instance?.RegisterDamage(sourceWeapon, aoeDamage);
                 }
             }
         }

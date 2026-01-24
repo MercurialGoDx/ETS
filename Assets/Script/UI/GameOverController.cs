@@ -28,6 +28,15 @@ public class GameOverController : MonoBehaviour
         if (gameOverPanel != null)
             gameOverPanel.SetActive(true);
 
+        var stats = DamageStatsManager.Instance.GetDamageSorted();
+
+        Debug.Log("Weapon stats:");
+
+        foreach (var stat in stats)
+        {
+            Debug.Log($"{stat.weapon.GetLocalizedName()} → {stat.damage:F1}");
+        }
+
         Time.timeScale = 0f; // стопаем игру
     }
 

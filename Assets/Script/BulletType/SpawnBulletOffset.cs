@@ -12,6 +12,8 @@ public class SpawnBulletOffset : MonoBehaviour, IAttackBehaviour
     private float timer;
     private bool initialized = false;
 
+    private WeaponDefinition sourceWeapon;
+
     /// <summary>
     /// Инициализация из TowerAttack
     /// </summary>
@@ -26,6 +28,8 @@ public class SpawnBulletOffset : MonoBehaviour, IAttackBehaviour
 
         timer = lifeTime;
         initialized = true;
+
+        sourceWeapon = context.weapon;
     }
 
     private void Update()

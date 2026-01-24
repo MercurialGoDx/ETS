@@ -26,6 +26,8 @@ public class FallingBullet : MonoBehaviour, IAttackBehaviour
     private bool initialized = false;
     private float lifeTimer = 0f;
 
+    private WeaponDefinition sourceWeapon;
+
     public void InitAttack(AttackContext context)
     {
         damage = context.damage;
@@ -47,6 +49,8 @@ public class FallingBullet : MonoBehaviour, IAttackBehaviour
 
         lifeTimer = 0f;
         initialized = true;
+
+        sourceWeapon = context.weapon;
     }
 
     private void Update()
@@ -99,7 +103,10 @@ public class FallingBullet : MonoBehaviour, IAttackBehaviour
             {
                 Enemy enemy = col.GetComponent<Enemy>();
                 if (enemy != null)
+                {
                     enemy.TakeDamage(damage);
+                    DamageStatsManager.Instance?.RegisterDamage(sourceWeapon, damage);
+                }
             }
         }
         else
@@ -109,7 +116,10 @@ public class FallingBullet : MonoBehaviour, IAttackBehaviour
             {
                 Enemy enemy = target.GetComponent<Enemy>();
                 if (enemy != null)
+                {
                     enemy.TakeDamage(damage);
+                    DamageStatsManager.Instance?.RegisterDamage(sourceWeapon, damage);
+                }
             }
         }
 

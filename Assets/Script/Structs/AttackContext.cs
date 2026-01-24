@@ -13,4 +13,6 @@ public struct AttackContext
     public float forwardOffset;
     public float heightOffset;
     public Transform owner; // башня
+
+    public WeaponDefinition weapon;
 }

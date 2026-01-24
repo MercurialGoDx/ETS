@@ -25,8 +25,10 @@ public class TowerAttack : MonoBehaviour
 
     private bool debugDamage = true;
 
+    private readonly List<Enemy> usedThisVolley = new List<Enemy>();
+
     private List<WeaponRuntime> weapons = new List<WeaponRuntime>();
-    
+
     public int GetTotalWeaponsOfType(WeaponDamageType type)
     {
         int total = 0;
@@ -40,15 +42,6 @@ public class TowerAttack : MonoBehaviour
         }
 
         return total;
-    }
-
-    private class WeaponRuntime
-    {
-        public WeaponDefinition def;
-        public int stacks = 1;      // сколько раз купили это оружие
-        public float cooldown = 0f; // свой независимый кулдаун
-        public List<Enemy> lastTargets = new List<Enemy>(); // закреплённые цели по “стволам”
-        public AuraDamageZone auraInstance;
     }
 
     private void Update()
@@ -108,7 +101,7 @@ public class TowerAttack : MonoBehaviour
 
         bool randomEachShot = (weapon.def.targetingMode == WeaponTargetingMode.RandomEachShot);
 
-        List<Enemy> usedThisVolley = new List<Enemy>();
+        usedThisVolley.Clear();
 
         for (int i = 0; i < stacks; i++)
         {
@@ -122,8 +115,10 @@ public class TowerAttack : MonoBehaviour
                 bool targetValid = false;
                 if (target != null && !target.isDead)
                 {
-                    float dist = Vector3.Distance(transform.position, target.transform.position);
-                    if (dist <= range && enemiesInRange.Contains(target))
+                    //float dist = Vector3.Distance(transform.position, target.transform.position);
+                    float sqrRange = range * range;
+                    float sqrDist = (transform.position - target.transform.position).sqrMagnitude;
+                    if (sqrDist <= sqrRange && target != null && !target.isDead)
                         targetValid = true;
                 }
 
@@ -223,7 +218,10 @@ public class TowerAttack : MonoBehaviour
             projectileSpeed = weapon.def.projectileSpeed,
 
             ownerTower = this,
-            weaponFireRate = weapon.def.fireRate
+            weaponFireRate = weapon.def.fireRate,
+            owner = transform,
+
+            weapon = weapon.def
         });
     }
 

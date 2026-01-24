@@ -20,7 +20,8 @@ public class EnemyRangedAttack : MonoBehaviour, IEnemyAttack
 
         proj.Init(
             finalPoint,
-            enemy.damageToPlayer
+            enemy.damageToPlayer,
+            enemy
         );
     }
 }

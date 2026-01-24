@@ -20,6 +20,8 @@ public class ChainBullet : MonoBehaviour, IAttackBehaviour
     private HashSet<Enemy> hitEnemies = new HashSet<Enemy>();
     private float lifeTimer = 0f;
 
+    private WeaponDefinition sourceWeapon;
+
     public void InitAttack(AttackContext context)
     {
         damage = context.damage;
@@ -36,6 +38,8 @@ public class ChainBullet : MonoBehaviour, IAttackBehaviour
         }
 
         SetTarget(context.target);
+
+        sourceWeapon = context.weapon;
     }
 
     public void SetTarget(Transform target)
@@ -92,6 +96,7 @@ public class ChainBullet : MonoBehaviour, IAttackBehaviour
             {
                 hitEnemies.Add(enemy);
                 enemy.TakeDamage(damage);
+                DamageStatsManager.Instance?.RegisterDamage(sourceWeapon, damage);
             }
         }
 
@@ -119,7 +124,7 @@ public class ChainBullet : MonoBehaviour, IAttackBehaviour
     /// </summary>
     private void TryFindNextTarget()
     {
-        Enemy[] allEnemies = FindObjectsOfType<Enemy>();
+        List<Enemy> allEnemies = EnemyManager.Instance.GetEnemiesInRange(transform.position, searchRadius);
 
         Enemy best = null;
         float bestSqrDist = Mathf.Infinity;

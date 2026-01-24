@@ -11,10 +11,13 @@ public class EnemyProjectile : MonoBehaviour
 
     private Vector3 target;
 
-    public void Init(Vector3 target, float damage)
+    private Enemy enemy;
+
+    public void Init(Vector3 target, float damage, Enemy enemy)
     {
         this.target = target;
         this.damage = damage;
+        this.enemy = enemy;
     }
 
     private void Update()
@@ -45,6 +48,12 @@ public class EnemyProjectile : MonoBehaviour
         if (playerHealth != null)
         {
             playerHealth.TakeDamage(damage);
+        }
+
+        // Ўипы
+        if (playerHealth.SpikesDamage > 0f)
+        {
+            enemy.TakeDamage(playerHealth.SpikesDamage, true);
         }
 
         if (destroyOnHit)

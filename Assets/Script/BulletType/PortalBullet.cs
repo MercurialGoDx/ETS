@@ -31,6 +31,8 @@ public class PortalBullet : MonoBehaviour, IAttackBehaviour
     private bool initialized = false;
     private bool hasStruck = false;
 
+    private WeaponDefinition sourceWeapon;
+
     /// <summary>
     /// Вызывается из TowerAttack сразу после Instantiate.
     /// </summary>
@@ -65,6 +67,8 @@ public class PortalBullet : MonoBehaviour, IAttackBehaviour
         lifeTimer = portalLifeTime;
         hasStruck = false;
         initialized = true;
+
+        sourceWeapon = context.weapon;
     }
 
 
@@ -106,6 +110,7 @@ public class PortalBullet : MonoBehaviour, IAttackBehaviour
             if (enemy != null)
             {
                 enemy.TakeDamage(damage);
+                DamageStatsManager.Instance?.RegisterDamage(sourceWeapon, damage);
             }
         }
 
