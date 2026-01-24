@@ -26,6 +26,6 @@ MonoBehaviour:
   fireRate: 0.7
   projectileSpeed: 18
   damageType: 0
-  bulletPrefab: {fileID: 4762023486028289817, guid: a2e9aaab06f5da44081bd5c23843cada, type: 3}
+  bulletPrefab: {fileID: 1542654088660027197, guid: 78c8954f7085a2b4a8eb1a0a971bc1da, type: 3}
   weight: 8
   targetingMode: 0
