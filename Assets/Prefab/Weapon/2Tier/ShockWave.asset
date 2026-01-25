@@ -22,6 +22,7 @@ MonoBehaviour:
   damagePerProjectile: 30
   fireRate: 0.6
   projectileSpeed: 20
+  itemTier: 2
   damageType: 2
   bulletPrefab: {fileID: 2459226596520842175, guid: 8e038340aa8ae4f42ae2176b3323fabf, type: 3}
   weight: 8

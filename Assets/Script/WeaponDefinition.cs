@@ -25,7 +25,10 @@ public class WeaponDefinition : ScriptableObject
     public float damagePerProjectile = 5f;
     public float fireRate = 1f;
     public float projectileSpeed = 10f;
-    
+
+    [Header("Тир оружия")]
+    public ItemTier itemTier = ItemTier.Tier1;
+
     [Header("Тип урона")]
     public WeaponDamageType damageType;
 
