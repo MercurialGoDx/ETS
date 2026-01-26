@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class VolumeUIManager : MonoBehaviour
+public class VolumeUI : MonoBehaviour
 {
     [Header("Слайдер в главном меню")]
     [SerializeField] private Slider menuSlider;
@@ -11,30 +11,32 @@ public class VolumeUIManager : MonoBehaviour
 
     private bool _isUpdating = false;
 
+    private const string VolumeKey = "master_volume";
+    private const float DefaultVolume = 0.5f;
+
     private void Start()
     {
-        float volume = 1f;
+        float volume = LoadVolume();
 
+        // применяем в аудио сразу
         if (AudioManager.Instance != null)
-        {
-            volume = AudioManager.Instance.GetMasterVolume();
-        }
+            AudioManager.Instance.SetMasterVolume(volume);
 
-        if (menuSlider != null)
-        {
-            menuSlider.minValue = 0f;
-            menuSlider.maxValue = 1f;
-            menuSlider.value = volume;
-            menuSlider.onValueChanged.AddListener(OnMenuSliderChanged);
-        }
+        SetupSlider(menuSlider, volume, OnMenuSliderChanged);
+        SetupSlider(pauseSlider, volume, OnPauseSliderChanged);
+    }
 
-        if (pauseSlider != null)
-        {
-            pauseSlider.minValue = 0f;
-            pauseSlider.maxValue = 1f;
-            pauseSlider.value = volume;
-            pauseSlider.onValueChanged.AddListener(OnPauseSliderChanged);
-        }
+    private void SetupSlider(Slider slider, float value, UnityEngine.Events.UnityAction<float> callback)
+    {
+        if (slider == null) return;
+
+        slider.minValue = 0f;
+        slider.maxValue = 1f;
+
+        // чтобы при выставлении значения не дергались события
+        slider.SetValueWithoutNotify(value);
+
+        slider.onValueChanged.AddListener(callback);
     }
 
     private void OnDestroy()
@@ -51,12 +53,11 @@ public class VolumeUIManager : MonoBehaviour
         if (_isUpdating) return;
         _isUpdating = true;
 
-        // синхронизируем второй
+        // синхронизируем второй без вызова событий
         if (pauseSlider != null)
-            pauseSlider.value = value;
+            pauseSlider.SetValueWithoutNotify(value);
 
-        if (AudioManager.Instance != null)
-            AudioManager.Instance.SetMasterVolume(value);
+        ApplyAndSave(value);
 
         _isUpdating = false;
     }
@@ -66,13 +67,27 @@ public class VolumeUIManager : MonoBehaviour
         if (_isUpdating) return;
         _isUpdating = true;
 
-        // синхронизируем первый
+        // синхронизируем первый без вызова событий
         if (menuSlider != null)
-            menuSlider.value = value;
+            menuSlider.SetValueWithoutNotify(value);
 
+        ApplyAndSave(value);
+
+        _isUpdating = false;
+    }
+
+    private void ApplyAndSave(float value)
+    {
         if (AudioManager.Instance != null)
             AudioManager.Instance.SetMasterVolume(value);
 
-        _isUpdating = false;
+        PlayerPrefs.SetFloat(VolumeKey, value);
+        PlayerPrefs.Save();
+    }
+
+    private float LoadVolume()
+    {
+        // Если пользователь никогда не трогал — будет 0.5
+        return PlayerPrefs.GetFloat(VolumeKey, DefaultVolume);
     }
 }

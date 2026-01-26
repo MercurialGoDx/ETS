@@ -11,6 +11,12 @@ public class PlayerHealth : MonoBehaviour
     public float healthRegenPerSecond = 0f;
     public float regenPer100MissingHealth = 0f;
 
+    [Header("Utility - Evade")]
+    [SerializeField, Range(0f, 0.95f)]
+    private float evadeCap = 0.75f;   // максимум 75%, никогда не будет 100%
+    [SerializeField, Range(0f, 1f)]
+    private float evadeChance = 0f;   // текущий шанс
+
     [Header("UI")]
     [SerializeField] private Image healthBarFill;
 
@@ -89,8 +95,18 @@ public class PlayerHealth : MonoBehaviour
         UpdateHealthUI();
     }
 
-    // === УРОН ===
+    public void AddEvadeChanceDiminishing(float add)
+    {
+        add = Mathf.Clamp01(add);
 
+        float remaining = evadeCap - evadeChance;
+        if (remaining <= 0f) return;
+
+        evadeChance += remaining * add;          // diminishing returns
+        evadeChance = Mathf.Min(evadeChance, evadeCap);
+    }
+
+    // === УРОН ===
     public void TakeDamage(float damage)
     {
         if (damage <= 0f) return;
@@ -248,7 +264,7 @@ public class PlayerHealth : MonoBehaviour
             OnEnemyKilledBySpikes();
         }
 
-        if(UpgradesManager.Instance.playerShield.ShieldRestorePerEnemyKill > 0)
+        if (UpgradesManager.Instance.playerShield.ShieldRestorePerEnemyKill > 0)
         {
             UpgradesManager.Instance.playerShield.RestoreCurrentShield(UpgradesManager.Instance.playerShield.ShieldRestorePerEnemyKill);
         }

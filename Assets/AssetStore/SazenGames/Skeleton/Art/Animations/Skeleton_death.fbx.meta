@@ -1,12 +1,5 @@
 fileFormatVersion: 2
 guid: 56fcc68ba18948946afb47d690ad1095
-AssetOrigin:
-  serializedVersion: 1
-  productId: 306857
-  packageName: Stylized Low Poly Skeleton
-  packageVersion: 1.1
-  assetPath: Assets/SazenGames/Skeleton/Art/Animations/Skeleton_death.fbx
-  uploadId: 792234
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -64,14 +57,7 @@ ModelImporter:
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      events:
-      - time: 1
-        functionName: OnDeathAnimationFinished
-        data: 
-        objectReferenceParameter: {fileID: 2604920207847695257, guid: 068644ded60bdde4f8d45fe16c21ffab, type: 3}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
+      events: []
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}
@@ -655,12 +641,14 @@ ModelImporter:
     - name: leg_twist.r
       parentName: leg_stretch.r
       position: {x: 0.00000004887581, y: -0.0000000667572, z: 0.13610716}
-      rotation: {x: -0.000000039115537, y: -0.000000022351736, z: -0.00000018510032, w: 1}
+      rotation: {x: -0.000000039115537, y: -0.000000022351736, z: -0.00000018510032,
+        w: 1}
       scale: {x: 1.0000008, y: 1.0000004, z: 1.000001}
     - name: thigh_twist.r
       parentName: thigh_stretch.r
       position: {x: 0.0000000333786, y: 0.000000009536743, z: 0.00000007987022}
-      rotation: {x: 0.00000010803338, y: -0.000000009313222, z: 0.00000008940694, w: 1}
+      rotation: {x: 0.00000010803338, y: -0.000000009313222, z: 0.00000008940694,
+        w: 1}
       scale: {x: 1.0000002, y: 1.0000005, z: 1.0000004}
     - name: spine_01.x
       parentName: root.x
@@ -835,7 +823,8 @@ ModelImporter:
     - name: arm_twist.r
       parentName: arm_stretch.r
       position: {x: 0.000000047683713, y: 0.000000028610229, z: 0.0000002169609}
-      rotation: {x: 0.000000059604638, y: -0.000000012107192, z: -0.00000016437842, w: 1}
+      rotation: {x: 0.000000059604638, y: -0.000000012107192, z: -0.00000016437842,
+        w: 1}
       scale: {x: 1.0000002, y: 0.9999998, z: 1.0000002}
     - name: shoulder.l
       parentName: spine_03.x
@@ -996,3 +985,10 @@ ModelImporter:
   userData: 
   assetBundleName: 
   assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 306857
+  packageName: Stylized Low Poly Skeleton
+  packageVersion: 1.1
+  assetPath: Assets/AssetStore/SazenGames/Skeleton/Art/Animations/Skeleton_death.fbx
+  uploadId: 792234

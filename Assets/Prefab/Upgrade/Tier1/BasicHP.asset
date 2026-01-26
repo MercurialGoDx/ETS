@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0362b1874b9092345a6c273b899e2e4d, type: 3}
-  m_Name: MaxHealth_1Tier
+  m_Name: BasicHP
   m_EditorClassIdentifier: 
   icon: {fileID: 21300000, guid: 2636074560be2524593c0ae2376d21f0, type: 3}
   price: 100
@@ -20,4 +20,4 @@ MonoBehaviour:
       m_TableCollectionName: GUID:164770c6fc8794c4ba4db6f8c7e72db3
   nameKey: max_health.name
   descriptionKey: max_health.desc
-  valueFlat: 0
+  valueFlat: 50

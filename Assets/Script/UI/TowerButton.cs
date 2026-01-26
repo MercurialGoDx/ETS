@@ -17,7 +17,7 @@ public class TowerButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         if (outline == null)
         {
             outline = gameObject.AddComponent<Outline>();
-            outline.effectColor = Color.white;
+            outline.effectColor = Color.black;
             outline.effectDistance = new Vector2(4, -4);
         }
 

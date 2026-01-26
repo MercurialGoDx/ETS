@@ -1,24 +1,57 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class PlayerShield : MonoBehaviour, ITakeDamageModifier
 {
     [Header("Щит")]
-    [SerializeField] private float maxShield = 0f;          // базовый щит (виден в Инспекторе как Max Shield)
-    [SerializeField] private float shieldMultiplier = 1f;   // множитель щита (1.0 -> 1.1 -> 1.2 ...)
-    [SerializeField] private float shieldRechargeTime = 10f; // время полного восстановления щита
-    [SerializeField] private float shieldRechargeDelay = 0f; // оставляем для совместимости, но в логике не используем
-    [SerializeField] private float damageWhileShieldActivePercent = 0f; // дополнительный урон, когда щит активен
-    [SerializeField] private float shieldRestorePerEnemyKill = 0f; // восстановление щита за убийство врага
+    [SerializeField] private float maxShield = 0f;
+    [SerializeField] private float shieldMultiplier = 1f;
+    [SerializeField] private float shieldRechargeTime = 10f;
+    [SerializeField] private float shieldRechargeDelay = 0f; // хранение значения, в логике не используем
+    [SerializeField] private float damageWhileShieldActivePercent = 0f; // бонус к урону, когда щит АКТИВЕН
+    [SerializeField] private float shieldRestorePerEnemyKill = 0f;
+
+    [Header("Полный фулл щита без урона")]
+    [Tooltip("Если щит НЕ терял прочность от атак врага в течение этого времени — мгновенно восстанавливаем до максимума.")]
+    [SerializeField] private float fullRestoreAfterNoShieldDamageSeconds = 20f;
 
     [Header("UI")]
     [SerializeField] private Image shieldBarFill;
 
-    private float currentShield;
+    [Header("Visual Shield (VFX)")]
+    [SerializeField] private GameObject shieldVisual; // VFX объект щита на игроке
 
+    [Header("VFX Fade")]
+    [SerializeField] private float vfxFadeInTime = 0.2f;
+    [SerializeField] private float vfxFadeOutTime = 0.25f;
+    [SerializeField] private bool disableObjectAfterFadeOut = true;
+    [SerializeField] private bool fadeAlphaIfPossible = true; // если материалы поддерживают альфу — будет плавнее
+
+    private float currentShield;
     private float shieldRegenTimer = 0f;
 
+    // true = щит активен (не в перезарядке), false = щит в перезарядке/выбит и заряжается
     private bool shieldActive = true;
+
+    // таймер "сколько времени щит не получал урон (не терял прочность)"
+    private float noShieldDamageTimer = 0f;
+
+    // чтобы не дергать визуалку каждый кадр
+    private bool lastVisualShouldBeVisible = false;
+
+    // VFX кеш
+    private ParticleSystem[] cachedParticles;
+    private TrailRenderer[] cachedTrails;
+    private LineRenderer[] cachedLines;
+    private Renderer[] cachedRenderers;
+
+    // исходные emission значения
+    private readonly Dictionary<ParticleSystem, float> baseEmissionRates = new();
+
+    // управление корутинами
+    private Coroutine fadeRoutine;
 
     public float MaxShield => maxShield * shieldMultiplier;
     public float CurrentShield => currentShield;
@@ -28,7 +61,6 @@ public class PlayerShield : MonoBehaviour, ITakeDamageModifier
     public float ShieldRechargeDelay => shieldRechargeDelay;
 
     public bool IsShieldActive => shieldActive;
-
     public int Priority => 100;
 
     private void Awake()
@@ -36,16 +68,65 @@ public class PlayerShield : MonoBehaviour, ITakeDamageModifier
         currentShield = MaxShield;
         shieldActive = MaxShield > 0f;
         shieldRegenTimer = 0f;
+        noShieldDamageTimer = 0f;
+
+        CacheVfxComponents();
 
         UpdateShieldUI();
+
+        // принудительно применяем стартовое состояние визуалки
+        lastVisualShouldBeVisible = false;
+        ApplyShieldVisualStateImmediate(GetShouldBeVisible());
+        lastVisualShouldBeVisible = GetShouldBeVisible();
     }
 
     private void Update()
     {
+        HandleNoShieldDamageFullRestore();
         HandleShieldRegen();
     }
 
-    // Flat: добавляем к базовому щиту (то, что видно в инспекторе)
+    // === МЕХАНИКА: если щит не терял прочность N секунд -> мгновенно фуллим ===
+    private void HandleNoShieldDamageFullRestore()
+    {
+        if (fullRestoreAfterNoShieldDamageSeconds <= 0f)
+            return;
+
+        // если щита как механики нет — не копим таймер
+        if (MaxShield <= 0f)
+        {
+            noShieldDamageTimer = 0f;
+            return;
+        }
+
+        // если щит не активен (перезарядка) — не фулим "за бездействие", иначе будет ломать твою механику зарядки
+        if (!shieldActive)
+        {
+            noShieldDamageTimer = 0f;
+            return;
+        }
+
+        // если и так полный — держим таймер на нуле
+        if (currentShield >= MaxShield)
+        {
+            noShieldDamageTimer = 0f;
+            return;
+        }
+
+        noShieldDamageTimer += Time.deltaTime;
+
+        if (noShieldDamageTimer >= fullRestoreAfterNoShieldDamageSeconds)
+        {
+            currentShield = MaxShield;   // за 1 кадр
+            noShieldDamageTimer = 0f;
+
+            UpdateShieldUI();
+            UpdateShieldVisual();
+        }
+    }
+
+    // === Апгрейды щита ===
+
     public void AddMaxShield(float amount)
     {
         float oldMax = MaxShield;
@@ -53,28 +134,25 @@ public class PlayerShield : MonoBehaviour, ITakeDamageModifier
         maxShield += amount;
 
         float newMax = MaxShield;
-        float delta = newMax - oldMax; // обычно == amount * shieldMultiplier
+        float delta = newMax - oldMax;
 
         if (oldMax <= 0f)
         {
-            // щит появился впервые
             shieldActive = true;
-            currentShield = newMax;      // первый раз можно дать полный щит
+            currentShield = newMax;
             shieldRegenTimer = 0f;
+            noShieldDamageTimer = 0f;
         }
         else
         {
-            // было => добавляем к текущему, а не фулим
             currentShield = Mathf.Min(currentShield + delta, newMax);
-
-            // если щит был "выключен", оставляем его выключенным — пусть восстановится по твоей логике
-            // (ничего не меняем в shieldActive)
         }
 
         UpdateShieldUI();
+        UpdateShieldVisual();
     }
 
-    // Percent: увеличиваем множитель щита (amount = 0.1f → +10%)
+    // amount = 0.1f → +10%
     public void AddShieldPercent(float amount)
     {
         float oldMax = MaxShield;
@@ -87,8 +165,9 @@ public class PlayerShield : MonoBehaviour, ITakeDamageModifier
         if (oldMax <= 0f)
         {
             shieldActive = true;
-            currentShield = newMax; // первый раз — полный
+            currentShield = newMax;
             shieldRegenTimer = 0f;
+            noShieldDamageTimer = 0f;
         }
         else
         {
@@ -96,6 +175,7 @@ public class PlayerShield : MonoBehaviour, ITakeDamageModifier
         }
 
         UpdateShieldUI();
+        UpdateShieldVisual();
     }
 
     public void SetShieldRechargeTime(float newTime)
@@ -105,25 +185,27 @@ public class PlayerShield : MonoBehaviour, ITakeDamageModifier
 
     public void SetShieldRechargeDelay(float newDelay)
     {
-        // оставляем просто как хранение значения
         shieldRechargeDelay = Mathf.Max(0f, newDelay);
     }
 
-    // === РЕГЕН ЩИТА ПО НОВОЙ ЛОГИКЕ ===
-
+    // === Логика регена щита ===
+    // Важно: во время регена shieldActive == false -> визуалка выключена, даже если currentShield > 1
     private void HandleShieldRegen()
     {
-        // если щит как механика не задан — просто убеждаемся, что его нет
+        // если щит как механика не задан — щита нет
         if (MaxShield <= 0f)
         {
             currentShield = 0f;
             shieldActive = false;
             shieldRegenTimer = 0f;
+            noShieldDamageTimer = 0f;
+
             UpdateShieldUI();
+            UpdateShieldVisual();
             return;
         }
 
-        // если щит активен — он уже работает, ничего не делаем (кроме ограничения максимума)
+        // если щит активен — ничего не делаем
         if (shieldActive)
         {
             if (currentShield > MaxShield)
@@ -131,64 +213,308 @@ public class PlayerShield : MonoBehaviour, ITakeDamageModifier
                 currentShield = MaxShield;
                 UpdateShieldUI();
             }
+
+            UpdateShieldVisual();
             return;
         }
 
-        // Здесь щит "в отключке" и восстанавливается.
-        // Весь урон в этом состоянии уже идёт по хп (логика в TakeDamage).
-
+        // щит в перезарядке
         shieldRegenTimer += Time.deltaTime;
 
         float duration = Mathf.Max(0.01f, shieldRechargeTime);
         float t = Mathf.Clamp01(shieldRegenTimer / duration);
 
         currentShield = MaxShield * t;
-        UpdateShieldUI();
 
-        // Добрали 100% или вышли по времени — снова включаем щит
+        UpdateShieldUI();
+        UpdateShieldVisual();
+
+        // зарядился полностью — снова активируем
         if (t >= 1f)
         {
             shieldActive = true;
             currentShield = MaxShield;
             shieldRegenTimer = 0f;
+            noShieldDamageTimer = 0f;
+
             UpdateShieldUI();
+            UpdateShieldVisual();
         }
     }
+
+    // === UI ===
 
     private void UpdateShieldUI()
     {
-        if (shieldBarFill != null)
+        if (shieldBarFill == null) return;
+
+        float normalized = MaxShield > 0f ? currentShield / MaxShield : 0f;
+        shieldBarFill.fillAmount = Mathf.Clamp01(normalized);
+    }
+
+    // === Визуалка щита (VFX) ===
+    private bool GetShouldBeVisible()
+    {
+        return MaxShield > 0f && currentShield > 0f && shieldActive;
+    }
+
+    private void UpdateShieldVisual()
+    {
+        if (shieldVisual == null) return;
+
+        bool shouldBeVisible = GetShouldBeVisible();
+
+        if (lastVisualShouldBeVisible == shouldBeVisible)
+            return;
+
+        lastVisualShouldBeVisible = shouldBeVisible;
+        ApplyShieldVisualStateSmooth(shouldBeVisible);
+    }
+
+    private void CacheVfxComponents()
+    {
+        if (shieldVisual == null) return;
+
+        cachedParticles = shieldVisual.GetComponentsInChildren<ParticleSystem>(true);
+        cachedTrails = shieldVisual.GetComponentsInChildren<TrailRenderer>(true);
+        cachedLines = shieldVisual.GetComponentsInChildren<LineRenderer>(true);
+        cachedRenderers = shieldVisual.GetComponentsInChildren<Renderer>(true);
+
+        baseEmissionRates.Clear();
+        foreach (var ps in cachedParticles)
         {
-            float normalized = MaxShield > 0f ? currentShield / MaxShield : 0f;
-            shieldBarFill.fillAmount = Mathf.Clamp01(normalized);
+            if (ps == null) continue;
+            var em = ps.emission;
+            baseEmissionRates[ps] = em.rateOverTimeMultiplier;
         }
     }
 
+    private void ApplyShieldVisualStateImmediate(bool visible)
+    {
+        if (shieldVisual == null) return;
+
+        if (!visible)
+        {
+            StopAndClearVfx();
+            if (disableObjectAfterFadeOut)
+                shieldVisual.SetActive(false);
+            else
+                SetAlphaAll(0f);
+
+            return;
+        }
+
+        shieldVisual.SetActive(true);
+        SetAlphaAll(1f);
+        SetEmissionMultiplier(1f);
+        PlayVfx();
+    }
+
+    private void ApplyShieldVisualStateSmooth(bool visible)
+    {
+        if (shieldVisual == null) return;
+
+        if (cachedParticles == null || cachedParticles.Length == 0)
+            CacheVfxComponents();
+
+        if (fadeRoutine != null)
+            StopCoroutine(fadeRoutine);
+
+        fadeRoutine = StartCoroutine(FadeVfxRoutine(visible));
+    }
+
+    private IEnumerator FadeVfxRoutine(bool show)
+    {
+        if (show)
+        {
+            shieldVisual.SetActive(true);
+            PlayVfx();
+
+            float dur = Mathf.Max(0.01f, vfxFadeInTime);
+            float t = 0f;
+
+            SetEmissionMultiplier(0f);
+            SetAlphaAll(fadeAlphaIfPossible ? 0f : 1f);
+
+            while (t < dur)
+            {
+                t += Time.deltaTime;
+                float k = Mathf.Clamp01(t / dur);
+
+                SetEmissionMultiplier(k);
+                if (fadeAlphaIfPossible) SetAlphaAll(k);
+
+                yield return null;
+            }
+
+            SetEmissionMultiplier(1f);
+            if (fadeAlphaIfPossible) SetAlphaAll(1f);
+        }
+        else
+        {
+            float dur = Mathf.Max(0.01f, vfxFadeOutTime);
+            float t = 0f;
+
+            while (t < dur)
+            {
+                t += Time.deltaTime;
+                float k = 1f - Mathf.Clamp01(t / dur);
+
+                SetEmissionMultiplier(k);
+                if (fadeAlphaIfPossible) SetAlphaAll(k);
+
+                yield return null;
+            }
+
+            SetEmissionMultiplier(0f);
+            if (fadeAlphaIfPossible) SetAlphaAll(0f);
+
+            StopAndClearVfx();
+
+            if (disableObjectAfterFadeOut)
+                shieldVisual.SetActive(false);
+        }
+
+        fadeRoutine = null;
+    }
+
+    private void PlayVfx()
+    {
+        if (cachedLines != null)
+        {
+            foreach (var lr in cachedLines)
+                if (lr != null) lr.enabled = true;
+        }
+
+        if (cachedTrails != null)
+        {
+            foreach (var tr in cachedTrails)
+                if (tr != null) tr.Clear();
+        }
+
+        if (cachedParticles != null)
+        {
+            foreach (var ps in cachedParticles)
+            {
+                if (ps == null) continue;
+                ps.Clear(true);
+                ps.Play(true);
+            }
+        }
+    }
+
+    private void StopAndClearVfx()
+    {
+        if (cachedParticles != null)
+        {
+            foreach (var ps in cachedParticles)
+            {
+                if (ps == null) continue;
+                ps.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+                ps.Clear(true);
+            }
+        }
+
+        if (cachedTrails != null)
+        {
+            foreach (var tr in cachedTrails)
+                if (tr != null) tr.Clear();
+        }
+
+        if (cachedLines != null)
+        {
+            foreach (var lr in cachedLines)
+                if (lr != null) lr.enabled = false;
+        }
+    }
+
+    private void SetEmissionMultiplier(float multiplier01)
+    {
+        if (cachedParticles == null) return;
+
+        float m = Mathf.Clamp01(multiplier01);
+
+        foreach (var ps in cachedParticles)
+        {
+            if (ps == null) continue;
+
+            var em = ps.emission;
+            if (!baseEmissionRates.TryGetValue(ps, out float baseRate))
+                baseRate = em.rateOverTimeMultiplier;
+
+            em.rateOverTimeMultiplier = baseRate * m;
+        }
+    }
+
+    private void SetAlphaAll(float a)
+    {
+        if (!fadeAlphaIfPossible) return;
+        if (cachedRenderers == null) return;
+
+        a = Mathf.Clamp01(a);
+
+        foreach (var r in cachedRenderers)
+        {
+            if (r == null) continue;
+            r.enabled = true;
+
+            var mpb = new MaterialPropertyBlock();
+            r.GetPropertyBlock(mpb);
+
+            if (r.sharedMaterial != null && r.sharedMaterial.HasProperty("_BaseColor"))
+            {
+                Color c = r.sharedMaterial.GetColor("_BaseColor");
+                c.a = a;
+                mpb.SetColor("_BaseColor", c);
+                r.SetPropertyBlock(mpb);
+            }
+            else if (r.sharedMaterial != null && r.sharedMaterial.HasProperty("_Color"))
+            {
+                Color c = r.sharedMaterial.GetColor("_Color");
+                c.a = a;
+                mpb.SetColor("_Color", c);
+                r.SetPropertyBlock(mpb);
+            }
+        }
+    }
+
+    // === Получение урона ===
+    // "Получать урон" в твоем смысле: щит теряет прочность от атак.
     public float ModifyDamage(float damage)
     {
         float remaining = damage;
 
         if (shieldActive && MaxShield > 0f && currentShield > 0f)
         {
+            float before = currentShield;
+
             float shieldUsed = Mathf.Min(remaining, currentShield);
             currentShield -= shieldUsed;
             remaining -= shieldUsed;
-            UpdateShieldUI();
+
+            // если щит реально потерял прочность — сбрасываем таймер "без урона"
+            if (currentShield < before)
+            {
+                noShieldDamageTimer = 0f;
+            }
 
             if (currentShield <= 0f)
             {
                 currentShield = 0f;
-                shieldActive = false;
+                shieldActive = false;   // уходим в перезарядку
                 shieldRegenTimer = 0f;
+                noShieldDamageTimer = 0f;
             }
 
+            UpdateShieldUI();
+            UpdateShieldVisual();
             return remaining;
         }
-        else
-        {
-            return damage;
-        }
+
+        return damage;
     }
+
+    // === Бонус к урону при активном щите ===
 
     public void AddDamageWhileShieldActivePercent(float amount)
     {
@@ -197,18 +523,17 @@ public class PlayerShield : MonoBehaviour, ITakeDamageModifier
 
     public float GetShieldDamageBonusMultiplier()
     {
-        // нет апгрейда — нет бонуса
         if (damageWhileShieldActivePercent <= 0f)
             return 1f;
 
-        // щит не активен → бонус не работает
-        if (IsShieldActive)
+        if (!IsShieldActive)
             return 1f;
 
-        // есть апгрейд и щит активен
-        float percent = damageWhileShieldActivePercent / 100f; // 10 → 0.1
-        return 1f + percent; // 10% → 1.1, 20% → 1.2 и т.д.
+        float percent = damageWhileShieldActivePercent / 100f;
+        return 1f + percent;
     }
+
+    // === Восстановление ===
 
     public void AddShieldRestorePerEnemyKill(float amount)
     {
@@ -217,6 +542,12 @@ public class PlayerShield : MonoBehaviour, ITakeDamageModifier
 
     public void RestoreCurrentShield(float amount)
     {
-        currentShield += amount;
+        if (MaxShield <= 0f) return;
+
+        currentShield = Mathf.Clamp(currentShield + amount, 0f, MaxShield);
+
+        // это не "урон", поэтому таймер не сбрасываем
+        UpdateShieldUI();
+        UpdateShieldVisual();
     }
 }

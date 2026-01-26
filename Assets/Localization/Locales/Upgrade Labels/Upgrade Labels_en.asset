@@ -23,7 +23,215 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1340877875425280
-    m_Localized: Shield
+    m_Localized: 'Shield will be increase on <color=#ffd700>{0}</color>\n\n<color=#ffd700>Cost:
+      {1}</color>'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1401183682945024
+    m_Localized: <color=#ffd700>Repair</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1401183729082368
+    m_Localized: 'Increases health regeneration by <color=#ffd700>{0}</color>\n\n<color=#ffd700>Cost:
+      {1}</color>'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1401183729082369
+    m_Localized: <color=#ffd700>Spiked Defense</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1401183729082370
+    m_Localized: 'Increases thorn damage by <color=#ffd700>{0}</color>\n\n<color=#ffd700>Cost:
+      {1}</color>'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1401183729082373
+    m_Localized: <color=#ffd700>Fortification</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1401183729082374
+    m_Localized: 'Increases maximum health by <color=#ffd700>{0}</color>\n\n<color=#ffd700>Cost:
+      {1}</color>'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1401183729082375
+    m_Localized: <color=#ffd700>Gold Coin</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1401183729082376
+    m_Localized: 'Increases gold gain per second by <color=#ffd700>{0}</color>\n\n<color=#ffd700>Cost:
+      {1}</color>'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1401183729082377
+    m_Localized: <color=#ffd700>Greed</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1401183729082378
+    m_Localized: Gain <color=#ffd700>200</color> gold in exchange for <color=#ffd700>{0}</color>
+      maximum health
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1401183729082379
+    m_Localized: <color=#ffd700>Death Mask</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1401183729082380
+    m_Localized: 'Increases thorn damage by <color=#ffd700>15</color> and also heals
+      you for <color=#ffd700>5</color> when taking damage\n\n<color=#ffd700>Cost:
+      {0}</color>'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1401183729082381
+    m_Localized: <color=#ffd700>Generator</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1401183729082382
+    m_Localized: 'Increases damage by <color=#ffd700>{1}</color> every <color=#ffd700>{0}</color>
+      seconds\n\n<color=#ffd700>Cost: {2}</color>'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1401183729082383
+    m_Localized: <color=#ffd700>Gold Mine</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1401183729082384
+    m_Localized: 'Increases gold gained by <color=#ffd700>{0}%</color>\n\n<color=#ffd700>Cost:
+      {1}</color>'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1401183729082385
+    m_Localized: <color=#ffd700>Beast Fang</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1401183729082386
+    m_Localized: 'Killing an enemy heals you for <color=#ffd700>{0}</color>\n\n<color=#ffd700>Cost:
+      {1}</color>'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1401183729082387
+    m_Localized: <color=#ffd700>Amber</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1401183729082388
+    m_Localized: 'Increases maximum health by <color=#ffd700>{1}</color> every <color=#ffd700>{0}</color>
+      seconds\n\n<color=#ffd700>Cost: {2}</color>'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1401183729082389
+    m_Localized: <color=#ffd700>Sapphire</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1401183729082390
+    m_Localized: 'Increases maximum energy shield by <color=#ffd700>{1}</color> every
+      <color=#ffd700>{0}</color> seconds\n\n<color=#ffd700>Cost: {2}</color>'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1401183729082391
+    m_Localized: <color=#ffd700>Attack Speed</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1401183729082392
+    m_Localized: 'Increases attack speed by <color=#ffd700>{0}</color>\n\n<color=#ffd700>Cost:
+      {1}</color>'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1401183729082393
+    m_Localized: <color=#ffd700>Nature's Blessing</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1401183729082395
+    m_Localized: <color=#ffd700>Emerald</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1401183729082396
+    m_Localized: 'Increases health regeneration by <color=#ffd700>{0}</color> every
+      <color=#ffd700>{1}</color> seconds\n\n<color=#ffd700>Cost: {2}</color>'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1401183729082397
+    m_Localized: <color=#ffd700>Magical Protection</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1401183729082398
+    m_Localized: 'Increases maximum energy shield by <color=#ffd700>{0}%</color>\n\n<color=#ffd700>Cost:
+      {1}</color>'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1401183729082399
+    m_Localized: <color=#ffd700>Reinforced Spikes</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1401183729082400
+    m_Localized: 'Increases thorn damage by <color=#ffd700>60</color>. Gain +2 thorn
+      damage each time an enemy dies from thorn damage\n\n<color=#ffd700>Cost: {0}</color>'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1401183729082401
+    m_Localized: <color=#ffd700>Singularity</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1401183729082402
+    m_Localized: 'Increases outgoing damage by <color=#ffd700>{0}%</color> while
+      the energy shield is active\n\n<color=#ffd700>Cost: {0}</color>'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1401183729082403
+    m_Localized: <color=#ffd700>Aura of Decay</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1401183729082404
+    m_Localized: 'Deals damage equal to your health regeneration to all enemies every
+      second\n\n<color=#ffd700>Cost: {0}</color>'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1401183729082405
+    m_Localized: <color=#ffd700>Spiked Carapace</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1401183729082406
+    m_Localized: 'Increases thorn damage by <color=#ffd700>{0}%</color>\n\n<color=#ffd700>Cost:
+      {1}</color>'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1401183729082407
+    m_Localized: <color=#ffd700>Damage Boost</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1401183729082408
+    m_Localized: Increases damage from any source by <color=#ffd700>{0}%</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1401183729082409
+    m_Localized: <color=#ffd700>Gold Rush</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1401183729082410
+    m_Localized: Increases gold gain per second by <color=#ffd700>{0}%</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1401183729082411
+    m_Localized: <color=#ffd700>Fortress</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1401183729082412
+    m_Localized: Increases maximum health by <color=#ffd700>{0}%</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1401183729082413
+    m_Localized: <color=#ffd700>Recovery</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1401183729082414
+    m_Localized: Increases health regeneration by <color=#ffd700>{0}%</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1401183729082415
+    m_Localized: <color=#ffd700>Protection</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1401183729082416
+    m_Localized: Increases maximum energy shield by <color=#ffd700>{0}%</color>
     m_Metadata:
       m_Items: []
   references:

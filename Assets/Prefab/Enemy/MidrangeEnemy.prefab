@@ -353,10 +353,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 1.15
-  maxHealth: 12
+  maxHealth: 16
   damageToPlayer: 2
   baseGold: 1
   canBeSlowed: 1
+  canBeKnocked: 1
   attackType: 1
   attackRange: 2.5
   attackInterval: 1

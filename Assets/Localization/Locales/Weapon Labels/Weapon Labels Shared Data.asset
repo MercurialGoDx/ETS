@@ -15,212 +15,204 @@ MonoBehaviour:
   m_TableCollectionName: Weapon Labels
   m_TableCollectionNameGuidString: 32a974e0a609fb740a2db5dde9508098
   m_Entries:
-  - m_Id: 1308153466576896
-    m_Key: basic_shield.name
+  - m_Id: 1385907683844096
+    m_Key: axe.name
     m_Metadata:
       m_Items: []
-  - m_Id: 1308153542074368
-    m_Key: basic_shield.desc
+  - m_Id: 1385907725787136
+    m_Key: axe.desc
     m_Metadata:
       m_Items: []
-  - m_Id: 1308153542074369
-    m_Key: basic_regen.name
+  - m_Id: 1385907725787137
+    m_Key: bow.name
     m_Metadata:
       m_Items: []
-  - m_Id: 1308153546268672
-    m_Key: basic_regen.desc
+  - m_Id: 1385907725787138
+    m_Key: bow.desc
     m_Metadata:
       m_Items: []
-  - m_Id: 1308153546268673
-    m_Key: basic_spike.name
+  - m_Id: 1385907725787139
+    m_Key: chaos_orb.name
     m_Metadata:
       m_Items: []
-  - m_Id: 1308153546268674
-    m_Key: basic_spike.desc
+  - m_Id: 1385907725787140
+    m_Key: chaos_orb.desc
     m_Metadata:
       m_Items: []
-  - m_Id: 1308153546268675
-    m_Key: damage.name
+  - m_Id: 1385907725787141
+    m_Key: magic_orb.name
     m_Metadata:
       m_Items: []
-  - m_Id: 1308153546268676
-    m_Key: damage.desc
+  - m_Id: 1385907725787142
+    m_Key: magic_orb.desc
     m_Metadata:
       m_Items: []
-  - m_Id: 1308153546268677
-    m_Key: max_health.name
+  - m_Id: 1385907725787143
+    m_Key: spear.name
     m_Metadata:
       m_Items: []
-  - m_Id: 1308153546268678
-    m_Key: max_health.desc
+  - m_Id: 1385907725787144
+    m_Key: spear.desc
     m_Metadata:
       m_Items: []
-  - m_Id: 1308153546268679
-    m_Key: passive_gold.name
+  - m_Id: 1385907725787145
+    m_Key: stone.name
     m_Metadata:
       m_Items: []
-  - m_Id: 1308153546268680
-    m_Key: passive_gold.desc
+  - m_Id: 1385907725787146
+    m_Key: stone.desc
     m_Metadata:
       m_Items: []
-  - m_Id: 1308153546268681
-    m_Key: sacrifice.name
+  - m_Id: 1385907725787147
+    m_Key: bounce.name
     m_Metadata:
       m_Items: []
-  - m_Id: 1308153546268682
-    m_Key: sacrifice.desc
+  - m_Id: 1385907725787148
+    m_Key: bounce.desc
     m_Metadata:
       m_Items: []
-  - m_Id: 1308153546268683
-    m_Key: death_mask.name
+  - m_Id: 1385907725787149
+    m_Key: chain_lighting.name
     m_Metadata:
       m_Items: []
-  - m_Id: 1308153546268684
-    m_Key: death_mask.desc
+  - m_Id: 1385907725787150
+    m_Key: chain_lighting.desc
     m_Metadata:
       m_Items: []
-  - m_Id: 1308153546268685
-    m_Key: generator.name
+  - m_Id: 1385907725787151
+    m_Key: ice_bullet.name
     m_Metadata:
       m_Items: []
-  - m_Id: 1308153546268686
-    m_Key: generator.desc
+  - m_Id: 1385907725787152
+    m_Key: ice_bullet.desc
     m_Metadata:
       m_Items: []
-  - m_Id: 1308153546268687
-    m_Key: gold_mine.name
+  - m_Id: 1385907725787153
+    m_Key: life_laser.name
     m_Metadata:
       m_Items: []
-  - m_Id: 1308153546268688
-    m_Key: gold_mine.desc
+  - m_Id: 1385907725787154
+    m_Key: life_laser.desc
     m_Metadata:
       m_Items: []
-  - m_Id: 1308153546268689
-    m_Key: heal_on_kill.name
+  - m_Id: 1385907725787155
+    m_Key: missles.name
     m_Metadata:
       m_Items: []
-  - m_Id: 1308153546268690
-    m_Key: heal_on_kill.desc
+  - m_Id: 1385907725787156
+    m_Key: missles.desc
     m_Metadata:
       m_Items: []
-  - m_Id: 1308153546268691
-    m_Key: health_per_tick.name
+  - m_Id: 1385907725787157
+    m_Key: mortar.name
     m_Metadata:
       m_Items: []
-  - m_Id: 1308153546268692
-    m_Key: health_per_tick.desc
+  - m_Id: 1385907725787158
+    m_Key: mortar.desc
     m_Metadata:
       m_Items: []
-  - m_Id: 1308153546268693
-    m_Key: shield_per_tick.name
+  - m_Id: 1385907725787159
+    m_Key: shock_wave.name
     m_Metadata:
       m_Items: []
-  - m_Id: 1308153546268694
-    m_Key: shield_per_tick.desc
+  - m_Id: 1385907725787160
+    m_Key: shock_wave.desc
     m_Metadata:
       m_Items: []
-  - m_Id: 1308153546268695
-    m_Key: attack_speed.name
+  - m_Id: 1385907725787161
+    m_Key: balista.name
     m_Metadata:
       m_Items: []
-  - m_Id: 1308153546268696
-    m_Key: attack_speed.desc
+  - m_Id: 1385907725787162
+    m_Key: balista.desc
     m_Metadata:
       m_Items: []
-  - m_Id: 1308153546268697
-    m_Key: regen_per_missing_health.name
+  - m_Id: 1385907725787163
+    m_Key: catapult.name
     m_Metadata:
       m_Items: []
-  - m_Id: 1308153546268698
-    m_Key: regen_per_missing_health.desc
+  - m_Id: 1385907725787164
+    m_Key: catapult.desc
     m_Metadata:
       m_Items: []
-  - m_Id: 1308153546268699
-    m_Key: regen_per_tick.name
+  - m_Id: 1385907725787165
+    m_Key: chaos_wave.name
     m_Metadata:
       m_Items: []
-  - m_Id: 1308153546268700
-    m_Key: regen_per_tick.desc
+  - m_Id: 1385907725787166
+    m_Key: chaos_wave.desc
     m_Metadata:
       m_Items: []
-  - m_Id: 1308153546268701
-    m_Key: shield_multiply.name
+  - m_Id: 1385907725787167
+    m_Key: hammer.name
     m_Metadata:
       m_Items: []
-  - m_Id: 1308153546268702
-    m_Key: shield_multiply.desc
+  - m_Id: 1385907725787168
+    m_Key: hammer.desc
     m_Metadata:
       m_Items: []
-  - m_Id: 1308153546268703
-    m_Key: spike_scaling.name
+  - m_Id: 1385907725787169
+    m_Key: laser.name
     m_Metadata:
       m_Items: []
-  - m_Id: 1308153546268704
-    m_Key: spike_scaling.desc
+  - m_Id: 1385907725787170
+    m_Key: laser.desc
     m_Metadata:
       m_Items: []
-  - m_Id: 1308153546268705
-    m_Key: damage_while_shield_active.name
+  - m_Id: 1385907725787171
+    m_Key: log.name
     m_Metadata:
       m_Items: []
-  - m_Id: 1308153546268706
-    m_Key: damage_while_shield_active.desc
+  - m_Id: 1385907725787172
+    m_Key: log.desc
     m_Metadata:
       m_Items: []
-  - m_Id: 1308153546268707
-    m_Key: degen_aura.name
+  - m_Id: 1385907725787173
+    m_Key: tornado.name
     m_Metadata:
       m_Items: []
-  - m_Id: 1308153546268708
-    m_Key: degen_aura.desc
+  - m_Id: 1385907725787174
+    m_Key: tornado.desc
     m_Metadata:
       m_Items: []
-  - m_Id: 1308153546268709
-    m_Key: spike_ultimate.name
+  - m_Id: 1385907725787175
+    m_Key: blizzard.name
     m_Metadata:
       m_Items: []
-  - m_Id: 1308153546268710
-    m_Key: spike_ultimate.desc
+  - m_Id: 1385907725787176
+    m_Key: blizzard.desc
     m_Metadata:
       m_Items: []
-  - m_Id: 1308153546268711
-    m_Key: br_damage.name
+  - m_Id: 1385907725787177
+    m_Key: chaos_fire.name
     m_Metadata:
       m_Items: []
-  - m_Id: 1308153546268712
-    m_Key: br_damage.desc
+  - m_Id: 1385907725787178
+    m_Key: chaos_fire.desc
     m_Metadata:
       m_Items: []
-  - m_Id: 1308153546268713
-    m_Key: br_gold.name
+  - m_Id: 1385907725787179
+    m_Key: magic_circle.name
     m_Metadata:
       m_Items: []
-  - m_Id: 1308153546268714
-    m_Key: br_gold.desc
+  - m_Id: 1385907725787180
+    m_Key: magic_circle.desc
     m_Metadata:
       m_Items: []
-  - m_Id: 1308153546268715
-    m_Key: br_health.name
+  - m_Id: 1385907725787181
+    m_Key: meteor.name
     m_Metadata:
       m_Items: []
-  - m_Id: 1308153546268716
-    m_Key: br_health.desc
+  - m_Id: 1385907725787182
+    m_Key: meteor.desc
     m_Metadata:
       m_Items: []
-  - m_Id: 1308153546268717
-    m_Key: br_regen.name
+  - m_Id: 1385907725787183
+    m_Key: slashing_spin.name
     m_Metadata:
       m_Items: []
-  - m_Id: 1308153546268718
-    m_Key: br_regen.desc
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1308153546268719
-    m_Key: br_shield.name
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1308153546268720
-    m_Key: br_shield.desc
+  - m_Id: 1385907725787184
+    m_Key: slashing_spin.desc
     m_Metadata:
       m_Items: []
   m_Metadata:
