@@ -7,4 +7,5 @@ public class UpgradesRuntimeData
 
     public float[] damageTypeMultipliers;
     public int[] damageTypeStacks;
+    public EnemySpawner enemySpawner;
 }

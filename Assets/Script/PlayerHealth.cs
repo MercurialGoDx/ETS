@@ -11,11 +11,18 @@ public class PlayerHealth : MonoBehaviour
     public float healthRegenPerSecond = 0f;
     public float regenPer100MissingHealth = 0f;
 
-    [Header("Utility - Evade")]
+    [Header("Health - Damage Block (diminishing)")]
     [SerializeField, Range(0f, 0.95f)]
-    private float evadeCap = 0.75f;   // максимум 75%, никогда не будет 100%
+    private float blockCap = 0.80f;      // максимум 80%
     [SerializeField, Range(0f, 1f)]
-    private float evadeChance = 0f;   // текущий шанс
+    private float blockChance = 0f;      // текущий шанс блока (0..0.8)
+    [SerializeField]
+    private int blockUpgradeCount = 0;   // сколько раз купили апгрейд
+    [Header("Health - Damage Reduction (diminishing)")]
+
+    [SerializeField, Range(0f, 0.99f)]
+    private float damageReduction = 0f; // 0..1 (0.19 = -19% урона)
+    public float DamageReduction => damageReduction;
 
     [Header("UI")]
     [SerializeField] private Image healthBarFill;
@@ -95,15 +102,28 @@ public class PlayerHealth : MonoBehaviour
         UpdateHealthUI();
     }
 
-    public void AddEvadeChanceDiminishing(float add)
+    public void AddDamageReductionDiminishing(float add)
     {
         add = Mathf.Clamp01(add);
 
-        float remaining = evadeCap - evadeChance;
+        float remaining = 1f - damageReduction;
         if (remaining <= 0f) return;
 
-        evadeChance += remaining * add;          // diminishing returns
-        evadeChance = Mathf.Min(evadeChance, evadeCap);
+        damageReduction += remaining * add;
+        damageReduction = Mathf.Clamp01(damageReduction);
+    }
+    public void AddBlockChanceDiminishing(int stacks = 1)
+    {
+        if (stacks <= 0) return;
+
+        blockUpgradeCount += stacks;
+
+        // Настройка: примерно 12 улучшений -> почти кап (≈97% от cap)
+        const float k = 0.30f;
+
+        // chance = cap * (1 - exp(-k * n))
+        blockChance = blockCap * (1f - Mathf.Exp(-k * blockUpgradeCount));
+        blockChance = Mathf.Min(blockChance, blockCap);
     }
 
     // === УРОН ===
@@ -112,14 +132,26 @@ public class PlayerHealth : MonoBehaviour
         if (damage <= 0f) return;
         if (isDead) return;
 
+        // 1) Block: урон полностью игнорируем
+        if (blockChance > 0f && UnityEngine.Random.value < blockChance)
+        {
+            return;
+        }
+
         float remaining = damage;
 
-        // 1) Сначала щит
+        // 2) Damage Reduction: уменьшение входящего урона (работает и для щита)
+        if (damageReduction > 0f)
+        {
+            remaining *= (1f - damageReduction);
+            if (remaining <= 0f) return;
+        }
 
+        // 3) Модификаторы урона (щит и т.п.)
         foreach (var mod in modifiers)
             remaining = mod.ModifyDamage(remaining);
 
-        // 2) Потом здоровье
+        // 4) Урон по здоровью
         if (remaining > 0f)
         {
             float previousHealth = currentHealth;
@@ -135,18 +167,20 @@ public class PlayerHealth : MonoBehaviour
 
             UpdateHealthUI();
 
-            // башня реально получила урон по ХП (health уменьшилось) и выжила
+            // башня реально получила урон по ХП и выжила
             if (healOnHitFromEnemyAmount > 0f && previousHealth > currentHealth)
             {
                 Heal(healOnHitFromEnemyAmount);
             }
         }
 
+        // 5) Пост-эффекты на факт "атака произошла"
         if (spikesDamageScalePerEnemyHit != 0)
         {
             AddSpikesDamage(spikesDamageScalePerEnemyHit);
         }
     }
+
 
 
     // === АПГРЕЙДЫ ЗДОРОВЬЯ ===

@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c27422c313552df40af37641a13e294d, type: 3}
+  m_Name: MoreEnemy
+  m_EditorClassIdentifier: 
+  icon: {fileID: 21300000, guid: 1de744f2e1a5fb4498c7ed3a3a414295, type: 3}
+  price: 1500
+  weight: 7
+  localizedStringTable:
+    m_TableReference:
+      m_TableCollectionName: GUID:164770c6fc8794c4ba4db6f8c7e72db3
+  nameKey: more_enemy.name
+  descriptionKey: more_enemy.desc
+  upgrades:
+  - {fileID: 11400000, guid: cd29495474f3bc4488b30625629a7565, type: 2}
+  - {fileID: 11400000, guid: f4fe3fdd577c7544d8b18fe753ffcc5f, type: 2}

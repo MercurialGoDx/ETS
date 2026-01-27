@@ -23,8 +23,9 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787136
-    m_Localized: <color=#ffd700>Damage:</color> {0} <color=#ffd700>Damage Type:</color>
-      {1} <color=#ffd700>Attack Speed:</color> {2} <color=#ffd700>Cost:</color> {3}
+    m_Localized: <color=#ffd700>Damage:</color> {0}\n<color=#ffd700>Damage type:</color>
+      {1}\n<color=#ffd700>Attack speed:</color> {2}\n\n<color=#ffd700>Cost:</color>
+      {3}
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787137
@@ -32,8 +33,9 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787138
-    m_Localized: <color=#ffd700>Damage:</color> {0} <color=#ffd700>Damage Type:</color>
-      {1} <color=#ffd700>Attack Speed:</color> {2} <color=#ffd700>Cost:</color> {3}
+    m_Localized: <color=#ffd700>Damage:</color> {0}\n<color=#ffd700>Damage type:</color>
+      {1}\n<color=#ffd700>Attack speed:</color> {2}\n\n<color=#ffd700>Cost:</color>
+      {3}
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787139
@@ -41,8 +43,9 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787140
-    m_Localized: <color=#ffd700>Damage:</color> {0} <color=#ffd700>Damage Type:</color>
-      {1} <color=#ffd700>Attack Speed:</color> {2} <color=#ffd700>Cost:</color> {3}
+    m_Localized: <color=#ffd700>Damage:</color> {0}\n<color=#ffd700>Damage type:</color>
+      {1}\n<color=#ffd700>Attack speed:</color> {2}\n\n<color=#ffd700>Cost:</color>
+      {3}
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787141
@@ -50,8 +53,9 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787142
-    m_Localized: <color=#ffd700>Damage:</color> {0} <color=#ffd700>Damage Type:</color>
-      {1} <color=#ffd700>Attack Speed:</color> {2} <color=#ffd700>Cost:</color> {3}
+    m_Localized: <color=#ffd700>Damage:</color> {0}\n<color=#ffd700>Damage type:</color>
+      {1}\n<color=#ffd700>Attack speed:</color> {2}\n\n<color=#ffd700>Cost:</color>
+      {3}
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787143
@@ -59,8 +63,9 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787144
-    m_Localized: <color=#ffd700>Damage:</color> {0} <color=#ffd700>Damage Type:</color>
-      {1} <color=#ffd700>Attack Speed:</color> {2} <color=#ffd700>Cost:</color> {3}
+    m_Localized: <color=#ffd700>Damage:</color> {0}\n<color=#ffd700>Damage type:</color>
+      {1}\n<color=#ffd700>Attack speed:</color> {2}\n\n<color=#ffd700>Cost:</color>
+      {3}
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787145
@@ -68,8 +73,9 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787146
-    m_Localized: <color=#ffd700>Damage:</color> {0} <color=#ffd700>Damage Type:</color>
-      {1} <color=#ffd700>Attack Speed:</color> {2} <color=#ffd700>Cost:</color> {3}
+    m_Localized: <color=#ffd700>Damage:</color> {0}\n<color=#ffd700>Damage type:</color>
+      {1}\n<color=#ffd700>Attack speed:</color> {2}\n\n<color=#ffd700>Cost:</color>
+      {3}
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787147
@@ -77,9 +83,10 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787148
-    m_Localized: On hit, bounces to the nearest enemy if it is far enough away. <color=#ffd700>Repeats
-      3 times</color> <color=#ffd700>Damage:</color> {0} <color=#ffd700>Damage Type:</color>
-      {1} <color=#ffd700>Attack Speed:</color> {2} <color=#ffd700>Cost:</color> {3}
+    m_Localized: On hit, bounces to the nearest enemy if they're within range. <color=#ffd700>Repeats
+      3 times</color>\n<color=#ffd700>Damage:</color> {0}\n<color=#ffd700>Damage
+      type:</color> {1}\n<color=#ffd700>Attack speed:</color> {2}\n\n<color=#ffd700>Cost:</color>
+      {3}
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787151
@@ -87,19 +94,19 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787152
-    m_Localized: Slows the enemy by 30% for 2 seconds <color=#ffd700>Damage:</color>
-      {0} <color=#ffd700>Damage Type:</color> {1} <color=#ffd700>Attack Speed:</color>
-      {2} <color=#ffd700>Cost:</color> {3}
+    m_Localized: Slows the enemy by 30% for 2 seconds\n<color=#ffd700>Damage:</color>
+      {0}\n<color=#ffd700>Damage type:</color> {1}\n<color=#ffd700>Attack speed:</color>
+      {2}\n\n<color=#ffd700>Cost:</color> {3}
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787153
-    m_Localized: <color=#ffd700>Life Drain</color>
+    m_Localized: <color=#ffd700>Life Siphon</color>
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787154
-    m_Localized: Increases maximum health by 2 when you kill an enemy <color=#ffd700>Damage:</color>
-      {0} <color=#ffd700>Damage Type:</color> {1} <color=#ffd700>Attack Speed:</color>
-      {2} <color=#ffd700>Cost:</color> {3}
+    m_Localized: Increases max health by 2 when killing an enemy\n<color=#ffd700>Damage:</color>
+      {0}\n<color=#ffd700>Damage type:</color> {1}\n<color=#ffd700>Attack speed:</color>
+      {2}\n\n<color=#ffd700>Cost:</color> {3}
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787155
@@ -107,8 +114,9 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787156
-    m_Localized: <color=#ffd700>Damage:</color> {0} <color=#ffd700>Damage Type:</color>
-      {1} <color=#ffd700>Attack Speed:</color> {2} <color=#ffd700>Cost:</color> {3}
+    m_Localized: <color=#ffd700>Damage:</color> {0}\n<color=#ffd700>Damage type:</color>
+      {1}\n<color=#ffd700>Attack speed:</color> {2}\n\n<color=#ffd700>Cost:</color>
+      {3}
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787157
@@ -116,19 +124,19 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787158
-    m_Localized: <color=#ffd700>Damage:</color> {0} <color=#ffd700>Damage Type:</color>
-      {1} <color=#ffd700>Attack Speed:</color> {2} <color=#ffd700>Cost:</color> {3}
+    m_Localized: <color=#ffd700>Damage:</color> {0}\n<color=#ffd700>Damage type:</color>
+      {1}\n<color=#ffd700>Attack speed:</color> {2}\n\n<color=#ffd700>Cost:</color>
+      {3}
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787159
-    m_Localized: <color=#ffd700>Shockwave</color>
+    m_Localized: <color=#ffd700>Shock Wave</color>
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787160
-    m_Localized: Sends a wave towards the enemy that damages all enemies in its path
-      <color=#ffd700>Damage:</color> {0} <color=#ffd700>Damage Type:</color> {1}
-      <color=#ffd700>Attack Speed:</color> {2} <color=#ffd700>Area Damage:</color>
-      Yes <color=#ffd700>Cost:</color> {3}
+    m_Localized: Sends a wave at the enemy that deals damage to everyone in its path\n<color=#ffd700>Damage:</color>
+      {0}\n<color=#ffd700>Damage type:</color> {1}\n<color=#ffd700>Attack speed:</color>
+      {2}\n\n<color=#ffd700>Cost:</color> {3}
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787161
@@ -136,8 +144,9 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787162
-    m_Localized: <color=#ffd700>Damage:</color> {0} <color=#ffd700>Damage Type:</color>
-      {1} <color=#ffd700>Attack Speed:</color> {2} <color=#ffd700>Cost:</color> {3}
+    m_Localized: <color=#ffd700>Damage:</color> {0}\n<color=#ffd700>Damage type:</color>
+      {1}\n<color=#ffd700>Attack speed:</color> {2}\n\n<color=#ffd700>Cost:</color>
+      {3}
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787163
@@ -146,20 +155,20 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 1385907725787164
     m_Localized: Deals area damage equal to <color=#ffd700>15%</color> of the tower's
-      maximum health <color=#ffd700>Damage:</color> {0} <color=#ffd700>Damage Type:</color>
-      {1} <color=#ffd700>Attack Speed:</color> {2} <color=#ffd700>Area Damage:</color>
-      Yes <color=#ffd700>Cost:</color> {3}
+      maximum health\n<color=#ffd700>Damage:</color> {0}\n<color=#ffd700>Damage type:</color>
+      {1}\n<color=#ffd700>Attack speed:</color> {2}\n<color=#ffd700>Area damage:</color>
+      Yes\n\n<color=#ffd700>Cost:</color> {3}
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787165
-    m_Localized: <color=#ffd700>Dread</color>
+    m_Localized: <color=#ffd700>Chaos Wave</color>
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787166
-    m_Localized: Sends a wave towards the enemy that damages all enemies in its path.
-      Heals the tower for <color=#ffd700>10</color> health for each enemy hit <color=#ffd700>Damage:</color>
-      {0} <color=#ffd700>Damage Type:</color> {1} <color=#ffd700>Attack Speed:</color>
-      {2} <color=#ffd700>Area Damage:</color> Yes <color=#ffd700>Cost:</color> {3}
+    m_Localized: Sends a wave at the enemy that deals damage to everyone in its path.
+      Heals the tower for <color=#ffd700>10</color> health for each enemy hit\n<color=#ffd700>Damage:</color>
+      {0}\n<color=#ffd700>Damage type:</color> {1}\n<color=#ffd700>Attack speed:</color>
+      {2}\n\n<color=#ffd700>Cost:</color> {3}
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787167
@@ -167,17 +176,19 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787168
-    m_Localized: <color=#ffd700>Damage:</color> {0} <color=#ffd700>Damage Type:</color>
-      {1} <color=#ffd700>Attack Speed:</color> {2} <color=#ffd700>Cost:</color> {3}
+    m_Localized: <color=#ffd700>Damage:</color> {0}\n<color=#ffd700>Damage type:</color>
+      {1}\n<color=#ffd700>Attack speed:</color> {2}\n\n<color=#ffd700>Cost:</color>
+      {3}
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787169
-    m_Localized: <color=#ffd700>Magic Focus</color>
+    m_Localized: <color=#ffd700>Arcane Focus</color>
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787170
-    m_Localized: <color=#ffd700>Damage:</color> {0} <color=#ffd700>Damage Type:</color>
-      {1} <color=#ffd700>Attack Speed:</color> {2} <color=#ffd700>Cost:</color> {3}
+    m_Localized: <color=#ffd700>Damage:</color> {0}\n<color=#ffd700>Damage type:</color>
+      {1}\n<color=#ffd700>Attack speed:</color> {2}\n\n<color=#ffd700>Cost:</color>
+      {3}
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787171
@@ -185,10 +196,9 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787172
-    m_Localized: Launches a log at the enemy that damages all enemies in its path
-      <color=#ffd700>Damage:</color> {0} <color=#ffd700>Damage Type:</color> {1}
-      <color=#ffd700>Attack Speed:</color> {2} <color=#ffd700>Area Damage:</color>
-      Yes <color=#ffd700>Cost:</color> {3}
+    m_Localized: Sends a log at the enemy that deals damage to everyone in its path\n<color=#ffd700>Damage:</color>
+      {0}\n<color=#ffd700>Damage type:</color> {1}\n<color=#ffd700>Attack speed:</color>
+      {2}\n\n<color=#ffd700>Cost:</color> {3}
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787173
@@ -196,10 +206,10 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787174
-    m_Localized: On hit, knocks the enemy away from the tower. Damages all enemies
-      in its path. After each shot, changes target <color=#ffd700>Damage:</color>
-      {0} <color=#ffd700>Damage Type:</color> {1} <color=#ffd700>Attack Speed:</color>
-      {2} <color=#ffd700>Cost:</color> {3}
+    m_Localized: On hit, knocks the enemy back away from the tower. Deals damage
+      to all enemies in its path. Changes target after each shot\n<color=#ffd700>Damage:</color>
+      {0}\n<color=#ffd700>Damage type:</color> {1}\n<color=#ffd700>Attack speed:</color>
+      {2}\n\n<color=#ffd700>Cost:</color> {3}
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787175
@@ -207,10 +217,10 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787176
-    m_Localized: On hit, knocks the enemy away from the tower. After each shot, changes
-      target <color=#ffd700>Damage:</color> {0} <color=#ffd700>Damage Type:</color>
-      {1} <color=#ffd700>Attack Speed:</color> {2} <color=#ffd700>Area Damage:</color>
-      Yes <color=#ffd700>Cost:</color> {3}
+    m_Localized: An icy storm crashes down from the sky, dealing area damage\n<color=#ffd700>Damage:</color>
+      {0}\n<color=#ffd700>Damage type:</color> {1}\n<color=#ffd700>Attack speed:</color>
+      {2}\n<color=#ffd700>Area damage:</color> Yes\n\n<color=#ffd700>Cost:</color>
+      {3}
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787177
@@ -218,9 +228,9 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787178
-    m_Localized: Creates a fiery aura around the tower that gradually damages enemies
-      <color=#ffd700>Damage:</color> {0} <color=#ffd700>Damage Type:</color> {1}
-      <color=#ffd700>Attack Speed:</color> {2} <color=#ffd700>Cost:</color> {3}
+    m_Localized: Creates a fiery aura around the tower that gradually damages enemies\n<color=#ffd700>Damage:</color>
+      {0}\n<color=#ffd700>Damage type:</color> {1}\n<color=#ffd700>Attack speed:</color>
+      {2}\n\n<color=#ffd700>Cost:</color> {3}
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787179
@@ -229,8 +239,9 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 1385907725787180
     m_Localized: Creates a magical force around the tower that damages all enemies
-      on the map <color=#ffd700>Damage:</color> {0} <color=#ffd700>Damage Type:</color>
-      {1} <color=#ffd700>Attack Speed:</color> {2} <color=#ffd700>Cost:</color> {3}
+      on the map\n<color=#ffd700>Damage:</color> {0}\n<color=#ffd700>Damage type:</color>
+      {1}\n<color=#ffd700>Attack speed:</color> {2}\n\n<color=#ffd700>Cost:</color>
+      {3}
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787181
@@ -238,9 +249,10 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787182
-    m_Localized: A meteor crashes from the sky, dealing massive area damage <color=#ffd700>Damage:</color>
-      {0} <color=#ffd700>Damage Type:</color> {1} <color=#ffd700>Attack Speed:</color>
-      {2} <color=#ffd700>Area Damage:</color> Yes <color=#ffd700>Cost:</color> {3}
+    m_Localized: A meteor falls from the sky, dealing massive area damage\n<color=#ffd700>Damage:</color>
+      {0}\n<color=#ffd700>Damage type:</color> {1}\n<color=#ffd700>Attack speed:</color>
+      {2}\n<color=#ffd700>Area damage:</color> Yes\n\n<color=#ffd700>Cost:</color>
+      {3}
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787183
@@ -248,10 +260,20 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787184
-    m_Localized: Creates blades at a random location for 15 seconds that damage nearby
-      enemies <color=#ffd700>Damage:</color> {0} <color=#ffd700>Damage Type:</color>
-      {1} <color=#ffd700>Attack Speed:</color> {2} <color=#ffd700>Area Damage:</color>
-      Yes <color=#ffd700>Cost:</color> {3}
+    m_Localized: Spawns blades at a random location for 15 seconds, dealing damage
+      to nearby enemies\n<color=#ffd700>Damage:</color> {0}\n<color=#ffd700>Damage
+      type:</color> {1}\n<color=#ffd700>Attack speed:</color> {2}\n<color=#ffd700>Area
+      damage:</color> Yes\n\n<color=#ffd700>Cost:</color> {3}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1385907725787149
+    m_Localized: <color=#ffd700>Chain Lightning</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1385907725787150
+    m_Localized: Chains lightning to nearby enemies\n<color=#ffd700>Damage:</color>
+      {0}\n<color=#ffd700>Damage type:</color> {1}\n<color=#ffd700>Attack speed:</color>
+      {2}\n\n<color=#ffd700>Cost:</color> {3}
     m_Metadata:
       m_Items: []
   references:

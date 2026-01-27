@@ -4,7 +4,7 @@ using UnityEngine;
 public class EnemySpawner : MonoBehaviour
 {
     [Header("Ссылки")]
-    public Transform tower;             
+    public Transform tower;
     public WaveTimerUI waveTimerUI;
 
     [Header("Волны")]
@@ -28,17 +28,30 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] private float flatHealthBonus = 0f;
     [SerializeField] private float flatDamageBonus = 0f;
 
+    [Header("Апгрейды (runtime)")]
+    [SerializeField] private float enemiesPerWavePercentBonus = 0f; // 0.25 = +25%
+
     // ✅ Событие для UI: волна, множитель, фиксHP, фиксDMG
     public event Action<int, float, float, float> OnWaveSpawned;
 
     private float waveTimer = 0f;
     private int currentWaveIndex = 0;
 
-    // ✅ Чтобы UI мог забрать актуальные значения
     public int CurrentWaveNumber => currentWaveIndex + 1;
     public float CurrentMultiplier => difficultyMultiplier;
     public float CurrentFlatHealthBonus => flatHealthBonus;
     public float CurrentFlatDamageBonus => flatDamageBonus;
+
+    // ✅ Итоговое кол-во врагов
+    public int CurrentEnemiesPerWave
+    {
+        get
+        {
+            float factor = 1f + enemiesPerWavePercentBonus;
+            int result = Mathf.CeilToInt(enemiesPerWave * factor); // округляем вверх
+            return Mathf.Max(0, result);
+        }
+    }
 
     private void Start()
     {
@@ -49,7 +62,6 @@ public class EnemySpawner : MonoBehaviour
                 tower = towerObj.transform;
         }
 
-        // ✅ Чтобы UI показал значения уже до первой волны
         NotifyUI();
     }
 
@@ -73,6 +85,13 @@ public class EnemySpawner : MonoBehaviour
         }
     }
 
+    // ✅ Вызывается апгрейдом
+    public void AddEnemiesPerWavePercent(float addPercent)
+    {
+        enemiesPerWavePercentBonus += addPercent;
+        enemiesPerWavePercentBonus = Mathf.Max(0f, enemiesPerWavePercentBonus);
+    }
+
     void SpawnWave()
     {
         int enemyTypeIndex = currentWaveIndex % enemyPrefabs.Length;
@@ -84,7 +103,9 @@ public class EnemySpawner : MonoBehaviour
 
         float currentMult = difficultyMultiplier;
 
-        for (int i = 0; i < enemiesPerWave; i++)
+        int countToSpawn = CurrentEnemiesPerWave;
+
+        for (int i = 0; i < countToSpawn; i++)
         {
             Vector3 spawnPos = GetSpawnPositionAroundTower();
 
@@ -103,17 +124,13 @@ public class EnemySpawner : MonoBehaviour
                 EnemyEffectManager.Instance.ApplyEffectsToEnemy(enemyInstance);
         }
 
-        // ✅ Сообщаем UI: "эта волна заспавнена" (UI сам пересчитает по своим базовым 15/2)
         NotifyUI();
 
-        // след. волна
         currentWaveIndex++;
 
-        // рост %
         float k = 1f + (multiplierGrowthPercent / 100f);
         difficultyMultiplier *= k;
 
-        // рост фикс
         flatHealthBonus += healthAddPerWave;
         flatDamageBonus += damageAddPerWave;
     }

@@ -8,20 +8,34 @@ public class AudioManager : MonoBehaviour
     public AudioSource musicSource;
     public AudioLowPassFilter lowPassFilter;
 
-    [Header("Music Clips")]
-    public AudioClip menuMusic;
-    public AudioClip gameMusic;
+    [Header("Menu Music Pool")]
+    public AudioClip[] menuMusicPool;
+
+    [Header("Game Music Pools (by stage)")]
+    public AudioClip[] earlyGamePool; // 0-10 min
+    public AudioClip[] midGamePool;   // 10-20 min
+    public AudioClip[] lateGamePool;  // 20+ min
+
+    [Header("Stage thresholds (seconds)")]
+    public float midGameStartSeconds = 10f * 60f;  // 10 minutes
+    public float lateGameStartSeconds = 20f * 60f; // 20 minutes
 
     [Header("Volume Settings")]
-    [Range(0f, 1f)] public float masterVolume = 1f;      // громкость игрока (через слайдер)
-    [Range(0f, 1f)] public float pauseMultiplier = 0.5f; // во сколько раз тише в паузе
+    [Range(0f, 1f)] public float masterVolume = 1f;
+    [Range(0f, 1f)] public float pauseMultiplier = 0.5f;
 
     [Header("LowPass Settings")]
-    public float normalCutoff = 22000f;   // обычный звук
-    public float pausedCutoff = 6000f;    // глухой эффект в паузе
+    public float normalCutoff = 22000f;
+    public float pausedCutoff = 6000f;
 
     private float _currentBaseVolume = 1f;
     private bool _isPausedFx = false;
+
+    private enum MusicMode { Menu, Game }
+    private MusicMode _mode = MusicMode.Menu;
+
+    private float _gameTimeSeconds = 0f;   // прогрессия (влияет на выбор пула)
+    private AudioClip _lastPlayedClip = null;
 
     private void Awake()
     {
@@ -46,7 +60,21 @@ public class AudioManager : MonoBehaviour
         PlayMenuMusic();
     }
 
-    // ========= ГРОМКОСТЬ (добавили) =========
+    private void Update()
+    {
+        // В игре таймер прогрессии идёт по Time.deltaTime (пауза через timeScale остановит прогрессию — обычно это то, что надо)
+        if (_mode == MusicMode.Game)
+            _gameTimeSeconds += Time.deltaTime;
+
+        // Автопереключение треков:
+        // Если клип назначен, но AudioSource уже не играет — значит трек закончился -> запускаем следующий
+        if (musicSource != null && musicSource.clip != null && !musicSource.isPlaying)
+        {
+            PlayNextTrack();
+        }
+    }
+
+    // ========= ГРОМКОСТЬ =========
     public void SetMasterVolume(float value)
     {
         masterVolume = Mathf.Clamp01(value);
@@ -54,41 +82,84 @@ public class AudioManager : MonoBehaviour
 
         if (musicSource != null)
         {
-            // если сейчас пауза — учитываем множитель
-            if (_isPausedFx)
-                musicSource.volume = _currentBaseVolume * pauseMultiplier;
-            else
-                musicSource.volume = _currentBaseVolume;
+            musicSource.volume = _isPausedFx ? _currentBaseVolume * pauseMultiplier : _currentBaseVolume;
         }
     }
 
-    public float GetMasterVolume()
-    {
-        return masterVolume;
-    }
-    // ========================================
+    public float GetMasterVolume() => masterVolume;
+    // =============================
 
+    // ====== Публичные методы для меню/игры ======
     public void PlayMenuMusic()
     {
-        PlayMusic(menuMusic);
+        _mode = MusicMode.Menu;
+        _gameTimeSeconds = 0f;
+        PlayRandomFromPool(menuMusicPool);
     }
 
     public void PlayGameMusic()
     {
-        PlayMusic(gameMusic);
+        _mode = MusicMode.Game;
+        _gameTimeSeconds = 0f;
+        PlayNextTrack(); // выберет early pool
     }
 
-    private void PlayMusic(AudioClip clip)
+    // Если хочешь вручную “перескочить” трек (например кнопка Next)
+    public void SkipTrack()
     {
-        if (clip == null || musicSource == null) return;
+        if (musicSource == null) return;
+        musicSource.Stop();
+        PlayNextTrack();
+    }
+
+    // Если у тебя таймер игры считается где-то ещё — можно синхронизировать отсюда
+    public void SetGameTimeSeconds(float seconds)
+    {
+        _gameTimeSeconds = Mathf.Max(0f, seconds);
+    }
+    // ===========================================
+
+    private void PlayNextTrack()
+    {
+        AudioClip[] pool = GetCurrentPool();
+        PlayRandomFromPool(pool);
+    }
+
+    private AudioClip[] GetCurrentPool()
+    {
+        if (_mode == MusicMode.Menu)
+            return menuMusicPool;
+
+        // Game mode
+        if (_gameTimeSeconds >= lateGameStartSeconds)
+            return lateGamePool;
+
+        if (_gameTimeSeconds >= midGameStartSeconds)
+            return midGamePool;
+
+        return earlyGamePool;
+    }
+
+    private void PlayRandomFromPool(AudioClip[] pool)
+    {
+        if (musicSource == null) return;
+        if (pool == null || pool.Length == 0)
+        {
+            Debug.LogWarning($"AudioManager: pool is empty for mode={_mode}.");
+            return;
+        }
 
         _isPausedFx = false;
-
         _currentBaseVolume = masterVolume;
 
-        musicSource.clip = clip;
+        // Выбор случайного трека, стараемся не повторять тот же самый подряд
+        AudioClip chosen = ChooseRandomAvoidRepeat(pool, _lastPlayedClip);
+
+        _lastPlayedClip = chosen;
+
+        musicSource.clip = chosen;
         musicSource.volume = _currentBaseVolume;
-        musicSource.loop = true;
+        musicSource.loop = false; // важно: иначе трек будет зациклен и не переключится
         musicSource.Play();
 
         if (lowPassFilter != null)
@@ -98,17 +169,29 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-    // === Пауза ===
+    private AudioClip ChooseRandomAvoidRepeat(AudioClip[] pool, AudioClip avoid)
+    {
+        if (pool.Length == 1) return pool[0];
+
+        // до 6 попыток выбрать не тот же клип
+        for (int i = 0; i < 6; i++)
+        {
+            var c = pool[Random.Range(0, pool.Length)];
+            if (c != null && c != avoid) return c;
+        }
+
+        // если всё равно не вышло — возвращаем любой
+        return pool[Random.Range(0, pool.Length)];
+    }
+
+    // === Пауза FX ===
     public void ApplyPauseFx()
     {
         if (_isPausedFx || musicSource == null) return;
 
         _isPausedFx = true;
-
-        // Уменьшаем громкость
         musicSource.volume = _currentBaseVolume * pauseMultiplier;
 
-        // Включаем лёгкий эффект глушения
         if (lowPassFilter != null)
         {
             lowPassFilter.enabled = true;
@@ -116,17 +199,13 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-    // === Возобновление ===
     public void ResetPauseFx()
     {
         if (!_isPausedFx || musicSource == null) return;
 
         _isPausedFx = false;
-
-        // Возвращаем громкость
         musicSource.volume = _currentBaseVolume;
 
-        // Отключаем LowPass
         if (lowPassFilter != null)
         {
             lowPassFilter.enabled = false;

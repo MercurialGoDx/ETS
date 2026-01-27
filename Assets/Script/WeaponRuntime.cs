@@ -3,11 +3,10 @@ using System.Collections.Generic;
 public class WeaponRuntime
 {
     public WeaponDefinition def;
-    public int stacks = 1;      // сколько раз купили это оружие
-    public float cooldown = 0f; // свой независимый кулдаун
-    public List<Enemy> lastTargets = new List<Enemy>(); // закреплённые цели по “стволам”
+    public int stacks = 1;      // пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
+    public float cooldown = 0f; // пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+    public List<Enemy> lastTargets = new List<Enemy>(); // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
     public AuraDamageZone auraInstance;
-
-    //для статистики
+    //пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
     public float totalDamageDealt;
 }

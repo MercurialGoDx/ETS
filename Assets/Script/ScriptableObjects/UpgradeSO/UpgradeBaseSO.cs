@@ -10,7 +10,7 @@ public abstract class UpgradeBaseSO : ScriptableObject
     public int price;
     public int weight;
 
-    [Header("Название с локализацией")]
+    [Header("пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ")]
     public LocalizedStringTable localizedStringTable;
     public string nameKey;
     public string descriptionKey;
@@ -20,7 +20,7 @@ public abstract class UpgradeBaseSO : ScriptableObject
 
     public virtual string GetLocalizedName()
     {
-        // Получаем таблицу для текущей локали
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
         var stringTable = localizedStringTable.GetTable();
         if (stringTable == null)
         {
@@ -28,7 +28,7 @@ public abstract class UpgradeBaseSO : ScriptableObject
             return nameKey;
         }
 
-        // Получаем строку по ключу
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
         var entry = stringTable.GetEntry(nameKey);
         return entry?.GetLocalizedString() ?? nameKey;
     }
@@ -50,10 +50,10 @@ public abstract class UpgradeBaseSO : ScriptableObject
 
     protected virtual object[] GetDescriptionArgs()
     {
-        // Получаем специфические аргументы от дочернего класса
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
         object[] specificArgs = GetSpecificDescriptionArgs();
 
-        // Создаем общий массив: специфические аргументы + цена
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ: пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ + пїЅпїЅпїЅпїЅ
         object[] allArgs = new object[specificArgs.Length + 1];
         System.Array.Copy(specificArgs, 0, allArgs, 0, specificArgs.Length);
         allArgs[specificArgs.Length] = price;
@@ -61,6 +61,6 @@ public abstract class UpgradeBaseSO : ScriptableObject
         return allArgs;
     }
 
-    // Абстрактный метод, который должны реализовать дочерние классы
+    // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
     protected abstract object[] GetSpecificDescriptionArgs();
 }

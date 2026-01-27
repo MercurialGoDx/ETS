@@ -10528,6 +10528,9 @@ MonoBehaviour:
   maxHealthMultiplier: 1
   healthRegenPerSecond: 0
   regenPer100MissingHealth: 0
+  blockCap: 0.8
+  blockChance: 0
+  blockUpgradeCount: 0
   healthBarFill: {fileID: 0}
   spikesBase: 0
   spikesMultiplier: 1
@@ -10553,6 +10556,7 @@ MonoBehaviour:
   shieldRechargeDelay: 10
   damageWhileShieldActivePercent: 0
   shieldRestorePerEnemyKill: 0
+  fullRestoreAfterNoShieldDamageSeconds: 20
   shieldBarFill: {fileID: 0}
   shieldVisual: {fileID: 0}
   vfxFadeInTime: 0.2

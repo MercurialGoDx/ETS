@@ -13,5 +13,6 @@ public class GameInstaller : MonoBehaviour
         upgradeContext.goldManager = FindObjectOfType<GoldManager>();
         upgradeContext.regenAuraDamage = FindObjectOfType<RegenAuraDamage>();
         upgradeContext.runtime = new UpgradesRuntimeData();
+        upgradeContext.runtime.enemySpawner = FindObjectOfType<EnemySpawner>();
     }
 }
