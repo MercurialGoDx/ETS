@@ -29,6 +29,8 @@ public class PlayerHealth : MonoBehaviour
     public event Action OnDied;
     private bool isDead = false;
 
+    private DamageCalculator damageCalculator;
+
     // === Публичные свойства (для других скриптов) ===
 
     public float MaxHealth => baseMaxHealth * maxHealthMultiplier;
@@ -49,6 +51,11 @@ public class PlayerHealth : MonoBehaviour
 
         GetComponents(modifiers);
         modifiers.Sort((a, b) => a.Priority.CompareTo(b.Priority));
+    }
+
+    public void Init(DamageCalculator calculator)
+    {
+        damageCalculator = calculator;
     }
 
     private void Update()
@@ -91,12 +98,12 @@ public class PlayerHealth : MonoBehaviour
 
     // === УРОН ===
 
-    public void TakeDamage(float damage)
+    public void TakeDamage(Enemy enemy)
     {
-        if (damage <= 0f) return;
+        if (enemy.damageToPlayer <= 0f) return;
         if (isDead) return;
 
-        float remaining = damage;
+        float remaining = enemy.damageToPlayer;
 
         // 1) Сначала щит
 
@@ -123,6 +130,11 @@ public class PlayerHealth : MonoBehaviour
             if (healOnHitFromEnemyAmount > 0f && previousHealth > currentHealth)
             {
                 Heal(healOnHitFromEnemyAmount);
+            }
+
+            if(SpikesDamage > 0)
+            {
+                DealSpikesDamage(enemy);
             }
         }
 
@@ -252,6 +264,19 @@ public class PlayerHealth : MonoBehaviour
         {
             UpgradesManager.Instance.playerShield.RestoreCurrentShield(UpgradesManager.Instance.playerShield.ShieldRestorePerEnemyKill);
         }
+    }
+
+    public void DealSpikesDamage(Enemy enemy)
+    {
+        float damage = damageCalculator.Calculate(new DamageContext
+        {
+            baseDamage = SpikesDamage,
+            itemTier = ItemTier.None,
+            isSpikes = true
+        });
+
+
+        enemy.TakeDamage(damage, true);
     }
 
     // === UI ===

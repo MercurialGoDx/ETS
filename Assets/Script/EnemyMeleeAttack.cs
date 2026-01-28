@@ -7,12 +7,12 @@ public class EnemyMeleeAttack : MonoBehaviour, IEnemyAttack
         PlayerHealth playerHealth = target.GetComponent<PlayerHealth>();
         if (playerHealth == null) return;
 
-        playerHealth.TakeDamage(enemy.damageToPlayer);
+        playerHealth.TakeDamage(enemy);
 
         // Ўипы
-        if (playerHealth.SpikesDamage > 0f)
-        {
-            enemy.TakeDamage(playerHealth.SpikesDamage, true);
-        }
+        //if (playerHealth.SpikesDamage > 0f)
+        //{
+        //    playerHealth.DealSpikesDamage(enemy);
+        //}
     }
 }

@@ -47,14 +47,14 @@ public class EnemyProjectile : MonoBehaviour
         PlayerHealth playerHealth = other.GetComponent<PlayerHealth>();
         if (playerHealth != null)
         {
-            playerHealth.TakeDamage(damage);
+            playerHealth.TakeDamage(enemy);
         }
 
         // Ўипы
-        if (playerHealth.SpikesDamage > 0f)
-        {
-            enemy.TakeDamage(playerHealth.SpikesDamage, true);
-        }
+        //if (playerHealth.SpikesDamage > 0f)
+        //{
+        //    playerHealth.DealSpikesDamage(enemy);
+        //}
 
         if (destroyOnHit)
             Destroy(gameObject);

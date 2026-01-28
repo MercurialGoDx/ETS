@@ -8,11 +8,12 @@ public class DamagePerTickScalingUpgrade : UpgradeBaseSO
 
     public override void Apply(UpgradeContextSO context)
     {
-        UpgradePerTick.Instance.damageIncreasePerTick += valuePercent / 100;
+        context.runtime.generatorDamagePercent += valuePercent / 100;
+        UpgradePerTick.Instance.damageTickInterval = interval;
     }
 
     protected override object[] GetSpecificDescriptionArgs()
     {
-        return new object[] { valuePercent };
+        return new object[] { valuePercent, interval };
     }
 }

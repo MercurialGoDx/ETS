@@ -7,12 +7,13 @@ public class UpgradePerTick : MonoBehaviour
     [Header("Ссылки")]
     public PlayerHealth playerHealth;   // повесь сюда башню в инспекторе
     public PlayerShield playerShield;
+    public UpgradeContextSO upgradeContext;
 
     // ===== 1. Урон по времени (как было) =====
     [Header("Урон по времени")]
     [Tooltip("Рост урона за минуту (0.02 = +2%) линейно.")]
     public float damageIncreasePerTick = 0f;
-
+    
     public float damageTickInterval = 0f;
     public float damageTickTimer = 0f;
 
@@ -59,6 +60,8 @@ public class UpgradePerTick : MonoBehaviour
 
     private float goldTickTimer = 0f;
 
+    private UpgradesRuntimeData runtime;
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -67,6 +70,8 @@ public class UpgradePerTick : MonoBehaviour
             return;
         }
         Instance = this;
+
+        runtime = upgradeContext.runtime;
     }
 
     private void Update()
@@ -74,7 +79,7 @@ public class UpgradePerTick : MonoBehaviour
         float dt = Time.deltaTime;
 
         // === 1. УРОН ПО МИНУТАМ (как раньше) ===
-        if (damageIncreasePerTick > 0f && damageTickInterval > 0f)
+        if (runtime.generatorDamagePercent > 0f && damageTickInterval > 0f)
         {
 
             damageTickTimer += dt;
@@ -83,6 +88,7 @@ public class UpgradePerTick : MonoBehaviour
             {
                 damageTickTimer -= damageTickInterval;
 
+                runtime.totalGeneratorDamagePercent += runtime.generatorDamagePercent;
                 //Здесь должен вызываться метод увеличения урона оружием.
                 //AddDamagePerTick(); // линейно               
 

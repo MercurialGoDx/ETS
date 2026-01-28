@@ -1,13 +1,13 @@
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Upgrades/Weapon/Global Damage Percent Upgrade")]
-public class GlobalDamagePercentUpgrade : UpgradeBaseSO
+[CreateAssetMenu(menuName = "Upgrades/Weapon/Damage Per (100) Gold ")]
+public class DamagePerGoldUpgrade : UpgradeBaseSO
 {
     public float valuePercent;
 
     public override void Apply(UpgradeContextSO context)
     {
-        context.runtime.globalDamagePercent += valuePercent;
+        context.runtime.damagePerValueGoldPercent += valuePercent;
     }
 
     protected override object[] GetSpecificDescriptionArgs()

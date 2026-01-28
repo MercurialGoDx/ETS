@@ -25,6 +25,8 @@ public class TowerAttack : MonoBehaviour
 
     private bool debugDamage = true;
 
+    private DamageCalculator damageCalculator;
+
     private readonly List<Enemy> usedThisVolley = new List<Enemy>();
 
     private List<WeaponRuntime> weapons = new List<WeaponRuntime>();
@@ -42,6 +44,11 @@ public class TowerAttack : MonoBehaviour
         }
 
         return total;
+    }
+
+    public void Init(DamageCalculator calculator)
+    {
+        damageCalculator = calculator;
     }
 
     private void Update()
@@ -180,11 +187,7 @@ public class TowerAttack : MonoBehaviour
             return;
         }
 
-        float damage = GetFinalDamage(
-            weapon.def.damagePerProjectile,
-            //weapon.def.GetLocalizedName(),
-            weapon.def.damageType
-        );
+        float damage = GetFinalDamage(weapon);
 
         LaserBeam existingBeam = LaserBeam.GetActiveBeamFor(target);
         if (existingBeam != null)
@@ -296,53 +299,63 @@ public class TowerAttack : MonoBehaviour
         }
     }
 
-    private float GetFinalDamage(float baseDamage, WeaponDamageType damageType)
+    private float GetFinalDamage(WeaponRuntime weapon)
     {
-        float maxHp = 0f;
-        float dmgFromHpPercent = 0f;
-        float hpBonusToMult = 0f;
-
-        // 1) Множитель по времени (x1, x1.2, x2 ...)
-        float timeMult = 1f;
-        if (UpgradePerTick.Instance != null)
-            timeMult = UpgradePerTick.Instance.DamageMultiplier;
-
-        // 2) Бонус от MaxHealth (у тебя это уже НЕ множитель, а добавка к множителю)
-        // hpBonusToMult = (maxHp * percent) / 100
-        // т.е. это уже "плюс к множителю", оставляем как есть
-        if (UpgradesManager.Instance != null &&
-            UpgradesManager.Instance.context.runtime.damageFromMaxHealthPercent > 0f &&
-            UpgradesManager.Instance.playerHealth != null)
+        float finalDamage = damageCalculator.Calculate(new DamageContext
         {
-            maxHp = UpgradesManager.Instance.playerHealth.MaxHealth;
-            dmgFromHpPercent = UpgradesManager.Instance.context.runtime.damageFromMaxHealthPercent;
+            baseDamage = weapon.def.damagePerProjectile,
+            damageType = weapon.def.damageType,
+            itemTier = weapon.def.itemTier,
+            isSpikes = false
+        });
 
-            hpBonusToMult = (maxHp * dmgFromHpPercent) / 100f;
-        }
+        Debug.Log($"Final damage for {weapon.def.name} is {finalDamage}");
 
-        // 3) Множитель по типу урона (x1, x1.3, x2 ...)
-        float typeMult = 1f;
-        if (UpgradesManager.Instance != null)
-            typeMult = UpgradesManager.Instance.GetDamageTypeMultiplier(damageType);
+        //float maxHp = 0f;
+        //float dmgFromHpPercent = 0f;
+        //float hpBonusToMult = 0f;
 
-        // 4) Множитель при активном щите (x1, x1.5, x2 ...)
-        float shieldMult = 1f;
-        if (UpgradesManager.Instance != null)
-            shieldMult = UpgradesManager.Instance.playerShield.GetShieldDamageBonusMultiplier();
+        //// 1) Множитель по времени (x1, x1.2, x2 ...)
+        //float timeMult = 1f;
+        //if (UpgradePerTick.Instance != null)
+        //    timeMult = UpgradePerTick.Instance.DamageMultiplier;
 
-        // ===== НОВАЯ ЛОГИКА: ВСЕ МНОЖИТЕЛИ СКЛАДЫВАЮТСЯ =====
-        // Переводим множители в бонусы:
-        // x2 -> +1, x1.5 -> +0.5, x1 -> +0
-        float timeBonus = timeMult - 1f;
-        float typeBonus = typeMult - 1f;
-        float shieldBonus = shieldMult - 1f;
+        //// 2) Бонус от MaxHealth (у тебя это уже НЕ множитель, а добавка к множителю)
+        //// hpBonusToMult = (maxHp * percent) / 100
+        //// т.е. это уже "плюс к множителю", оставляем как есть
+        //if (UpgradesManager.Instance != null &&
+        //    UpgradesManager.Instance.context.runtime.damageFromMaxHealthPercent > 0f &&
+        //    UpgradesManager.Instance.playerHealth != null)
+        //{
+        //    maxHp = UpgradesManager.Instance.playerHealth.MaxHealth;
+        //    dmgFromHpPercent = UpgradesManager.Instance.context.runtime.damageFromMaxHealthPercent;
 
-        // hpBonusToMult у тебя уже рассчитан как "прибавка к множителю", т.е. бонус.
-        float totalBonus = timeBonus + hpBonusToMult + typeBonus + shieldBonus;
+        //    hpBonusToMult = (maxHp * dmgFromHpPercent) / 100f;
+        //}
 
-        // Итоговый множитель всегда >= 0 (на всякий)
-        float finalMult = Mathf.Max(1f, 1f + totalBonus);
-        float finalDamage = baseDamage * finalMult;
+        //// 3) Множитель по типу урона (x1, x1.3, x2 ...)
+        //float typeMult = 1f;
+        //if (UpgradesManager.Instance != null)
+        //    typeMult = UpgradesManager.Instance.GetDamageTypeMultiplier(damageType);
+
+        //// 4) Множитель при активном щите (x1, x1.5, x2 ...)
+        //float shieldMult = 1f;
+        //if (UpgradesManager.Instance != null)
+        //    shieldMult = UpgradesManager.Instance.playerShield.GetShieldDamageBonusMultiplier();
+
+        //// ===== НОВАЯ ЛОГИКА: ВСЕ МНОЖИТЕЛИ СКЛАДЫВАЮТСЯ =====
+        //// Переводим множители в бонусы:
+        //// x2 -> +1, x1.5 -> +0.5, x1 -> +0
+        //float timeBonus = timeMult - 1f;
+        //float typeBonus = typeMult - 1f;
+        //float shieldBonus = shieldMult - 1f;
+
+        //// hpBonusToMult у тебя уже рассчитан как "прибавка к множителю", т.е. бонус.
+        //float totalBonus = timeBonus + hpBonusToMult + typeBonus + shieldBonus;
+
+        //// Итоговый множитель всегда >= 0 (на всякий)
+        //float finalMult = Mathf.Max(1f, 1f + totalBonus);
+        //float finalDamage = baseDamage * finalMult;
 
         // Логи
         //Debug.Log(
