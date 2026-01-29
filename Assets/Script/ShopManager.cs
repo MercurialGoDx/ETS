@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -41,6 +42,9 @@ public class ShopManager : MonoBehaviour
     [Tooltip("Клавиша для реролла магазина.")]
     public KeyCode rerollKey = KeyCode.R;
 
+    [Header("Авто-реролл UI (текст)")]
+    [SerializeField] private TMP_Text autoRerollTimerText;
+
     private int currentRerollPrice;
 
     /// <summary>
@@ -55,7 +59,14 @@ public class ShopManager : MonoBehaviour
     [Header("Клавиша открытия магазина")]
     public KeyCode toggleShopKey = KeyCode.Q;
 
-    private float autoRerollTimer = 0f;
+    // ===================== NEW: обратный таймер =====================
+    [Header("Авто-реролл UI (текст)")]
+    [Tooltip("Готовая строка таймера для вывода в TMP (например 00:20).")]
+    public string AutoRerollTimerText { get; private set; } = "00:00";
+
+    // осталось секунд до следующего авто-реролла
+    private float autoRerollTimeLeft = 0f;
+    // ===============================================================
 
     private void Start()
     {
@@ -71,6 +82,11 @@ public class ShopManager : MonoBehaviour
 
         if (rerollButton != null)
             rerollButton.SetActive(true);
+
+        // ===================== NEW: старт обратного таймера =====================
+        ResetAutoRerollTimer();
+        UpdateAutoRerollUI(); // чтобы текст/полоска сразу были корректны
+        // =========================================================================
     }
 
     private void Update()
@@ -90,32 +106,9 @@ public class ShopManager : MonoBehaviour
             RerollShop();
         }
 
-        // Автоматический реролл каждые N секунд
-        if (autoRerollInterval > 0f)
-        {
-            autoRerollTimer += Time.deltaTime;
-            
-            // Обновляем прогресс-бар
-            if (autoRerollProgressBar != null)
-            {
-                float progress = autoRerollTimer / autoRerollInterval;
-                autoRerollProgressBar.fillAmount = Mathf.Clamp01(progress);
-            }
-            
-            if (autoRerollTimer >= autoRerollInterval)
-            {
-                autoRerollTimer = 0f;
-                AutoRerollShop();
-            }
-        }
-        else
-        {
-            // Если автоматический реролл отключен, скрываем прогресс-бар
-            if (autoRerollProgressBar != null)
-            {
-                autoRerollProgressBar.fillAmount = 0f;
-            }
-        }
+        // ===================== CHANGED: автоматический реролл (обратный отсчет) =====================
+        HandleAutoReroll();
+        // ============================================================================================
     }
 
     private void ToggleShopPanel()
@@ -338,8 +331,7 @@ public class ShopManager : MonoBehaviour
             rerollTooltip.UpdateTooltip();
         }
 
-        // ВАЖНО: НЕ трогаем autoRerollTimer и progressBar
-        // Авто-реролл должен жить своей жизнью
+        // ВАЖНО: НЕ трогаем авто-таймер — он живет своей жизнью (как ты и хотела)
     }
 
     /// <summary>
@@ -350,4 +342,65 @@ public class ShopManager : MonoBehaviour
     {
         RandomizeShopContents();
     }
+
+    // ===================== NEW: вся новая логика только про авто-таймер/UI =====================
+
+    private void HandleAutoReroll()
+    {
+        if (autoRerollInterval <= 0f)
+        {
+            // Отключено
+            if (autoRerollProgressBar != null)
+                autoRerollProgressBar.fillAmount = 0f;
+
+            AutoRerollTimerText = "00:00";
+            return;
+        }
+
+        autoRerollTimeLeft -= Time.deltaTime;
+        if (autoRerollTimeLeft < 0f)
+            autoRerollTimeLeft = 0f;
+
+        UpdateAutoRerollUI();
+
+        if (autoRerollTimeLeft <= 0f)
+        {
+            AutoRerollShop();
+            ResetAutoRerollTimer();
+            UpdateAutoRerollUI(); // чтобы сразу стало "00:20" и fill=1
+        }
+    }
+
+    private void ResetAutoRerollTimer()
+    {
+        autoRerollTimeLeft = autoRerollInterval;
+    }
+
+    private void UpdateAutoRerollUI()
+    {
+        // Полоска: 1 -> 0
+        if (autoRerollProgressBar != null)
+        {
+            float t = autoRerollInterval <= 0f ? 0f : (autoRerollTimeLeft / autoRerollInterval);
+            autoRerollProgressBar.fillAmount = Mathf.Clamp01(t);
+        }
+
+        // Строка таймера
+        int seconds = Mathf.CeilToInt(autoRerollTimeLeft);
+        AutoRerollTimerText = FormatMMSS(seconds);
+
+        // Прямой вывод в TMP из инспектора
+        if (autoRerollTimerText != null)
+            autoRerollTimerText.text = AutoRerollTimerText;
+    }
+
+    private static string FormatMMSS(int totalSeconds)
+    {
+        if (totalSeconds < 0) totalSeconds = 0;
+        int minutes = totalSeconds / 60;
+        int seconds = totalSeconds % 60;
+        return $"{minutes:00}:{seconds:00}";
+    }
+
+    // ==========================================================================================
 }

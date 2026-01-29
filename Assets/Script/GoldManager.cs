@@ -158,7 +158,7 @@ public void AddGold(int amount, GoldSource source, Vector3? worldPos = null)
     {
         if (goldText != null)
         {
-            goldText.text = $"Золото: {currentGold}";
+            goldText.text = $"{currentGold}";
         }
     }
 }
