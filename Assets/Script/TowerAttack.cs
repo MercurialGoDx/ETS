@@ -275,8 +275,9 @@ public class TowerAttack : MonoBehaviour
                     auraInstance.Init(
                         def.damagePerProjectile,
                         1,
-                        def.GetLocalizedName(),
-                        def.damageType          // ← тип урона берём из SO оружия
+                        def.damageType,
+                        def.itemTier,
+                        damageCalculator   //  ключевой момент
                     );
                     newWeapon.auraInstance = auraInstance;
                 }
@@ -310,64 +311,6 @@ public class TowerAttack : MonoBehaviour
         });
 
         Debug.Log($"Final damage for {weapon.def.name} is {finalDamage}");
-
-        //float maxHp = 0f;
-        //float dmgFromHpPercent = 0f;
-        //float hpBonusToMult = 0f;
-
-        //// 1) Множитель по времени (x1, x1.2, x2 ...)
-        //float timeMult = 1f;
-        //if (UpgradePerTick.Instance != null)
-        //    timeMult = UpgradePerTick.Instance.DamageMultiplier;
-
-        //// 2) Бонус от MaxHealth (у тебя это уже НЕ множитель, а добавка к множителю)
-        //// hpBonusToMult = (maxHp * percent) / 100
-        //// т.е. это уже "плюс к множителю", оставляем как есть
-        //if (UpgradesManager.Instance != null &&
-        //    UpgradesManager.Instance.context.runtime.damageFromMaxHealthPercent > 0f &&
-        //    UpgradesManager.Instance.playerHealth != null)
-        //{
-        //    maxHp = UpgradesManager.Instance.playerHealth.MaxHealth;
-        //    dmgFromHpPercent = UpgradesManager.Instance.context.runtime.damageFromMaxHealthPercent;
-
-        //    hpBonusToMult = (maxHp * dmgFromHpPercent) / 100f;
-        //}
-
-        //// 3) Множитель по типу урона (x1, x1.3, x2 ...)
-        //float typeMult = 1f;
-        //if (UpgradesManager.Instance != null)
-        //    typeMult = UpgradesManager.Instance.GetDamageTypeMultiplier(damageType);
-
-        //// 4) Множитель при активном щите (x1, x1.5, x2 ...)
-        //float shieldMult = 1f;
-        //if (UpgradesManager.Instance != null)
-        //    shieldMult = UpgradesManager.Instance.playerShield.GetShieldDamageBonusMultiplier();
-
-        //// ===== НОВАЯ ЛОГИКА: ВСЕ МНОЖИТЕЛИ СКЛАДЫВАЮТСЯ =====
-        //// Переводим множители в бонусы:
-        //// x2 -> +1, x1.5 -> +0.5, x1 -> +0
-        //float timeBonus = timeMult - 1f;
-        //float typeBonus = typeMult - 1f;
-        //float shieldBonus = shieldMult - 1f;
-
-        //// hpBonusToMult у тебя уже рассчитан как "прибавка к множителю", т.е. бонус.
-        //float totalBonus = timeBonus + hpBonusToMult + typeBonus + shieldBonus;
-
-        //// Итоговый множитель всегда >= 0 (на всякий)
-        //float finalMult = Mathf.Max(1f, 1f + totalBonus);
-        //float finalDamage = baseDamage * finalMult;
-
-        // Логи
-        //Debug.Log(
-        //    $"<color=#00d9ff>[DamageCalc]</color> {weaponName} ({damageType}) → " +
-        //    $"Base={baseDamage} | " +
-        //    $"TimeMult={timeMult:F2} (bonus {timeBonus:F2}) | " +
-        //    $"MaxHP={maxHp:F0} | HP%={dmgFromHpPercent}% | HpBonus={hpBonusToMult:F2} | " +
-        //    $"TypeMult={typeMult:F2} (bonus {typeBonus:F2}) | " +
-        //    $"ShieldMult={shieldMult:F2} (bonus {shieldBonus:F2}) | " +
-        //    $"<b>TotalBonus={totalBonus:F2}</b> | <b>TotalMult={finalMult:F2}</b> | " +
-        //    $"<color=yellow>Final={finalDamage:F2}</color>"
-        //);
 
         return finalDamage;
     }
