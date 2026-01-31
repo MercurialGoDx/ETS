@@ -10,63 +10,54 @@ public class RerollButtonTooltip : MonoBehaviour, IPointerEnterHandler, IPointer
     public string description = "Обновляет все 5 слотов оружия и 5 слотов улучшений за плату.";
 
     [Header("Ссылки")]
-    [Tooltip("ShopManager для получения текущей стоимости реролла. Если не задан, будет найден автоматически.")]
     public ShopManager shopManager;
+
+    private bool isHovered;
 
     private void Start()
     {
-        // Если ShopManager не задан в инспекторе, пытаемся найти его автоматически
         if (shopManager == null)
-        {
             shopManager = FindObjectOfType<ShopManager>();
-        }
     }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if (WeaponTooltip.Instance == null)
-            return;
-
-        // Формируем описание с текущей стоимостью реролла
-        string finalDescription = description;
-        
-        if (shopManager != null)
-        {
-            int currentPrice = shopManager.CurrentRerollPrice;
-            finalDescription = $"{description}\n\n<color=#ffd700>Стоимость: {currentPrice} золота</color>";
-        }
-
-        WeaponTooltip.Instance.Show(title, finalDescription, eventData.position);
+        isHovered = true;
+        ShowTooltip();
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
+        isHovered = false;
+
         if (WeaponTooltip.Instance != null)
             WeaponTooltip.Instance.Hide();
     }
 
     /// <summary>
-    /// Обновляет тултип с актуальной стоимостью реролла.
-    /// Вызывается из ShopManager после изменения стоимости.
+    /// Вызывай из ShopManager после изменения стоимости реролла.
     /// </summary>
     public void UpdateTooltip()
     {
-        // Если тултип не активен, ничего не делаем
-        if (WeaponTooltip.Instance == null || !WeaponTooltip.Instance.gameObject.activeSelf)
-            return;
+        if (!isHovered) return;                 // курсор не на кнопке — не трогаем
+        if (WeaponTooltip.Instance == null) return;
 
-        // Получаем текущую позицию курсора для обновления тултипа
-        Vector3 mousePosition = Input.mousePosition;
-        
-        // Формируем описание с текущей стоимостью реролла
+        ShowTooltip();                          // обновит текст, позиция сама догонится тултипом
+    }
+
+    private void ShowTooltip()
+    {
+        if (WeaponTooltip.Instance == null) return;
+
         string finalDescription = description;
-        
+
         if (shopManager != null)
         {
             int currentPrice = shopManager.CurrentRerollPrice;
-            finalDescription = $"{description}\n\n<color=#ffd700>Стоимость: {currentPrice} золота</color>";
+            finalDescription =
+                $"{description}\n\n<color=#ffd700>Стоимость: {currentPrice} золота</color>";
         }
 
-        WeaponTooltip.Instance.Show(title, finalDescription, mousePosition);
+        WeaponTooltip.Instance.Show(title, finalDescription);
     }
 }

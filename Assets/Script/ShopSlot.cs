@@ -6,8 +6,8 @@ using UnityEngine.EventSystems;
 public class ShopSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
 {
     [Header("UI")]
-    [SerializeField] private Image iconImage;    
-    [SerializeField] private TMP_Text priceText; 
+    [SerializeField] private Image iconImage;
+    [SerializeField] private TMP_Text priceText;
 
     [Header("Данные")]
     private WeaponDefinition currentWeapon;
@@ -108,15 +108,13 @@ public class ShopSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHandle
 
         if (currentWeapon != null)
         {
-            WeaponTooltip.Instance.Show(currentWeapon, eventData.position);
+            WeaponTooltip.Instance.Show(currentWeapon);
         }
         else if (currentUpgrade != null)
         {
-            // тут подставь реальные поля из UpgradeDefinition
             WeaponTooltip.Instance.Show(
-                currentUpgrade.GetLocalizedName(), 
-                currentUpgrade.GetLocalizedDescription(), 
-                eventData.position
+                currentUpgrade.GetLocalizedName(),
+                currentUpgrade.GetLocalizedDescription()
             );
         }
     }
