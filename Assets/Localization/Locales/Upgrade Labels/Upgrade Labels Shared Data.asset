@@ -15,12 +15,220 @@ MonoBehaviour:
   m_TableCollectionName: Upgrade Labels
   m_TableCollectionNameGuidString: 164770c6fc8794c4ba4db6f8c7e72db3
   m_Entries:
+  - m_Id: 4881017077530624
+    m_Key: chaos_damage.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4881017123667968
+    m_Key: chaos_damage.desc
+    m_Metadata:
+      m_Items: []
   - m_Id: 1340877749596160
     m_Key: basic_shield.name
     m_Metadata:
       m_Items: []
   - m_Id: 1340877875425280
     m_Key: basic_shield.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4881017127862272
+    m_Key: basic_regen.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4881017127862273
+    m_Key: basic_regen.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4881017127862274
+    m_Key: basic_spike.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4881017127862275
+    m_Key: basic_spike.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4881017127862276
+    m_Key: damage.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4881017127862277
+    m_Key: damage.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4881017127862278
+    m_Key: max_health.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4881017127862279
+    m_Key: max_health.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4881017127862280
+    m_Key: passive_gold.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4881017127862281
+    m_Key: passive_gold.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4881017127862282
+    m_Key: sacrifice.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4881017127862283
+    m_Key: sacrifice.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4881017127862284
+    m_Key: death_mask.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4881017127862285
+    m_Key: death_mask.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4881017127862286
+    m_Key: generator.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4881017127862287
+    m_Key: generator.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4881017127862288
+    m_Key: gold_mine.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4881017127862289
+    m_Key: gold_mine.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4881017127862290
+    m_Key: heal_on_kill.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4881017127862291
+    m_Key: heal_on_kill.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4881017127862292
+    m_Key: health_per_tick.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4881017127862293
+    m_Key: health_per_tick.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4881017127862294
+    m_Key: shield_per_tick.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4881017127862295
+    m_Key: shield_per_tick.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4881017127862296
+    m_Key: attack_speed.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4881017127862297
+    m_Key: attack_speed.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4881017127862298
+    m_Key: regen_per_missing_health.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4881017127862299
+    m_Key: regen_per_missing_health.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4881017127862300
+    m_Key: regen_per_tick.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4881017127862301
+    m_Key: regen_per_tick.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4881017127862302
+    m_Key: shield_multiply.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4881017127862303
+    m_Key: shield_multiply.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4881017127862304
+    m_Key: spike_scaling.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4881017127862305
+    m_Key: spike_scaling.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4881017127862306
+    m_Key: damage_while_shield_active.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4881017127862307
+    m_Key: damage_while_shield_active.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4881017127862308
+    m_Key: degen_aura.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4881017127862309
+    m_Key: degen_aura.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4881017127862310
+    m_Key: spike_ultimate.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4881017127862311
+    m_Key: spike_ultimate.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4881017127862312
+    m_Key: br_damage.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4881017127862313
+    m_Key: br_damage.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4881017127862314
+    m_Key: br_gold.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4881017127862315
+    m_Key: br_gold.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4881017127862316
+    m_Key: br_health.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4881017127862317
+    m_Key: br_health.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4881017127862318
+    m_Key: br_regen.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4881017127862319
+    m_Key: br_regen.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4881017127862320
+    m_Key: br_shield.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4881017127862321
+    m_Key: br_shield.desc
     m_Metadata:
       m_Items: []
   m_Metadata:

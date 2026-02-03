@@ -6209,6 +6209,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c57c6d86541c2ce4d945cda785dff148, type: 3}
+--- !u!1 &443132760 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8048403264281903042, guid: 6b6150d1d8045e5408288fd0d250e315, type: 3}
+  m_PrefabInstance: {fileID: 1688872855168158196}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &447943157 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3386203172213614889, guid: 2bed5e45f49f1164694422d695a7cb87, type: 3}
@@ -12117,6 +12122,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 9278746844745074aa85e6e91c5a0436, type: 2}
   - {fileID: 11400000, guid: 9b73f6b83387cba4580022ae2cc0c5de, type: 2}
   - {fileID: 11400000, guid: 6d9c469c1309302449a7ca5a7de59566, type: 2}
+  - {fileID: 11400000, guid: d27df4b8453118c4ba5145202aab7c21, type: 2}
+  - {fileID: 11400000, guid: 6c948a059a6ba8d439c687f01f19088a, type: 2}
   rerollPrice: 10
   rerollPriceIncrease: 10
   enableRerollHotkey: 1
@@ -19842,7 +19849,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerHealth: {fileID: 1695926638903416467}
   playerShield: {fileID: 8371277131797966378}
-  damageIncreasePerMinute: 0
+  upgradeContext: {fileID: 11400000, guid: 4d10b7c41a75f734aa3a055568dc531d, type: 2}
+  damageIncreasePerTick: 0
+  damageTickInterval: 0
+  damageTickTimer: 0
   healthPerTickAmount: 0
   healthTickInterval: 0
   shieldPerTickAmount: 0
@@ -23248,6 +23258,7 @@ GameObject:
   - component: {fileID: 1717298188}
   - component: {fileID: 1717298190}
   - component: {fileID: 1717298191}
+  - component: {fileID: 1717298192}
   m_Layer: 0
   m_Name: EnemySpawner
   m_TagString: Untagged
@@ -23339,6 +23350,18 @@ MonoBehaviour:
   enemySpawner: {fileID: 1717298188}
   bossExtraMultiplier: 1
   bossRewardUI: {fileID: 1102466065}
+--- !u!114 &1717298192
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1717298187}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f722626399b6523409ae568bad117ce0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &1720470572 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1505679134961614741, guid: a81a0fe017bf8a944a5540d5d1d5f200, type: 3}
@@ -28185,14 +28208,17 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8048403264281903042, guid: 6b6150d1d8045e5408288fd0d250e315, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8371277131797966379}
   m_SourcePrefab: {fileID: 100100000, guid: 6b6150d1d8045e5408288fd0d250e315, type: 3}
 --- !u!114 &1695926638903416467 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6206511153299589228, guid: 6b6150d1d8045e5408288fd0d250e315, type: 3}
   m_PrefabInstance: {fileID: 1688872855168158196}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 443132760}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6fb9dcc6b3f098440821584817e1dc95, type: 3}
@@ -28203,7 +28229,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1311410435002872812, guid: 6b6150d1d8045e5408288fd0d250e315, type: 3}
   m_PrefabInstance: {fileID: 1688872855168158196}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 443132760}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2da77d434b6aaba478467aad865950ee, type: 3}
@@ -28219,12 +28245,28 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 819545682127635013, guid: 6b6150d1d8045e5408288fd0d250e315, type: 3}
   m_PrefabInstance: {fileID: 1688872855168158196}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 443132760}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c74c16c8203825e4181faa532636c129, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &8371277131797966379
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 443132760}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 581e1be7565f8cc428bd5255f3767507, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerHealth: {fileID: 1695926638903416467}
+  playerShield: {fileID: 8371277131797966378}
+  towerAttack: {fileID: 7296673054036822643}
+  upgradeContext: {fileID: 11400000, guid: 4d10b7c41a75f734aa3a055568dc531d, type: 2}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

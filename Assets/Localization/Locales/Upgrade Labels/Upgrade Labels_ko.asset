@@ -19,11 +19,11 @@ MonoBehaviour:
     m_Items: []
   m_TableData:
   - m_Id: 1340877749596160
-    m_Localized: hgf
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1340877875425280
-    m_Localized: hgf
+    m_Localized: 
     m_Metadata:
       m_Items: []
   references:
