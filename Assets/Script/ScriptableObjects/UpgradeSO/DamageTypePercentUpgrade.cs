@@ -9,7 +9,7 @@ public class DamageTypePercentUpgrade : UpgradeBaseSO
     public override void Apply(UpgradeContextSO context)
     {
         context.runtime.damageTypeFlatPercent.TryAdd(damageType, 0f);
-        context.runtime.damageTypeFlatPercent[damageType] += valuePercent;
+        context.runtime.damageTypeFlatPercent[damageType] += valuePercent / 100;
     }
 
     protected override object[] GetSpecificDescriptionArgs()
