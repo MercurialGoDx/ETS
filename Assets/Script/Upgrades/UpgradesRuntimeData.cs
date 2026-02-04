@@ -10,6 +10,8 @@ public class UpgradesRuntimeData
     public float[] damageTypeMultipliers;
     public int[] damageTypeStacks;
 
+    public EnemySpawner enemySpawner;
+
     public float globalDamagePercent; // +% ко всем типам
     public float generatorDamagePercent; // +% со временем
     public float totalGeneratorDamagePercent;

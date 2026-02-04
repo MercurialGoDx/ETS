@@ -11,6 +11,19 @@ public class PlayerHealth : MonoBehaviour
     public float healthRegenPerSecond = 0f;
     public float regenPer100MissingHealth = 0f;
 
+    [Header("Health - Damage Block (diminishing)")]
+    [SerializeField, Range(0f, 0.95f)]
+    private float blockCap = 0.80f;      // максимум 80%
+    [SerializeField, Range(0f, 1f)]
+    private float blockChance = 0f;      // текущий шанс блока (0..0.8)
+    [SerializeField]
+    private int blockUpgradeCount = 0;   // сколько раз купили апгрейд
+    [Header("Health - Damage Reduction (diminishing)")]
+
+    [SerializeField, Range(0f, 0.99f)]
+    private float damageReduction = 0f; // 0..1 (0.19 = -19% урона)
+    public float DamageReduction => damageReduction;
+
     [Header("UI")]
     [SerializeField] private Image healthBarFill;
 
@@ -88,6 +101,32 @@ public class PlayerHealth : MonoBehaviour
 
         //HandleShieldRegen();
     }
+
+    public void AddDamageReductionDiminishing(float add)
+    {
+        add = Mathf.Clamp01(add);
+
+        float remaining = 1f - damageReduction;
+        if (remaining <= 0f) return;
+
+        damageReduction += remaining * add;
+        damageReduction = Mathf.Clamp01(damageReduction);
+    }
+
+    public void AddBlockChanceDiminishing(int stacks = 1)
+    {
+        if (stacks <= 0) return;
+
+        blockUpgradeCount += stacks;
+
+        // Настройка: примерно 12 улучшений -> почти кап (≈97% от cap)
+        const float k = 0.30f;
+
+        // chance = cap * (1 - exp(-k * n))
+        blockChance = blockCap * (1f - Mathf.Exp(-k * blockUpgradeCount));
+        blockChance = Mathf.Min(blockChance, blockCap);
+    }
+
     public void Heal(float amount)
     {
         if (amount <= 0f) return;
@@ -103,10 +142,22 @@ public class PlayerHealth : MonoBehaviour
         if (enemy.damageToPlayer <= 0f) return;
         if (isDead) return;
 
+        // 1) Block: урон полностью игнорируем
+        if (blockChance > 0f && UnityEngine.Random.value < blockChance)
+        {
+            return;
+        }
+
         float remaining = enemy.damageToPlayer;
 
-        // 1) Сначала щит
+        // 2) Damage Reduction: уменьшение входящего урона (работает и для щита)
+        if (damageReduction > 0f)
+        {
+            remaining *= (1f - damageReduction);
+            if (remaining <= 0f) return;
+        }
 
+        // 2) Сначала щит
         foreach (var mod in modifiers)
             remaining = mod.ModifyDamage(remaining);
 
