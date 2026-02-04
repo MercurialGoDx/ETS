@@ -20,4 +20,4 @@ MonoBehaviour:
       m_TableCollectionName: GUID:164770c6fc8794c4ba4db6f8c7e72db3
   nameKey: br_damage.name
   descriptionKey: br_damage.desc
-  valuePercent: 30
+  valuePercent: 0.3

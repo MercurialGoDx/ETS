@@ -7,7 +7,7 @@ public class GlobalDamagePercentUpgrade : UpgradeBaseSO
 
     public override void Apply(UpgradeContextSO context)
     {
-        throw new System.NotImplementedException();
+        context.runtime.globalDamagePercent += valuePercent;
     }
 
     protected override object[] GetSpecificDescriptionArgs()

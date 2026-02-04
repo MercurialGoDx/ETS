@@ -42,6 +42,8 @@ public class PlayerHealth : MonoBehaviour
     public event Action OnDied;
     private bool isDead = false;
 
+    private DamageCalculator damageCalculator;
+
     // === Публичные свойства (для других скриптов) ===
 
     public float MaxHealth => baseMaxHealth * maxHealthMultiplier;
@@ -62,6 +64,11 @@ public class PlayerHealth : MonoBehaviour
 
         GetComponents(modifiers);
         modifiers.Sort((a, b) => a.Priority.CompareTo(b.Priority));
+    }
+
+    public void Init(DamageCalculator calculator)
+    {
+        damageCalculator = calculator;
     }
 
     private void Update()
@@ -94,13 +101,6 @@ public class PlayerHealth : MonoBehaviour
 
         //HandleShieldRegen();
     }
-    public void Heal(float amount)
-    {
-        if (amount <= 0f) return;
-
-        currentHealth = Mathf.Min(currentHealth + amount, maxHealth);
-        UpdateHealthUI();
-    }
 
     public void AddDamageReductionDiminishing(float add)
     {
@@ -112,6 +112,7 @@ public class PlayerHealth : MonoBehaviour
         damageReduction += remaining * add;
         damageReduction = Mathf.Clamp01(damageReduction);
     }
+
     public void AddBlockChanceDiminishing(int stacks = 1)
     {
         if (stacks <= 0) return;
@@ -126,10 +127,19 @@ public class PlayerHealth : MonoBehaviour
         blockChance = Mathf.Min(blockChance, blockCap);
     }
 
-    // === УРОН ===
-    public void TakeDamage(float damage)
+    public void Heal(float amount)
     {
-        if (damage <= 0f) return;
+        if (amount <= 0f) return;
+
+        currentHealth = Mathf.Min(currentHealth + amount, maxHealth);
+        UpdateHealthUI();
+    }
+
+    // === УРОН ===
+
+    public void TakeDamage(Enemy enemy)
+    {
+        if (enemy.damageToPlayer <= 0f) return;
         if (isDead) return;
 
         // 1) Block: урон полностью игнорируем
@@ -138,7 +148,7 @@ public class PlayerHealth : MonoBehaviour
             return;
         }
 
-        float remaining = damage;
+        float remaining = enemy.damageToPlayer;
 
         // 2) Damage Reduction: уменьшение входящего урона (работает и для щита)
         if (damageReduction > 0f)
@@ -147,11 +157,11 @@ public class PlayerHealth : MonoBehaviour
             if (remaining <= 0f) return;
         }
 
-        // 3) Модификаторы урона (щит и т.п.)
+        // 2) Сначала щит
         foreach (var mod in modifiers)
             remaining = mod.ModifyDamage(remaining);
 
-        // 4) Урон по здоровью
+        // 2) Потом здоровье
         if (remaining > 0f)
         {
             float previousHealth = currentHealth;
@@ -167,20 +177,23 @@ public class PlayerHealth : MonoBehaviour
 
             UpdateHealthUI();
 
-            // башня реально получила урон по ХП и выжила
+            // башня реально получила урон по ХП (health уменьшилось) и выжила
             if (healOnHitFromEnemyAmount > 0f && previousHealth > currentHealth)
             {
                 Heal(healOnHitFromEnemyAmount);
             }
+
+            if(SpikesDamage > 0)
+            {
+                DealSpikesDamage(enemy);
+            }
         }
 
-        // 5) Пост-эффекты на факт "атака произошла"
         if (spikesDamageScalePerEnemyHit != 0)
         {
             AddSpikesDamage(spikesDamageScalePerEnemyHit);
         }
     }
-
 
 
     // === АПГРЕЙДЫ ЗДОРОВЬЯ ===
@@ -298,10 +311,23 @@ public class PlayerHealth : MonoBehaviour
             OnEnemyKilledBySpikes();
         }
 
-        if (UpgradesManager.Instance.playerShield.ShieldRestorePerEnemyKill > 0)
+        if(UpgradesManager.Instance.playerShield.ShieldRestorePerEnemyKill > 0)
         {
             UpgradesManager.Instance.playerShield.RestoreCurrentShield(UpgradesManager.Instance.playerShield.ShieldRestorePerEnemyKill);
         }
+    }
+
+    public void DealSpikesDamage(Enemy enemy)
+    {
+        float damage = damageCalculator.Calculate(new DamageContext
+        {
+            baseDamage = SpikesDamage,
+            itemTier = ItemTier.None,
+            isSpikes = true
+        });
+
+
+        enemy.TakeDamage(damage, true);
     }
 
     // === UI ===

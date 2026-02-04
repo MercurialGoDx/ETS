@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c27422c313552df40af37641a13e294d, type: 3}
+  m_Name: BR_All
+  m_EditorClassIdentifier: 
+  icon: {fileID: 0}
+  price: 0
+  weight: 1
+  localizedStringTable:
+    m_TableReference:
+      m_TableCollectionName: GUID:164770c6fc8794c4ba4db6f8c7e72db3
+  nameKey: all.name
+  descriptionKey: all.desc
+  upgrades:
+  - {fileID: 11400000, guid: 00db2626055ecd24a800095db7b69516, type: 2}
+  - {fileID: 11400000, guid: 96a1f3b6f159c1c4d86553f89c747b1d, type: 2}
+  - {fileID: 11400000, guid: 128b8f29612162a4d88c5ac3fd2eb6da, type: 2}
+  - {fileID: 11400000, guid: 195aa815c7b901b40b6739b8e1a9b9d4, type: 2}
+  - {fileID: 11400000, guid: 4517448cb1ed64f4c97706c5b81e71e6, type: 2}
+  - {fileID: 11400000, guid: 6223eb6bc17252d48b2e42edee76efba, type: 2}
