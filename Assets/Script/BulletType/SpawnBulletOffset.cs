@@ -14,9 +14,13 @@ public class SpawnBulletOffset : MonoBehaviour, IAttackBehaviour
 
     private WeaponDefinition sourceWeapon;
 
-    /// <summary>
-    /// Инициализация из TowerAttack
-    /// </summary>
+    private PooledObject pooledObject;
+
+    public void Awake()
+    {
+        pooledObject = GetComponent<PooledObject>();
+    }
+
     public void InitAttack(AttackContext context)
     {
         Vector3 spawnPos = context.firePoint != null
@@ -40,7 +44,7 @@ public class SpawnBulletOffset : MonoBehaviour, IAttackBehaviour
         timer -= Time.deltaTime;
         if (timer <= 0f)
         {
-            Destroy(gameObject);
+            pooledObject.Release();
         }
     }
 }

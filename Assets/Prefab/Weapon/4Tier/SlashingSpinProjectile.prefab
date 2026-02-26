@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3782928100494457227}
   - component: {fileID: 2612394137176480227}
+  - component: {fileID: 1828721283447638867}
   m_Layer: 0
   m_Name: SlashingSpinProjectile
   m_TagString: Untagged
@@ -52,6 +53,18 @@ MonoBehaviour:
   damageRadius: 3
   lifeTime: 15
   impactVfx: {fileID: 0}
+--- !u!114 &1828721283447638867
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4116661310692132536}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4844192c633ae04db2afff3a93c1936, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &5179837480036680983
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -22,6 +22,13 @@ public class ChainBullet : MonoBehaviour, IAttackBehaviour
 
     private WeaponDefinition sourceWeapon;
 
+    private PooledObject pooledObject;
+
+    public void Awake()
+    {
+        pooledObject = GetComponent<PooledObject>();
+    }
+
     public void InitAttack(AttackContext context)
     {
         damage = context.damage;
@@ -105,7 +112,7 @@ public class ChainBullet : MonoBehaviour, IAttackBehaviour
         // если выстрелы закончились — умираем
         if (remainingBounces <= 0)
         {
-            Destroy(gameObject);
+            pooledObject.Release();
             return;
         }
 
@@ -115,7 +122,7 @@ public class ChainBullet : MonoBehaviour, IAttackBehaviour
 
         if (currentTarget == null)
         {
-            Destroy(gameObject);
+            pooledObject.Release();
         }
     }
 

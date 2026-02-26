@@ -118,7 +118,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1463010675432018732, guid: f3e98e33fdb18423483bb9e9d4195cf1, type: 3}
       propertyPath: m_Name
-      value: IceBulletOrigin 1
+      value: IceBullet_Projectile
       objectReference: {fileID: 0}
     - target: {fileID: 2235607141141088662, guid: f3e98e33fdb18423483bb9e9d4195cf1, type: 3}
       propertyPath: m_LocalScale.x
@@ -189,6 +189,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1463010675432018732, guid: f3e98e33fdb18423483bb9e9d4195cf1, type: 3}
       insertIndex: -1
       addedObject: {fileID: 3179385216577193994}
+    - targetCorrespondingSourceObject: {fileID: 1463010675432018732, guid: f3e98e33fdb18423483bb9e9d4195cf1, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1122883214802151961}
   m_SourcePrefab: {fileID: 100100000, guid: f3e98e33fdb18423483bb9e9d4195cf1, type: 3}
 --- !u!1 &1542654088660027197 stripped
 GameObject:
@@ -236,6 +239,18 @@ MonoBehaviour:
   maxHealthIncreaseAmount: 10
   slowMultiplier: 0.7
   slowDuration: 3
+--- !u!114 &1122883214802151961
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1542654088660027197}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4844192c633ae04db2afff3a93c1936, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &2171661998877760903 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2235607141141088662, guid: f3e98e33fdb18423483bb9e9d4195cf1, type: 3}

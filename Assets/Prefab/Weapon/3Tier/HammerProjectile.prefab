@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 7201655678945603775}
   - component: {fileID: 1141003771225136341}
   - component: {fileID: 6936066399097615079}
+  - component: {fileID: -1616608509123742462}
   m_Layer: 0
   m_Name: HammerProjectile
   m_TagString: Untagged
@@ -103,6 +104,7 @@ MonoBehaviour:
   speed: 15
   damage: 5
   homing: 1
+  maxLifeTime: 10
   increasePlayerMaxHealthOnKill: 0
   maxHealthIncreaseAmount: 10
 --- !u!114 &6936066399097615079
@@ -120,3 +122,15 @@ MonoBehaviour:
   vfxPrefab: {fileID: 6129833852335296783, guid: 11a750c06bb1ff846a3a8749499d8882, type: 3}
   lifeTime: 0.3
   startTimeOffset: 0.4
+--- !u!114 &-1616608509123742462
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9132800865255854338}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4844192c633ae04db2afff3a93c1936, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

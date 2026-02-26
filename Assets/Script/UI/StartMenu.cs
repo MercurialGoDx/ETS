@@ -25,8 +25,10 @@ public class StartMenu : MonoBehaviour
         if (startMenuCanvas != null) startMenuCanvas.SetActive(false);
         if (gameUICanvas != null) gameUICanvas.SetActive(true);
 
-        // НЕ запускаем игру — только подготовка
-        Time.timeScale = 0f;
+        Debug.Log("StartGameWasPressed!!!");
+
+        GameStateManager.Instance.SetState(GameState.Preparing);
+        Debug.Log($"Current state is {GameStateManager.Instance.CurrentState}");
 
         if (gameStartController != null)
             gameStartController.Prepare(); // покажет магазин/кнопку "Готов", отключит спавнеры

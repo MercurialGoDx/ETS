@@ -28,6 +28,13 @@ public class FallingBullet : MonoBehaviour, IAttackBehaviour
 
     private WeaponDefinition sourceWeapon;
 
+    private PooledObject pooledObject;
+
+    public void Awake()
+    {
+        pooledObject = GetComponent<PooledObject>();
+    }
+
     public void InitAttack(AttackContext context)
     {
         damage = context.damage;
@@ -35,7 +42,7 @@ public class FallingBullet : MonoBehaviour, IAttackBehaviour
 
         if (target == null)
         {
-            Destroy(gameObject);
+            pooledObject.Release();
             return;
         }
 
@@ -62,7 +69,7 @@ public class FallingBullet : MonoBehaviour, IAttackBehaviour
         lifeTimer += Time.deltaTime;
         if (lifeTimer >= maxLifeTime)
         {
-            Destroy(gameObject);
+            pooledObject.Release();
             return;
         }
 
@@ -130,7 +137,7 @@ public class FallingBullet : MonoBehaviour, IAttackBehaviour
             vfx.PlayAtPosition(hitPos);
         }
 
-        Destroy(gameObject);
+        pooledObject.Release();
     }
 
 }

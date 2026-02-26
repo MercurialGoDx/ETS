@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 5649238564664423583}
   - component: {fileID: -4042956858756600340}
   - component: {fileID: -6360667443080413971}
+  - component: {fileID: -4065636290325418985}
   m_Layer: 0
   m_Name: BalistaProjectile
   m_TagString: Untagged
@@ -70,8 +71,21 @@ MonoBehaviour:
   speed: 15
   damage: 5
   homing: 1
+  maxLifeTime: 10
   increasePlayerMaxHealthOnKill: 0
   maxHealthIncreaseAmount: 10
+--- !u!114 &-4065636290325418985
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1652208503069715880}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4844192c633ae04db2afff3a93c1936, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &785029369846827067
 PrefabInstance:
   m_ObjectHideFlags: 0

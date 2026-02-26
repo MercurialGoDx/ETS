@@ -12,6 +12,8 @@ public class WorldGoldPopup : MonoBehaviour
 
     private Camera cam;
 
+    private PooledObject pooledObject;
+
     private void Awake()
     {
         if (text == null)
@@ -19,6 +21,8 @@ public class WorldGoldPopup : MonoBehaviour
 
         cam = Camera.main;
         startColor = text.color;
+
+        pooledObject = GetComponent<PooledObject>();
     }
 
     public void Init(int amount)
@@ -47,6 +51,6 @@ public class WorldGoldPopup : MonoBehaviour
         text.color = c;
 
         if (timer >= lifeTime)
-            Destroy(gameObject);
+            pooledObject.Release();
     }
 }

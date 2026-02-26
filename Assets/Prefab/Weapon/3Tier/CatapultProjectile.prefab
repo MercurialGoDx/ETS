@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1290801626474147731}
   - component: {fileID: 3410385228005795127}
   - component: {fileID: 8750925103981122536}
+  - component: {fileID: 2674533742480752267}
   m_Layer: 0
   m_Name: CatapultProjectile
   m_TagString: Untagged
@@ -72,8 +73,21 @@ MonoBehaviour:
   homing: 0
   useFixedFlightTime: 1
   fixedFlightTime: 1.5
+  maxLifeTime: 10
   aoeRadius: 4
   hpPercentAsDamage: 0.15
+--- !u!114 &2674533742480752267
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 304615500963489341}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4844192c633ae04db2afff3a93c1936, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &13267420521113370
 PrefabInstance:
   m_ObjectHideFlags: 0

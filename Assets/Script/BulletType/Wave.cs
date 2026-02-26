@@ -32,6 +32,8 @@ public class WaveBullet : MonoBehaviour, IAttackBehaviour
 
     private WeaponDefinition sourceWeapon;
 
+    private PooledObject pooledObject;
+
     private void Awake()
     {
         // Базовые настройки физики для триггера
@@ -41,6 +43,8 @@ public class WaveBullet : MonoBehaviour, IAttackBehaviour
         Rigidbody rb = GetComponent<Rigidbody>();
         rb.useGravity = false;
         rb.isKinematic = true;
+
+        pooledObject = GetComponent<PooledObject>();
     }
 
     public void InitAttack(AttackContext context)
@@ -57,7 +61,7 @@ public class WaveBullet : MonoBehaviour, IAttackBehaviour
 
         if (tower == null)
         {
-            Destroy(gameObject);
+            pooledObject.Release();
             return;
         }
 
@@ -112,7 +116,7 @@ public class WaveBullet : MonoBehaviour, IAttackBehaviour
         timer -= Time.deltaTime;
         if (timer <= 0f)
         {
-            Destroy(gameObject);
+            pooledObject.Release();
         }
     }
 

@@ -25,5 +25,5 @@ MonoBehaviour:
   itemTier: 1
   damageType: 3
   bulletPrefab: {fileID: 1544446888068261451, guid: 815ac4dbbc1413b4da1871020c6ce935, type: 3}
-  weight: 20
+  weight: 1
   targetingMode: 0

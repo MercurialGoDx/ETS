@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7913001893440683374}
   - component: {fileID: 2462832287807843510}
   - component: {fileID: 3106564517625087204}
+  - component: {fileID: -3084538145777742157}
   m_Layer: 0
   m_Name: LogProjectile
   m_TagString: Untagged
@@ -101,6 +102,20 @@ MonoBehaviour:
   applyKnockback: 0
   knockbackDistance: 2
   knockbackDuration: 0.15
+  healPlayerOnHit: 0
+  healAmountPerEnemy: 5
+--- !u!114 &-3084538145777742157
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7446537798224516572}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4844192c633ae04db2afff3a93c1936, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &4584627666716729192
 PrefabInstance:
   m_ObjectHideFlags: 0

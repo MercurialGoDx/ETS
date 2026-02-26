@@ -26,8 +26,12 @@ public class Bullet : MonoBehaviour, IAttackBehaviour
 
     private WeaponDefinition sourceWeapon;
 
+    private PooledObject pooledObject;
+
     protected virtual void Awake()
     {
+        pooledObject = GetComponent<PooledObject>();
+
         if (increasePlayerMaxHealthOnKill)
         {
             FindPlayerHealth();
@@ -39,8 +43,8 @@ public class Bullet : MonoBehaviour, IAttackBehaviour
         damage = context.damage;
         speed = context.projectileSpeed;
         SetTarget(context.target);
-
         sourceWeapon = context.weapon;
+        lifeTimer = 0f;
     }
 
     protected void FindPlayerHealth()
@@ -78,7 +82,7 @@ public class Bullet : MonoBehaviour, IAttackBehaviour
         lifeTimer += Time.deltaTime;
         if (lifeTimer >= maxLifeTime)
         {
-            Destroy(gameObject);
+            pooledObject.Release();
             return;
         }
 
@@ -158,7 +162,7 @@ public class Bullet : MonoBehaviour, IAttackBehaviour
             }
         }
 
-        Destroy(gameObject);
+        pooledObject.Release();
     }
 
     /// <summary>

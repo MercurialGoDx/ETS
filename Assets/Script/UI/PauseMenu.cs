@@ -37,16 +37,21 @@ public class PauseManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             if (!isPaused)
+            {
+                GameStateManager.Instance.SetState(GameState.Paused);
                 Pause();
+            }
             else
+            {
+                GameStateManager.Instance.SetState(GameStateManager.Instance.PreviousState);
                 ResumeGame();
+            }
         }
     }
 
     private void Pause()
     {
         isPaused = true;
-        Time.timeScale = 0f;
 
         if (pauseMenuCanvas != null)
             pauseMenuCanvas.enabled = true;
@@ -64,7 +69,6 @@ public class PauseManager : MonoBehaviour
     public void ResumeGame()
     {
         isPaused = false;
-        Time.timeScale = 1f;
 
         if (pauseMenuCanvas != null)
             pauseMenuCanvas.enabled = false;
@@ -99,7 +103,8 @@ public class PauseManager : MonoBehaviour
             startMenuCanvas.enabled = true;
         }
 
-        Time.timeScale = 0f;
+        GameStateManager.Instance.SetState(GameState.Menu);
+        
         isPaused = false;
 
         if (AudioManager.Instance != null)

@@ -73,7 +73,7 @@ public class PlayerHealth : MonoBehaviour
 
     private void Update()
     {
-        if (isDead) return;
+        if (isDead || GameStateManager.Instance.CurrentState != GameState.Playing) return;
 
         // === РЕГЕН ЗДОРОВЬЯ ===
         if (currentHealth < MaxHealth)

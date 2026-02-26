@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 7651769547008302450}
   - component: {fileID: 3453897556024654897}
   - component: {fileID: 500658926282946078}
+  - component: {fileID: 3949609192349009831}
   m_Layer: 0
   m_Name: ChaosOrbProjectile
   m_TagString: Untagged
@@ -49,6 +50,7 @@ MonoBehaviour:
   speed: 15
   damage: 5
   homing: 1
+  maxLifeTime: 10
   increasePlayerMaxHealthOnKill: 0
   maxHealthIncreaseAmount: 10
 --- !u!135 &500658926282946078
@@ -72,6 +74,18 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.69565207
   m_Center: {x: 0.0027748942, y: -0.05113876, z: 0}
+--- !u!114 &3949609192349009831
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6665943174633951603}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4844192c633ae04db2afff3a93c1936, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &5567053909747055599
 PrefabInstance:
   m_ObjectHideFlags: 0

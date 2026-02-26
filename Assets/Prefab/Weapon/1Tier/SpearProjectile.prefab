@@ -97,6 +97,7 @@ GameObject:
   - component: {fileID: 4565125385382429068}
   - component: {fileID: 7467118187293891481}
   - component: {fileID: 5870772489238698375}
+  - component: {fileID: -773668039551324242}
   m_Layer: 0
   m_Name: SpearProjectile
   m_TagString: Untagged
@@ -135,6 +136,7 @@ MonoBehaviour:
   speed: 20
   damage: 5
   homing: 1
+  maxLifeTime: 10
   increasePlayerMaxHealthOnKill: 0
   maxHealthIncreaseAmount: 10
 --- !u!65 &5870772489238698375
@@ -158,3 +160,15 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.12530947, y: 1.8597159, z: 0.06377375}
   m_Center: {x: 0.0019824505, y: 0.30723825, z: -0.0015544295}
+--- !u!114 &-773668039551324242
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1544446888068261451}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4844192c633ae04db2afff3a93c1936, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

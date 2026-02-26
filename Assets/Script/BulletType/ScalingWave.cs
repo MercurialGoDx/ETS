@@ -22,6 +22,8 @@ public class ScalingWave : MonoBehaviour
 
     private HashSet<Enemy> hitEnemies = new HashSet<Enemy>();
 
+    private PooledObject pooledObject;
+
     private void Awake()
     {
         // Обязательно нужен IsTrigger = true
@@ -30,6 +32,8 @@ public class ScalingWave : MonoBehaviour
 
         // Начальный масштаб
         transform.localScale = startScale;
+
+        pooledObject.Release();
     }
 
     private void Start()
@@ -61,7 +65,7 @@ public class ScalingWave : MonoBehaviour
             isPlaying = false;
 
             if (destroyAfterFinish)
-                Destroy(gameObject);
+                pooledObject.Release();
         }
     }
 

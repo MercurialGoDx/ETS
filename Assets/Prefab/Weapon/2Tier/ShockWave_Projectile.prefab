@@ -9679,6 +9679,7 @@ GameObject:
   - component: {fileID: 4284552729710271517}
   - component: {fileID: 6296182181701172741}
   - component: {fileID: 8412519468384039320}
+  - component: {fileID: -8703604460073339349}
   m_Layer: 0
   m_Name: ShockWave_Projectile
   m_TagString: Untagged
@@ -9770,6 +9771,18 @@ MonoBehaviour:
   knockbackDuration: 0.15
   healPlayerOnHit: 0
   healAmountPerEnemy: 5
+--- !u!114 &-8703604460073339349
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2459226596520842175}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4844192c633ae04db2afff3a93c1936, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3777077788498107055
 GameObject:
   m_ObjectHideFlags: 0

@@ -35,6 +35,13 @@ public class LightningChainBullet : MonoBehaviour, IAttackBehaviour
 
     private WeaponDefinition sourceWeapon;
 
+    private PooledObject pooledObject;
+
+    public void Awake()
+    {
+        pooledObject = GetComponent<PooledObject>();
+    }
+
     public void InitAttack(AttackContext context)
     {
         baseDamage = context.damage;
@@ -46,7 +53,7 @@ public class LightningChainBullet : MonoBehaviour, IAttackBehaviour
         Transform startPoint = context.firePoint != null ? context.firePoint : context.owner;
         if (startPoint == null)
         {
-            Destroy(gameObject);
+            pooledObject.Release();
             return;
         }
 
@@ -54,7 +61,7 @@ public class LightningChainBullet : MonoBehaviour, IAttackBehaviour
         Enemy firstTarget = context.target != null ? context.target.GetComponent<Enemy>() : null;
         if (firstTarget == null)
         {
-            Destroy(gameObject);
+            pooledObject.Release();
             return;
         }
 
@@ -96,7 +103,7 @@ public class LightningChainBullet : MonoBehaviour, IAttackBehaviour
             currentTarget = next;
         }
 
-        Destroy(gameObject);
+        pooledObject.Release();
     }
 
     private void SpawnImpact(Vector3 pos)

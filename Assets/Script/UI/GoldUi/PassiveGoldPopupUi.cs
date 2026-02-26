@@ -7,7 +7,7 @@ public class PassiveGoldPopupUI : MonoBehaviour
     [Header("Links")]
     public GoldManager goldManager;
     public RectTransform anchor;
-    public TMP_Text popupPrefab;
+    public GameObject popupPrefab;
 
     [Header("Animation")]
     public float floatUp = 30f;
@@ -33,16 +33,20 @@ public class PassiveGoldPopupUI : MonoBehaviour
         if (source != GoldSource.PassiveTick) return;
         if (amount <= 0) return;
 
-        TMP_Text t = Instantiate(popupPrefab, anchor.parent);
+        GameObject gold = PoolManager.Instance.Spawn(popupPrefab, anchor.parent, Quaternion.identity);
+
+        PooledObject pooledObject = gold.GetComponent<PooledObject>();
+
+        TMP_Text t = gold.GetComponent<TMP_Text>();
         t.text = $"+{amount}{suffix}";
 
         RectTransform rt = t.rectTransform;
         rt.anchoredPosition = anchor.anchoredPosition;
 
-        StartCoroutine(Animate(rt, t));
+        StartCoroutine(Animate(rt, t, pooledObject));
     }
 
-    private IEnumerator Animate(RectTransform rt, TMP_Text t)
+    private IEnumerator Animate(RectTransform rt, TMP_Text t, PooledObject pooledObject)
     {
         Vector2 start = rt.anchoredPosition;
         Vector2 end = start + Vector2.up * floatUp;
@@ -62,6 +66,6 @@ public class PassiveGoldPopupUI : MonoBehaviour
             yield return null;
         }
 
-        Destroy(t.gameObject);
+        pooledObject.Release();
     }
 }

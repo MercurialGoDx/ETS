@@ -37,7 +37,7 @@ public class GameOverController : MonoBehaviour
             Debug.Log($"{stat.weapon.GetLocalizedName()} → {stat.damage:F1}");
         }
 
-        Time.timeScale = 0f; // стопаем игру
+        GameStateManager.Instance.SetState(GameState.GameOver);
     }
 
     public void HideGameOver()

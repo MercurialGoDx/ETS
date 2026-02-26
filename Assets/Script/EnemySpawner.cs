@@ -109,7 +109,8 @@ public class EnemySpawner : MonoBehaviour
         {
             Vector3 spawnPos = GetSpawnPositionAroundTower();
 
-            GameObject obj = Instantiate(enemyPrefab, spawnPos, Quaternion.identity);
+            GameObject obj = PoolManager.Instance.Spawn(enemyPrefab, spawnPos, Quaternion.identity);
+            obj.transform.localScale = Vector3.one;
             Enemy enemyInstance = obj.GetComponent<Enemy>();
             if (enemyInstance == null) continue;
 

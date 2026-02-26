@@ -58,11 +58,11 @@ public class GameStartController : MonoBehaviour
 
         gameSpeedPanel.SetActive(true);
 
-        Time.timeScale = 1f;
+        GameStateManager.Instance.SetState(GameState.Playing);
 
         if (pauseManager != null) pauseManager.SetCanPause(true);
 
-        // ✅ стартуем рост цифр
+        // стартуем рост цифр
         if (enemyStatsProgressionUI != null)
             enemyStatsProgressionUI.StartProgression();
         else

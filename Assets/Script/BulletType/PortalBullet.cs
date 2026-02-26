@@ -33,6 +33,13 @@ public class PortalBullet : MonoBehaviour, IAttackBehaviour
 
     private WeaponDefinition sourceWeapon;
 
+    private PooledObject pooledObject;
+
+    public void Awake()
+    {
+        pooledObject = GetComponent<PooledObject>();
+    }
+
     /// <summary>
     /// Вызывается из TowerAttack сразу после Instantiate.
     /// </summary>
@@ -93,7 +100,7 @@ public class PortalBullet : MonoBehaviour, IAttackBehaviour
         lifeTimer -= dt;
         if (lifeTimer <= 0f)
         {
-            Destroy(gameObject);
+            pooledObject.Release();
         }
     }
 

@@ -37,6 +37,8 @@ public class LaserBeam : MonoBehaviour, IAttackBehaviour
 
     private WeaponDefinition sourceWeapon;
 
+    private PooledObject pooledObject;
+
     // ====== ОДИН ЛУЧ НА ОДНОГО ВРАГА ======
     private static Dictionary<Enemy, LaserBeam> activeBeams = new Dictionary<Enemy, LaserBeam>();
 
@@ -49,6 +51,8 @@ public class LaserBeam : MonoBehaviour, IAttackBehaviour
 
     private void Awake()
     {
+        pooledObject = GetComponent<PooledObject>();
+
         if (increasePlayerMaxHealthOnKill)
         {
             FindPlayerHealth();
@@ -75,7 +79,7 @@ public class LaserBeam : MonoBehaviour, IAttackBehaviour
 
         if (enemy == null)
         {
-            Destroy(gameObject);
+            pooledObject.Release();
             return;
         }
 
@@ -114,7 +118,7 @@ public class LaserBeam : MonoBehaviour, IAttackBehaviour
         if (targetEnemy == null || targetTransform == null)
         {
             Debug.LogWarning("[LASER] Init: targetEnemy == null, уничтожаем луч");
-            Destroy(gameObject);
+            pooledObject.Release();
             return;
         }
 
@@ -122,7 +126,7 @@ public class LaserBeam : MonoBehaviour, IAttackBehaviour
         if (activeBeams.TryGetValue(targetEnemy, out var existing) && existing != null && existing != this)
         {
             // на всякий случай удаляем предыдущий (если каким-то образом остался)
-            Destroy(existing.gameObject);
+            existing.pooledObject.Release();
         }
         activeBeams[targetEnemy] = this;
 
@@ -138,21 +142,21 @@ public class LaserBeam : MonoBehaviour, IAttackBehaviour
         lifeTimer += Time.deltaTime;
         if (lifeTimer >= maxLifeTime)
         {
-            Destroy(gameObject);
+            pooledObject.Release();
             return;
         }
 
         // если цель или точка вылета потерялись — гасим луч
         if (firePoint == null || targetEnemy == null || targetTransform == null)
         {
-            Destroy(gameObject);
+            pooledObject.Release();
             return;
         }
 
         // если враг выключен/умер — гасим луч
         if (targetEnemy.isDead)
         {
-            Destroy(gameObject);
+            pooledObject.Release();
             return;
         }
 
@@ -239,7 +243,7 @@ public class LaserBeam : MonoBehaviour, IAttackBehaviour
             float multiplier = ownerTower != null ? ownerTower.fireRateMultiplier : 1f;
         }
 
-        Destroy(gameObject);
+        pooledObject.Release();
     }
 
     /// <summary>

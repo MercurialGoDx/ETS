@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6521233051424336105}
   - component: {fileID: 3809625492681133089}
+  - component: {fileID: 8806109818528595926}
   m_Layer: 0
   m_Name: ChainLighting
   m_TagString: Untagged
@@ -62,6 +63,18 @@ MonoBehaviour:
   enemyMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &8806109818528595926
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2390362484327582117}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4844192c633ae04db2afff3a93c1936, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3997492927289860788
 GameObject:
   m_ObjectHideFlags: 0

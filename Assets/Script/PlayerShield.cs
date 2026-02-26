@@ -82,6 +82,8 @@ public class PlayerShield : MonoBehaviour, ITakeDamageModifier
 
     private void Update()
     {
+        if (GameStateManager.Instance.CurrentState != GameState.Playing) return;
+
         HandleNoShieldDamageFullRestore();
         HandleShieldRegen();
     }
@@ -89,8 +91,7 @@ public class PlayerShield : MonoBehaviour, ITakeDamageModifier
     // === МЕХАНИКА: если щит не терял прочность N секунд -> мгновенно фуллим ===
     private void HandleNoShieldDamageFullRestore()
     {
-        if (fullRestoreAfterNoShieldDamageSeconds <= 0f)
-            return;
+        if (fullRestoreAfterNoShieldDamageSeconds <= 0f) return;
 
         // если щита как механики нет — не копим таймер
         if (MaxShield <= 0f)

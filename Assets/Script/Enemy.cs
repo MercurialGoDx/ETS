@@ -57,6 +57,8 @@ public class Enemy : MonoBehaviour
 
     private IEnemyAttack attackLogic;
 
+    private PooledObject pooledObject;
+
     private void OnEnable() => EnemyManager.Instance?.RegisterEnemy(this);
     private void OnDisable() => EnemyManager.Instance?.UnregisterEnemy(this);
 
@@ -66,6 +68,7 @@ public class Enemy : MonoBehaviour
         currentSpeed = speed; // стартовая скорость
         animator = GetComponent<Animator>();
         attackLogic = GetComponent<IEnemyAttack>();
+        pooledObject = GetComponent<PooledObject>();
     }
 
     private void Start()
@@ -99,7 +102,7 @@ public class Enemy : MonoBehaviour
 
     private void Update()
     {
-        if (isDead || player == null) return;
+        if (isDead || player == null || GameStateManager.Instance.CurrentState != GameState.Playing) return;
 
         // снимаем замедление, если время вышло
         if (isKnockedBack)
@@ -255,6 +258,7 @@ public class Enemy : MonoBehaviour
 
     public void OnDeathAnimationFinished()
     {
-        Destroy(gameObject);
+        gameObject.SetActive(false);
+        pooledObject.Release();
     }
 }

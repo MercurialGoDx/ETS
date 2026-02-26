@@ -37,6 +37,13 @@ public class ArcBullet : MonoBehaviour, IAttackBehaviour
 
     private WeaponDefinition sourceWeapon;
 
+    private PooledObject pooledObject;
+
+    public void Awake()
+    {
+        pooledObject = GetComponent<PooledObject>();
+    }
+
     public void InitAttack(AttackContext context)
     {
         damage = context.damage;
@@ -135,7 +142,7 @@ public class ArcBullet : MonoBehaviour, IAttackBehaviour
             }
         }
 
-        Destroy(gameObject);
+        pooledObject.Release();
     }
 
     private void DoAoEDamage()

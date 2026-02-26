@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 1630262076370183046}
   - component: {fileID: -4043948640813975210}
   - component: {fileID: 5167838358605262302}
+  - component: {fileID: 7595733996131692199}
   m_Layer: 0
   m_Name: Tornado
   m_TagString: Untagged
@@ -101,6 +102,20 @@ MonoBehaviour:
   applyKnockback: 1
   knockbackDistance: 2
   knockbackDuration: 0.15
+  healPlayerOnHit: 0
+  healAmountPerEnemy: 5
+--- !u!114 &7595733996131692199
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3609825440051925845}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4844192c633ae04db2afff3a93c1936, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &5453410370267500453
 PrefabInstance:
   m_ObjectHideFlags: 0

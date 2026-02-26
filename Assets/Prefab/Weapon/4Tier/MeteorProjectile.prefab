@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8856681158257137441}
   - component: {fileID: 3342660924863657119}
   - component: {fileID: -1552873405703722884}
+  - component: {fileID: -124783688663031016}
   m_Layer: 0
   m_Name: MeteorProjectile
   m_TagString: Untagged
@@ -91,6 +92,18 @@ MonoBehaviour:
   vfxPrefab: {fileID: 1827437753531166599, guid: fe8579c891be3534d9766b7a274187c5, type: 3}
   lifeTime: 6
   startTimeOffset: 0
+--- !u!114 &-124783688663031016
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9124597016870509411}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4844192c633ae04db2afff3a93c1936, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &8589530465479779733
 PrefabInstance:
   m_ObjectHideFlags: 0

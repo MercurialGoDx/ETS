@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 9008537848901249175}
   - component: {fileID: -123367403191521549}
   - component: {fileID: 2307258033302033567}
+  - component: {fileID: 3859541781381634586}
   m_Layer: 0
   m_Name: StonepProjectile
   m_TagString: Untagged
@@ -124,7 +125,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 20
   damage: 5
-  lifeTime: 3
+  homing: 1
+  maxLifeTime: 10
+  increasePlayerMaxHealthOnKill: 0
+  maxHealthIncreaseAmount: 10
 --- !u!95 &2307258033302033567
 Animator:
   serializedVersion: 7
@@ -147,3 +151,15 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &3859541781381634586
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8843598390732335428}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4844192c633ae04db2afff3a93c1936, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

@@ -21,6 +21,13 @@ public class RandomSpawnPortal : MonoBehaviour, IAttackBehaviour
 
     private WeaponDefinition sourceWeapon;
 
+    private PooledObject pooledObject;
+
+    public void Awake()
+    {
+        pooledObject = GetComponent<PooledObject>();
+    }
+
     public void InitAttack(AttackContext context)
     {
         // Урон из контекста
@@ -34,7 +41,7 @@ public class RandomSpawnPortal : MonoBehaviour, IAttackBehaviour
         Transform origin = context.firePoint != null ? context.firePoint : context.owner;
         if (origin == null)
         {
-            Destroy(gameObject);
+            pooledObject.Release();
             return;
         }
 
@@ -62,7 +69,7 @@ public class RandomSpawnPortal : MonoBehaviour, IAttackBehaviour
         }
 
         if (aliveTimer >= lifeTime)
-            Destroy(gameObject);
+            pooledObject.Release();
     }
 
     private void DoDamage()

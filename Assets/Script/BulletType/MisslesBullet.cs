@@ -24,6 +24,8 @@ public class MissileBullet : MonoBehaviour, IAttackBehaviour
 
     private WeaponDefinition sourceWeapon;
 
+    private PooledObject pooledObject;
+
     public void InitAttack(AttackContext context)
     {
         target = context.target;
@@ -59,6 +61,8 @@ public class MissileBullet : MonoBehaviour, IAttackBehaviour
         var rb = GetComponent<Rigidbody>();
         rb.useGravity = false;
         rb.isKinematic = true;
+
+        pooledObject = GetComponent<PooledObject>();
     }
 
     private void Update()
@@ -67,7 +71,7 @@ public class MissileBullet : MonoBehaviour, IAttackBehaviour
         lifeTimer += dt;
         if (lifeTimer >= maxLifeTime)
         {
-            Destroy(gameObject);
+            pooledObject.Release();
             return;
         }
 
@@ -110,9 +114,9 @@ public class MissileBullet : MonoBehaviour, IAttackBehaviour
             );
     }
 
-    // Движение вперёд c ускорением 1.5×
-    float homingSpeed = speed * homingSpeedMultiplier;
-    transform.position += transform.forward * homingSpeed * dt;
+        // Движение вперёд c ускорением 1.5×
+        float homingSpeed = speed * homingSpeedMultiplier;
+        transform.position += transform.forward * homingSpeed * dt;
 }
     }
 
@@ -133,6 +137,6 @@ public class MissileBullet : MonoBehaviour, IAttackBehaviour
             vfx.Play(enemy.transform);
         }
 
-        Destroy(gameObject);
+        pooledObject.Release();
     }
 }

@@ -42,6 +42,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4676536157612353307}
   - component: {fileID: 8619996134987993895}
+  - component: {fileID: 3772460599360053228}
   m_Layer: 0
   m_Name: LifeLaserProjectile
   m_TagString: Untagged
@@ -82,6 +83,18 @@ MonoBehaviour:
   maxLifeTime: 15
   increasePlayerMaxHealthOnKill: 1
   maxHealthIncreaseAmount: 2
+--- !u!114 &3772460599360053228
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4676400579412150040}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4844192c633ae04db2afff3a93c1936, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5370282688630517737
 GameObject:
   m_ObjectHideFlags: 0

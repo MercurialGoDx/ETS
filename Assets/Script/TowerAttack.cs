@@ -181,37 +181,23 @@ public class TowerAttack : MonoBehaviour
     private void SpawnBullet(WeaponRuntime weapon, Enemy target)
     {
         if (target == null || target.isDead)
-        {
-            // Сбрасываем цель
-            target = null;
             return;
-        }
 
         float damage = GetFinalDamage(weapon);
 
         LaserBeam existingBeam = LaserBeam.GetActiveBeamFor(target);
-        if (existingBeam != null)
+        if (existingBeam != null && existingBeam.gameObject.activeSelf)
         {
             // обновляем только параметры, не создаём новый
             existingBeam.RefreshContext(firePoint, damage, this, weapon.def.fireRate);
             return;
         }
 
-        GameObject obj = Instantiate(
-            weapon.def.bulletPrefab,
-            firePoint.position,
-            Quaternion.identity
-        );
+        GameObject obj = PoolManager.Instance.Spawn(weapon.def.bulletPrefab, firePoint.position, Quaternion.identity);
 
         IAttackBehaviour attack = obj.GetComponent<IAttackBehaviour>();
         if (attack == null)
-        {
-            Debug.LogError(
-                $"{weapon.def.bulletPrefab.name} does not implement IAttackBehaviour"
-            );
-            Destroy(obj);
             return;
-        }
 
         attack.InitAttack(new AttackContext
         {
@@ -219,14 +205,11 @@ public class TowerAttack : MonoBehaviour
             target = target.transform,
             damage = damage,
             projectileSpeed = weapon.def.projectileSpeed,
-
             ownerTower = this,
             weaponFireRate = weapon.def.fireRate,
             owner = transform,
-
             heightOffset = waveHeightOffset,
             forwardOffset = waveForwardOffset,
-
             weapon = weapon.def
         });
     }
