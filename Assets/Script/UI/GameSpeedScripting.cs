@@ -35,7 +35,6 @@ public class GameSpeedController : MonoBehaviour
     {
         float startSpeed = 1f;
         if (saveSpeed) startSpeed = PlayerPrefs.GetFloat(PrefKey, 1f);
-        //ApplySpeed(startSpeed);
     }
 
     public void SetX1() => ApplySpeed(speedX1);
@@ -44,16 +43,11 @@ public class GameSpeedController : MonoBehaviour
 
     public void ApplySpeed(float value)
     {
-        // защита от нуля/отрицательных значений
-        if (value <= 0f) value = 1f;
-
-        CurrentSpeed = value;
-
-        Time.timeScale = CurrentSpeed;
-        Time.fixedDeltaTime = _baseFixedDeltaTime * Time.timeScale;
-
-        if (saveSpeed) PlayerPrefs.SetFloat(PrefKey, CurrentSpeed);
-
-        OnSpeedChanged?.Invoke(CurrentSpeed);
+        if (GameStateManager.Instance.Is(GameState.Playing))
+        {
+            CurrentSpeed = value;
+            Time.timeScale = CurrentSpeed;
+            OnSpeedChanged?.Invoke(CurrentSpeed);
+        }
     }
 }

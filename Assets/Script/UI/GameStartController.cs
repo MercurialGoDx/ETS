@@ -57,7 +57,7 @@ public class GameStartController : MonoBehaviour
         if (goldManager != null) goldManager.enablePassiveIncome = true;
 
         gameSpeedPanel.SetActive(true);
-
+        Debug.Log("Start button was pressed");
         GameStateManager.Instance.SetState(GameState.Playing);
 
         if (pauseManager != null) pauseManager.SetCanPause(true);

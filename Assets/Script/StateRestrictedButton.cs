@@ -17,7 +17,6 @@ public class StateRestrictedButton : MonoBehaviour
     {
         GameStateManager.Instance.OnStateChanged += UpdateState;
         UpdateState(GameStateManager.Instance.CurrentState);
-        Debug.Log($"Button {gameObject.name} Current state is {GameStateManager.Instance.CurrentState}");
     }
 
     private void OnDisable()

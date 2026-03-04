@@ -13,11 +13,11 @@ public class SpeedManager : MonoBehaviour
 
     public void SetSpeed(float speed)
     {
-        CurrentSpeed = speed;
-
+        Debug.Log("asd");
         if (GameStateManager.Instance.Is(GameState.Playing))
         {
-            Time.timeScale = speed;
+            CurrentSpeed = speed;
+            Time.timeScale = CurrentSpeed;
         }
     }
 }

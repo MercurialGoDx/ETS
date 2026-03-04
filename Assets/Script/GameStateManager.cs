@@ -40,7 +40,7 @@ public class GameStateManager : MonoBehaviour
                 break;
 
             case GameState.Playing:
-                Time.timeScale = SpeedManager.Instance.CurrentSpeed;
+                Time.timeScale = GameSpeedController.Instance.CurrentSpeed;
                 break;
 
             case GameState.Paused:

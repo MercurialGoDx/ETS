@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class PauseManager : MonoBehaviour
@@ -15,22 +16,11 @@ public class PauseManager : MonoBehaviour
     private bool isPaused = false;
     private bool canPause = true;
 
-    private void Start()
-    {
-        if (pauseMenuCanvas != null)
-            pauseMenuCanvas.enabled = false;
-
-        if (resumeButton != null)
-            resumeButton.onClick.AddListener(ResumeGame);
-
-        if (mainMenuButton != null)
-            mainMenuButton.onClick.AddListener(GoToMainMenu);
-    }
-
     public void SetCanPause(bool value)
     {
         canPause = value;
     }
+
     private void Update()
     {
         if (!canPause) return;
@@ -38,12 +28,10 @@ public class PauseManager : MonoBehaviour
         {
             if (!isPaused)
             {
-                GameStateManager.Instance.SetState(GameState.Paused);
                 Pause();
             }
             else
             {
-                GameStateManager.Instance.SetState(GameStateManager.Instance.PreviousState);
                 ResumeGame();
             }
         }
@@ -52,7 +40,9 @@ public class PauseManager : MonoBehaviour
     private void Pause()
     {
         isPaused = true;
+        GameStateManager.Instance.SetState(GameState.Paused);
 
+        pauseMenuCanvas.gameObject.SetActive(true);
         if (pauseMenuCanvas != null)
             pauseMenuCanvas.enabled = true;
 
@@ -70,6 +60,10 @@ public class PauseManager : MonoBehaviour
     {
         isPaused = false;
 
+        Debug.Log($"123Previous state was :{GameStateManager.Instance.PreviousState}");
+        GameStateManager.Instance.SetState(GameStateManager.Instance.PreviousState);
+
+        pauseMenuCanvas.gameObject.SetActive(false);
         if (pauseMenuCanvas != null)
             pauseMenuCanvas.enabled = false;
 
@@ -85,35 +79,37 @@ public class PauseManager : MonoBehaviour
 
     public void GoToMainMenu()
     {
-        if (pauseMenuCanvas != null)
-        {
-            pauseMenuCanvas.enabled = false;
-            pauseMenuCanvas.gameObject.SetActive(false);
-        }
+        SceneManager.LoadScene("MainScene");
 
-        if (gameUICanvas != null)
-        {
-            gameUICanvas.enabled = false;
-            gameUICanvas.gameObject.SetActive(false);
-        }
+        //if (pauseMenuCanvas != null)
+        //{
+        //    pauseMenuCanvas.enabled = false;
+        //    pauseMenuCanvas.gameObject.SetActive(false);
+        //}
 
-        if (startMenuCanvas != null)
-        {
-            startMenuCanvas.gameObject.SetActive(true);
-            startMenuCanvas.enabled = true;
-        }
+        //if (gameUICanvas != null)
+        //{
+        //    gameUICanvas.enabled = false;
+        //    gameUICanvas.gameObject.SetActive(false);
+        //}
 
-        GameStateManager.Instance.SetState(GameState.Menu);
+        //if (startMenuCanvas != null)
+        //{
+        //    startMenuCanvas.gameObject.SetActive(true);
+        //    startMenuCanvas.enabled = true;
+        //}
+
+        //GameStateManager.Instance.SetState(GameState.Menu);
         
-        isPaused = false;
+        //isPaused = false;
 
-        if (AudioManager.Instance != null)
-        {
-            AudioManager.Instance.ResetPauseFx();
-            AudioManager.Instance.PlayMenuMusic();
-        }
+        //if (AudioManager.Instance != null)
+        //{
+        //    AudioManager.Instance.ResetPauseFx();
+        //    AudioManager.Instance.PlayMenuMusic();
+        //}
 
-        Cursor.visible = true;
-        Cursor.lockState = CursorLockMode.None;
+        //Cursor.visible = true;
+        //Cursor.lockState = CursorLockMode.None;
     }
 }

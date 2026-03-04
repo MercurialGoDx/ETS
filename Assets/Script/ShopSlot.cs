@@ -89,6 +89,7 @@ public class ShopSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHandle
     public void OnPointerClick(PointerEventData eventData)
     {
         if (shopManager == null) return;
+        if (GameStateManager.Instance.CurrentState != GameState.Preparing && GameStateManager.Instance.CurrentState != GameState.Playing) return;
 
         if (currentWeapon != null)
         {
