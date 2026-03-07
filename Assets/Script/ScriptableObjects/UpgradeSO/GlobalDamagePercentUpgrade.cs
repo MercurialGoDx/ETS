@@ -7,7 +7,7 @@ public class GlobalDamagePercentUpgrade : UpgradeBaseSO
 
     public override void Apply(UpgradeContextSO context)
     {
-        context.runtime.globalDamagePercent += valuePercent;
+        context.runtime.globalDamagePercent += valuePercent / 100;
     }
 
     protected override object[] GetSpecificDescriptionArgs()

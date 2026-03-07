@@ -21,4 +21,4 @@ MonoBehaviour:
   nameKey: piercing_damage.name
   descriptionKey: piercing_damage.desc
   damageType: 1
-  valuePercent: 0.1
+  valuePercent: 10

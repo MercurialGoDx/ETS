@@ -519,7 +519,7 @@ public class PlayerShield : MonoBehaviour, ITakeDamageModifier
 
     public void AddDamageWhileShieldActivePercent(float amount)
     {
-        damageWhileShieldActivePercent += amount;
+        damageWhileShieldActivePercent += amount / 100;
     }
 
     public float GetShieldDamageBonusMultiplier()

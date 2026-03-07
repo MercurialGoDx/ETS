@@ -33,9 +33,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1340877875425280
-    m_Localized: "\u0423\u0432\u0435\u043B\u0438\u0447\u0438\u0432\u0430\u0435\u0442
-      \u043C\u0430\u043A\u0441\u0438\u043C\u0430\u043B\u044C\u043D\u044B\u0439 \u044D\u043D\u0435\u0440\u0433\u0435\u0442\u0438\u0447\u0435\u0441\u043A\u0438\u0439
-      \u0449\u0438\u0442 \u0431\u0430\u0448\u043D\u0438 \u043D\u0430 <color=#ffd700>{0}</color>\\n\\n<color=#ffd700>\u0421\u0442\u043E\u0438\u043C\u043E\u0441\u0442\u044C:
+    m_Localized: "\u0429\u0438\u0442: <color=#ffd700>+{0}</color>\\n\\n<color=#ffd700>\u0421\u0442\u043E\u0438\u043C\u043E\u0441\u0442\u044C:
       {1}</color>"
     m_Metadata:
       m_Items: []
@@ -44,9 +42,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1401183729082368
-    m_Localized: "\u0423\u0432\u0435\u043B\u0438\u0447\u0438\u0432\u0430\u0435\u0442
-      \u0440\u0435\u0433\u0435\u043D\u0435\u0440\u0430\u0446\u0438\u044E \u0437\u0434\u043E\u0440\u043E\u0432\u044C\u044F
-      \u043D\u0430 <color=#ffd700>{0}</color>\\n\\n<color=#ffd700>\u0421\u0442\u043E\u0438\u043C\u043E\u0441\u0442\u044C:
+    m_Localized: "\u0420\u0435\u0433\u0435\u043D\u0435\u0440\u0430\u0446\u0438\u044F
+      \u0437\u0434\u043E\u0440\u043E\u0432\u044C\u044F <color=#ffd700>+{0}</color>\\n\\n<color=#ffd700>\u0421\u0442\u043E\u0438\u043C\u043E\u0441\u0442\u044C:
       {1}</color>"
     m_Metadata:
       m_Items: []
@@ -56,9 +53,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1401183729082370
-    m_Localized: "\u0423\u0432\u0435\u043B\u0438\u0447\u0438\u0432\u0430\u0435\u0442
-      \u0443\u0440\u043E\u043D \u043E\u0442 \u0448\u0438\u043F\u043E\u0432 \u043D\u0430
-      <color=#ffd700>{0}</color>\\n\\n<color=#ffd700>\u0421\u0442\u043E\u0438\u043C\u043E\u0441\u0442\u044C:
+    m_Localized: "\u0428\u0438\u043F\u044B: <color=#ffd700>+{0}</color>\\n\\n<color=#ffd700>\u0421\u0442\u043E\u0438\u043C\u043E\u0441\u0442\u044C:
       {1}</color>"
     m_Metadata:
       m_Items: []
@@ -67,8 +62,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1401183729082374
-    m_Localized: "\u041F\u043E\u0432\u044B\u0448\u0435\u043D\u0438\u0435 \u043C\u0430\u043A\u0441\u0438\u043C\u0430\u043B\u044C\u043D\u043E\u0433\u043E
-      \u0437\u0434\u043E\u0440\u043E\u0432\u044C\u044F \u043D\u0430 <color=#ffd700>{0}</color>\\n\\n<color=#ffd700>\u0421\u0442\u043E\u0438\u043C\u043E\u0441\u0442\u044C:
+    m_Localized: "\u0417\u0434\u043E\u0440\u043E\u0432\u044C\u0435: <color=#ffd700>+{0}</color>\\n\\n<color=#ffd700>\u0421\u0442\u043E\u0438\u043C\u043E\u0441\u0442\u044C:
       {1}</color>"
     m_Metadata:
       m_Items: []
@@ -77,9 +71,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1401183729082376
-    m_Localized: "\u0423\u0432\u0435\u043B\u0438\u0447\u0438\u0432\u0430\u0435\u0442
-      \u0435\u0436\u0435\u0441\u0435\u043A\u0443\u043D\u0434\u043D\u044B\u0439 \u043F\u0440\u0438\u0440\u043E\u0441\u0442
-      \u0437\u043E\u043B\u043E\u0442\u0430 \u043D\u0430 <color=#ffd700>{0}</color>\\n\\n<color=#ffd700>\u0421\u0442\u043E\u0438\u043C\u043E\u0441\u0442\u044C:
+    m_Localized: "\u041F\u0440\u0438\u0440\u043E\u0441\u0442 \u0437\u043E\u043B\u043E\u0442\u0430:
+      <color=#ffd700>+{0}</color>\\n\\n<color=#ffd700>\u0421\u0442\u043E\u0438\u043C\u043E\u0441\u0442\u044C:
       {1}</color>"
     m_Metadata:
       m_Items: []
@@ -88,10 +81,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1401183729082378
-    m_Localized: "\u041F\u043E\u043B\u0443\u0447\u0438\u0442\u0435 <color=#ffd700>200</color>
-      \u0437\u043E\u043B\u043E\u0442\u0430, \u0432\u0437\u0430\u043C\u0435\u043D
-      \u043D\u0430 <color=#ffd700>{0}</color> \u043C\u0430\u043A\u0441\u0438\u043C\u0430\u043B\u044C\u043D\u043E\u0433\u043E
-      \u0437\u0434\u043E\u0440\u043E\u0432\u044C\u044F"
+    m_Localized: "\u0417\u043E\u043B\u043E\u0442\u043E: <color=#ffd700>+200</color>\\n\u041C\u0430\u043A\u0441\u0438\u043C\u0430\u043B\u044C\u043D\u043E\u0435
+      \u0437\u0434\u043E\u0440\u043E\u0432\u044C\u0435: <color=#ffd700>-{0}</color>"
     m_Metadata:
       m_Items: []
   - m_Id: 1401183729082379
@@ -99,11 +90,9 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1401183729082380
-    m_Localized: "\u0423\u0432\u0435\u043B\u0438\u0447\u0438\u0432\u0430\u0435\u0442
-      \u0443\u0440\u043E\u043D \u043E\u0442 \u0448\u0438\u043F\u043E\u0432 \u043D\u0430
-      <color=#ffd700>15</color>, \u0430 \u0442\u0430\u043A-\u0436\u0435 \u0438\u0441\u0446\u0435\u043B\u044F\u0435\u0442
-      \u0432\u0430\u0441 \u043D\u0430 <color=#ffd700>5</color> \u043F\u0440\u0438
-      \u043F\u043E\u043B\u0443\u0447\u0435\u043D\u0438\u0438 \u0443\u0440\u043E\u043D\u0430\\n\\n<color=#ffd700>\u0421\u0442\u043E\u0438\u043C\u043E\u0441\u0442\u044C:
+    m_Localized: "\u0428\u0438\u043F\u044B <color=#ffd700>+15</color>\\n\u0418\u0441\u0446\u0435\u043B\u0435\u043D\u0438\u0435
+      \u043D\u0430 <color=#ffd700>3</color> \u043F\u0440\u0438 \u043F\u043E\u043B\u0443\u0447\u0435\u043D\u0438\u0438
+      \u0443\u0440\u043E\u043D\u0430\\n\\n<color=#ffd700>\u0421\u0442\u043E\u0438\u043C\u043E\u0441\u0442\u044C:
       {0}</color>"
     m_Metadata:
       m_Items: []
@@ -112,9 +101,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1401183729082382
-    m_Localized: "\u0423\u0432\u0435\u043B\u0438\u0447\u0438\u0432\u0430\u0435\u0442
-      \u0443\u0440\u043E\u043D \u043D\u0430 <color=#ffd700>{1}</color> \u043A\u0430\u0436\u0434\u044B\u0435
-      <color=#ffd700>{0}</color> \u0441\u0435\u043A\u0443\u043D\u0434\\n\\n<color=#ffd700>\u0421\u0442\u043E\u0438\u043C\u043E\u0441\u0442\u044C:
+    m_Localized: "\u041E\u0431\u0449\u0438\u0439 \u0443\u0440\u043E\u043D: <color=#ffd700>+1{1}</color>
+      \u043A\u0430\u0436\u0434\u044B\u0435 <color=#ffd700>{0}</color> \u0441\u0435\u043A\u0443\u043D\u0434\\n\\n<color=#ffd700>\u0421\u0442\u043E\u0438\u043C\u043E\u0441\u0442\u044C:
       {2}</color>"
     m_Metadata:
       m_Items: []
@@ -123,9 +111,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1401183729082384
-    m_Localized: "\u0423\u0432\u0435\u043B\u0438\u0447\u0438\u0432\u0430\u0435\u0442
-      \u043F\u043E\u043B\u0443\u0447\u0430\u0435\u043C\u043E\u0435 \u0437\u043E\u043B\u043E\u0442\u043E
-      \u043D\u0430 <color=#ffd700>{0}%</color>\\n\\n<color=#ffd700>\u0421\u0442\u043E\u0438\u043C\u043E\u0441\u0442\u044C:
+    m_Localized: "\u041F\u043E\u043B\u0443\u0447\u0430\u0435\u043C\u043E\u0435 \u0437\u043E\u043B\u043E\u0442\u043E:
+      <color=#ffd700>+{0}%</color>\\n\\n<color=#ffd700>\u0421\u0442\u043E\u0438\u043C\u043E\u0441\u0442\u044C:
       {1}</color>"
     m_Metadata:
       m_Items: []
@@ -134,8 +121,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1401183729082386
-    m_Localized: "\u0423\u0431\u0438\u0439\u0441\u0442\u0432\u043E \u0432\u0440\u0430\u0433\u0430
-      \u0438\u0441\u0446\u0435\u043B\u044F\u0435\u0442 \u043D\u0430 <color=#ffd700>{0}</color>\\n\\n<color=#ffd700>\u0421\u0442\u043E\u0438\u043C\u043E\u0441\u0442\u044C:
+    m_Localized: "\u0418\u0441\u0446\u0435\u043B\u0435\u043D\u0438\u0435 \u043F\u0440\u0438
+      \u0443\u0431\u0438\u0439\u0441\u0442\u0432\u0435: <color=#ffd700>+{0}</color>\\n\\n<color=#ffd700>\u0421\u0442\u043E\u0438\u043C\u043E\u0441\u0442\u044C:
       {1}</color>"
     m_Metadata:
       m_Items: []
@@ -144,10 +131,9 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1401183729082388
-    m_Localized: "\u0423\u0432\u0435\u043B\u0438\u0447\u0438\u0432\u0430\u0435\u0442
-      \u043C\u0430\u043A\u0441\u0438\u043C\u0430\u043B\u044C\u043D\u043E\u0435 \u0437\u0434\u043E\u0440\u043E\u0432\u044C\u044F
-      \u043D\u0430 <color=#ffd700>{1}</color> \u043A\u0430\u0436\u0434\u044B\u0435
-      <color=#ffd700>{0}</color> \u0441\u0435\u043A\u0443\u043D\u0434\\n\\n<color=#ffd700>\u0421\u0442\u043E\u0438\u043C\u043E\u0441\u0442\u044C:
+    m_Localized: "\u041C\u0430\u043A\u0441\u0438\u043C\u0430\u043B\u044C\u043D\u043E\u0435
+      \u0437\u0434\u043E\u0440\u043E\u0432\u044C\u0435: <color=#ffd700>+{1}</color>
+      \u043A\u0430\u0436\u0434\u044B\u0435 <color=#ffd700>{0}</color> \u0441\u0435\u043A\u0443\u043D\u0434\\n\\n<color=#ffd700>\u0421\u0442\u043E\u0438\u043C\u043E\u0441\u0442\u044C:
       {2}</color>"
     m_Metadata:
       m_Items: []
@@ -156,9 +142,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1401183729082390
-    m_Localized: "\u0423\u0432\u0435\u043B\u0438\u0447\u0438\u0432\u0430\u0435\u0442
-      \u043C\u0430\u043A\u0441\u0438\u043C\u0430\u043B\u044C\u043D\u044B\u0439 \u044D\u043D\u0435\u0440\u0433\u0435\u0442\u0438\u0447\u0435\u0441\u043A\u0438\u0439
-      \u0449\u0438\u0442 \u043D\u0430 <color=#ffd700>{1}</color> \u043A\u0430\u0436\u0434\u044B\u0435
+    m_Localized: "\u0429\u0438\u0442 <color=#ffd700>+{1}</color> \u043A\u0430\u0436\u0434\u044B\u0435
       <color=#ffd700>{0}</color> \u0441\u0435\u043A\u0443\u043D\u0434\\n\\n<color=#ffd700>\u0421\u0442\u043E\u0438\u043C\u043E\u0441\u0442\u044C:
       {2}</color>"
     m_Metadata:
@@ -168,15 +152,9 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1401183729082392
-    m_Localized: "\u0423\u0432\u0435\u043B\u0438\u0447\u0438\u0432\u0430\u0435\u0442
-      \u0441\u043A\u043E\u0440\u043E\u0441\u0442\u044C \u0430\u0442\u0430\u043A\u0438
-      \u043D\u0430 <color=#ffd700>{0}</color>\\n\\n<color=#ffd700>\u0421\u0442\u043E\u0438\u043C\u043E\u0441\u0442\u044C:
+    m_Localized: "\u0421\u043A\u043E\u0440\u043E\u0441\u0442\u044C \u0430\u0442\u0430\u043A\u0438:
+      <color=#ffd700>+{0}</color>\\n\\n<color=#ffd700>\u0421\u0442\u043E\u0438\u043C\u043E\u0441\u0442\u044C:
       {1}</color>"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1401183729082393
-    m_Localized: "<color=#ffd700>\u0411\u043B\u0430\u0433\u043E\u0441\u043B\u0430\u0432\u043B\u0435\u043D\u0438\u0435
-      \u043F\u0440\u0438\u0440\u043E\u0434\u044B</color>"
     m_Metadata:
       m_Items: []
   - m_Id: 1401183729082395
@@ -184,10 +162,9 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1401183729082396
-    m_Localized: "\u0423\u0432\u0435\u043B\u0438\u0447\u0438\u0432\u0430\u0435\u0442
-      \u0440\u0435\u0433\u0435\u043D\u0435\u0440\u0430\u0446\u0438\u044E \u0437\u0434\u043E\u0440\u043E\u0432\u044C\u044F
-      \u043D\u0430 <color=#ffd700>{0}</color> \u043A\u0430\u0436\u0434\u044B\u0435
-      <color=#ffd700>{1}</color> \u0441\u0435\u043A\u0443\u043D\u0434\\n\\n<color=#ffd700>\u0421\u0442\u043E\u0438\u043C\u043E\u0441\u0442\u044C:
+    m_Localized: "\u0420\u0435\u0433\u0435\u043D\u0435\u0440\u0430\u0446\u0438\u044F
+      \u0437\u0434\u043E\u0440\u043E\u0432\u044C\u044F: <color=#ffd700>+{0}</color>
+      \u043A\u0430\u0436\u0434\u044B\u0435 <color=#ffd700>{1}</color> \u0441\u0435\u043A\u0443\u043D\u0434\\n\\n<color=#ffd700>\u0421\u0442\u043E\u0438\u043C\u043E\u0441\u0442\u044C:
       {2}</color>"
     m_Metadata:
       m_Items: []
@@ -197,9 +174,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1401183729082398
-    m_Localized: "\u0423\u0432\u0435\u043B\u0438\u0447\u0438\u0432\u0430\u0435\u0442
-      \u043C\u0430\u043A\u0441\u0438\u043C\u0430\u043B\u044C\u043D\u044B\u0439 \u044D\u043D\u0435\u0440\u0433\u0435\u0442\u0438\u0447\u0435\u0441\u043A\u0438\u0439
-      \u0449\u0438\u0442 \u043D\u0430 <color=#ffd700>{0}%</color>\\n\\n<color=#ffd700>\u0421\u0442\u043E\u0438\u043C\u043E\u0441\u0442\u044C:
+    m_Localized: "\u0429\u0438\u0442 <color=#ffd700>+{0}%</color>\\n\\n<color=#ffd700>\u0421\u0442\u043E\u0438\u043C\u043E\u0441\u0442\u044C:
       {1}</color>"
     m_Metadata:
       m_Items: []
@@ -209,11 +184,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1401183729082400
-    m_Localized: "\u0423\u0432\u0435\u043B\u0438\u0447\u0438\u0432\u0430\u0435\u0442
-      \u0443\u0440\u043E\u043D \u043E\u0442 \u0448\u0438\u043F\u043E\u0432 \u043D\u0430
-      <color=#ffd700>60</color>. \u041F\u043E\u043B\u0443\u0447\u0430\u0439\u0442\u0435
-      +2 \u0443\u0440\u043E\u043D\u0430 \u043A \u0448\u0438\u043F\u0430\u043C, \u043A\u0430\u0436\u0434\u044B\u0439
-      \u0440\u0430\u0437, \u043A\u043E\u0433\u0434\u0430 \u0432\u0440\u0430\u0433
+    m_Localized: "\u0428\u0438\u043F\u044B <color=#ffd700>+60</color>\\n \u0428\u0438\u043F\u044B:
+      <color=#ffd700>+2</color> \u043A\u043E\u0433\u0434\u0430 \u0432\u0440\u0430\u0433
       \u0443\u043C\u0438\u0440\u0430\u0435\u0442 \u043E\u0442 \u0443\u0440\u043E\u043D\u0430
       \u0448\u0438\u043F\u043E\u0432\\n\\n<color=#ffd700>\u0421\u0442\u043E\u0438\u043C\u043E\u0441\u0442\u044C:
       {0}</color>"
@@ -240,7 +212,7 @@ MonoBehaviour:
       \u0440\u0430\u0432\u043D\u044B\u0439 \u043F\u043E\u043A\u0430\u0437\u0430\u0442\u0435\u043B\u044E
       \u0440\u0435\u0433\u0435\u043D\u0435\u0440\u0430\u0446\u0438\u0438 \u0437\u0434\u043E\u0440\u043E\u0432\u044C\u044F
       \u0432\u0441\u0435\u043C \u043F\u0440\u043E\u0442\u0438\u0432\u043D\u0438\u043A\u0430\u043C
-      \u043A\u0430\u0436\u0434\u0443\u044E \u0441\u0435\u043A\u0443\u043D\u0434\u0443\\n\\n+<color=#ffd700>\u0421\u0442\u043E\u0438\u043C\u043E\u0441\u0442\u044C:
+      \u043A\u0430\u0436\u0434\u0443\u044E \u0441\u0435\u043A\u0443\u043D\u0434\u0443\\n\\n<color=#ffd700>\u0421\u0442\u043E\u0438\u043C\u043E\u0441\u0442\u044C:
       {0}</color>"
     m_Metadata:
       m_Items: []
@@ -250,21 +222,18 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1401183729082406
-    m_Localized: "\u0423\u0432\u0435\u043B\u0438\u0447\u0438\u0432\u0430\u0435\u0442
-      \u0443\u0440\u043E\u043D \u043E\u0442 \u0448\u0438\u043F\u043E\u0432 \u043D\u0430
-      <color=#ffd700>{0}%</color>\\n\\n<color=#ffd700>\u0421\u0442\u043E\u0438\u043C\u043E\u0441\u0442\u044C:
+    m_Localized: "\u0428\u0438\u043F\u044B \u043D\u0430 <color=#ffd700>+{0}%</color>\\n\\n<color=#ffd700>\u0421\u0442\u043E\u0438\u043C\u043E\u0441\u0442\u044C:
       {1}</color>"
     m_Metadata:
       m_Items: []
   - m_Id: 1401183729082407
-    m_Localized: "<color=#ffd700>\u0423\u0441\u0438\u043B\u0435\u043D\u0438\u0435
-      \u0443\u0440\u043E\u043D\u0430</color>"
+    m_Localized: "<color=#ffd700>\u0422\u0438\u0442\u0430\u043D\u043E\u0432\u044B\u0435
+      \u0441\u043D\u0430\u0440\u044F\u0434\u044B</color>"
     m_Metadata:
       m_Items: []
   - m_Id: 1401183729082408
-    m_Localized: "\u0423\u0432\u0435\u043B\u0438\u0447\u0438\u0432\u0430\u0435\u0442
-      \u0443\u0440\u043E\u043D \u043E\u0442 \u043B\u044E\u0431\u043E\u0433\u043E
-      \u0438\u0441\u0442\u043E\u0447\u043D\u0438\u043A\u0430 \u043D\u0430 <color=#ffd700>{0}%</color>\n"
+    m_Localized: "\u041F\u043E\u0432\u044B\u0448\u0435\u043D\u0438\u0435 \u0433\u043B\u043E\u0431\u0430\u043B\u044C\u043D\u043E\u0433\u043E
+      \u0443\u0440\u043E\u043D\u0430 \u043D\u0430 <color=#ffd700>{0}%</color>\n"
     m_Metadata:
       m_Items: []
   - m_Id: 1401183729082409
@@ -274,7 +243,7 @@ MonoBehaviour:
   - m_Id: 1401183729082410
     m_Localized: "\u0423\u0432\u0435\u043B\u0438\u0447\u0438\u0432\u0430\u0435\u0442
       \u0435\u0436\u0435\u0441\u0435\u043A\u0443\u043D\u0434\u043D\u044B\u0439 \u043F\u0440\u0438\u0440\u043E\u0441\u0442
-      \u0437\u043E\u043B\u043E\u0442\u0430 \u043D\u0430 <color=#ffd700>{0}%</color>\n"
+      \u0437\u043E\u043B\u043E\u0442\u0430 \u043D\u0430 <color=#ffd700>{0}</color>\n"
     m_Metadata:
       m_Items: []
   - m_Id: 1401183729082411
@@ -282,9 +251,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1401183729082412
-    m_Localized: "\u0423\u0432\u0435\u043B\u0438\u0447\u0438\u0432\u0430\u0435\u0442
-      \u043C\u0430\u043A\u0441\u0438\u043C\u0430\u043B\u044C\u043D\u043E\u0435 \u0437\u0434\u043E\u0440\u043E\u0432\u044C\u0435
-      \u043D\u0430 <color=#ffd700>{0}%</color>\n"
+    m_Localized: "\u0423\u0432\u0435\u043B\u0438\u0447\u0435\u043D\u0438\u0435 \u043C\u0430\u043A\u0441\u0438\u043C\u0430\u043B\u044C\u043D\u043E\u0433\u043E
+      \u0437\u0434\u043E\u0440\u043E\u0432\u044C\u044F \u043D\u0430 <color=#ffd700>{0}%</color>\n"
     m_Metadata:
       m_Items: []
   - m_Id: 1401183729082413
@@ -292,19 +260,281 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1401183729082414
-    m_Localized: "\u0423\u0432\u0435\u043B\u0438\u0447\u0438\u0432\u0430\u0435\u0442
-      \u0420\u0435\u0433\u0435\u043D\u0435\u0440\u0430\u0446\u0438\u044E \u0437\u0434\u043E\u0440\u043E\u0432\u044C\u044F
-      \u043D\u0430 <color=#ffd700>{0}%</color>\n"
+    m_Localized: "\u0423\u0432\u0435\u043B\u0438\u0447\u0435\u043D\u0438\u0435 \u0420\u0435\u0433\u0435\u043D\u0435\u0440\u0430\u0446\u0438\u0438
+      \u0437\u0434\u043E\u0440\u043E\u0432\u044C\u044F \u043D\u0430 <color=#ffd700>{0}%</color>\n"
     m_Metadata:
       m_Items: []
   - m_Id: 1401183729082415
-    m_Localized: "<color=#ffd700>\u0417\u0430\u0449\u0438\u0442\u0430</color>"
+    m_Localized: "<color=#ffd700>\u041C\u0430\u0433\u0438\u0447\u0435\u0441\u043A\u0430\u044F
+      \u0437\u0430\u0449\u0438\u0442\u0430</color>"
     m_Metadata:
       m_Items: []
   - m_Id: 1401183729082416
-    m_Localized: "\u0423\u0432\u0435\u043B\u0438\u0447\u0438\u0432\u0430\u0435\u0442
-      \u043C\u0430\u043A\u0441\u0438\u043C\u0430\u043B\u044C\u043D\u044B\u0439 \u044D\u043D\u0435\u0440\u0433\u0435\u0442\u0438\u0447\u0435\u0441\u043A\u0438\u0439
-      \u0449\u0438\u0442 \u043D\u0430 <color=#ffd700>{0}%</color>\n"
+    m_Localized: "\u0423\u0432\u0435\u043B\u0438\u0447\u0435\u043D\u0438\u0435 \u043C\u0430\u043A\u0441\u0438\u043C\u0430\u043B\u044C\u043D\u043E\u0433\u043E
+      \u0449\u0438\u0442\u0430 \u043D\u0430 <color=#ffd700>{0}%</color>\n"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5661681011949568
+    m_Localized: "<color=#ffd700>\u0423\u0440\u043E\u043D \u0445\u0430\u043E\u0441\u043E\u043C</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5661681066475520
+    m_Localized: "<color=#B790FF>Chaos Damage:</color> <color=#ffd700>+{1}%</color>\\n\\n<color=#ffd700>\u0421\u0442\u043E\u0438\u043C\u043E\u0441\u0442\u044C:
+      {2}</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1401183729082371
+    m_Localized: "<color=#ffd700>\u0411\u0430\u0437\u043E\u0432\u0430\u044F \u0430\u0442\u0430\u043A\u0430</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1401183729082372
+    m_Localized: "\u041E\u0431\u0449\u0438\u0439 \u0443\u0440\u043E\u043D: <color=#ffd700>+{0}%</color>\\n\\n<color=#ffd700>\u0421\u0442\u043E\u0438\u043C\u043E\u0441\u0442\u044C:
+      {1}</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5661681066475521
+    m_Localized: "<color=#ffd700>\u0422\u044F\u0436\u0435\u043B\u044B\u0439 \u0443\u0440\u043E\u043D</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5661681066475522
+    m_Localized: "<color=#ADACAC>Heavy damage:</color> <color=#ffd700>+{1}%</color>\\n\\n<color=#ffd700>\u0421\u0442\u043E\u0438\u043C\u043E\u0441\u0442\u044C:
+      {2}</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5661681066475524
+    m_Localized: "<color=#58CBF8>Magic damage:</color> <color=#ffd700>+{1}%</color>\\n\\n<color=#ffd700>\u0421\u0442\u043E\u0438\u043C\u043E\u0441\u0442\u044C:
+      {2}</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5661681066475525
+    m_Localized: "<color=#ffd700>\u041E\u0431\u044B\u0447\u043D\u044B\u0439 \u0443\u0440\u043E\u043D</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5661681066475526
+    m_Localized: "<color=#EED976>Normal damage:</color> <color=#ffd700>+{1}%</color>\\n\\n<color=#ffd700>\u0421\u0442\u043E\u0438\u043C\u043E\u0441\u0442\u044C:
+      {2}</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5661681066475527
+    m_Localized: "<color=#ffd700>\u041A\u043E\u043B\u044E\u0449\u0438\u0439 \u0443\u0440\u043E\u043D</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5661681066475528
+    m_Localized: "<color=#70D160>Piercing damage:</color> <color=#ffd700>+{1}%</color>\\n\\n<color=#ffd700>\u0421\u0442\u043E\u0438\u043C\u043E\u0441\u0442\u044C:
+      {2}</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5661681066475529
+    m_Localized: "<color=#ffd700>\u0423\u0440\u043E\u043D \u043E\u0442 \u0441\u043D\u0430\u0440\u044F\u0434\u043E\u0432</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5661681066475530
+    m_Localized: "<color=#FF949A>Projectile damage:</color> <color=#ffd700>+{1}%</color>\\n\\n<color=#ffd700>\u0421\u0442\u043E\u0438\u043C\u043E\u0441\u0442\u044C:
+      {2}</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5661681066475531
+    m_Localized: "<color=#ffd700>\u0411\u0430\u0437\u043E\u0432\u0430\u044F \u0437\u0430\u0449\u0438\u0442\u0430</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5661681066475532
+    m_Localized: "\u0412\u0445\u043E\u0434\u044F\u0449\u0438\u0439 \u0443\u0440\u043E\u043D:
+      <color=#ffd700>-{0}%</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5661681066475533
+    m_Localized: "<color=#ffd700>\u0412\u043E\u0441\u0441\u0442\u0430\u043D\u043E\u0432\u0438\u0442\u0435\u043B\u044C\u043D\u044B\u0435
+      \u0440\u0430\u0431\u043E\u0442\u044B</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5661681066475534
+    m_Localized: "\u0412\u043E\u0441\u0441\u0442\u0430\u043D\u043E\u0432\u043B\u0435\u043D\u0438\u0435
+      \u0449\u0438\u0442\u0430 <color=#ffd700>+{0}</color> \u043F\u0440\u0438 \u0443\u0431\u0438\u0439\u0441\u0442\u0432\u0435
+      \u0432\u0440\u0430\u0433\u0430\\n\\n<color=#ffd700>\u0421\u0442\u043E\u0438\u043C\u043E\u0441\u0442\u044C:
+      {1}</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5661681066475541
+    m_Localized: "<color=#ffd700>\u0411\u043B\u0430\u0433\u043E\u0441\u043B\u0430\u0432\u043B\u0435\u043D\u0438\u0435
+      \u043F\u0440\u0438\u0440\u043E\u0434\u044B</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5661681066475535
+    m_Localized: "<color=#ffd700>\u0411\u043B\u043E\u043A\u0438\u0440\u043E\u0432\u0430\u043D\u0438\u0435</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5661681066475536
+    m_Localized: "\u0428\u0430\u043D\u0441 \u0431\u043B\u043E\u043A\u0430: <color=#ffd700>+10%</color>\\n\\n<color=#ffd700>\u0421\u0442\u043E\u0438\u043C\u043E\u0441\u0442\u044C:
+      {1}</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5661681066475537
+    m_Localized: "<color=#ffd700>\u041A\u0430\u043F\u0438\u0442\u0430\u043B\u044C\u043D\u044B\u0439
+      \u0440\u0435\u043C\u043E\u043D\u0442</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5661681066475538
+    m_Localized: "\u0420\u0435\u0433\u0435\u043D\u0435\u0440\u0430\u0446\u0438\u044F
+      \u0437\u0434\u043E\u0440\u043E\u0432\u044C\u044F <color=#ffd700>+{0}%</color>\\n\\n<color=#ffd700>\u0421\u0442\u043E\u0438\u043C\u043E\u0441\u0442\u044C:
+      {1}</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5661681066475539
+    m_Localized: "<color=#ffd700>\u0411\u043E\u043B\u044C\u0448\u0435 \u0432\u0440\u0430\u0433\u043E\u0432</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5661681066475540
+    m_Localized: "\u041A\u043E\u043B-\u0432\u043E \u0432\u0440\u0430\u0433\u043E\u0432
+      \u0432 \u0432\u043E\u043B\u043D\u0435 <color=#ffd700>+15%</color>\\n\u0417\u043E\u043B\u043E\u0442\u043E:
+      <color=#ffd700>+500</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5661681066475542
+    m_Localized: "\u0417\u0434\u043E\u0440\u043E\u0432\u044C\u0435: <color=#ffd700>+250</color>\\n\u0420\u0435\u0433\u0435\u043D\u0435\u0440\u0430\u0446\u0438\u044F
+      \u043D\u0435\u0434\u043E\u0441\u0442\u0430\u044E\u0449\u0435\u0433\u043E \u0437\u0434\u043E\u0440\u043E\u0432\u044C\u044F:
+      <color=#ffd700>+2%</color>\\n\\n<color=#ffd700>\u0421\u0442\u043E\u0438\u043C\u043E\u0441\u0442\u044C:
+      {0}</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5661681066475543
+    m_Localized: "<color=#ffd700>\u0421\u0435\u043A\u0440\u0435\u0442\u043D\u043E\u0435
+      \u043E\u0440\u0443\u0436\u0438\u0435</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5661681066475544
+    m_Localized: "\u0423\u0440\u043E\u043D: <color=#ffd700>+{1}%</color> \u0434\u043B\u044F
+      \u0432\u0441\u0435\u0445 \u043E\u0440\u0443\u0436\u0438\u0439 <color=#ffd700>1</color>
+      \u0442\u0438\u0440\u0430\\n\\n<color=#ffd700>\u0421\u0442\u043E\u0438\u043C\u043E\u0441\u0442\u044C:
+      {2}</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5661681066475545
+    m_Localized: "<color=#ffd700>\u0423\u043B\u044C\u0442\u0438\u043C\u0430\u0442\u0438\u0432\u043D\u044B\u0439
+      \u0443\u0440\u043E\u043D \u0445\u0430\u043E\u0441\u043E\u043C</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5661681066475546
+    m_Localized: "<color=#B790FF>Chaos Damage:</color> <color=#ffd700>+30%</color>\\n<color=#B790FF>Chaos
+      Damage:</color> <color=#ffd700>+2%</color> \u0437\u0430 \u043A\u0430\u0436\u0434\u043E\u0435
+      \u0434\u0440\u0443\u0433\u043E\u0435 \u043E\u0440\u0443\u0436\u0438\u0435 \u0445\u0430\u043E\u0441\u0430\\n\\n<color=#ffd700>\u0421\u0442\u043E\u0438\u043C\u043E\u0441\u0442\u044C:
+      {0}</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5661681074864128
+    m_Localized: "<color=#ffd700>\u0423\u043B\u044C\u0442\u0438\u043C\u0430\u0442\u0438\u0432\u043D\u044B\u0439
+      \u0442\u044F\u0436\u0435\u043B\u044B\u0439 \u0443\u0440\u043E\u043D</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5661681074864129
+    m_Localized: "<color=#ADACAC>Heavy damage:</color> <color=#ffd700>+30%</color>\\n<color=#ADACAC>Heavy
+      damage:</color> <color=#ffd700>+2%</color> \u0437\u0430 \u043A\u0430\u0436\u0434\u043E\u0435
+      \u0434\u0440\u0443\u0433\u043E\u0435 \u0442\u044F\u0436\u0435\u043B\u043E\u0435
+      \u043E\u0440\u0443\u0436\u0438\u0435\\n\\n<color=#ffd700>\u0421\u0442\u043E\u0438\u043C\u043E\u0441\u0442\u044C:
+      {0}</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5661681074864130
+    m_Localized: "<color=#ffd700>\u0423\u043B\u044C\u0442\u0438\u043C\u0430\u0442\u0438\u0432\u043D\u044B\u0439
+      \u043C\u0430\u0433\u0438\u0447\u0435\u0441\u043A\u0438\u0439 \u0443\u0440\u043E\u043D</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5661681074864131
+    m_Localized: "<color=#58CBF8>Magic damage:</color> <color=#ffd700>+30%</color>\\n<color=#58CBF8>Magic
+      damage:</color> <color=#ffd700>+2%</color> \u0437\u0430 \u043A\u0430\u0436\u0434\u043E\u0435
+      \u0434\u0440\u0443\u0433\u043E\u0435 \u043C\u0430\u0433\u0438\u0447\u0435\u0441\u043A\u043E\u0435
+      \u043E\u0440\u0443\u0436\u0438\u0435\\n\\n<color=#ffd700>\u0421\u0442\u043E\u0438\u043C\u043E\u0441\u0442\u044C:
+      {0}</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5661681074864132
+    m_Localized: "<color=#ffd700>\u0423\u043B\u044C\u0442\u0438\u043C\u0430\u0442\u0438\u0432\u043D\u044B\u0439
+      \u043E\u0431\u044B\u0447\u043D\u044B\u0439 \u0443\u0440\u043E\u043D</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5661681074864133
+    m_Localized: "<color=#EED976>Normal damage:</color> <color=#ffd700>+30%</color>\\n<color=#EED976>Normal
+      damage:</color> <color=#ffd700>+2%</color> \u0437\u0430 \u043A\u0430\u0436\u0434\u043E\u0435
+      \u0434\u0440\u0443\u0433\u043E\u0435 \u043E\u0431\u044B\u0447\u043D\u043E\u0435
+      \u043E\u0440\u0443\u0436\u0438\u0435\\n\\n<color=#ffd700>\u0421\u0442\u043E\u0438\u043C\u043E\u0441\u0442\u044C:
+      {0}</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5661681074864134
+    m_Localized: "<color=#ffd700>\u0423\u043B\u044C\u0442\u0438\u043C\u0430\u0442\u0438\u0432\u043D\u044B\u0439
+      \u043A\u043E\u043B\u044E\u0449\u0438\u0439 \u0443\u0440\u043E\u043D</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5661681074864135
+    m_Localized: "<color=#70D160>Piercing damage:</color> <color=#ffd700>+30%</color>\\n<color=#70D160>Piercing
+      damage:</color> <color=#ffd700>+2%</color> \u0437\u0430 \u043A\u0430\u0436\u0434\u043E\u0435
+      \u0434\u0440\u0443\u0433\u043E\u0435 \u043A\u043E\u043B\u044E\u0449\u0435\u0435
+      \u043E\u0440\u0443\u0436\u0438\u0435\\n\\n<color=#ffd700>\u0421\u0442\u043E\u0438\u043C\u043E\u0441\u0442\u044C:
+      {0}</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5661681074864136
+    m_Localized: "<color=#ffd700>\u0423\u043B\u044C\u0442\u0438\u043C\u0430\u0442\u0438\u0432\u043D\u044B\u0439
+      \u0443\u0440\u043E\u043D \u043E\u0442 \u0441\u043D\u0430\u0440\u044F\u0434\u043E\u0432</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5661681074864137
+    m_Localized: "<color=#FF949A>Projectile damage:</color> <color=#ffd700>+30%</color>\\n<color=#FF949A>Projectile
+      damage:</color> <color=#ffd700>+2%</color> \u0437\u0430 \u043A\u0430\u0436\u0434\u043E\u0435
+      \u0434\u0440\u0443\u0433\u043E\u0435 \u043E\u0440\u0443\u0436\u0438\u0435 \u044D\u0442\u043E\u0433\u043E
+      \u0442\u0438\u043F\u0430\\n\\n<color=#ffd700>\u0421\u0442\u043E\u0438\u043C\u043E\u0441\u0442\u044C:
+      {0}</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5679906292752384
+    m_Localized: "<color=#ffd700>\u041C\u0430\u0433\u0438\u0447\u0435\u0441\u043A\u0438\u0439
+      \u0443\u0440\u043E\u043D</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5661681074864138
+    m_Localized: "<color=#ffd700>\u041C\u0443\u0434\u0440\u043E\u0441\u0442\u044C</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5661681074864139
+    m_Localized: "\u0423\u0440\u043E\u043D: <color=#ffd700>+10%</color>\\n\u0421\u043A\u043E\u0440\u043E\u0441\u0442\u044C
+      \u0430\u0442\u0430\u043A\u0438: <color=#ffd700>+5%</color>\\n\u041C\u0430\u043A\u0441\u0438\u043C\u0430\u043B\u044C\u043D\u043E\u0435
+      \u0437\u0434\u043E\u0440\u043E\u0432\u044C\u0435: <color=#ffd700>+20%</color>\\n\u0429\u0438\u0442:
+      <color=#ffd700>+20%</color>\\n\u0417\u0434\u043E\u0440\u043E\u0432\u044C\u0435
+      \u043F\u0440\u0438 \u0443\u0431\u0438\u0439\u0441\u0442\u0432\u0435: <color=#ffd700>+25</color>\\n\u041F\u0440\u0438\u0440\u043E\u0441\u0442
+      \u0437\u043E\u043B\u043E\u0442\u0430: <color=#ffd700>+1</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5661681074864140
+    m_Localized: "<color=#ffd700>\u041F\u0435\u0440\u0447\u0430\u0442\u043A\u0430
+      \u043C\u0438\u0434\u0430\u0441\u0430</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5661681074864141
+    m_Localized: "\u041F\u043E\u0432\u044B\u0448\u0435\u043D\u0438\u0435 \u0443\u0440\u043E\u043D\u0430
+      \u043D\u0430 <color=#ffd700>0.5%</color>\n \u0437\u0430 \u043A\u0430\u0436\u0434\u044B\u0435
+      100 \u043D\u0435\u043F\u043E\u0442\u0440\u0430\u0447\u0435\u043D\u043E\u0433\u043E
+      \u0437\u043E\u043B\u043E\u0442\u0430"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5661681074864142
+    m_Localized: "<color=#ffd700>\u041A\u043E\u043B\u044E\u0447\u0430\u044F \u043F\u0440\u043E\u0432\u043E\u043B\u043A\u0430</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5661681074864143
+    m_Localized: "\u0423\u0432\u0435\u043B\u0438\u0447\u0435\u043D\u0438\u0435 \u0433\u043B\u043E\u0431\u0430\u043B\u044C\u043D\u043E\u0433\u043E
+      \u0443\u0440\u043E\u043D\u0430 \u043E\u0442 \u0448\u0438\u043F\u043E\u0432
+      \u043D\u0430 <color=#ffd700>{0}%</color>\n"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5795877734875136
+    m_Localized: "<color=#ffd700>\u041C\u0438\u0444\u0440\u0438\u043B\u043E\u0432\u044B\u0435
+      \u0441\u0442\u0435\u043D\u044B</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5795877797789696
+    m_Localized: "\u0423\u0440\u043E\u043D \u043E\u0442 \u043C\u0430\u043A\u0441\u0438\u043C\u0430\u043B\u044C\u043D\u043E\u0433\u043E
+      \u0437\u0434\u043E\u0440\u043E\u0432\u044C\u044F: <color=#ffd700>+5%</color>\\n\u041C\u0430\u043A\u0441\u0438\u043C\u0430\u043B\u044C\u043D\u043E\u0435
+      \u0437\u0434\u043E\u0440\u043E\u0432\u044C\u0435: <color=#ffd700>+25%</color>\\n\\n<color=#ffd700>\u0421\u0442\u043E\u0438\u043C\u043E\u0441\u0442\u044C:
+      {0}</color>"
     m_Metadata:
       m_Items: []
   references:

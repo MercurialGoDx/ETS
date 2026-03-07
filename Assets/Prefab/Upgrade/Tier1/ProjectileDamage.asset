@@ -21,4 +21,4 @@ MonoBehaviour:
   nameKey: projectile_damage.name
   descriptionKey: projectile_damage.desc
   damageType: 3
-  valuePercent: 0.1
+  valuePercent: 10

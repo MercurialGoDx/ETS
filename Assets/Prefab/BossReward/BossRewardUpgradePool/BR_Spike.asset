@@ -17,7 +17,7 @@ MonoBehaviour:
   weight: 0
   localizedStringTable:
     m_TableReference:
-      m_TableCollectionName: 
+      m_TableCollectionName: GUID:164770c6fc8794c4ba4db6f8c7e72db3
   nameKey: br_spike.name
   descriptionKey: br_spike.desc
   valuePercent: 50

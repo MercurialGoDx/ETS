@@ -21,4 +21,4 @@ MonoBehaviour:
   nameKey: normal_damage.name
   descriptionKey: normal_damage.desc
   damageType: 2
-  valuePercent: 0.1
+  valuePercent: 10

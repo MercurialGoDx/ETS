@@ -119,11 +119,15 @@ public class PlayerHealth : MonoBehaviour
 
         blockUpgradeCount += stacks;
 
-        // Настройка: примерно 12 улучшений -> почти кап (≈97% от cap)
-        const float k = 0.30f;
+        const int N = 12;               // целевая точка к которой нормируем
+        const float m = 0.975f;         // 78% от cap (0.78 / 0.8)
+        const float a = 0.1238619f;     // подобрано: n=1 ~10%, n=12 ~78%
 
-        // chance = cap * (1 - exp(-k * n))
-        blockChance = blockCap * (1f - Mathf.Exp(-k * blockUpgradeCount));
+        float n = blockUpgradeCount;
+
+        float denom = Mathf.Log(1f + a * N);
+        blockChance = blockCap * m * (Mathf.Log(1f + a * n) / denom);
+
         blockChance = Mathf.Min(blockChance, blockCap);
     }
 
@@ -183,7 +187,7 @@ public class PlayerHealth : MonoBehaviour
                 Heal(healOnHitFromEnemyAmount);
             }
 
-            if(SpikesDamage > 0)
+            if (SpikesDamage > 0)
             {
                 DealSpikesDamage(enemy);
             }
@@ -311,7 +315,7 @@ public class PlayerHealth : MonoBehaviour
             OnEnemyKilledBySpikes();
         }
 
-        if(UpgradesManager.Instance.playerShield.ShieldRestorePerEnemyKill > 0)
+        if (UpgradesManager.Instance.playerShield.ShieldRestorePerEnemyKill > 0)
         {
             UpgradesManager.Instance.playerShield.RestoreCurrentShield(UpgradesManager.Instance.playerShield.ShieldRestorePerEnemyKill);
         }

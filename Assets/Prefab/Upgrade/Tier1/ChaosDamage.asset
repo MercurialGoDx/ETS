@@ -21,4 +21,4 @@ MonoBehaviour:
   nameKey: chaos_damage.name
   descriptionKey: chaos_damage.desc
   damageType: 5
-  valuePercent: 0.1
+  valuePercent: 10

@@ -21,4 +21,4 @@ MonoBehaviour:
   nameKey: magic_damage.name
   descriptionKey: magic_damage.desc
   damageType: 0
-  valuePercent: 0.1
+  valuePercent: 10

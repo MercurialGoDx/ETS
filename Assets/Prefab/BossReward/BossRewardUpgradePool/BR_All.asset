@@ -18,8 +18,8 @@ MonoBehaviour:
   localizedStringTable:
     m_TableReference:
       m_TableCollectionName: GUID:164770c6fc8794c4ba4db6f8c7e72db3
-  nameKey: all.name
-  descriptionKey: all.desc
+  nameKey: br_all.name
+  descriptionKey: br_all.desc
   upgrades:
   - {fileID: 11400000, guid: 00db2626055ecd24a800095db7b69516, type: 2}
   - {fileID: 11400000, guid: 96a1f3b6f159c1c4d86553f89c747b1d, type: 2}

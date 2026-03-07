@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: MoreEnemy
   m_EditorClassIdentifier: 
   icon: {fileID: 21300000, guid: 1de744f2e1a5fb4498c7ed3a3a414295, type: 3}
-  price: 1500
-  weight: 7
+  price: 0
+  weight: 4
   localizedStringTable:
     m_TableReference:
       m_TableCollectionName: GUID:164770c6fc8794c4ba4db6f8c7e72db3

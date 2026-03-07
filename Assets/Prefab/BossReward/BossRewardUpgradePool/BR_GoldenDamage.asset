@@ -17,7 +17,7 @@ MonoBehaviour:
   weight: 1
   localizedStringTable:
     m_TableReference:
-      m_TableCollectionName: 
+      m_TableCollectionName: GUID:164770c6fc8794c4ba4db6f8c7e72db3
   nameKey: br_golden_damage.name
   descriptionKey: br_golden_damage.desc
   valuePercent: 0.005

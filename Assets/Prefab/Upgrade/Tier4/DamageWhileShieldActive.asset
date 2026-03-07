@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   icon: {fileID: 21300000, guid: cf8ceae95ce83b6488c8aaf8bee74a88, type: 3}
   price: 3000
-  weight: 5
+  weight: 3
   localizedStringTable:
     m_TableReference:
       m_TableCollectionName: GUID:164770c6fc8794c4ba4db6f8c7e72db3

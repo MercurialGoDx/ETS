@@ -9,7 +9,7 @@ public class DamageTierUpgrade : UpgradeBaseSO
     public override void Apply(UpgradeContextSO context)
     {
         context.runtime.damageTierPercent.TryAdd(tier, 0f);
-        context.runtime.damageTierPercent[tier] += valuePercent;
+        context.runtime.damageTierPercent[tier] += valuePercent / 100;
     }
 
     protected override object[] GetSpecificDescriptionArgs()

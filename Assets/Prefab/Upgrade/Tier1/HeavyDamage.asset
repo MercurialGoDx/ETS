@@ -21,4 +21,4 @@ MonoBehaviour:
   nameKey: heavy_damage.name
   descriptionKey: heavy_damage.desc
   damageType: 4
-  valuePercent: 0.1
+  valuePercent: 10

@@ -14,11 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   icon: {fileID: 21300000, guid: f5b549ca4e7058c4c819bb00afed20c8, type: 3}
   price: 400
-  weight: 15
+  weight: 14
   localizedStringTable:
     m_TableReference:
       m_TableCollectionName: GUID:164770c6fc8794c4ba4db6f8c7e72db3
   nameKey: generator.name
   descriptionKey: generator.desc
   interval: 60
-  valuePercent: 2
+  valuePercent: 4

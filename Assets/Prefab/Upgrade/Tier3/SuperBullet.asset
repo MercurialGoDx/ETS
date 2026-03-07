@@ -12,13 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab9463bea46c63347a039b17e1a92245, type: 3}
   m_Name: SuperBullet
   m_EditorClassIdentifier: 
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: 043ff2de343c1b4449c27ec78bd48fef, type: 3}
   price: 1500
-  weight: 0
+  weight: 7
   localizedStringTable:
     m_TableReference:
       m_TableCollectionName: GUID:164770c6fc8794c4ba4db6f8c7e72db3
   nameKey: super_bullet.name
   descriptionKey: super_bullet.desc
   tier: 1
-  valuePercent: 1
+  valuePercent: 50
