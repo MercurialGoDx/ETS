@@ -22,4 +22,3 @@ MonoBehaviour:
   descriptionKey: more_enemy.desc
   upgrades:
   - {fileID: 11400000, guid: cd29495474f3bc4488b30625629a7565, type: 2}
-  - {fileID: 11400000, guid: f4fe3fdd577c7544d8b18fe753ffcc5f, type: 2}

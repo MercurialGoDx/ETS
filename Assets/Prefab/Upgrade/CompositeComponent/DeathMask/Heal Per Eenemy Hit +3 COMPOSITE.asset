@@ -9,8 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b4deb76f4eafbe64ab57ad244b4e6cc8, type: 3}
-  m_Name: Spike Base +40 COMPOSITE
+  m_Script: {fileID: 11500000, guid: ec6b8a82d4b6817488c4500ebfc990a5, type: 3}
+  m_Name: Heal Per Eenemy Hit +3 COMPOSITE
   m_EditorClassIdentifier: 
   icon: {fileID: 0}
   price: 0
@@ -20,4 +20,4 @@ MonoBehaviour:
       m_TableCollectionName: 
   nameKey: 
   descriptionKey: 
-  valueFlat: 40
+  valueFlat: 3
