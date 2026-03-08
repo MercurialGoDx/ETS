@@ -1,4 +1,3 @@
-using UnityEditor.Localization;
 using UnityEngine;
 using UnityEngine.Localization;
 using UnityEngine.Localization.Settings;
@@ -10,7 +9,7 @@ public abstract class UpgradeBaseSO : ScriptableObject
     public int price;
     public int weight;
 
-    [Header("�������� � ������������")]
+    [Header("Localization")]
     public LocalizedStringTable localizedStringTable;
     public string nameKey;
     public string descriptionKey;
@@ -20,7 +19,6 @@ public abstract class UpgradeBaseSO : ScriptableObject
 
     public virtual string GetLocalizedName()
     {
-        // �������� ������� ��� ������� ������
         var stringTable = localizedStringTable.GetTable();
         if (stringTable == null)
         {
@@ -28,7 +26,6 @@ public abstract class UpgradeBaseSO : ScriptableObject
             return nameKey;
         }
 
-        // �������� ������ �� �����
         var entry = stringTable.GetEntry(nameKey);
         return entry?.GetLocalizedString() ?? nameKey;
     }
@@ -50,10 +47,8 @@ public abstract class UpgradeBaseSO : ScriptableObject
 
     protected virtual object[] GetDescriptionArgs()
     {
-        // �������� ������������� ��������� �� ��������� ������
         object[] specificArgs = GetSpecificDescriptionArgs();
 
-        // ������� ����� ������: ������������� ��������� + ����
         object[] allArgs = new object[specificArgs.Length + 1];
         System.Array.Copy(specificArgs, 0, allArgs, 0, specificArgs.Length);
         allArgs[specificArgs.Length] = price;
@@ -61,6 +56,5 @@ public abstract class UpgradeBaseSO : ScriptableObject
         return allArgs;
     }
 
-    // ����������� �����, ������� ������ ����������� �������� ������
     protected abstract object[] GetSpecificDescriptionArgs();
 }
