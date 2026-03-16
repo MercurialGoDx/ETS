@@ -162,8 +162,8 @@ public class ShopManager : MonoBehaviour
         for (int i = 0; i < availableWeapons.Count; i++)
         {
             var w = availableWeapons[i];
-            if (w != null && w.weight > 0f)
-                totalWeight += w.weight;
+            if (w != null && UpgradesManager.Instance.RuntimeData.GetWeaponWeight(w) > 0f)
+                totalWeight += UpgradesManager.Instance.RuntimeData.GetWeaponWeight(w);
         }
 
         if (totalWeight <= 0f)
@@ -175,10 +175,10 @@ public class ShopManager : MonoBehaviour
         for (int i = 0; i < availableWeapons.Count; i++)
         {
             var w = availableWeapons[i];
-            if (w == null || w.weight <= 0f)
+            if (w == null || UpgradesManager.Instance.RuntimeData.GetWeaponWeight(w) <= 0f)
                 continue;
 
-            accum += w.weight;
+            accum += UpgradesManager.Instance.RuntimeData.GetWeaponWeight(w);
             if (rnd <= accum)
                 return w;
         }
@@ -207,7 +207,11 @@ public class ShopManager : MonoBehaviour
                 return;
         }
 
+        UpgradesManager.Instance.RegisterWeaponPurchase(weapon);
+
         tower.AddWeapon(weapon);
+
+        Debug.Log($"weight Weapon: {UpgradesManager.Instance.RuntimeData.GetWeaponWeight(weapon)}");
 
         if (slot != null)
             slot.Clear();
@@ -247,8 +251,8 @@ public class ShopManager : MonoBehaviour
         for (int i = 0; i < availableUpgrades.Count; i++)
         {
             var u = availableUpgrades[i];
-            if (u != null && u.weight > 0f)
-                totalWeight += u.weight;
+            if (u != null && UpgradesManager.Instance.RuntimeData.GetUpgradeWeight(u) > 0f)
+                totalWeight += UpgradesManager.Instance.RuntimeData.GetUpgradeWeight(u);
         }
 
         if (totalWeight <= 0f)
@@ -260,10 +264,10 @@ public class ShopManager : MonoBehaviour
         for (int i = 0; i < availableUpgrades.Count; i++)
         {
             var u = availableUpgrades[i];
-            if (u == null || u.weight <= 0f)
+            if (u == null || UpgradesManager.Instance.RuntimeData.GetUpgradeWeight(u) <= 0f)
                 continue;
 
-            accum += u.weight;
+            accum += UpgradesManager.Instance.RuntimeData.GetUpgradeWeight(u);
             if (rnd <= accum)
                 return u;
         }
@@ -295,6 +299,8 @@ public class ShopManager : MonoBehaviour
 
         if (UpgradesManager.Instance != null)
             UpgradesManager.Instance.ApplyUpgrade(upgrade);
+
+        Debug.Log($"weight Upgrade: {UpgradesManager.Instance.RuntimeData.GetUpgradeWeight(upgrade)}");
 
         if (slot != null)
             slot.Clear();

@@ -4,6 +4,9 @@ public class UpgradesManager : MonoBehaviour
 {
     public static UpgradesManager Instance { get; private set; }
 
+    [Header("Runtime Data")]
+    public UpgradesRuntimeData RuntimeData = new UpgradesRuntimeData();
+
     [Header("Ссылки")]
     public PlayerHealth playerHealth;
     public PlayerShield playerShield;
@@ -96,6 +99,13 @@ public class UpgradesManager : MonoBehaviour
     public void ApplyUpgrade(UpgradeBaseSO upgrade)
     {
         if (upgrade == null) return;
+
+        RuntimeData.RegisterUpgradePurchase(upgrade);
         upgrade.Apply(context);
-    }    
+    }
+
+    public void RegisterWeaponPurchase(WeaponDefinition weapon)
+    {
+        RuntimeData.RegisterWeaponPurchase(weapon);
+    }
 }

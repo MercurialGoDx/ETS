@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Localization;
 using UnityEngine.Localization.Settings;
@@ -37,6 +38,33 @@ public class WeaponDefinition : ScriptableObject
 
     [Header("Шанс появления в магазине")]
     public int weight = 1;       // используется в рандомизации слотов
+
+    [Header("Weight Scaling")]
+    [Tooltip("На сколько увеличивается вес при каждой покупке этого оружия")]
+    public int weightIncreasePerPurchase = 2;
+    [Tooltip("Максимальное количество увеличений веса при покупках")]
+    public int maxWeightIncreasePurchases = 5;
+
+    [Header("Weight Modifiers")]
+    [Tooltip("Список апгрейдов, вес которых уменьшается при покупке этого оружия")]
+    public List<UpgradeBaseSO> weightDecreaseUpgrades = new List<UpgradeBaseSO>();
+    [Tooltip("Процент уменьшения веса для каждого апгрейда из списка выше (5 = -5% к весу)")]
+    public float weightDecreaseUpgradePercent = 0f;
+
+    [Tooltip("Список апгрейдов, вес которых увеличивается при покупке этого оружия")]
+    public List<UpgradeBaseSO> weightIncreaseUpgrades = new List<UpgradeBaseSO>();
+    [Tooltip("Процент увеличения веса для каждого апгрейда из списка выше (7 = +7% к весу)")]
+    public float weightIncreaseUpgradePercent = 0f;
+
+    [Tooltip("Список оружий, вес которых уменьшается при покупке этого оружия")]
+    public List<WeaponDefinition> weightDecreaseWeapons = new List<WeaponDefinition>();
+    [Tooltip("Процент уменьшения веса для каждого оружия из списка выше (5 = -5% к весу)")]
+    public float weightDecreaseWeaponPercent = 0f;
+
+    [Tooltip("Список оружий, вес которых увеличивается при покупке этого оружия")]
+    public List<WeaponDefinition> weightIncreaseWeapons = new List<WeaponDefinition>();
+    [Tooltip("Процент увеличения веса для каждого оружия из списка выше (7 = +7% к весу)")]
+    public float weightIncreaseWeaponPercent = 0f;
 
     [Header("Поведение наведения")]
     public WeaponTargetingMode targetingMode = WeaponTargetingMode.LockUntilDeath;
