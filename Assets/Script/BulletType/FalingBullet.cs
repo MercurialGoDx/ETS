@@ -46,8 +46,9 @@ public class FallingBullet : MonoBehaviour, IAttackBehaviour
             return;
         }
 
-        // Точка падения — позиция врага
-        fallPoint = target.position;
+        // Точка падения — позиция врага по XZ, центр по Y
+        Vector3 targetCenter = GetTargetCenter(target);
+        fallPoint = targetCenter;
 
         // Старт над врагом
         Vector3 spawnPos = fallPoint;
@@ -76,8 +77,9 @@ public class FallingBullet : MonoBehaviour, IAttackBehaviour
         // Если враг жив — обновляем XZ
         if (homing && target != null)
         {
-            fallPoint.x = target.position.x;
-            fallPoint.z = target.position.z;
+            Vector3 center = GetTargetCenter(target);
+            fallPoint.x = center.x;
+            fallPoint.z = center.z;
         }
 
         // Падение вниз
@@ -140,4 +142,16 @@ public class FallingBullet : MonoBehaviour, IAttackBehaviour
         pooledObject.Release();
     }
 
+    /// <summary>
+    /// Возвращает центр цели для наведения.
+    /// </summary>
+    private Vector3 GetTargetCenter(Transform targetTransform)
+    {
+        Enemy enemy = targetTransform.GetComponent<Enemy>();
+        if (enemy != null)
+        {
+            return enemy.GetCenterPosition();
+        }
+        return targetTransform.position;
+    }
 }

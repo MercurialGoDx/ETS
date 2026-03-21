@@ -65,7 +65,8 @@ public class Bullet : MonoBehaviour, IAttackBehaviour
 
         if (target != null)
         {
-            moveDir = (target.position - transform.position).normalized;
+            Vector3 targetPos = GetTargetCenter(target);
+            moveDir = (targetPos - transform.position).normalized;
         }
         else
         {
@@ -89,7 +90,8 @@ public class Bullet : MonoBehaviour, IAttackBehaviour
         // самонаведение
         if (homing && target != null)
         {
-            moveDir = (target.position - transform.position).normalized;
+            Vector3 targetPos = GetTargetCenter(target);
+            moveDir = (targetPos - transform.position).normalized;
             UpdateRotation();
         }
 
@@ -98,7 +100,8 @@ public class Bullet : MonoBehaviour, IAttackBehaviour
         // Если почти долетели до цели — считаем, что попали
         if (target != null)
         {
-            float distToTarget = Vector3.Distance(transform.position, target.position);
+            Vector3 targetCenter = GetTargetCenter(target);
+            float distToTarget = Vector3.Distance(transform.position, targetCenter);
             if (distToTarget <= distanceThisFrame)
             {
                 HitTarget();
@@ -173,5 +176,18 @@ public class Bullet : MonoBehaviour, IAttackBehaviour
     protected virtual void OnEnemyHit(Enemy enemy)
     {
         // по умолчанию — ничего
+    }
+
+    /// <summary>
+    /// Возвращает центр цели для наведения.
+    /// </summary>
+    protected Vector3 GetTargetCenter(Transform targetTransform)
+    {
+        Enemy enemy = targetTransform.GetComponent<Enemy>();
+        if (enemy != null)
+        {
+            return enemy.GetCenterPosition();
+        }
+        return targetTransform.position;
     }
 }

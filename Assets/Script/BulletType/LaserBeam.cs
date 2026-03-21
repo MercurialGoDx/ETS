@@ -177,11 +177,11 @@ public class LaserBeam : MonoBehaviour, IAttackBehaviour
     // ====== ВИЗУАЛ ЛАЗЕРА ======
     private void UpdateBeamTransform()
     {
-        if (firePoint == null || targetTransform == null)
+        if (firePoint == null || targetTransform == null || targetEnemy == null)
             return;
 
         Vector3 start = firePoint.position;
-        Vector3 end   = targetTransform.position;
+        Vector3 end   = targetEnemy.GetCenterPosition();
         Vector3 dir   = end - start;
         float dist    = dir.magnitude;
 

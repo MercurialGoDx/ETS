@@ -84,13 +84,13 @@ public class LightningChainBullet : MonoBehaviour, IAttackBehaviour
 
             hitEnemies.Add(currentTarget);
 
-            DrawLightning(currentFrom.position, currentTarget.transform.position);
+            DrawLightning(currentFrom.position, GetEnemyCenterPosition(currentTarget));
 
             yield return new WaitForSeconds(tickDelay);
 
             if (IsValidEnemy(currentTarget))
             {
-                SpawnImpact(currentTarget.transform.position);
+                SpawnImpact(GetEnemyCenterPosition(currentTarget));
                 currentTarget.TakeDamage(currentDamage);
                 DamageStatsManager.Instance?.RegisterDamage(sourceWeapon, currentDamage);
             }
@@ -125,7 +125,7 @@ public class LightningChainBullet : MonoBehaviour, IAttackBehaviour
             if (!IsValidEnemy(enemy)) continue;
             if (hitEnemies.Contains(enemy)) continue;
 
-            float dist = Vector3.Distance(from, enemy.transform.position);
+            float dist = Vector3.Distance(from, GetEnemyCenterPosition(enemy));
             if (dist < minDist)
             {
                 minDist = dist;
@@ -177,5 +177,14 @@ public class LightningChainBullet : MonoBehaviour, IAttackBehaviour
 
         if (outerLine != null) outerLine.widthMultiplier = widthMultiplier * flicker;
         if (innerLine != null) innerLine.widthMultiplier = widthMultiplier * (flicker * 0.8f);
+    }
+
+    /// <summary>
+    /// Возвращает центр цели для наведения.
+    /// </summary>
+    private Vector3 GetEnemyCenterPosition(Enemy enemy)
+    {
+        if (enemy == null) return Vector3.zero;
+        return enemy.GetCenterPosition();
     }
 }

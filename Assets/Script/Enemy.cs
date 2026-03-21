@@ -261,4 +261,18 @@ public class Enemy : MonoBehaviour
         gameObject.SetActive(false);
         pooledObject.Release();
     }
+
+    /// <summary>
+    /// Возвращает центр врага (используется для наведения снарядов и лазера).
+    /// </summary>
+    public Vector3 GetCenterPosition()
+    {
+        Collider col = GetComponent<Collider>();
+        if (col != null)
+        {
+            return col.bounds.center;
+        }
+        // фоллбэк: середина между позицией и верхней точкой (примерно центр высоты)
+        return transform.position + Vector3.up * 1f;
+    }
 }

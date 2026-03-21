@@ -74,7 +74,7 @@ public class ChainBullet : MonoBehaviour, IAttackBehaviour
             }
         }
 
-        Vector3 dir = currentTarget.position - transform.position;
+        Vector3 dir = GetTargetCenter(currentTarget) - transform.position;
         float distThisFrame = speed * Time.deltaTime;
 
         if (dir.sqrMagnitude <= distThisFrame * distThisFrame)
@@ -160,5 +160,18 @@ public class ChainBullet : MonoBehaviour, IAttackBehaviour
     {
         Gizmos.color = Color.cyan;
         Gizmos.DrawWireSphere(transform.position, searchRadius);
+    }
+
+    /// <summary>
+    /// Возвращает центр цели для наведения.
+    /// </summary>
+    private Vector3 GetTargetCenter(Transform targetTransform)
+    {
+        Enemy enemy = targetTransform.GetComponent<Enemy>();
+        if (enemy != null)
+        {
+            return enemy.GetCenterPosition();
+        }
+        return targetTransform.position;
     }
 }

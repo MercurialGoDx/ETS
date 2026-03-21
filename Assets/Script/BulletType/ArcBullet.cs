@@ -52,7 +52,7 @@ public class ArcBullet : MonoBehaviour, IAttackBehaviour
         startPos = transform.position;
 
         if (target != null)
-            targetPos = target.position;
+            targetPos = GetTargetCenter(target);
         else
             targetPos = startPos + transform.forward * 5f;
 
@@ -93,7 +93,7 @@ public class ArcBullet : MonoBehaviour, IAttackBehaviour
         // подруливание (обновляет позицию цели)
         if (homing && target != null && target.gameObject.activeInHierarchy)
         {
-            targetPos = target.position;
+            targetPos = GetTargetCenter(target);
         }
 
         t += Time.deltaTime / travelTime;
@@ -168,5 +168,18 @@ public class ArcBullet : MonoBehaviour, IAttackBehaviour
 
         Gizmos.color = new Color(1f, 0.5f, 0f, 0.3f);
         Gizmos.DrawWireSphere(transform.position, aoeRadius);
+    }
+
+    /// <summary>
+    /// Возвращает центр цели для наведения.
+    /// </summary>
+    private Vector3 GetTargetCenter(Transform targetTransform)
+    {
+        Enemy enemy = targetTransform.GetComponent<Enemy>();
+        if (enemy != null)
+        {
+            return enemy.GetCenterPosition();
+        }
+        return targetTransform.position;
     }
 }

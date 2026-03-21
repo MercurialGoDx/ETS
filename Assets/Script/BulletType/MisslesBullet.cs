@@ -33,7 +33,7 @@ public class MissileBullet : MonoBehaviour, IAttackBehaviour
         speed = context.projectileSpeed;
 
         // направление к цели по XZ
-        Vector3 dirToTarget = target != null ? target.position - context.firePoint.position : context.firePoint.forward;
+        Vector3 dirToTarget = target != null ? GetTargetCenter(target) - context.firePoint.position : context.firePoint.forward;
         Vector3 dirXZ = dirToTarget;
         dirXZ.y = 0f;
         if (dirXZ.sqrMagnitude < 0.0001f) dirXZ = context.firePoint.forward;
@@ -94,7 +94,7 @@ public class MissileBullet : MonoBehaviour, IAttackBehaviour
 
         if (target != null)
         {
-            dirToTarget = target.position - transform.position;
+            dirToTarget = GetTargetCenter(target) - transform.position;
         }
         else
         {
@@ -138,5 +138,18 @@ public class MissileBullet : MonoBehaviour, IAttackBehaviour
         }
 
         pooledObject.Release();
+    }
+
+    /// <summary>
+    /// Возвращает центр цели для наведения.
+    /// </summary>
+    private Vector3 GetTargetCenter(Transform targetTransform)
+    {
+        Enemy enemy = targetTransform.GetComponent<Enemy>();
+        if (enemy != null)
+        {
+            return enemy.GetCenterPosition();
+        }
+        return targetTransform.position;
     }
 }

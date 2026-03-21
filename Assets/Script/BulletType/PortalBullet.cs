@@ -47,8 +47,8 @@ public class PortalBullet : MonoBehaviour, IAttackBehaviour
     {
         Transform target = context.target;
 
-        // базовая точка — враг, если есть
-        Vector3 basePos = (target != null) ? target.position : context.firePoint.position;
+        // базовая точка — центр врага, если есть
+        Vector3 basePos = (target != null) ? GetTargetCenter(target) : context.firePoint.position;
 
         // рассчитываем смещение по кругу вокруг врага в плоскости XZ
         Vector3 spawnPos = basePos;
@@ -137,5 +137,18 @@ public class PortalBullet : MonoBehaviour, IAttackBehaviour
 
         Vector3 pos = Application.isPlaying ? strikePosition : transform.position;
         Gizmos.DrawWireSphere(pos, radius);
+    }
+
+    /// <summary>
+    /// Возвращает центр цели для наведения.
+    /// </summary>
+    private Vector3 GetTargetCenter(Transform targetTransform)
+    {
+        Enemy enemy = targetTransform.GetComponent<Enemy>();
+        if (enemy != null)
+        {
+            return enemy.GetCenterPosition();
+        }
+        return targetTransform.position;
     }
 }

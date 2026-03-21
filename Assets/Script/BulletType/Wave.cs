@@ -70,7 +70,7 @@ public class WaveBullet : MonoBehaviour, IAttackBehaviour
         Vector3 towerPos = tower.position;
 
         // Базовая точка для высоты
-        Vector3 basePos = target != null ? target.position : tower.position;
+        Vector3 basePos = target != null ? GetTargetCenter(target) : tower.position;
         float planeY = basePos.y + context.heightOffset;
 
         towerPos.y = planeY;
@@ -78,7 +78,7 @@ public class WaveBullet : MonoBehaviour, IAttackBehaviour
         Vector3 targetPos;
         if (target != null)
         {
-            targetPos = target.position;
+            targetPos = GetTargetCenter(target);
             targetPos.y = planeY;
         }
         else
@@ -161,5 +161,18 @@ public class WaveBullet : MonoBehaviour, IAttackBehaviour
         {
             playerHealth.Heal(healAmountPerEnemy);
         }
-    } 
+    }
+
+    /// <summary>
+    /// Возвращает центр цели для наведения.
+    /// </summary>
+    private Vector3 GetTargetCenter(Transform targetTransform)
+    {
+        Enemy enemy = targetTransform.GetComponent<Enemy>();
+        if (enemy != null)
+        {
+            return enemy.GetCenterPosition();
+        }
+        return targetTransform.position;
+    }
 }

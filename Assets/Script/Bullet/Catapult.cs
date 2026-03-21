@@ -48,7 +48,7 @@ public class Catapult : MonoBehaviour, IAttackBehaviour
             : context.owner.position;
 
         if (target != null)
-            targetPos = target.position;
+            targetPos = GetTargetCenter(target);
         else
             targetPos = startPos + context.owner.forward * 5f;
 
@@ -85,7 +85,7 @@ public class Catapult : MonoBehaviour, IAttackBehaviour
 
         // подруливание (обновляем позицию цели)
         if (homing && target != null)
-            targetPos = target.position;
+            targetPos = GetTargetCenter(target);
 
         t += Time.deltaTime / travelTime;
 
@@ -159,5 +159,18 @@ public class Catapult : MonoBehaviour, IAttackBehaviour
     {
         Gizmos.color = new Color(1f, 0.5f, 0f, 0.3f);
         Gizmos.DrawWireSphere(transform.position, aoeRadius);
+    }
+
+    /// <summary>
+    /// Возвращает центр цели для наведения.
+    /// </summary>
+    private Vector3 GetTargetCenter(Transform targetTransform)
+    {
+        Enemy enemy = targetTransform.GetComponent<Enemy>();
+        if (enemy != null)
+        {
+            return enemy.GetCenterPosition();
+        }
+        return targetTransform.position;
     }
 }
