@@ -25,10 +25,22 @@ public class WorldGoldPopup : MonoBehaviour
         pooledObject = GetComponent<PooledObject>();
     }
 
+    private void OnEnable()
+    {
+        timer = 0f;
+        // Восстанавливаем альфу текста
+        Color c = startColor;
+        c.a = 1f;
+        text.color = c;
+    }
+
     public void Init(int amount)
     {
         text.text = $"+{amount}";
+        // Обновляем startColor после установки текста
         startColor = text.color;
+        startColor.a = 1f;
+        text.color = startColor;
     }
 
     private void Update()
