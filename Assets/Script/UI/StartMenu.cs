@@ -4,6 +4,9 @@ using UnityEngine.SceneManagement;
 
 public class StartMenu : MonoBehaviour
 {
+    [SerializeField] private GameObject defeatWindow;
+    [SerializeField] private DamageStatisticsUI statisticsWindow;
+
     [Header("UI Roots")]
     public GameObject startMenuCanvas;
     public GameObject gameUICanvas;
@@ -48,5 +51,17 @@ public class StartMenu : MonoBehaviour
 //#endif
         Debug.Log("ExitGame pressed");
         SceneManager.LoadScene("MainScene");
+    }
+
+    public void OpenStatistics()
+    {
+        defeatWindow.SetActive(false);
+        statisticsWindow.Show();
+    }
+
+    public void CloseStatistics()
+    {
+        statisticsWindow.Hide();
+        defeatWindow.SetActive(true);
     }
 }

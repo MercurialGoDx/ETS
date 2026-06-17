@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.Localization;
 
 public class EnemyStatsProgressionUI : MonoBehaviour
 {
@@ -11,11 +12,40 @@ public class EnemyStatsProgressionUI : MonoBehaviour
     [SerializeField] private TMP_Text dmgText;
     [SerializeField] private TMP_Text waveText; // можно оставить пустым
 
+    [Header("Localization")]
+    [SerializeField] private LocalizedString healthPrefix;  // "Здоровье: " или "Health: "
+    [SerializeField] private LocalizedString damagePrefix;  // "Урон: " или "Damage: "
+
     [Header("Base enemy stats for UI")]
     [SerializeField] private float baseHp = 15f;
     [SerializeField] private float baseDmg = 2f;
 
     private bool isStarted = false;
+
+    private string _currentHealthPrefix = "Здоровье: ";
+    private string _currentDamagePrefix = "Урон: ";
+
+    private int _currentHpValue = 0;
+    private int _currentDmgValue = 0;
+
+    private void Awake()
+    {
+        // Подписываемся на изменение языка
+        //if (healthPrefix != null) healthPrefix.StringChanged += UpdateHealthPrefix;
+        //if (damagePrefix != null) damagePrefix.StringChanged += UpdateDamagePrefix;
+    }
+
+    private void OnDestroy()
+    {
+        // Отписываемся
+        //if (healthPrefix != null) healthPrefix.StringChanged -= UpdateHealthPrefix;
+        //if (damagePrefix != null) damagePrefix.StringChanged -= UpdateDamagePrefix;
+    }
+
+    private void Start()
+    {
+        //UpdateFromSpawner();
+    }
 
     /// <summary>
     /// Вызывается из GameStartController по кнопке Ready.
@@ -55,9 +85,8 @@ public class EnemyStatsProgressionUI : MonoBehaviour
     public void ResetUI()
     {
         isStarted = false;
-        if (waveText != null) waveText.text = "Волна: -";
-        if (hpText != null) hpText.text = "Здоровье: -";
-        if (dmgText != null) dmgText.text = "Урон: -";
+        if (hpText != null) hpText.text = $"{_currentHealthPrefix}-";
+        if (dmgText != null) dmgText.text = $"{_currentDamagePrefix}-";
 
         if (spawner != null)
             spawner.OnWaveSpawned -= HandleWaveSpawned;
@@ -80,8 +109,32 @@ public class EnemyStatsProgressionUI : MonoBehaviour
         float hp = (baseHp * mult) + flatHp;
         float dmg = (baseDmg * mult) + flatDmg;
 
-        if (waveText != null) waveText.text = $"Волна: {waveNumber}";
-        if (hpText != null) hpText.text = $"Здоровье: {Mathf.RoundToInt(hp)}";
-        if (dmgText != null) dmgText.text = $"Урон: {Mathf.RoundToInt(dmg)}";
+        _currentHpValue = Mathf.RoundToInt(hp);
+        _currentDmgValue = Mathf.RoundToInt(dmg);
+
+        UpdateUITexts();
+    }
+
+    private void UpdateUITexts()
+    {
+        if (hpText != null)
+            //hpText.text = $"{_currentHealthPrefix}{_currentHpValue}";
+            hpText.text = $"Health: 12";
+
+        if (dmgText != null)
+            //dmgText.text = $"{_currentDamagePrefix}{_currentDmgValue}";
+            dmgText.text = $"Damage: 1";
+    }
+
+    private void UpdateHealthPrefix(string localizedPrefix)
+    {
+        _currentHealthPrefix = localizedPrefix;
+        UpdateFromSpawner(); // Обновляем UI с новым префиксом
+    }
+
+    private void UpdateDamagePrefix(string localizedPrefix)
+    {
+        _currentDamagePrefix = localizedPrefix;
+        UpdateFromSpawner();
     }
 }

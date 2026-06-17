@@ -58,9 +58,22 @@ public class Enemy : MonoBehaviour
     private IEnemyAttack attackLogic;
 
     private PooledObject pooledObject;
+    private Rigidbody enemyRigidbody;
+    private Collider enemyCollider;
 
-    private void OnEnable() => EnemyManager.Instance?.RegisterEnemy(this);
-    private void OnDisable() => EnemyManager.Instance?.UnregisterEnemy(this);
+    private bool justSpawned = false; // флаг для сброса scale в первом кадре
+
+    private void OnEnable()
+    {
+        EnemyManager.Instance?.RegisterEnemy(this);
+        ResetState();
+        justSpawned = true; // помечаем, что объект только что активирован
+    }
+    private void OnDisable()
+    {
+        EnemyManager.Instance?.UnregisterEnemy(this);
+        justSpawned = false;
+    }
 
     private void Awake()
     {
@@ -69,6 +82,8 @@ public class Enemy : MonoBehaviour
         animator = GetComponent<Animator>();
         attackLogic = GetComponent<IEnemyAttack>();
         pooledObject = GetComponent<PooledObject>();
+        enemyRigidbody = GetComponent<Rigidbody>();
+        enemyCollider = GetComponent<Collider>();
     }
 
     private void Start()
@@ -98,6 +113,16 @@ public class Enemy : MonoBehaviour
 
         attackTimer = 0f;
         attackFeedback = GetComponent<EnemyAttackFeedback>();
+    }
+
+    private void LateUpdate()
+    {
+        // Гарантированно сбрасываем scale после аниматора в первом кадре спавна
+        if (justSpawned)
+        {
+            justSpawned = false;
+            transform.localScale = Vector3.one;
+        }
     }
 
     private void Update()
@@ -207,6 +232,9 @@ public class Enemy : MonoBehaviour
         if (isDead) return;
         isDead = true;
 
+        // Отключаем физику, чтобы объект не проваливался при масштабировании
+        DisablePhysics();
+
         // Золото
         if (GoldManager.Instance != null)
         {
@@ -230,7 +258,50 @@ public class Enemy : MonoBehaviour
         {
             gameObject.SetActive(false);
             return;
-        }        
+        }
+    }
+
+    private void DisablePhysics()
+    {
+        if (enemyRigidbody != null)
+        {
+            enemyRigidbody.isKinematic = true;
+            enemyRigidbody.linearVelocity = Vector3.zero;
+            enemyRigidbody.angularVelocity = Vector3.zero;
+        }
+        if (enemyCollider != null)
+        {
+            enemyCollider.enabled = false;
+        }
+    }
+
+    private void ResetState()
+    {
+        isDead = false;
+        attackTimer = 0f;
+        isSlowed = false;
+        isKnockedBack = false;
+        bonusGold = 0;
+
+        // Восстанавливаем физику
+        if (enemyRigidbody != null)
+        {
+            enemyRigidbody.isKinematic = false;
+        }
+        if (enemyCollider != null)
+        {
+            enemyCollider.enabled = true;
+        }
+
+        // Сбрасываем скорость на базовую
+        currentSpeed = speed;
+
+        // Сбрасываем animator — он может проигрывать анимацию смерти с предыдущего использования
+        if (animator != null)
+        {
+            animator.Rebind();
+            animator.Play("Run", 0, 0f);
+        }
     }
 
     #endregion
@@ -259,7 +330,7 @@ public class Enemy : MonoBehaviour
     public void OnDeathAnimationFinished()
     {
         gameObject.SetActive(false);
-        pooledObject.Release();
+        pooledObject?.Release();
     }
 
     /// <summary>

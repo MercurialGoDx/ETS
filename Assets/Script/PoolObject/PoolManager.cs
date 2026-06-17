@@ -36,6 +36,8 @@ public class PoolManager : MonoBehaviour
 
         obj.SetReleaseAction(o => typedPool.Release(o));
 
+        obj.gameObject.transform.localScale = Vector3.one;
+
         return obj.gameObject;
     }
 
