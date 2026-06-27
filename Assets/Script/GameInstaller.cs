@@ -8,12 +8,12 @@ public class GameInstaller : MonoBehaviour
 
     private void Awake()
     {
-        upgradeContext.playerHealth = FindObjectOfType<PlayerHealth>();
-        upgradeContext.playerShield = FindObjectOfType<PlayerShield>();
-        upgradeContext.towerAttack = FindObjectOfType<TowerAttack>();
-        upgradeContext.goldManager = FindObjectOfType<GoldManager>();
-        upgradeContext.regenAuraDamage = FindObjectOfType<RegenAuraDamage>();
+        upgradeContext.playerHealth = FindFirstObjectByType<PlayerHealth>();
+        upgradeContext.playerShield = FindFirstObjectByType<PlayerShield>();
+        upgradeContext.towerAttack = FindFirstObjectByType<TowerAttack>();
+        upgradeContext.goldManager = FindFirstObjectByType<GoldManager>();
+        upgradeContext.regenAuraDamage = FindFirstObjectByType<RegenAuraDamage>();
         upgradeContext.runtime = new UpgradesRuntimeData();
-        upgradeContext.runtime.enemySpawner = FindObjectOfType<EnemySpawner>();
+        upgradeContext.runtime.enemySpawner = FindFirstObjectByType<EnemySpawner>();
     }
 }
