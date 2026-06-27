@@ -63,6 +63,12 @@ public class Enemy : MonoBehaviour
 
     private Vector3 originalScale = Vector3.one; // исходный масштаб префаба (Death-анимация ужимает root в 0)
 
+    // Кэш хэшей состояний аниматора — чтобы не хэшировать строку в Play(string) каждый кадр.
+    private static readonly int RunHash = Animator.StringToHash("Run");
+    private static readonly int AttackHash = Animator.StringToHash("Attack");
+    private static readonly int DeathHash = Animator.StringToHash("Death");
+    private int currentAnimHash = 0; // какое состояние сейчас играем (чтобы не дёргать Play повторно)
+
     private void OnEnable()
     {
         EnemyManager.Instance?.RegisterEnemy(this);
@@ -140,17 +146,26 @@ public class Enemy : MonoBehaviour
             currentSpeed = speed; // возвращаем базовую скорость
         }
 
-        float distance = Vector3.Distance(transform.position, player.position);
+        // sqrMagnitude вместо Vector3.Distance — убираем sqrt каждый кадр на каждого врага
+        float sqrDistance = (transform.position - player.position).sqrMagnitude;
 
-        if (distance > attackRange)
+        if (sqrDistance > attackRange * attackRange)
         {
             MoveTowardsPlayer();
-            animator.Play("Run");
+            PlayAnim(RunHash);
         }
         else
         {
             HandleAttack();
         }
+    }
+
+    // Запускаем состояние аниматора только при смене (для непрерывных состояний вроде Run).
+    private void PlayAnim(int stateHash)
+    {
+        if (currentAnimHash == stateHash) return;
+        currentAnimHash = stateHash;
+        animator.Play(stateHash);
     }
 
     private void MoveTowardsPlayer()
@@ -171,7 +186,8 @@ public class Enemy : MonoBehaviour
         if (attackTimer <= 0f)
         {
             //AttackPlayer();
-            animator.Play("Attack");
+            animator.Play(AttackHash);   // перезапускаем анимацию атаки на каждый удар
+            currentAnimHash = AttackHash;
             attackTimer = attackInterval;
         }
     }
@@ -239,7 +255,8 @@ public class Enemy : MonoBehaviour
 
         playerHealth.OnEnemyKilled(killedBySpikes);
 
-        animator.Play("Death");
+        animator.Play(DeathHash);
+        currentAnimHash = DeathHash;
 
         OnDeath?.Invoke(this);
 
@@ -292,6 +309,7 @@ public class Enemy : MonoBehaviour
             animator.Rebind();
             animator.Play("Run", 0, 0f);
             animator.Update(0f);
+            currentAnimHash = RunHash;
         }
 
         // Подстраховка: основной сброс масштаба выполняется ДО ухода в пул (см. OnDeathAnimationFinished).
@@ -337,10 +355,9 @@ public class Enemy : MonoBehaviour
     /// </summary>
     public Vector3 GetCenterPosition()
     {
-        Collider col = GetComponent<Collider>();
-        if (col != null)
+        if (enemyCollider != null)
         {
-            return col.bounds.center;
+            return enemyCollider.bounds.center;
         }
         // фоллбэк: середина между позицией и верхней точкой (примерно центр высоты)
         return transform.position + Vector3.up * 1f;

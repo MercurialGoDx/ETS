@@ -23,7 +23,7 @@ public class TowerAttack : MonoBehaviour
     public float waveForwardOffset = 1.5f;   // Насколько вынести вперёд от башни
     public float waveHeightOffset = 0f;      // Смещение волны по высоте (обычно 0)
 
-    private bool debugDamage = true;
+    private bool debugDamage = false;
 
     private DamageCalculator damageCalculator;
 
@@ -293,7 +293,8 @@ public class TowerAttack : MonoBehaviour
             isSpikes = false
         });
 
-        Debug.Log($"Final damage for {weapon.def.name} is {finalDamage}");
+        if (debugDamage)
+            Debug.Log($"Final damage for {weapon.def.name} is {finalDamage}");
 
         return finalDamage;
     }

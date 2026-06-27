@@ -20,6 +20,9 @@ public class ChainBullet : MonoBehaviour, IAttackBehaviour
     private HashSet<Enemy> hitEnemies = new HashSet<Enemy>();
     private float lifeTimer = 0f;
 
+    // Переиспользуемый буфер для поиска целей — без аллокаций каждый вызов.
+    private readonly List<Enemy> enemiesBuffer = new List<Enemy>();
+
     private WeaponDefinition sourceWeapon;
 
     private PooledObject pooledObject;
@@ -131,14 +134,14 @@ public class ChainBullet : MonoBehaviour, IAttackBehaviour
     /// </summary>
     private void TryFindNextTarget()
     {
-        List<Enemy> allEnemies = EnemyManager.Instance.GetEnemiesInRange(transform.position, searchRadius);
+        EnemyManager.Instance.GetEnemiesInRange(transform.position, searchRadius, enemiesBuffer);
 
         Enemy best = null;
         float bestSqrDist = Mathf.Infinity;
         Vector3 fromPos = transform.position;
         float maxSqr = searchRadius * searchRadius;
 
-        foreach (Enemy e in allEnemies)
+        foreach (Enemy e in enemiesBuffer)
         {
             if (e == null) continue;
             if (!e.gameObject.activeInHierarchy) continue;

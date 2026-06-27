@@ -15,12 +15,23 @@ public class EnemyManager : MonoBehaviour
     public List<Enemy> GetEnemiesInRange(Vector3 position, float range)
     {
         List<Enemy> result = new List<Enemy>();
+        GetEnemiesInRange(position, range, result);
+        return result;
+    }
+
+    /// <summary>
+    /// Без аллокаций: очищает и заполняет переданный буфер. Подходит для синхронных вызовов
+    /// (внутри одного кадра), где буфер можно переиспользовать между вызовами.
+    /// </summary>
+    public void GetEnemiesInRange(Vector3 position, float range, List<Enemy> results)
+    {
+        results.Clear();
+        float sqrRange = range * range;
         foreach (var e in enemies)
         {
             if (e == null || e.isDead) continue;
-            if ((e.transform.position - position).sqrMagnitude <= range * range)
-                result.Add(e);
+            if ((e.transform.position - position).sqrMagnitude <= sqrRange)
+                results.Add(e);
         }
-        return result;
     }
 }

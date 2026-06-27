@@ -27,6 +27,9 @@ public class AuraDamageZone : MonoBehaviour
     private int stacks = 1;          // сколько раз куплено оружие
     private float timer = 0f;
 
+    // Переиспользуемый буфер для OverlapSphereNonAlloc — без аллокаций каждый тик.
+    private static readonly Collider[] overlapBuffer = new Collider[64];
+
     /// <summary>
     /// Инициализация при первом спавне
     /// </summary>
@@ -79,17 +82,14 @@ public class AuraDamageZone : MonoBehaviour
             isSpikes = false
         });
 
-        Collider[] hits = Physics.OverlapSphere(transform.position, radius);
-        Debug.Log($"Enemies amount is {hits}");
+        int hitCount = Physics.OverlapSphereNonAlloc(transform.position, radius, overlapBuffer);
 
-        if(hits == null)
-        {
-            return;
-        }
+        if (debugDamage)
+            Debug.Log($"Enemies amount is {hitCount}");
 
-        foreach (Collider col in hits)
+        for (int i = 0; i < hitCount; i++)
         {
-            Enemy enemy = col.GetComponent<Enemy>();
+            Enemy enemy = overlapBuffer[i].GetComponent<Enemy>();
             if (enemy != null)
             {
                 enemy.TakeDamage(finalDamage);
