@@ -61,18 +61,16 @@ public class Enemy : MonoBehaviour
     private Rigidbody enemyRigidbody;
     private Collider enemyCollider;
 
-    private bool justSpawned = false; // флаг для сброса scale в первом кадре
+    private Vector3 originalScale = Vector3.one; // исходный масштаб префаба (Death-анимация ужимает root в 0)
 
     private void OnEnable()
     {
         EnemyManager.Instance?.RegisterEnemy(this);
         ResetState();
-        justSpawned = true; // помечаем, что объект только что активирован
     }
     private void OnDisable()
     {
         EnemyManager.Instance?.UnregisterEnemy(this);
-        justSpawned = false;
     }
 
     private void Awake()
@@ -84,6 +82,7 @@ public class Enemy : MonoBehaviour
         pooledObject = GetComponent<PooledObject>();
         enemyRigidbody = GetComponent<Rigidbody>();
         enemyCollider = GetComponent<Collider>();
+        originalScale = transform.localScale; // запоминаем до того, как анимация смерти изменит scale
     }
 
     private void Start()
@@ -113,16 +112,6 @@ public class Enemy : MonoBehaviour
 
         attackTimer = 0f;
         attackFeedback = GetComponent<EnemyAttackFeedback>();
-    }
-
-    private void LateUpdate()
-    {
-        // Гарантированно сбрасываем scale после аниматора в первом кадре спавна
-        if (justSpawned)
-        {
-            justSpawned = false;
-            transform.localScale = Vector3.one;
-        }
     }
 
     private void Update()
@@ -256,6 +245,7 @@ public class Enemy : MonoBehaviour
 
         if (returnToPoolInsteadOfDestroy)
         {
+            transform.localScale = originalScale; // см. OnDeathAnimationFinished: нельзя уходить в пул ужатыми
             gameObject.SetActive(false);
             return;
         }
@@ -296,12 +286,16 @@ public class Enemy : MonoBehaviour
         // Сбрасываем скорость на базовую
         currentSpeed = speed;
 
-        // Сбрасываем animator — он может проигрывать анимацию смерти с предыдущего использования
+        // Сбрасываем animator в "Run" на случай, если объект ушёл в пул в середине другой анимации.
         if (animator != null)
         {
             animator.Rebind();
             animator.Play("Run", 0, 0f);
+            animator.Update(0f);
         }
+
+        // Подстраховка: основной сброс масштаба выполняется ДО ухода в пул (см. OnDeathAnimationFinished).
+        transform.localScale = originalScale;
     }
 
     #endregion
@@ -329,6 +323,11 @@ public class Enemy : MonoBehaviour
 
     public void OnDeathAnimationFinished()
     {
+        // Death-клип ужал root localScale в ~0. Возвращаем исходный масштаб ДО деактивации:
+        // при следующей реактивации из пула Animator (Write Defaults = On) запоминает текущий
+        // localScale root как "дефолт". Если деактивировать ужатым — дефолтом станет ~0, и состояние
+        // Run будет писать этот ~0 каждый кадр (баг: призраки реюзятся почти нулевыми и проваливаются).
+        transform.localScale = originalScale;
         gameObject.SetActive(false);
         pooledObject?.Release();
     }
