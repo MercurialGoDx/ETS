@@ -537,6 +537,10 @@ MonoBehaviour:
       {0}</color>"
     m_Metadata:
       m_Items: []
+  - m_Id: 57261875413377024
+    m_Localized: "\u0428\u0438\u043F\u044B"
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

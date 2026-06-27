@@ -28,6 +28,8 @@ public class PlayerHealth : MonoBehaviour
     [SerializeField] private Image healthBarFill;
 
     [Header("Шипы")]
+    [Tooltip("WeaponDefinition шипов — для отображения урона шипов в статистике (имя «Шипы» + иконка).")]
+    [SerializeField] private WeaponDefinition spikesWeapon;
     [SerializeField] private float spikesBase = 0f;         // базовый урон шипов
     [SerializeField] private float spikesMultiplier = 1f;   // множитель шипов
     [SerializeField] private float spikesOnKillBonus = 0f;  // доп. урон за убийство врага
@@ -330,6 +332,7 @@ public class PlayerHealth : MonoBehaviour
             isSpikes = true
         });
 
+        DamageStatsManager.Instance?.RegisterDamage(spikesWeapon, damage);
 
         enemy.TakeDamage(damage, true);
     }

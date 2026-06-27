@@ -19,199 +19,433 @@ MonoBehaviour:
     m_Items: []
   m_TableData:
   - m_Id: 1340877749596160
-    m_Localized: 
+    m_Localized: <color=#ffd700>Energy Shield</color>
     m_Metadata:
       m_Items: []
   - m_Id: 1340877875425280
-    m_Localized: 
+    m_Localized: 'Shield: <color=#ffd700>+{0}</color>\n\n<color=#ffd700>Cost: {1}</color>'
     m_Metadata:
       m_Items: []
   - m_Id: 1401183682945024
-    m_Localized: 
+    m_Localized: <color=#ffd700>Repair</color>
     m_Metadata:
       m_Items: []
   - m_Id: 1401183729082368
-    m_Localized: 
+    m_Localized: 'Health Regeneration <color=#ffd700>+{0}</color>\n\n<color=#ffd700>Cost:
+      {1}</color>'
     m_Metadata:
       m_Items: []
   - m_Id: 1401183729082369
-    m_Localized: 
+    m_Localized: <color=#ffd700>Thorny Defense</color>
     m_Metadata:
       m_Items: []
   - m_Id: 1401183729082370
-    m_Localized: 
+    m_Localized: 'Thorns: <color=#ffd700>+{0}</color>\n\n<color=#ffd700>Cost: {1}</color>'
     m_Metadata:
       m_Items: []
   - m_Id: 1401183729082373
-    m_Localized: 
+    m_Localized: <color=#ffd700>Reinforcement</color>
     m_Metadata:
       m_Items: []
   - m_Id: 1401183729082374
-    m_Localized: 
+    m_Localized: 'Health: <color=#ffd700>+{0}</color>\n\n<color=#ffd700>Cost: {1}</color>'
     m_Metadata:
       m_Items: []
   - m_Id: 1401183729082375
-    m_Localized: 
+    m_Localized: <color=#ffd700>Golden Coin</color>
     m_Metadata:
       m_Items: []
   - m_Id: 1401183729082376
-    m_Localized: 
+    m_Localized: 'Gold Gain: <color=#ffd700>+{0}</color>\n\n<color=#ffd700>Cost:
+      {1}</color>'
     m_Metadata:
       m_Items: []
   - m_Id: 1401183729082377
-    m_Localized: 
+    m_Localized: <color=#ffd700>Greed</color>
     m_Metadata:
       m_Items: []
   - m_Id: 1401183729082378
-    m_Localized: 
+    m_Localized: 'Gold: <color=#ffd700>+200</color>\nMax Health: <color=#ffd700>-{0}</color>'
     m_Metadata:
       m_Items: []
   - m_Id: 1401183729082379
-    m_Localized: 
+    m_Localized: <color=#ffd700>Death Mask</color>
     m_Metadata:
       m_Items: []
   - m_Id: 1401183729082380
-    m_Localized: 
+    m_Localized: 'Thorns <color=#ffd700>+5</color>\nHeal <color=#ffd700>3</color>
+      when taking damage\n\n<color=#ffd700>Cost: {0}</color>'
     m_Metadata:
       m_Items: []
   - m_Id: 1401183729082381
-    m_Localized: 
+    m_Localized: <color=#ffd700>Generator</color>
     m_Metadata:
       m_Items: []
   - m_Id: 1401183729082382
-    m_Localized: 
+    m_Localized: 'Total Damage: <color=#ffd700>+4%</color> every <color=#ffd700>{0}</color>
+      seconds\n\n<color=#ffd700>Cost: {2}</color>'
     m_Metadata:
       m_Items: []
   - m_Id: 1401183729082383
-    m_Localized: 
+    m_Localized: <color=#ffd700>Gold Mine</color>
     m_Metadata:
       m_Items: []
   - m_Id: 1401183729082384
-    m_Localized: 
+    m_Localized: 'Gold Received: <color=#ffd700>+{0}%</color>\n\n<color=#ffd700>Cost:
+      {1}</color>'
     m_Metadata:
       m_Items: []
   - m_Id: 1401183729082385
-    m_Localized: 
+    m_Localized: <color=#ffd700>Monster Fang</color>
     m_Metadata:
       m_Items: []
   - m_Id: 1401183729082386
-    m_Localized: 
+    m_Localized: 'Heal on Kill: <color=#ffd700>+{0}</color>\n\n<color=#ffd700>Cost:
+      {1}</color>'
     m_Metadata:
       m_Items: []
   - m_Id: 1401183729082387
-    m_Localized: 
+    m_Localized: <color=#ffd700>Amber</color>
     m_Metadata:
       m_Items: []
   - m_Id: 1401183729082388
-    m_Localized: 
+    m_Localized: 'Max Health: <color=#ffd700>+{1}</color> every <color=#ffd700>{0}</color>
+      seconds\n\n<color=#ffd700>Cost: {2}</color>'
     m_Metadata:
       m_Items: []
   - m_Id: 1401183729082389
-    m_Localized: 
+    m_Localized: <color=#ffd700>Sapphire</color>
     m_Metadata:
       m_Items: []
   - m_Id: 1401183729082390
-    m_Localized: 
+    m_Localized: 'Shield <color=#ffd700>+{1}</color> every <color=#ffd700>{0}</color>
+      seconds\n\n<color=#ffd700>Cost: {2}</color>'
     m_Metadata:
       m_Items: []
   - m_Id: 1401183729082391
-    m_Localized: 
+    m_Localized: <color=#ffd700>Fire Rate</color>
     m_Metadata:
       m_Items: []
   - m_Id: 1401183729082392
-    m_Localized: 
+    m_Localized: 'Attack Speed: <color=#ffd700>+{0}</color>\n\n<color=#ffd700>Cost:
+      {1}</color>'
     m_Metadata:
       m_Items: []
   - m_Id: 1401183729082395
-    m_Localized: 
+    m_Localized: <color=#ffd700>Emerald</color>
     m_Metadata:
       m_Items: []
   - m_Id: 1401183729082396
-    m_Localized: 
+    m_Localized: 'Health Regeneration: <color=#ffd700>+{0}</color> every <color=#ffd700>{1}</color>
+      seconds\n\n<color=#ffd700>Cost: {2}</color>'
     m_Metadata:
       m_Items: []
   - m_Id: 1401183729082397
-    m_Localized: 
+    m_Localized: <color=#ffd700>Magic Defense</color>
     m_Metadata:
       m_Items: []
   - m_Id: 1401183729082398
-    m_Localized: 
+    m_Localized: 'Shield <color=#ffd700>+{0}%</color>\n\n<color=#ffd700>Cost: {1}</color>'
     m_Metadata:
       m_Items: []
   - m_Id: 1401183729082399
-    m_Localized: 
+    m_Localized: <color=#ffd700>Reinforced Thorns</color>
     m_Metadata:
       m_Items: []
   - m_Id: 1401183729082400
-    m_Localized: 
+    m_Localized: 'Thorns <color=#ffd700>+20</color>\nThorns: <color=#ffd700>+1</color>
+      when an enemy dies from thorns damage\n\n<color=#ffd700>Cost: {0}</color>'
     m_Metadata:
       m_Items: []
   - m_Id: 1401183729082401
-    m_Localized: 
+    m_Localized: <color=#ffd700>Singularity</color>
     m_Metadata:
       m_Items: []
   - m_Id: 1401183729082402
-    m_Localized: 
+    m_Localized: 'Increases outgoing damage by <color=#ffd700>{0}%</color> when Energy
+      Shield is active\n\n<color=#ffd700>Cost: {0}</color>'
     m_Metadata:
       m_Items: []
   - m_Id: 1401183729082403
-    m_Localized: 
+    m_Localized: <color=#ffd700>Decay Aura</color>
     m_Metadata:
       m_Items: []
   - m_Id: 1401183729082404
-    m_Localized: 
+    m_Localized: 'Deals damage equal to your health regeneration to all enemies every
+      second\n\n<color=#ffd700>Cost: {0}</color>'
     m_Metadata:
       m_Items: []
   - m_Id: 1401183729082405
-    m_Localized: 
+    m_Localized: <color=#ffd700>Spiky Shell</color>
     m_Metadata:
       m_Items: []
   - m_Id: 1401183729082406
-    m_Localized: 
+    m_Localized: 'Thorns <color=#ffd700>+{0}%</color>\n\n<color=#ffd700>Cost: {1}</color>'
     m_Metadata:
       m_Items: []
   - m_Id: 1401183729082407
-    m_Localized: 
+    m_Localized: <color=#ff3700>Titanium Shells</color>
     m_Metadata:
       m_Items: []
   - m_Id: 1401183729082408
-    m_Localized: 
+    m_Localized: Increase global damage by <color=#ff3700>{0}%</color>
     m_Metadata:
       m_Items: []
   - m_Id: 1401183729082409
-    m_Localized: 
+    m_Localized: <color=#ff3700>Gold Rush</color>
     m_Metadata:
       m_Items: []
   - m_Id: 1401183729082410
-    m_Localized: 
+    m_Localized: Increases gold per second by <color=#ff3700>{0}</color>
     m_Metadata:
       m_Items: []
   - m_Id: 1401183729082411
-    m_Localized: 
+    m_Localized: <color=#ff3700>Fortress</color>
     m_Metadata:
       m_Items: []
   - m_Id: 1401183729082412
-    m_Localized: 
+    m_Localized: Increase max health by <color=#ff3700>{0}%</color>
     m_Metadata:
       m_Items: []
   - m_Id: 1401183729082413
-    m_Localized: 
+    m_Localized: <color=#ff3700>Recovery</color>
     m_Metadata:
       m_Items: []
   - m_Id: 1401183729082414
-    m_Localized: 
+    m_Localized: Increase health regeneration by <color=#ff3700>{0}%</color>
     m_Metadata:
       m_Items: []
   - m_Id: 1401183729082415
-    m_Localized: 
+    m_Localized: <color=#ff3700>Magic Protection</color>
     m_Metadata:
       m_Items: []
   - m_Id: 1401183729082416
-    m_Localized: 
+    m_Localized: Increase max shield by <color=#ff3700>{0}%</color>
     m_Metadata:
       m_Items: []
   - m_Id: 5661681066475541
-    m_Localized: 
+    m_Localized: <color=#ffd700>Nature's Blessing</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5661681011949568
+    m_Localized: <color=#ffd700>Chaos Damage</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5661681066475520
+    m_Localized: '<color=#B790FF>Chaos Damage:</color> <color=#ffd700>+{1}%</color>\n\n<color=#ffd700>Cost:
+      {2}</color>'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1401183729082371
+    m_Localized: <color=#ffd700>Basic Attack</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1401183729082372
+    m_Localized: 'Total Damage: <color=#ffd700>+{0}%</color>\n\n<color=#ffd700>Cost:
+      {1}</color>'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5661681066475521
+    m_Localized: <color=#ffd700>Heavy Damage</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5661681066475522
+    m_Localized: '<color=#ADACAC>Heavy damage:</color> <color=#ffd700>+{1}%</color>\n\n<color=#ffd700>Cost:
+      {2}</color>'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5679906292752384
+    m_Localized: <color=#ffd700>Magic Damage</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5661681066475524
+    m_Localized: '<color=#58CBF8>Magic damage:</color> <color=#ffd700>+{1}%</color>\n\n<color=#ffd700>Cost:
+      {2}</color>'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5661681066475525
+    m_Localized: <color=#ffd700>Normal Damage</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5661681066475526
+    m_Localized: '<color=#EED976>Normal damage:</color> <color=#ffd700>+{1}%</color>\n\n<color=#ffd700>Cost:
+      {2}</color>'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5661681066475527
+    m_Localized: <color=#ffd700>Piercing Damage</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5661681066475528
+    m_Localized: '<color=#70D160>Piercing damage:</color> <color=#ffd700>+{1}%</color>\n\n<color=#ffd700>Cost:
+      {2}</color>'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5661681066475529
+    m_Localized: <color=#ffd700>Projectile Damage</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5661681066475530
+    m_Localized: '<color=#FF949A>Projectile damage:</color> <color=#ffd700>+{1}%</color>\n\n<color=#ffd700>Cost:
+      {2}</color>'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5661681066475531
+    m_Localized: <color=#ffd700>Base Defense</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5661681066475532
+    m_Localized: 'Incoming Damage: <color=#ffd700>-{0}%</color>\n\n<color=#ffd700>Cost:
+      {1}</color>'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5661681066475533
+    m_Localized: <color=#ffd700>Restoration Works</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5661681066475534
+    m_Localized: 'Shield Restoration <color=#ffd700>+{0}</color> on enemy kill\n\n<color=#ffd700>Cost:
+      {1}</color>'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5661681066475535
+    m_Localized: <color=#ffd700>Blocking</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5661681066475536
+    m_Localized: 'Block Chance: <color=#ffd700>+10%</color>\n\n<color=#ffd700>Cost:
+      {1}</color>'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5661681066475537
+    m_Localized: <color=#ffd700>Overhaul</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5661681066475538
+    m_Localized: 'Health Regeneration <color=#ffd700>+{0}%</color>\n\n<color=#ffd700>Cost:
+      {1}</color>'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5661681066475539
+    m_Localized: <color=#ffd700>More Enemies</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5661681066475540
+    m_Localized: Number of enemies per wave <color=#ffd700>+15%</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5661681066475542
+    m_Localized: 'Health: <color=#ffd700>+250</color>\nRegenerate missing health:
+      <color=#ffd700>+2%</color>\n\n<color=#ffd700>Cost: {0}</color>'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5661681066475543
+    m_Localized: <color=#ffd700>Secret Weapon</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5661681066475544
+    m_Localized: 'Damage: <color=#ffd700>+{1}%</color> for all weapons of <color=#ffd700>1</color>
+      tier\n\n<color=#ffd700>Cost: {2}</color>'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5661681066475545
+    m_Localized: <color=#ffd700>Ultimate Chaos Damage</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5661681066475546
+    m_Localized: '<color=#B790FF>Chaos Damage:</color> <color=#ffd700>+30%</color>\n<color=#B790FF>Chaos
+      Damage:</color> <color=#ffd700>+2%</color> for each other chaos weapon\n\n<color=#ffd700>Cost:
+      {0}</color>'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5661681074864128
+    m_Localized: <color=#ffd700>Ultimate Heavy Damage</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5661681074864129
+    m_Localized: '<color=#ADACAC>Heavy damage:</color> <color=#ffd700>+30%</color>\n<color=#ADACAC>Heavy
+      damage:</color> <color=#ffd700>+2%</color> for each other heavy weapon\n\n<color=#ffd700>Cost:
+      {0}</color>'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5661681074864130
+    m_Localized: <color=#ffd700>Ultimate Magic Damage</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5661681074864131
+    m_Localized: '<color=#58CBF8>Magic damage:</color> <color=#ffd700>+30%</color>\n<color=#58CBF8>Magic
+      damage:</color> <color=#ffd700>+2%</color> for each other magic weapon\n\n<color=#ffd700>Cost:
+      {0}</color>'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5795877734875136
+    m_Localized: <color=#ffd700>Mithril Walls</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5795877797789696
+    m_Localized: 'Max Health Damage: <color=#ffd700>+5%</color>\nMax Health: <color=#ffd700>+25%</color>\n\n<color=#ffd700>Cost:
+      {0}</color>'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5661681074864132
+    m_Localized: <color=#ffd700>Ultimate Normal Damage</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5661681074864133
+    m_Localized: '<color=#EED976>Normal damage:</color> <color=#ffd700>+30%</color>\n<color=#EED976>Normal
+      damage:</color> <color=#ffd700>+2%</color> for each other normal weapon\n\n<color=#ffd700>Cost:
+      {0}</color>'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5661681074864134
+    m_Localized: <color=#ffd700>Ultimate Piercing Damage</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5661681074864135
+    m_Localized: '<color=#70D160>Piercing damage:</color> <color=#ffd700>+30%</color>\n<color=#70D160>Piercing
+      damage:</color> <color=#ffd700>+2%</color> for each other piercing weapon\n\n<color=#ffd700>Cost:
+      {0}</color>'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5661681074864136
+    m_Localized: <color=#ffd700>Ultimate Projectile Damage</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5661681074864137
+    m_Localized: '<color=#FF949A>Projectile damage:</color> <color=#ffd700>+30%</color>\n<color=#FF949A>Projectile
+      damage:</color> <color=#ffd700>+2%</color> for each other weapon of this type\n\n<color=#ffd700>Cost:
+      {0}</color>'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5661681074864138
+    m_Localized: <color=#ff3700>Wisdom</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5661681074864139
+    m_Localized: 'Damage: <color=#ff3700>+10%</color>\nAttack Speed: <color=#ffd700>+5%</color>\nMax
+      Health: <color=#ffd700>+20%</color>\nShield: <color=#ffd700>+20%</color>\nHealth
+      on Kill: <color=#ffd700>+25</color>\nGold Gain: <color=#ffd700>+1</color>'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5661681074864140
+    m_Localized: <color=#ff3700>Midas Glove</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5661681074864141
+    m_Localized: Increase damage by <color=#ff3700>0.5%</color> for every 100 unspent
+      gold
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5661681074864142
+    m_Localized: <color=#ff3700>Barbed Wire</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5661681074864143
+    m_Localized: Increase global thorns damage by <color=#ff3700>{0}%</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57261875413377024
+    m_Localized: Spikes
     m_Metadata:
       m_Items: []
   references:
