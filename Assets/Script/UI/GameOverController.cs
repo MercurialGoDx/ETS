@@ -1,9 +1,15 @@
 using UnityEngine;
+using TMPro;
 
 public class GameOverController : MonoBehaviour
 {
     [SerializeField] private PlayerHealth playerHealth;
     [SerializeField] private GameObject gameOverPanel;
+
+    [Header("Время забега")]
+    [SerializeField] private GameTimeUI gameTimeUI;
+    [SerializeField] private TMP_Text playTimeText;
+    [SerializeField] private string playTimePrefix = "Ваше время: ";
 
     private void Awake()
     {
@@ -27,6 +33,10 @@ public class GameOverController : MonoBehaviour
     {
         if (gameOverPanel != null)
             gameOverPanel.SetActive(true);
+
+        // Показываем, сколько игрок продержался (таймер замирает при GameOver вместе с timeScale).
+        if (playTimeText != null && gameTimeUI != null)
+            playTimeText.text = playTimePrefix + gameTimeUI.GetFormattedTime();
 
         var stats = DamageStatsManager.Instance.GetDamageSorted();
 

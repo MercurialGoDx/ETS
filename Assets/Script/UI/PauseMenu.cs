@@ -14,7 +14,9 @@ public class PauseManager : MonoBehaviour
     public Button mainMenuButton;
 
     private bool isPaused = false;
-    private bool canPause = true;
+    // Пауза запрещена до старта забега: GameStartController.OnReadyClicked() включит её
+    // через SetCanPause(true). Так Esc не ставит игру на паузу в главном меню/подготовке.
+    private bool canPause = false;
 
     public void SetCanPause(bool value)
     {
