@@ -61,6 +61,9 @@ public class Enemy : MonoBehaviour
     private Rigidbody enemyRigidbody;
     private Collider enemyCollider;
 
+    private LayerMask groundMask;   // слой рельефа для "приземления"
+    private float footOffset = 0f;  // смещение pivot над низом коллайдера
+
     private Vector3 originalScale = Vector3.one; // исходный масштаб префаба (Death-анимация ужимает root в 0)
 
     // Кэш хэшей состояний аниматора — чтобы не хэшировать строку в Play(string) каждый кадр.
@@ -89,6 +92,11 @@ public class Enemy : MonoBehaviour
         enemyRigidbody = GetComponent<Rigidbody>();
         enemyCollider = GetComponent<Collider>();
         originalScale = transform.localScale; // запоминаем до того, как анимация смерти изменит scale
+
+        // Враги кинематические (без гравитации), поэтому "приземляем" их сами по рельефу.
+        groundMask = LayerMask.GetMask("Terrain");
+        if (enemyCollider != null)
+            footOffset = transform.position.y - enemyCollider.bounds.min.y; // расстояние от pivot до низа коллайдера
     }
 
     private void Start()
@@ -158,6 +166,8 @@ public class Enemy : MonoBehaviour
         {
             HandleAttack();
         }
+
+        SnapToGround();
     }
 
     // Запускаем состояние аниматора только при смене (для непрерывных состояний вроде Run).
@@ -170,12 +180,31 @@ public class Enemy : MonoBehaviour
 
     private void MoveTowardsPlayer()
     {
-        Vector3 dir = (player.position - transform.position).normalized;
+        // Двигаемся только в горизонтальной плоскости; высоту задаёт SnapToGround.
+        Vector3 dir = player.position - transform.position;
+        dir.y = 0f;
+        dir = dir.normalized;
+
         transform.position += dir * currentSpeed * Time.deltaTime;
 
         if (dir != Vector3.zero)
         {
-            transform.forward = new Vector3(dir.x, 0f, dir.z);
+            transform.forward = dir;
+        }
+    }
+
+    // Держим врага на поверхности рельефа (Rigidbody кинематический, гравитации нет).
+    private void SnapToGround()
+    {
+        if (groundMask == 0) return;
+
+        Vector3 origin = transform.position + Vector3.up * 5f;
+        RaycastHit hit;
+        if (Physics.Raycast(origin, Vector3.down, out hit, 50f, groundMask, QueryTriggerInteraction.Ignore))
+        {
+            Vector3 p = transform.position;
+            p.y = hit.point.y + footOffset;
+            transform.position = p;
         }
     }
 
@@ -251,12 +280,16 @@ public class Enemy : MonoBehaviour
             GoldManager.Instance.AddGold(goldReward, GoldSource.Kill, transform.position);
         }
 
-        // Хил за килл + улучшение шипов (если апгрейд куплен)
+        // Хил за килл + улучшение шипов (если апгрейд куплен).
+        // Без null-проверки исключение здесь прервало бы OnDeath ниже — и награда за босса не открылась бы.
+        if (playerHealth != null)
+            playerHealth.OnEnemyKilled(killedBySpikes);
 
-        playerHealth.OnEnemyKilled(killedBySpikes);
-
-        animator.Play(DeathHash);
-        currentAnimHash = DeathHash;
+        if (animator != null)
+        {
+            animator.Play(DeathHash);
+            currentAnimHash = DeathHash;
+        }
 
         OnDeath?.Invoke(this);
 
@@ -290,10 +323,14 @@ public class Enemy : MonoBehaviour
         isKnockedBack = false;
         bonusGold = 0;
 
-        // Восстанавливаем физику
+        // Враги двигаются через transform, поэтому держим Rigidbody кинематическим:
+        // так физика не отбрасывает их друг от друга и от башни и они не застревают
+        // на статичных объектах (забор/фонарь). Коллайдер нужен для попаданий снарядов.
         if (enemyRigidbody != null)
         {
-            enemyRigidbody.isKinematic = false;
+            enemyRigidbody.isKinematic = true;
+            enemyRigidbody.linearVelocity = Vector3.zero;
+            enemyRigidbody.angularVelocity = Vector3.zero;
         }
         if (enemyCollider != null)
         {
