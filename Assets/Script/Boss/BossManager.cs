@@ -25,6 +25,9 @@ public class BossManager : MonoBehaviour
     private Transform player;
     public BossRewardUI bossRewardUI;
 
+    [Header("Boss Health Bar")]
+    public BossHealthBar bossHealthBar;
+
     private class BossEntry
     {
         public GameObject instance;
@@ -157,6 +160,9 @@ public class BossManager : MonoBehaviour
         activeBossEnemy = chosen.enemy;
         activeBossEnemy.isDead = false;
 
+        if (bossHealthBar != null)
+            bossHealthBar.Show(activeBossEnemy);
+
         Debug.Log($"[BossManager] Boss spawned ({chosen.instance.name}) | totalMult={totalMult:F2}");
     }
 
@@ -176,6 +182,9 @@ public class BossManager : MonoBehaviour
             return;
 
         activeBossEnemy = null;
+
+        if (bossHealthBar != null)
+            bossHealthBar.Hide();
 
         if (bossRewardUI != null)
             bossRewardUI.Open();
