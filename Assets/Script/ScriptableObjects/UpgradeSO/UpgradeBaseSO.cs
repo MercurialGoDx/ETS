@@ -10,6 +10,10 @@ public abstract class UpgradeBaseSO : ScriptableObject
     public int price;
     public int weight;
 
+    [Header("Тир (для журнала/сортировки)")]
+    [Tooltip("Тир улучшения — используется для группировки в журнале по Tier 1..4.")]
+    public ItemTier itemTier = ItemTier.None;
+
     [Header("Weight Scaling")]
     [Tooltip("На сколько увеличивается вес при каждой покупке этого апгрейда")]
     public int weightIncreasePerPurchase = 2;

@@ -66,6 +66,10 @@ public class WeaponTooltip : MonoBehaviour
     {
         gameObject.SetActive(true);
 
+        // Поднимаем тултип поверх всех соседних UI-элементов (включая тёмный фон журнала),
+        // иначе он рисуется за оверлеем и плохо виден.
+        transform.SetAsLastSibling();
+
         if (titleText != null) titleText.text = title;
         if (descriptionText != null) descriptionText.text = description;
 

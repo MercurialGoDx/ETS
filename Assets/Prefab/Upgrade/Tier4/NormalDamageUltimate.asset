@@ -15,6 +15,17 @@ MonoBehaviour:
   icon: {fileID: 21300000, guid: cfd92b2ca68f7b146b671a7a6fad97e7, type: 3}
   price: 3000
   weight: 1
+  itemTier: 4
+  weightIncreasePerPurchase: 2
+  maxWeightIncreasePurchases: 5
+  weightDecreaseUpgrades: []
+  weightDecreasePercent: 0
+  weightIncreaseUpgrades: []
+  weightIncreasePercent: 0
+  weightDecreaseWeapons: []
+  weightDecreaseWeaponPercent: 0
+  weightIncreaseWeapons: []
+  weightIncreaseWeaponPercent: 0
   localizedStringTable:
     m_TableReference:
       m_TableCollectionName: GUID:164770c6fc8794c4ba4db6f8c7e72db3
