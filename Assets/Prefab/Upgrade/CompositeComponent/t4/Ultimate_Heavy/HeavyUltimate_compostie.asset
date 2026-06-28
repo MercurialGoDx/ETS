@@ -31,5 +31,5 @@ MonoBehaviour:
       m_TableCollectionName: 
   nameKey: 
   descriptionKey: 
-  damageType: 3
-  valuePercent: 0.3
+  damageType: 4
+  valuePercent: 30

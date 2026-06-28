@@ -32,4 +32,4 @@ MonoBehaviour:
   nameKey: 
   descriptionKey: 
   damageType: 1
-  valuePercent: 0.3
+  valuePercent: 30

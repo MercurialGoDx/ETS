@@ -18,12 +18,12 @@ MonoBehaviour:
       m_TableCollectionName: GUID:32a974e0a609fb740a2db5dde9508098
   nameKey: chain_lighting.name
   descriptionKey: chain_lighting.desc
-  price: 10
-  damagePerProjectile: 5
+  price: 400
+  damagePerProjectile: 10
   fireRate: 0.5
   projectileSpeed: 10
   itemTier: 2
   damageType: 0
   bulletPrefab: {fileID: 2390362484327582117, guid: c3225086bf4f4c44d962a9ecd6bb4f83, type: 3}
-  weight: 1111111
+  weight: 8
   targetingMode: 0
