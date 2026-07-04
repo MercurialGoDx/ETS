@@ -34,6 +34,12 @@ public class SpawnBulletOffset : MonoBehaviour, IAttackBehaviour
         initialized = true;
 
         sourceWeapon = context.weapon;
+
+        // Урон/источник передаём дочерней растущей волне (у неё нет IAttackBehaviour,
+        // InitAttack приходит сюда, на корень снаряда).
+        ScalingWave wave = GetComponentInChildren<ScalingWave>(true);
+        if (wave != null)
+            wave.Configure(context.damage, context.weapon);
     }
 
     private void Update()

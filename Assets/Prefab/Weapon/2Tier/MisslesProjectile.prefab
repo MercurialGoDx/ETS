@@ -99,7 +99,7 @@ MonoBehaviour:
   speed: 12
   launchDistance: 5
   verticalBias: 4
-  turnSpeed: 360
+  turnSpeed: 1080
   maxLifeTime: 8
   damage: 10
 --- !u!114 &8989643086537605471

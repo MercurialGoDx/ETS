@@ -7,6 +7,11 @@ public class Bullet : MonoBehaviour, IAttackBehaviour
     public float damage = 5f;
     public bool homing = true;   // летит за целью или по прямой
 
+    [Header("Ориентация модели")]
+    [Tooltip("Доп. локальный поворот поверх наведения. По умолчанию остриё должно смотреть вдоль +Y. " +
+             "Если у меша остриё вдоль +X (напр. ледяная стрела) — выставить (0, 0, 90).")]
+    public Vector3 rotationOffsetEuler = Vector3.zero;
+
     [Header("Время жизни")]
     [Tooltip("Максимальное время жизни снаряда в секундах (защита от зависания).")]
     public float maxLifeTime = 10f;
@@ -117,8 +122,9 @@ public class Bullet : MonoBehaviour, IAttackBehaviour
     {
         if (moveDir.sqrMagnitude > 0.0001f)
         {
-            // Поворачиваем так, чтобы локальная ось Y смотрела по направлению движения
-            transform.rotation = Quaternion.FromToRotation(Vector3.up, moveDir);
+            // Поворачиваем так, чтобы локальная ось Y смотрела по направлению движения,
+            // плюс поправка на ориентацию меша (rotationOffsetEuler).
+            transform.rotation = Quaternion.FromToRotation(Vector3.up, moveDir) * Quaternion.Euler(rotationOffsetEuler);
         }
     }
 

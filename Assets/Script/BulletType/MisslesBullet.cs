@@ -12,6 +12,15 @@ public class MissileBullet : MonoBehaviour, IAttackBehaviour
     public float maxLifeTime = 8f;        // защита от вечной ракеты
     private float homingSpeedMultiplier = 1.5f;
 
+    [Header("Детонация у цели")]
+    [Tooltip("Радиус прямого попадания: если ракета ближе — детонирует.")]
+    public float hitRadius = 0.7f;
+    [Tooltip("Радиус дистанционного взрывателя: если ракета уже ближе этого и начала удаляться " +
+             "от цели (точка наибольшего сближения) — детонирует, чтобы не кружить вечно.")]
+    public float proximityFuse = 2.5f;
+
+    private float lastDistanceToTarget;
+
 
     [Header("Урон")]
     public float damage = 10f;
@@ -49,6 +58,7 @@ public class MissileBullet : MonoBehaviour, IAttackBehaviour
         launchTraveled = 0f;
         inLaunchPhase = true;
         lifeTimer = 0f;
+        lastDistanceToTarget = float.MaxValue;
 
         sourceWeapon = context.weapon;
     }
@@ -89,35 +99,36 @@ public class MissileBullet : MonoBehaviour, IAttackBehaviour
         }
         else
         {
-        // --- фаза наведения ---
-        Vector3 dirToTarget;
+            // --- фаза наведения ---
+            float homingSpeed = speed * homingSpeedMultiplier;
 
-        if (target != null)
-        {
-            dirToTarget = GetTargetCenter(target) - transform.position;
+            if (target != null)
+            {
+                Vector3 targetCenter = GetTargetCenter(target);
+                float dist = Vector3.Distance(transform.position, targetCenter);
+
+                // Детонация: прямое попадание ИЛИ точка наибольшего сближения (ракета
+                // промахнулась и начала удаляться, но всё ещё близко) — чтобы не кружить вечно.
+                bool receding = dist > lastDistanceToTarget;
+                if (dist <= hitRadius || (receding && dist <= proximityFuse))
+                {
+                    HitEnemy(target.GetComponent<Enemy>());
+                    return;
+                }
+                lastDistanceToTarget = dist;
+
+                Vector3 desiredDir = (targetCenter - transform.position).normalized;
+                if (desiredDir.sqrMagnitude > 0.0001f)
+                {
+                    Quaternion targetRot = Quaternion.LookRotation(desiredDir, Vector3.up);
+                    transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRot, turnSpeed * dt);
+                }
+            }
+            // если цели нет (враг погиб) — летим прямо, пока не истечёт maxLifeTime
+
+            // Движение вперёд c ускорением 1.5×
+            transform.position += transform.forward * homingSpeed * dt;
         }
-        else
-        {
-            dirToTarget = transform.forward;
-        }
-
-        if (dirToTarget.sqrMagnitude > 0.0001f)
-        {
-            Vector3 desiredDir = dirToTarget.normalized;
-            Quaternion targetRot = Quaternion.LookRotation(desiredDir, Vector3.up);
-
-            // плавный поворот носа
-            transform.rotation = Quaternion.RotateTowards(
-                transform.rotation,
-                targetRot,
-                turnSpeed * dt
-            );
-    }
-
-        // Движение вперёд c ускорением 1.5×
-        float homingSpeed = speed * homingSpeedMultiplier;
-        transform.position += transform.forward * homingSpeed * dt;
-}
     }
 
     private void OnTriggerEnter(Collider other)
@@ -126,15 +137,26 @@ public class MissileBullet : MonoBehaviour, IAttackBehaviour
         if (enemy == null)
             return;
 
-        // наносим урон
-        enemy.TakeDamage(damage);
-        DamageStatsManager.Instance?.RegisterDamage(sourceWeapon, damage);
+        HitEnemy(enemy);
+    }
 
-        // VFX при попадании (если есть)
-        OnHitVFX vfx = GetComponent<OnHitVFX>();
-        if (vfx != null)
+    /// <summary>
+    /// Наносит урон врагу, проигрывает VFX и возвращает ракету в пул.
+    /// Вызывается и из триггера, и из детонации по близости.
+    /// </summary>
+    private void HitEnemy(Enemy enemy)
+    {
+        if (enemy != null)
         {
-            vfx.Play(enemy.transform);
+            enemy.TakeDamage(damage);
+            DamageStatsManager.Instance?.RegisterDamage(sourceWeapon, damage);
+
+            // VFX при попадании (если есть)
+            OnHitVFX vfx = GetComponent<OnHitVFX>();
+            if (vfx != null)
+            {
+                vfx.Play(enemy.transform);
+            }
         }
 
         pooledObject.Release();
