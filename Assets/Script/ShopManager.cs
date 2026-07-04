@@ -211,6 +211,9 @@ public class ShopManager : MonoBehaviour
 
         tower.AddWeapon(weapon);
 
+        if (PurchaseHistoryManager.Instance != null)
+            PurchaseHistoryManager.Instance.AddWeapon(weapon);
+
         Debug.Log($"weight Weapon: {UpgradesManager.Instance.RuntimeData.GetWeaponWeight(weapon)}");
 
         if (slot != null)
@@ -299,6 +302,9 @@ public class ShopManager : MonoBehaviour
 
         if (UpgradesManager.Instance != null)
             UpgradesManager.Instance.ApplyUpgrade(upgrade);
+
+        if (PurchaseHistoryManager.Instance != null)
+            PurchaseHistoryManager.Instance.AddUpgrade(upgrade);
 
         Debug.Log($"weight Upgrade: {UpgradesManager.Instance.RuntimeData.GetUpgradeWeight(upgrade)}");
 
