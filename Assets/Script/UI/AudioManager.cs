@@ -37,6 +37,14 @@ public class AudioManager : MonoBehaviour
     private float _gameTimeSeconds = 0f;   // прогрессия (влияет на выбор пула)
     private AudioClip _lastPlayedClip = null;
 
+    // Последняя известная позиция воспроизведения (сек), пока окно в фокусе. Нужна, чтобы отличить
+    // "трек честно доиграл до конца" от "источник прервали сворачиванием" и продолжить с той же секунды.
+    private float _lastPlaybackTime = 0f;
+
+    // Порог у конца клипа: если источник остановился в пределах этого отрезка от конца — считаем,
+    // что трек доиграл естественно и пора переключаться на следующий.
+    private const float TrackEndThreshold = 0.5f;
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -62,15 +70,39 @@ public class AudioManager : MonoBehaviour
 
     private void Update()
     {
+        // Пока окно приложения без фокуса (свёрнуто / открыто другое приложение) — не трогаем музыку и
+        // прогрессию. При потере фокуса Unity сам приглушает/останавливает источник, из-за чего isPlaying
+        // становится false; если бы мы это трактовали как "трек закончился", запустился бы новый трек.
+        // Application.isFocused — надёжный признак фокуса, не зависящий от порядка вызова колбэков.
+        if (!Application.isFocused)
+            return;
+
         // В игре таймер прогрессии идёт по Time.deltaTime (пауза через timeScale остановит прогрессию — обычно это то, что надо)
         if (_mode == MusicMode.Game)
             _gameTimeSeconds += Time.deltaTime;
 
-        // Автопереключение треков:
-        // Если клип назначен, но AudioSource уже не играет — значит трек закончился -> запускаем следующий
-        if (musicSource != null && musicSource.clip != null && !musicSource.isPlaying)
+        if (musicSource == null || musicSource.clip == null)
+            return;
+
+        if (musicSource.isPlaying)
+        {
+            // Запоминаем позицию, пока играем — понадобится, чтобы отличить конец трека от прерывания.
+            _lastPlaybackTime = musicSource.time;
+            return;
+        }
+
+        // Источник не играет, хотя клип назначен. Два случая:
+        // 1) трек доиграл до конца (последняя позиция была у конца клипа) -> следующий трек;
+        // 2) трек прервали (свернули/потеряли фокус на прошлых кадрах) -> продолжаем с сохранённой позиции.
+        bool reachedEnd = _lastPlaybackTime >= musicSource.clip.length - TrackEndThreshold;
+        if (reachedEnd)
         {
             PlayNextTrack();
+        }
+        else
+        {
+            musicSource.time = Mathf.Clamp(_lastPlaybackTime, 0f, Mathf.Max(0f, musicSource.clip.length - 0.05f));
+            musicSource.Play();
         }
     }
 
@@ -156,6 +188,7 @@ public class AudioManager : MonoBehaviour
         AudioClip chosen = ChooseRandomAvoidRepeat(pool, _lastPlayedClip);
 
         _lastPlayedClip = chosen;
+        _lastPlaybackTime = 0f; // новый трек — сбрасываем позицию, чтобы детект конца не сработал по старой
 
         musicSource.clip = chosen;
         musicSource.volume = _currentBaseVolume;
