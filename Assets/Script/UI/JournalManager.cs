@@ -28,6 +28,9 @@ public class JournalManager : MonoBehaviour
     [SerializeField] private JournalEntry entryPrefab;
     [SerializeField] private TMP_Text tierHeaderPrefab;
 
+    [Header("Pause")]
+    [SerializeField] private PauseManager pauseManager;
+
     private readonly List<GameObject> spawnedWeaponItems = new List<GameObject>();
     private readonly List<GameObject> spawnedUpgradeItems = new List<GameObject>();
 
@@ -60,6 +63,11 @@ public class JournalManager : MonoBehaviour
         if (journalRoot != null)
             journalRoot.SetActive(true);
 
+        if (PurchaseHistoryManager.Instance != null)
+            PurchaseHistoryManager.Instance.SetVisible(false);
+
+        if (pauseManager != null) pauseManager.SetCanPause(false);
+
         ShowSelection();
     }
 
@@ -73,6 +81,11 @@ public class JournalManager : MonoBehaviour
 
         if (GameStateManager.Instance != null)
             GameStateManager.Instance.SetState(stateBeforeOpen);
+
+        if (PurchaseHistoryManager.Instance != null)
+            PurchaseHistoryManager.Instance.SetVisible(true);
+
+        if (pauseManager != null) pauseManager.SetCanPause(true);
     }
 
     // ===================== ПЕРЕКЛЮЧЕНИЕ ПАНЕЛЕЙ =====================

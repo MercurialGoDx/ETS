@@ -21,11 +21,24 @@ MonoBehaviour:
     m_SerializedLabels:
     - Locale-pt
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 12e1b77ca664a7f47b8cd76a4d4cf965
+    m_Address: Game Labels_pt
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-pt
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: c2fc5184cfeedb64aaaf336eb05d5690
     m_Address: Weapon Labels_pt
     m_ReadOnly: 1
     m_SerializedLabels:
     - Locale-pt
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e5043ed69fa1b9a4692d384347f6d7f0
+    m_Address: Menu Labels_pt
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-pt
+    - Preload
     FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 1
   m_Settings: {fileID: 11400000, guid: fff071d97a20f834ab8a9fbfe71e94fc, type: 2}

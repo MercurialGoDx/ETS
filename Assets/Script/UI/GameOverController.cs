@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Localization.Settings;
 using TMPro;
 
 public class GameOverController : MonoBehaviour
@@ -9,7 +10,9 @@ public class GameOverController : MonoBehaviour
     [Header("Время забега")]
     [SerializeField] private GameTimeUI gameTimeUI;
     [SerializeField] private TMP_Text playTimeText;
-    [SerializeField] private string playTimePrefix = "Ваше время: ";
+    // Ключ локализации "Your time: {0}" (Game Labels/ui.your_time). {0} — отформатированное время.
+    [SerializeField] private string playTimeTable = "Game Labels";
+    [SerializeField] private string playTimeKey = "ui.your_time";
 
     private void Awake()
     {
@@ -35,8 +38,13 @@ public class GameOverController : MonoBehaviour
             gameOverPanel.SetActive(true);
 
         // Показываем, сколько игрок продержался (таймер замирает при GameOver вместе с timeScale).
+        // Текст берём из локализации в текущем языке: "Ваше время: {0}" / "Your time: {0}" ...
         if (playTimeText != null && gameTimeUI != null)
-            playTimeText.text = playTimePrefix + gameTimeUI.GetFormattedTime();
+        {
+            string formatted = gameTimeUI.GetFormattedTime();
+            playTimeText.text = LocalizationSettings.StringDatabase.GetLocalizedString(
+                playTimeTable, playTimeKey, new object[] { formatted });
+        }
 
         var stats = DamageStatsManager.Instance.GetDamageSorted();
 

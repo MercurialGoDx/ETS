@@ -276,6 +276,30 @@ MonoBehaviour:
       {2}\n\n<color=#ffd700>Cost:</color> {3}
     m_Metadata:
       m_Items: []
+  - m_Id: 59785492072226816
+    m_Localized: Magic
+    m_Metadata:
+      m_Items: []
+  - m_Id: 59785492101586944
+    m_Localized: Piercing
+    m_Metadata:
+      m_Items: []
+  - m_Id: 59785492101586945
+    m_Localized: Normal
+    m_Metadata:
+      m_Items: []
+  - m_Id: 59785492101586946
+    m_Localized: Projectile
+    m_Metadata:
+      m_Items: []
+  - m_Id: 59785492101586947
+    m_Localized: Heavy
+    m_Metadata:
+      m_Items: []
+  - m_Id: 59785492101586948
+    m_Localized: Chaos
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

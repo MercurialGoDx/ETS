@@ -1,0 +1,119 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: Game Labels_fr
+  m_EditorClassIdentifier: 
+  m_LocaleId:
+    m_Code: fr
+  m_SharedData: {fileID: 11400000, guid: 22ca9f35694503140bae072efdaacdb2, type: 2}
+  m_Metadata:
+    m_Items:
+    - rid: 3125972142201765998
+  m_TableData:
+  - m_Id: 698639826944
+    m_Localized: 'Vie: {0}'
+    m_Metadata:
+      m_Items:
+      - rid: 3125972142201765998
+  - m_Id: 703534579712
+    m_Localized: "D\xE9g\xE2ts: {0}"
+    m_Metadata:
+      m_Items:
+      - rid: 3125972142201765998
+  - m_Id: 21319635969237005
+    m_Localized: 'Votre temps: {0}'
+    m_Metadata:
+      m_Items:
+      - rid: 3125972142201765998
+  - m_Id: 532578942976
+    m_Localized: "D\xE9marrer la partie"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 686988050432
+    m_Localized: Statistiques de l'ennemi
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21319635935682560
+    m_Localized: Description
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21319635969236992
+    m_Localized: Journal
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21319635969236993
+    m_Localized: Armes
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21319635969236994
+    m_Localized: "Am\xE9liorations"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21319635969236995
+    m_Localized: "Param\xE8tres"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21319635969236996
+    m_Localized: Nom
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21319635969236997
+    m_Localized: "D\xE9faite"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21319635969236998
+    m_Localized: Statistiques
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21319635969236999
+    m_Localized: "Statistiques de d\xE9g\xE2ts"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21319635969237000
+    m_Localized: Au menu principal
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21319635969237001
+    m_Localized: Continuer
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21319635969237002
+    m_Localized: Pause
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21319635969237003
+    m_Localized: Compris
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21319635969237004
+    m_Localized: Retour
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21319635969237006
+    m_Localized: "Bienvenue !\\n\\nToutes les 10 secondes, des vagues d'ennemis arrivent
+      : corps \xE0 corps, moyenne et \xE0 distance.\\nToutes les 5 minutes, un boss
+      appara\xEEt \u2014 vainquez-le pour une r\xE9compense am\xE9lior\xE9e.\\nLes
+      ennemis se renforcent avec le temps. Le but est de survivre le plus longtemps
+      possible !"
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 3125972142201765998
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 
+        m_SharedEntries:
+        - id: 698639826944
+        - id: 703534579712
+        - id: 21319635969237005

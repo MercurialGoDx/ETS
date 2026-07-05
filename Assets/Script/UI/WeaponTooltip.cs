@@ -31,6 +31,15 @@ public class WeaponTooltip : MonoBehaviour
         if (tooltipRect == null)
             tooltipRect = transform as RectTransform;
 
+        // Тултип не должен перехватывать курсор: иначе, всплыв под указателем (напр. над верхней
+        // строкой истории покупок с длинным описанием), он крадёт raycast → PointerExit у строки →
+        // Hide → PointerEnter → Show, и так по кругу (мигание). Отключаем блокировку raycast.
+        var canvasGroup = GetComponent<CanvasGroup>();
+        if (canvasGroup == null)
+            canvasGroup = gameObject.AddComponent<CanvasGroup>();
+        canvasGroup.blocksRaycasts = false;
+        canvasGroup.interactable = false;
+
         if (canvas == null)
             canvas = GetComponentInParent<Canvas>();
 

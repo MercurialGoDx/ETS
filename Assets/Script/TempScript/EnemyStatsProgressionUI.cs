@@ -13,8 +13,11 @@ public class EnemyStatsProgressionUI : MonoBehaviour
     [SerializeField] private TMP_Text waveText; // можно оставить пустым
 
     [Header("Localization")]
-    [SerializeField] private LocalizedString healthPrefix;  // "Здоровье: " или "Health: "
-    [SerializeField] private LocalizedString damagePrefix;  // "Урон: " или "Damage: "
+    // Smart-строки вида "Health: {0}" / "Damage: {0}". Число передаётся как аргумент {0},
+    // поэтому при смене языка (StringChanged) текст перерисовывается ВМЕСТЕ с числом —
+    // раньше локаль перезаписывала подпись без числа и значение «пропадало».
+    [SerializeField] private LocalizedString healthString;
+    [SerializeField] private LocalizedString damageString;
 
     [Header("Base enemy stats for UI")]
     [SerializeField] private float baseHp = 15f;
@@ -22,34 +25,30 @@ public class EnemyStatsProgressionUI : MonoBehaviour
 
     private bool isStarted = false;
 
-    private string _currentHealthPrefix = "Здоровье: ";
-    private string _currentDamagePrefix = "Урон: ";
+    // Аргументы для smart-строк. Хранятся как object, чтобы можно было показать "-" до старта.
+    private readonly object[] hpArgs = new object[] { "-" };
+    private readonly object[] dmgArgs = new object[] { "-" };
 
-    private int _currentHpValue = 0;
-    private int _currentDmgValue = 0;
-
-    private void Awake()
+    private void OnEnable()
     {
-        // Подписываемся на изменение языка
-        //if (healthPrefix != null) healthPrefix.StringChanged += UpdateHealthPrefix;
-        //if (damagePrefix != null) damagePrefix.StringChanged += UpdateDamagePrefix;
+        healthString.Arguments = hpArgs;
+        damageString.Arguments = dmgArgs;
+        // Подписка сразу отрисует текущее значение и будет реагировать на смену локали.
+        healthString.StringChanged += OnHealthStringChanged;
+        damageString.StringChanged += OnDamageStringChanged;
     }
 
-    private void OnDestroy()
+    private void OnDisable()
     {
-        // Отписываемся
-        //if (healthPrefix != null) healthPrefix.StringChanged -= UpdateHealthPrefix;
-        //if (damagePrefix != null) damagePrefix.StringChanged -= UpdateDamagePrefix;
-    }
+        healthString.StringChanged -= OnHealthStringChanged;
+        damageString.StringChanged -= OnDamageStringChanged;
 
-    private void Start()
-    {
-        //UpdateFromSpawner();
+        if (spawner != null)
+            spawner.OnWaveSpawned -= HandleWaveSpawned;
     }
 
     /// <summary>
-    /// Вызывается из GameStartController по кнопке Ready.
-    /// Теперь не запускает корутину, а включает авто-обновление от EnemySpawner.
+    /// Вызывается из GameStartController по кнопке Ready — включает авто-обновление от EnemySpawner.
     /// </summary>
     public void StartProgression()
     {
@@ -61,32 +60,25 @@ public class EnemyStatsProgressionUI : MonoBehaviour
             return;
         }
 
-        // Подписка (на всякий случай без дублей)
         spawner.OnWaveSpawned -= HandleWaveSpawned;
         spawner.OnWaveSpawned += HandleWaveSpawned;
 
-        // Сразу покажем актуальные значения (до первой волны / для текущей волны)
         UpdateFromSpawner();
-    }
-
-    private void OnDisable()
-    {
-        if (spawner != null)
-            spawner.OnWaveSpawned -= HandleWaveSpawned;
     }
 
     private void HandleWaveSpawned(int waveNumber, float mult, float flatHp, float flatDmg)
     {
-        if (!isStarted) return; // пока не Ready — не обновляем
-
+        if (!isStarted) return;
         UpdateUI(waveNumber, mult, flatHp, flatDmg);
     }
 
     public void ResetUI()
     {
         isStarted = false;
-        if (hpText != null) hpText.text = $"{_currentHealthPrefix}-";
-        if (dmgText != null) dmgText.text = $"{_currentDamagePrefix}-";
+
+        hpArgs[0] = "-";
+        dmgArgs[0] = "-";
+        RefreshStrings();
 
         if (spawner != null)
             spawner.OnWaveSpawned -= HandleWaveSpawned;
@@ -109,32 +101,29 @@ public class EnemyStatsProgressionUI : MonoBehaviour
         float hp = (baseHp * mult) + flatHp;
         float dmg = (baseDmg * mult) + flatDmg;
 
-        _currentHpValue = Mathf.RoundToInt(hp);
-        _currentDmgValue = Mathf.RoundToInt(dmg);
+        hpArgs[0] = Mathf.RoundToInt(hp);
+        dmgArgs[0] = Mathf.RoundToInt(dmg);
 
-        UpdateUITexts();
+        if (waveText != null)
+            waveText.text = waveNumber.ToString();
+
+        RefreshStrings();
     }
 
-    private void UpdateUITexts()
+    // Перерисовка smart-строк с текущими аргументами (число не теряется).
+    private void RefreshStrings()
     {
-        if (hpText != null)
-            //hpText.text = $"{_currentHealthPrefix}{_currentHpValue}";
-            hpText.text = $"Health: 12";
-
-        if (dmgText != null)
-            //dmgText.text = $"{_currentDamagePrefix}{_currentDmgValue}";
-            dmgText.text = $"Damage: 1";
+        healthString.RefreshString();
+        damageString.RefreshString();
     }
 
-    private void UpdateHealthPrefix(string localizedPrefix)
+    private void OnHealthStringChanged(string value)
     {
-        _currentHealthPrefix = localizedPrefix;
-        UpdateFromSpawner(); // Обновляем UI с новым префиксом
+        if (hpText != null) hpText.text = value;
     }
 
-    private void UpdateDamagePrefix(string localizedPrefix)
+    private void OnDamageStringChanged(string value)
     {
-        _currentDamagePrefix = localizedPrefix;
-        UpdateFromSpawner();
+        if (dmgText != null) dmgText.text = value;
     }
 }

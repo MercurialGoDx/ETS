@@ -14,19 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_GroupName: Localization-String-Tables-Chinese (Simplified) (zh)
   m_GUID: f027c5403ade89444a6a93478a2e6287
-  m_SerializeEntries:
-  - m_GUID: 04e6132d55fee1e41b79af66920277f4
-    m_Address: Weapon Labels_zh
-    m_ReadOnly: 1
-    m_SerializedLabels:
-    - Locale-zh
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: eabd82e04b1dff44e848c314210748d0
-    m_Address: Upgrade Labels_zh
-    m_ReadOnly: 1
-    m_SerializedLabels:
-    - Locale-zh
-    FlaggedDuringContentUpdateRestriction: 0
+  m_SerializeEntries: []
   m_ReadOnly: 1
   m_Settings: {fileID: 11400000, guid: fff071d97a20f834ab8a9fbfe71e94fc, type: 2}
   m_SchemaSet:

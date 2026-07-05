@@ -89,4 +89,24 @@ public abstract class UpgradeBaseSO : ScriptableObject
     }
 
     protected abstract object[] GetSpecificDescriptionArgs();
+
+    /// <summary>
+    /// Локализованное название типа урона (dtype.&lt;value&gt; из таблицы улучшения). Без этого
+    /// {N} в описании рендерился бы английским именем enum независимо от выбранного языка.
+    /// </summary>
+    protected string GetLocalizedDamageType(WeaponDamageType damageType)
+    {
+        var stringTable = localizedStringTable.GetTable();
+        if (stringTable != null)
+        {
+            var entry = stringTable.GetEntry("dtype." + damageType.ToString().ToLowerInvariant());
+            if (entry != null)
+            {
+                string localized = entry.GetLocalizedString();
+                if (!string.IsNullOrEmpty(localized))
+                    return localized;
+            }
+        }
+        return damageType.ToString();
+    }
 }

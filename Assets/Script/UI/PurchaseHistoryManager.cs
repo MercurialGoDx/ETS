@@ -39,6 +39,12 @@ public class PurchaseHistoryManager : MonoBehaviour
             Instance = null;
     }
 
+    /// <summary>Показать/скрыть панель истории покупок (например, чтобы не наслаивалась на окно статистики).</summary>
+    public void SetVisible(bool visible)
+    {
+        gameObject.SetActive(visible);
+    }
+
     public void AddWeapon(WeaponDefinition weapon)
     {
         if (weapon == null || content == null || entryPrefab == null)

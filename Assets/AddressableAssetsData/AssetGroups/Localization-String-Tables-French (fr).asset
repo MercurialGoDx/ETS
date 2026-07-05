@@ -14,19 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_GroupName: Localization-String-Tables-French (fr)
   m_GUID: 226f4269ef66b9744a6ad0e8e99bcac6
-  m_SerializeEntries:
-  - m_GUID: 1bbc3b2a4ccaa2241b7232e650e2eda5
-    m_Address: Upgrade Labels_fr
-    m_ReadOnly: 1
-    m_SerializedLabels:
-    - Locale-fr
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 22baa0237b4e951448246d61862d1184
-    m_Address: Weapon Labels_fr
-    m_ReadOnly: 1
-    m_SerializedLabels:
-    - Locale-fr
-    FlaggedDuringContentUpdateRestriction: 0
+  m_SerializeEntries: []
   m_ReadOnly: 1
   m_Settings: {fileID: 11400000, guid: fff071d97a20f834ab8a9fbfe71e94fc, type: 2}
   m_SchemaSet:

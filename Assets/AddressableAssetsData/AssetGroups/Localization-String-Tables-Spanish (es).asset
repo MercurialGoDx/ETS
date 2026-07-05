@@ -15,11 +15,24 @@ MonoBehaviour:
   m_GroupName: Localization-String-Tables-Spanish (es)
   m_GUID: cd87a950aa91452469af476faaef57fc
   m_SerializeEntries:
+  - m_GUID: 21449bf6bedd70345aa01e93f63dfc4a
+    m_Address: Game Labels_es
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-es
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 33f2e7f928d9a824a826a07eaa8410c9
     m_Address: Weapon Labels_es
     m_ReadOnly: 1
     m_SerializedLabels:
     - Locale-es
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 81ff6b5e76f1d3d458b9969d3761f8ca
+    m_Address: Menu Labels_es
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-es
+    - Preload
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: a8d849e7ccfd1a1448cf0e95c35b871d
     m_Address: Upgrade Labels_es

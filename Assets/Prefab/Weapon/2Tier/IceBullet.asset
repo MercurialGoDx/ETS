@@ -24,6 +24,16 @@ MonoBehaviour:
   projectileSpeed: 18
   itemTier: 2
   damageType: 0
-  bulletPrefab: {fileID: 3879509221093858467, guid: dae46e55ca97a264c825cc5f774d483a, type: 3}
+  bulletPrefab: {fileID: 1542654088660027197, guid: dae46e55ca97a264c825cc5f774d483a, type: 3}
   weight: 8
+  weightIncreasePerPurchase: 2
+  maxWeightIncreasePurchases: 5
+  weightDecreaseUpgrades: []
+  weightDecreaseUpgradePercent: 0
+  weightIncreaseUpgrades: []
+  weightIncreaseUpgradePercent: 0
+  weightDecreaseWeapons: []
+  weightDecreaseWeaponPercent: 0
+  weightIncreaseWeapons: []
+  weightIncreaseWeaponPercent: 0
   targetingMode: 0

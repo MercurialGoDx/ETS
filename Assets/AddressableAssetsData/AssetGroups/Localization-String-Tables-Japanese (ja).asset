@@ -14,19 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_GroupName: Localization-String-Tables-Japanese (ja)
   m_GUID: 00ff81fc4139ba143b40ac32de546661
-  m_SerializeEntries:
-  - m_GUID: 2fdaef2ad7acbd64988eee309a85a264
-    m_Address: Upgrade Labels_ja
-    m_ReadOnly: 1
-    m_SerializedLabels:
-    - Locale-ja
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: eed2aa14ad9dfa24aa6e46f96033f5f7
-    m_Address: Weapon Labels_ja
-    m_ReadOnly: 1
-    m_SerializedLabels:
-    - Locale-ja
-    FlaggedDuringContentUpdateRestriction: 0
+  m_SerializeEntries: []
   m_ReadOnly: 1
   m_Settings: {fileID: 11400000, guid: fff071d97a20f834ab8a9fbfe71e94fc, type: 2}
   m_SchemaSet:

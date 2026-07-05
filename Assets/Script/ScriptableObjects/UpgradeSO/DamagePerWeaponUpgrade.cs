@@ -14,6 +14,6 @@ public class DamagePerWeaponUpgrade : UpgradeBaseSO
 
     protected override object[] GetSpecificDescriptionArgs()
     {
-        return new object[] { damageType, valuePercentPerWeapon };
+        return new object[] { GetLocalizedDamageType(damageType), valuePercentPerWeapon };
     }
 }

@@ -102,6 +102,24 @@ public class WeaponDefinition : ScriptableObject
 
     protected virtual object[] GetDescriptionArgs()
     {
-        return new object[] { damagePerProjectile, damageType, fireRate, price };
+        // {1} — тип урона: берём локализованную строку (dtype.<value>) из той же таблицы,
+        // что и название/описание, иначе {1} рендерился бы английским именем enum.
+        return new object[] { damagePerProjectile, GetLocalizedDamageType(), fireRate, price };
+    }
+
+    protected string GetLocalizedDamageType()
+    {
+        var stringTable = localizedStringTable.GetTable();
+        if (stringTable != null)
+        {
+            var entry = stringTable.GetEntry("dtype." + damageType.ToString().ToLowerInvariant());
+            if (entry != null)
+            {
+                string localized = entry.GetLocalizedString();
+                if (!string.IsNullOrEmpty(localized))
+                    return localized;
+            }
+        }
+        return damageType.ToString();
     }
 }

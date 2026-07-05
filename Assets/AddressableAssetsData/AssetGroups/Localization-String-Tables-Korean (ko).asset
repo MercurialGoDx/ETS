@@ -14,19 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_GroupName: Localization-String-Tables-Korean (ko)
   m_GUID: 3f8fab5e5257d2f4da16104082617e4a
-  m_SerializeEntries:
-  - m_GUID: 9ed20b2aacd27ac469770bf4c1f7f395
-    m_Address: Upgrade Labels_ko
-    m_ReadOnly: 1
-    m_SerializedLabels:
-    - Locale-ko
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: e66371e083ec5e64b98c9564e3fa6ada
-    m_Address: Weapon Labels_ko
-    m_ReadOnly: 1
-    m_SerializedLabels:
-    - Locale-ko
-    FlaggedDuringContentUpdateRestriction: 0
+  m_SerializeEntries: []
   m_ReadOnly: 1
   m_Settings: {fileID: 11400000, guid: fff071d97a20f834ab8a9fbfe71e94fc, type: 2}
   m_SchemaSet:

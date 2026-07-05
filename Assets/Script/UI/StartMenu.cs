@@ -56,6 +56,9 @@ public class StartMenu : MonoBehaviour
     public void OpenStatistics()
     {
         defeatWindow.SetActive(false);
+        // Прячем список покупок, чтобы он не наслаивался на окно статистики.
+        if (PurchaseHistoryManager.Instance != null)
+            PurchaseHistoryManager.Instance.SetVisible(false);
         statisticsWindow.Show();
     }
 
@@ -63,5 +66,8 @@ public class StartMenu : MonoBehaviour
     {
         statisticsWindow.Hide();
         defeatWindow.SetActive(true);
+        // Возвращаемся к окну поражения — снова показываем список покупок.
+        if (PurchaseHistoryManager.Instance != null)
+            PurchaseHistoryManager.Instance.SetVisible(true);
     }
 }

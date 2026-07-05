@@ -215,6 +215,30 @@ MonoBehaviour:
     m_Key: slashing_spin.desc
     m_Metadata:
       m_Items: []
+  - m_Id: 59785492072226816
+    m_Key: dtype.magic
+    m_Metadata:
+      m_Items: []
+  - m_Id: 59785492101586944
+    m_Key: dtype.piercing
+    m_Metadata:
+      m_Items: []
+  - m_Id: 59785492101586945
+    m_Key: dtype.normal
+    m_Metadata:
+      m_Items: []
+  - m_Id: 59785492101586946
+    m_Key: dtype.projectile
+    m_Metadata:
+      m_Items: []
+  - m_Id: 59785492101586947
+    m_Key: dtype.heavy
+    m_Metadata:
+      m_Items: []
+  - m_Id: 59785492101586948
+    m_Key: dtype.chaos
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

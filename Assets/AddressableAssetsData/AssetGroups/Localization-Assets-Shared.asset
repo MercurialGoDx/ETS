@@ -20,6 +20,11 @@ MonoBehaviour:
     m_ReadOnly: 1
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 22ca9f35694503140bae072efdaacdb2
+    m_Address: Assets/Localization/Locales/Game Labels/Game Labels Shared Data.asset
+    m_ReadOnly: 1
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 32a974e0a609fb740a2db5dde9508098
     m_Address: Assets/Localization/Locales/Weapon Labels/Weapon Labels Shared Data.asset
     m_ReadOnly: 1

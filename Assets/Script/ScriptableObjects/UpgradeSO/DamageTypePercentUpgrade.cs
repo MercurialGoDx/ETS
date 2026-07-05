@@ -14,6 +14,6 @@ public class DamageTypePercentUpgrade : UpgradeBaseSO
 
     protected override object[] GetSpecificDescriptionArgs()
     {
-        return new object[] { damageType, valuePercent };
+        return new object[] { GetLocalizedDamageType(damageType), valuePercent };
     }
 }

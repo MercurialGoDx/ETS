@@ -403,6 +403,30 @@ MonoBehaviour:
     m_Key: spikes.name
     m_Metadata:
       m_Items: []
+  - m_Id: 59955273685524480
+    m_Key: dtype.magic
+    m_Metadata:
+      m_Items: []
+  - m_Id: 59955273723273216
+    m_Key: dtype.piercing
+    m_Metadata:
+      m_Items: []
+  - m_Id: 59955273723273217
+    m_Key: dtype.normal
+    m_Metadata:
+      m_Items: []
+  - m_Id: 59955273723273218
+    m_Key: dtype.projectile
+    m_Metadata:
+      m_Items: []
+  - m_Id: 59955273723273219
+    m_Key: dtype.heavy
+    m_Metadata:
+      m_Items: []
+  - m_Id: 59955273723273220
+    m_Key: dtype.chaos
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
