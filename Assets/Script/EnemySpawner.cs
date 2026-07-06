@@ -150,6 +150,10 @@ public class EnemySpawner : MonoBehaviour
 
             enemyInstance.InitStats(hp, dmg);
 
+            // Награда золотом растёт с волнами (+1 за каждые 20 волн), чтобы доход игрока
+            // поспевал за ростом сложности, а не оставался константой.
+            enemyInstance.bonusGold = currentWaveIndex / 20;
+
             if (EnemyEffectManager.Instance != null)
                 EnemyEffectManager.Instance.ApplyEffectsToEnemy(enemyInstance);
         }

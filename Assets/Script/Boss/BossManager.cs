@@ -20,7 +20,12 @@ public class BossManager : MonoBehaviour
 
     [Header("Difficulty scaling")]
     public EnemySpawner enemySpawner;
-    public float bossExtraMultiplier = 1f;
+
+    [Tooltip("Множитель HP босса поверх общего множителя сложности (босс — жирная цель).")]
+    public float bossHpMultiplier = 1.5f;
+
+    [Tooltip("Множитель урона босса. Урон растёт по КОРНЮ из множителя сложности, иначе на поздних минутах босс ваншотит башню.")]
+    public float bossDamageMultiplier = 1f;
 
     private Transform player;
     public BossRewardUI bossRewardUI;
@@ -149,11 +154,11 @@ public class BossManager : MonoBehaviour
         if (enemySpawner != null)
             difficultyMult = enemySpawner.difficultyMultiplier;
 
-        float totalMult = difficultyMult * bossExtraMultiplier;
-
+        // HP и урон масштабируются раздельно: HP — линейно по множителю сложности (жирная цель),
+        // урон — по КОРНЮ из множителя (давит, но не ваншотит даже на поздних минутах).
         chosen.enemy.InitStats(
-            chosen.baseHealth * totalMult,
-            chosen.baseDamage * totalMult
+            chosen.baseHealth * difficultyMult * bossHpMultiplier,
+            chosen.baseDamage * Mathf.Sqrt(difficultyMult) * bossDamageMultiplier
         );
 
         chosen.instance.SetActive(true);
@@ -163,7 +168,7 @@ public class BossManager : MonoBehaviour
         if (bossHealthBar != null)
             bossHealthBar.Show(activeBossEnemy);
 
-        Debug.Log($"[BossManager] Boss spawned ({chosen.instance.name}) | totalMult={totalMult:F2}");
+        Debug.Log($"[BossManager] Boss spawned ({chosen.instance.name}) | mult={difficultyMult:F2} hp x{bossHpMultiplier:F1} dmg x{bossDamageMultiplier:F1}");
     }
 
     private Vector3 GetRandomPointAroundPlayer()

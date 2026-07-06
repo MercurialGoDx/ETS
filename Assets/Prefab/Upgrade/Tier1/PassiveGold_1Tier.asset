@@ -16,7 +16,7 @@ MonoBehaviour:
   price: 100
   weight: 25
   itemTier: 1
-  weightIncreasePerPurchase: 2
+  weightIncreasePerPurchase: -5
   maxWeightIncreasePurchases: 5
   weightDecreaseUpgrades: []
   weightDecreasePercent: 0
@@ -31,4 +31,4 @@ MonoBehaviour:
       m_TableCollectionName: GUID:164770c6fc8794c4ba4db6f8c7e72db3
   nameKey: passive_gold.name
   descriptionKey: passive_gold.desc
-  goldPerSecond: 2
+  goldPerSecond: 1

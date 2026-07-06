@@ -583,7 +583,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 23319356}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 46a87cf999693194c8d489632f64530b, type: 3}
   m_Name: 
@@ -24166,7 +24166,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cfa176c8e5423484bba202346e31358a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startGold: 10000
+  startGold: 300
   currentGold: 0
   enablePassiveIncome: 1
   goldPerTick: 6
@@ -24275,9 +24275,7 @@ MonoBehaviour:
   menuMusicPool:
   - {fileID: 8300000, guid: b2b9d953b3ed79744833163d772daf63, type: 3}
   earlyGamePool:
-  - {fileID: 8300000, guid: 55fa129cf29628342a43df5bdddfd623, type: 3}
-  - {fileID: 8300000, guid: ed67a8a9af11cc54a9277475604b6eba, type: 3}
-  - {fileID: 8300000, guid: d0cca40c132d9ba49bc2d180c864877b, type: 3}
+  - {fileID: 8300000, guid: b679ff341f3b83d4383d948f04a30793, type: 3}
   midGamePool:
   - {fileID: 8300000, guid: c82b1b5e3601a104b83e2cbadfe9b844, type: 3}
   - {fileID: 8300000, guid: d0cca40c132d9ba49bc2d180c864877b, type: 3}
@@ -27478,7 +27476,7 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
+  m_Transition: 2
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.6886792, g: 0.3789302, b: 0, a: 1}
@@ -27488,8 +27486,8 @@ MonoBehaviour:
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
-    m_HighlightedSprite: {fileID: 0}
-    m_PressedSprite: {fileID: 0}
+    m_HighlightedSprite: {fileID: 21300000, guid: 699c185846d89924daa869d0a2875fb3, type: 3}
+    m_PressedSprite: {fileID: 21300000, guid: ac76c762e0f1a904aae73fb6a9b229c5, type: 3}
     m_SelectedSprite: {fileID: 0}
     m_DisabledSprite: {fileID: 0}
   m_AnimationTriggers:
@@ -27536,7 +27534,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_Sprite: {fileID: 21300000, guid: 48b767314cba2ae45989d7dec5501169, type: 3}
-  m_Type: 1
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -28381,13 +28379,13 @@ MonoBehaviour:
   spawnRadiusMin: 18
   spawnRadiusMax: 20
   difficultyMultiplier: 1
-  multiplierGrowthPercent: 2
-  timeMark1Minutes: 10
+  multiplierGrowthPercent: 3.5
+  timeMark1Minutes: 12
   timeMark2Minutes: 20
   growthStage1Multiplier: 1.5
   growthStage2Multiplier: 3
   healthAddPerWave: 2
-  damageAddPerWave: 0.1
+  damageAddPerWave: 0.05
   flatHealthBonus: 0
   flatDamageBonus: 0
   enemiesPerWavePercentBonus: 0
@@ -28445,7 +28443,8 @@ MonoBehaviour:
   spawnEverySeconds: 300
   waitBossDeathBeforeNextSpawn: 0
   enemySpawner: {fileID: 1717298188}
-  bossExtraMultiplier: 1
+  bossHpMultiplier: 1.5
+  bossDamageMultiplier: 1
   bossRewardUI: {fileID: 1102466065}
   bossHealthBar: {fileID: 1717298193}
 --- !u!114 &1717298192
@@ -30713,7 +30712,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1856609484}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 46a87cf999693194c8d489632f64530b, type: 3}
   m_Name: 
