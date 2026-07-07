@@ -1,6 +1,9 @@
 using UnityEngine;
 using System;
 
+// Инициализируется раньше остальных скриптов: подписчики (например, StateRestrictedButton)
+// обращаются к Instance уже в своих OnEnable при загрузке сцены.
+[DefaultExecutionOrder(-100)]
 public class GameStateManager : MonoBehaviour
 {
     public static GameStateManager Instance { get; private set; }
