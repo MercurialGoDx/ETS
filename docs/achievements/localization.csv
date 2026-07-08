@@ -1,0 +1,21 @@
+api,field,en,ru,de,es,fr,pt
+SURVIVE_10,name,First Stand,Первый рубеж,Erster Widerstand,Primer bastión,Premier rempart,Primeira linha
+SURVIVE_10,desc,Survive 10 minutes in a single run,Продержаться 10 минут в одном забеге,Überlebe 10 Minuten in einem Durchlauf,Sobrevive 10 minutos en una sola partida,Survivre 10 minutes en une seule partie,Sobreviva 10 minutos em uma única partida
+SURVIVE_20,name,Unwavering,Стойкость,Standhaft,Inquebrantable,Inébranlable,Inabalável
+SURVIVE_20,desc,Survive 20 minutes in a single run,Продержаться 20 минут в одном забеге,Überlebe 20 Minuten in einem Durchlauf,Sobrevive 20 minutos en una sola partida,Survivre 20 minutes en une seule partie,Sobreviva 20 minutos em uma única partida
+SURVIVE_30,name,Half-Hour Hell,Полчаса ада,Halbe Stunde Hölle,Media hora de infierno,Trente minutes d'enfer,Meia hora de inferno
+SURVIVE_30,desc,Survive 30 minutes in a single run,Продержаться 30 минут в одном забеге,Überlebe 30 Minuten in einem Durchlauf,Sobrevive 30 minutos en una sola partida,Survivre 30 minutes en une seule partie,Sobreviva 30 minutos em uma única partida
+SURVIVE_40,name,Unbreakable,Несокрушимый,Unzerbrechlich,Indestructible,Indestructible,Inquebrável
+SURVIVE_40,desc,Survive 40 minutes in a single run,Продержаться 40 минут в одном забеге,Überlebe 40 Minuten in einem Durchlauf,Sobrevive 40 minutos en una sola partida,Survivre 40 minutes en une seule partie,Sobreviva 40 minutos em uma única partida
+SURVIVE_50,name,Living Legend,Живая легенда,Lebende Legende,Leyenda viviente,Légende vivante,Lenda viva
+SURVIVE_50,desc,Survive 50 minutes in a single run,Продержаться 50 минут в одном забеге,Überlebe 50 Minuten in einem Durchlauf,Sobrevive 50 minutos en una sola partida,Survivre 50 minutes en une seule partie,Sobreviva 50 minutos em uma única partida
+SURVIVE_60,name,Eternal Guardian,Вечный страж,Ewiger Wächter,Guardián eterno,Gardien éternel,Guardião eterno
+SURVIVE_60,desc,Survive 60 minutes in a single run,Продержаться 60 минут в одном забеге,Überlebe 60 Minuten in einem Durchlauf,Sobrevive 60 minutos en una sola partida,Survivre 60 minutes en une seule partie,Sobreviva 60 minutos em uma única partida
+ALL_WEAPONS,name,Armory Baron,Оружейный барон,Waffenbaron,Barón del arsenal,Baron de l'armurerie,Barão do arsenal
+ALL_WEAPONS,desc,Buy every type of weapon,Купить все виды оружия,Kaufe alle Waffentypen,Compra todos los tipos de armas,Acheter tous les types d'armes,Compre todos os tipos de armas
+ALL_UPGRADES,name,Upgrade Master,Мастер улучшений,Upgrade-Meister,Maestro de mejoras,Maître des améliorations,Mestre das melhorias
+ALL_UPGRADES,desc,Buy every upgrade,Купить все улучшения,Kaufe alle Verbesserungen,Compra todas las mejoras,Acheter toutes les améliorations,Compre todas as melhorias
+BOSS_SLAYER,name,Boss Slayer,Убийца боссов,Bossbezwinger,Cazador de jefes,Tueur de boss,Matador de chefes
+BOSS_SLAYER,desc,Defeat a boss,Победить босса,Besiege einen Boss,Derrota a un jefe,Vaincre un boss,Derrote um chefe
+SHOPAHOLIC,name,Shopaholic,Шопоголик,Kaufrausch,Comprador compulsivo,Accro du shopping,Comprador compulsivo
+SHOPAHOLIC,desc,Make 30 purchases in a single run,Совершить 30 покупок за один забег,Tätige 30 Käufe in einem Durchlauf,Realiza 30 compras en una sola partida,Effectuer 30 achats en une seule partie,Faça 30 compras em uma única partida

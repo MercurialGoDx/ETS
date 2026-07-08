@@ -214,6 +214,9 @@ public class ShopManager : MonoBehaviour
         if (PurchaseHistoryManager.Instance != null)
             PurchaseHistoryManager.Instance.AddWeapon(weapon);
 
+        if (AchievementManager.Instance != null)
+            AchievementManager.Instance.NotifyWeaponPurchased(weapon);
+
         Debug.Log($"weight Weapon: {UpgradesManager.Instance.RuntimeData.GetWeaponWeight(weapon)}");
 
         if (slot != null)
@@ -305,6 +308,9 @@ public class ShopManager : MonoBehaviour
 
         if (PurchaseHistoryManager.Instance != null)
             PurchaseHistoryManager.Instance.AddUpgrade(upgrade);
+
+        if (AchievementManager.Instance != null)
+            AchievementManager.Instance.NotifyUpgradePurchased(upgrade);
 
         Debug.Log($"weight Upgrade: {UpgradesManager.Instance.RuntimeData.GetUpgradeWeight(upgrade)}");
 

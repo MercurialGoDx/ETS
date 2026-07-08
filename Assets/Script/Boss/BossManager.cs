@@ -188,6 +188,9 @@ public class BossManager : MonoBehaviour
 
         activeBossEnemy = null;
 
+        if (AchievementManager.Instance != null)
+            AchievementManager.Instance.NotifyBossDefeated();
+
         if (bossHealthBar != null)
             bossHealthBar.Hide();
 
