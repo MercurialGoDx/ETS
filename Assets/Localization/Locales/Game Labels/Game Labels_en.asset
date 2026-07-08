@@ -105,6 +105,10 @@ MonoBehaviour:
       as long as possible!"
     m_Metadata:
       m_Items: []
+  - m_Id: 22560234059849728
+    m_Localized: Leaderboard
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds:

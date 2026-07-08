@@ -95,6 +95,10 @@ MonoBehaviour:
     m_Key: ui.tutorial_welcome
     m_Metadata:
       m_Items: []
+  - m_Id: 22560234059849728
+    m_Key: ui.leaderboard
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

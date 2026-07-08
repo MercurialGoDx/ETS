@@ -105,6 +105,10 @@ MonoBehaviour:
       mais fortes com o tempo. O objetivo \xE9 sobreviver o m\xE1ximo poss\xEDvel!"
     m_Metadata:
       m_Items: []
+  - m_Id: 22560234059849728
+    m_Localized: "Classifica\xE7\xE3o"
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds:

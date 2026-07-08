@@ -105,6 +105,10 @@ MonoBehaviour:
       con el tiempo. \xA1El objetivo es sobrevivir el mayor tiempo posible!"
     m_Metadata:
       m_Items: []
+  - m_Id: 22560234059849728
+    m_Localized: "Clasificaci\xF3n"
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds:
