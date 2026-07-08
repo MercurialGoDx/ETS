@@ -15,7 +15,7 @@ MonoBehaviour:
   icon: {fileID: 21300000, guid: 4c79dad4c015b154c8f5d6c49a38ff44, type: 3}
   localizedStringTable:
     m_TableReference:
-      m_TableCollectionName: GUID:164770c6fc8794c4ba4db6f8c7e72db3
+      m_TableCollectionName: GUID:32a974e0a609fb740a2db5dde9508098
   nameKey: hammer.name
   descriptionKey: hammer.desc
   price: 1500
