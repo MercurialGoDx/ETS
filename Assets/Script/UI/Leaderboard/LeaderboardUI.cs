@@ -25,10 +25,6 @@ public class LeaderboardUI : MonoBehaviour
     [Header("Кнопки меню, которые прячутся на время показа таблицы")]
     [SerializeField] private GameObject[] menuButtonsToHide;
 
-    [Header("Steam")]
-    [Tooltip("Имя лидерборда в Steamworks (FindOrCreateLeaderboard). Должно совпадать с именем на partner-сайте.")]
-    [SerializeField] private string steamLeaderboardName = "SurvivalTime";
-
     private readonly List<GameObject> spawned = new List<GameObject>();
 
     // Окно авторится выключенным в сцене (как StatisticWindow) и включается только из Open().
@@ -39,7 +35,7 @@ public class LeaderboardUI : MonoBehaviour
         SetMenuButtonsVisible(false);
         gameObject.SetActive(true);
 
-        Leaderboards.Configure(steamLeaderboardName);
+        // Параметры лидерборда задаёт LeaderboardConfig на старте сцены.
         Leaderboards.Service.GetTop(topCount, OnTopLoaded);
     }
 

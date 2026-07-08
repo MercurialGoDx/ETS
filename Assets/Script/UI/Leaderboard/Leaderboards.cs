@@ -13,15 +13,25 @@ public static class Leaderboards
 {
     private static ILeaderboardService s_service;
     private static string s_steamLeaderboardName = "SurvivalTime";
+    private static bool s_createIfMissing = true;
 
     /// <summary>
-    /// Задать имя Steam-лидерборда до первого обращения к <see cref="Service"/>. После создания
-    /// сервиса вызов игнорируется (имя уже зафиксировано).
+    /// Задать параметры Steam-лидерборда до первого обращения к <see cref="Service"/>. После создания
+    /// сервиса вызов игнорируется (параметры уже зафиксированы). Обычно вызывается из
+    /// <see cref="LeaderboardConfig"/> на старте сцены.
     /// </summary>
-    public static void Configure(string steamLeaderboardName)
+    /// <param name="createIfMissing">
+    /// true — FindOrCreateLeaderboard (создать, если нет; для разработки);
+    /// false — FindLeaderboard (только искать; для релиза).
+    /// </param>
+    public static void Configure(string steamLeaderboardName, bool createIfMissing)
     {
-        if (s_service == null && !string.IsNullOrEmpty(steamLeaderboardName))
+        if (s_service != null)
+            return;
+
+        if (!string.IsNullOrEmpty(steamLeaderboardName))
             s_steamLeaderboardName = steamLeaderboardName;
+        s_createIfMissing = createIfMissing;
     }
 
     public static ILeaderboardService Service
@@ -31,7 +41,7 @@ public static class Leaderboards
             if (s_service == null)
             {
                 if (SteamManager.Initialized)
-                    s_service = new SteamLeaderboardService(s_steamLeaderboardName);
+                    s_service = new SteamLeaderboardService(s_steamLeaderboardName, s_createIfMissing);
                 else
                     s_service = new StubLeaderboardService();
             }
@@ -44,5 +54,7 @@ public static class Leaderboards
     private static void ResetStatics()
     {
         s_service = null;
+        s_steamLeaderboardName = "SurvivalTime";
+        s_createIfMissing = true;
     }
 }

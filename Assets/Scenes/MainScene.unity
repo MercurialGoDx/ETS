@@ -10837,7 +10837,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\u041D\u0430\u0441\u0442\u0440\u043E\u0439\u043A\u0438\n"
+  m_text: "\u0422\u0430\u0431\u043B\u0438\u0446\u0430 \u043B\u0438\u0434\u0435\u0440\u043E\u0432"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 7b82725fb88f7f142b5aaf4ce6fabd99, type: 2}
   m_sharedMaterial: {fileID: 8587321827692581603, guid: 7b82725fb88f7f142b5aaf4ce6fabd99, type: 2}
@@ -10864,7 +10864,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 155
+  m_fontSize: 114.15
   m_fontSizeBase: 155
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -10933,7 +10933,7 @@ MonoBehaviour:
       m_TableCollectionName: Game Labels
     m_TableEntryReference:
       m_KeyId: 22560234059849728
-      m_Key: ui.leaderboard
+      m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 0
     m_LocalVariables: []
@@ -15719,6 +15719,7 @@ GameObject:
   m_Component:
   - component: {fileID: 913198330}
   - component: {fileID: 913198329}
+  - component: {fileID: 913198331}
   m_Layer: 0
   m_Name: SteamManager
   m_TagString: Untagged
@@ -15753,6 +15754,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &913198331
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 913198328}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 61a64b1a80487c042801db13a254f278, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  leaderboardName: SurvivalTime
+  createIfMissing: 1
 --- !u!1001 &913786588
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -35328,7 +35343,6 @@ MonoBehaviour:
   - {fileID: 1822690356}
   - {fileID: 324409859}
   - {fileID: 795031580}
-  steamLeaderboardName: SurvivalTime
 --- !u!114 &2015229753
 MonoBehaviour:
   m_ObjectHideFlags: 0

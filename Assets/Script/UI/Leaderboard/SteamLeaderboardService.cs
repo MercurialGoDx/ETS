@@ -25,9 +25,14 @@ public class SteamLeaderboardService : ILeaderboardService
 {
     private readonly string leaderboardName;
 
-    public SteamLeaderboardService(string leaderboardName)
+    // true  → FindOrCreateLeaderboard: если лидерборда нет, клиент создаёт его (удобно в разработке).
+    // false → FindLeaderboard: только искать существующий (для релиза — клиент не плодит лидерборды).
+    private readonly bool createIfMissing;
+
+    public SteamLeaderboardService(string leaderboardName, bool createIfMissing)
     {
         this.leaderboardName = string.IsNullOrEmpty(leaderboardName) ? "SurvivalTime" : leaderboardName;
+        this.createIfMissing = createIfMissing;
     }
 
 #if !DISABLESTEAMWORKS
@@ -88,10 +93,13 @@ public class SteamLeaderboardService : ILeaderboardService
         if (findCall == null)
             findCall = CallResult<LeaderboardFindResult_t>.Create(OnBoardResolved);
 
-        SteamAPICall_t call = SteamUserStats.FindOrCreateLeaderboard(
-            leaderboardName,
-            ELeaderboardSortMethod.k_ELeaderboardSortMethodDescending,
-            ELeaderboardDisplayType.k_ELeaderboardDisplayTypeTimeSeconds);
+        // Оба варианта возвращают LeaderboardFindResult_t → общий обработчик OnBoardResolved.
+        SteamAPICall_t call = createIfMissing
+            ? SteamUserStats.FindOrCreateLeaderboard(
+                leaderboardName,
+                ELeaderboardSortMethod.k_ELeaderboardSortMethodDescending,
+                ELeaderboardDisplayType.k_ELeaderboardDisplayTypeTimeSeconds)
+            : SteamUserStats.FindLeaderboard(leaderboardName);
         findCall.Set(call);
     }
 
@@ -99,7 +107,10 @@ public class SteamLeaderboardService : ILeaderboardService
     {
         if (ioFailure || result.m_bLeaderboardFound == 0)
         {
-            Debug.LogWarning("[SteamLeaderboard] Не удалось найти/создать лидерборд '" + leaderboardName + "'.");
+            // При createIfMissing=false это чаще всего значит, что лидерборд не заведён на partner-сайте
+            // (или имя не совпадает / изменения не опубликованы).
+            Debug.LogWarning("[SteamLeaderboard] Лидерборд '" + leaderboardName + "' не найден"
+                + (createIfMissing ? "/не создан." : ". Режим FindLeaderboard: заведите его на partner-сайте и опубликуйте, либо включите createIfMissing."));
             if (pendingTopCallback != null) { pendingTopCallback(new List<LeaderboardEntry>()); pendingTopCallback = null; }
             hasPendingSubmit = false;
             return;
