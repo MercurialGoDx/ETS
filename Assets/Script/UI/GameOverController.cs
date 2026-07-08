@@ -46,6 +46,10 @@ public class GameOverController : MonoBehaviour
                 playTimeTable, playTimeKey, new object[] { formatted });
         }
 
+        // Отправляем результат забега в таблицу лидеров (Steam, либо заглушка вне Steam).
+        if (gameTimeUI != null)
+            Leaderboards.Service.SubmitTime(gameTimeUI.ElapsedTime);
+
         var stats = DamageStatsManager.Instance.GetDamageSorted();
 
         Debug.Log("Weapon stats:");

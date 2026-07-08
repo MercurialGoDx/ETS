@@ -25,14 +25,11 @@ public class LeaderboardUI : MonoBehaviour
     [Header("Кнопки меню, которые прячутся на время показа таблицы")]
     [SerializeField] private GameObject[] menuButtonsToHide;
 
-    private readonly List<GameObject> spawned = new List<GameObject>();
-    private ILeaderboardService service;
+    [Header("Steam")]
+    [Tooltip("Имя лидерборда в Steamworks (FindOrCreateLeaderboard). Должно совпадать с именем на partner-сайте.")]
+    [SerializeField] private string steamLeaderboardName = "SurvivalTime";
 
-    private ILeaderboardService Service
-    {
-        // Пока это заглушка. Точка подмены на SteamLeaderboardService.
-        get { return service ?? (service = new StubLeaderboardService()); }
-    }
+    private readonly List<GameObject> spawned = new List<GameObject>();
 
     // Окно авторится выключенным в сцене (как StatisticWindow) и включается только из Open().
 
@@ -42,7 +39,8 @@ public class LeaderboardUI : MonoBehaviour
         SetMenuButtonsVisible(false);
         gameObject.SetActive(true);
 
-        Service.GetTop(topCount, OnTopLoaded);
+        Leaderboards.Configure(steamLeaderboardName);
+        Leaderboards.Service.GetTop(topCount, OnTopLoaded);
     }
 
     /// <summary>Закрыть таблицу: скрыть окно и вернуть кнопки меню.</summary>
