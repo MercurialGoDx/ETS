@@ -27246,6 +27246,8 @@ MonoBehaviour:
   - {fileID: 8300000, guid: b2b9d953b3ed79744833163d772daf63, type: 3}
   earlyGamePool:
   - {fileID: 8300000, guid: b679ff341f3b83d4383d948f04a30793, type: 3}
+  - {fileID: 8300000, guid: ed67a8a9af11cc54a9277475604b6eba, type: 3}
+  - {fileID: 8300000, guid: 788d6be2fe7f14e42a9025250f0506f1, type: 3}
   midGamePool:
   - {fileID: 8300000, guid: c82b1b5e3601a104b83e2cbadfe9b844, type: 3}
   - {fileID: 8300000, guid: d0cca40c132d9ba49bc2d180c864877b, type: 3}
