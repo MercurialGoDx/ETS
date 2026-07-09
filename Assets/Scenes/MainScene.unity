@@ -27136,7 +27136,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cfa176c8e5423484bba202346e31358a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startGold: 100000
+  startGold: 300
   currentGold: 0
   enablePassiveIncome: 1
   goldPerTick: 6
