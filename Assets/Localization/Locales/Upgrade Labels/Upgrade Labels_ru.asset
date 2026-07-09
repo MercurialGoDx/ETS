@@ -271,7 +271,7 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 1401183729082416
     m_Localized: "\u0423\u0432\u0435\u043B\u0438\u0447\u0435\u043D\u0438\u0435 \u043C\u0430\u043A\u0441\u0438\u043C\u0430\u043B\u044C\u043D\u043E\u0433\u043E
-      \u0449\u0438\u0442\u0430 \u043D\u0430 <color=#910106>>{0}%</color>"
+      \u0449\u0438\u0442\u0430 \u043D\u0430 <color=#910106>{0}%</color>"
     m_Metadata:
       m_Items: []
   - m_Id: 5661681011949568
