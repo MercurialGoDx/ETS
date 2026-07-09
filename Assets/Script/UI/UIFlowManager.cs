@@ -54,15 +54,15 @@ public class UIFlowManager : MonoBehaviour
     }
 
     // === КНОПКА "ГЛАВНОЕ МЕНЮ" НА GAME OVER PANEL ===
+    // Возврат в главное меню с полной перезагрузкой сцены — чистый сброс забега
+    // (как в меню паузы). AutoStartAfterReload = false → после перезагрузки покажется
+    // меню, а не запустится игра.
     public void GoToMainMenu()
     {
-        // снять паузу + спрятать гейм овер
-        if (gameOverController != null)
-            gameOverController.HideGameOver();
-        else
-            Time.timeScale = 1f;
+        Time.timeScale = 1f;
+        AutoStartAfterReload = false;
 
-        ShowMainMenuOnly();
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     // === ВКЛЮЧИТЬ ИГРУ (без перезагрузки сцены) ===
