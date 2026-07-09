@@ -12,7 +12,7 @@ public class PoolManager : MonoBehaviour
         Instance = this;
     }
 
-    // универсальный Spawn
+    // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ Spawn
     public GameObject Spawn(GameObject prefab, Vector3 pos, Quaternion rot)
     {
         if (!pools.TryGetValue(prefab, out var poolObj))
@@ -36,7 +36,7 @@ public class PoolManager : MonoBehaviour
 
         obj.SetReleaseAction(o => typedPool.Release(o));
 
-        obj.gameObject.transform.localScale = Vector3.one;
+        obj.gameObject.transform.localScale = prefab.transform.localScale;
 
         return obj.gameObject;
     }
