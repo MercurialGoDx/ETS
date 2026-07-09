@@ -45,11 +45,13 @@ public class RandomSpawnPortal : MonoBehaviour, IAttackBehaviour
             return;
         }
 
-        // Рандомная позиция вокруг origin
+        // Рандомная позиция вокруг origin. Высоту берём от цели (плоскость врагов),
+        // а не от firePoint — иначе зона урона висит над башней и никого не задевает.
+        float groundY = context.target != null ? context.target.position.y : origin.position.y;
         Vector2 circle = Random.insideUnitCircle * spawnRadius;
         Vector3 pos = new Vector3(
             origin.position.x + circle.x,
-            origin.position.y,
+            groundY,
             origin.position.z + circle.y
         );
         transform.position = pos;

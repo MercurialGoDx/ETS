@@ -104,6 +104,15 @@ public class UpgradesManager : MonoBehaviour
         upgrade.Apply(context);
     }
 
+    /// <summary>
+    /// Можно ли сейчас купить это улучшение (например, хватает ли здоровья
+    /// для "золото за жизнь"). Проверяется магазином до списания цены.
+    /// </summary>
+    public bool CanApplyUpgrade(UpgradeBaseSO upgrade)
+    {
+        return upgrade != null && upgrade.CanApply(context);
+    }
+
     public void RegisterWeaponPurchase(WeaponDefinition weapon)
     {
         RuntimeData.RegisterWeaponPurchase(weapon);

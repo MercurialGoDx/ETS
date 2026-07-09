@@ -9,6 +9,16 @@ public class GoldForLifeUpgrade : UpgradeBaseSO
 
     private const float MinAllowedMaxHealthAfterPurchase = 0f;
 
+    /// <summary>
+    /// Нельзя купить, если после покупки макс. HP упадёт до 0 или ниже —
+    /// магазин заблокирует покупку ещё до списания цены.
+    /// </summary>
+    public override bool CanApply(UpgradeContextSO context)
+    {
+        if (context == null || context.playerHealth == null) return false;
+        return context.playerHealth.MaxHealth - lifeLoseValue > MinAllowedMaxHealthAfterPurchase;
+    }
+
     public override void Apply(UpgradeContextSO context)
     {
         if (context == null || context.playerHealth == null) return;

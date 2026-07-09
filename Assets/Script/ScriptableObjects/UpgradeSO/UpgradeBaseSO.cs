@@ -49,6 +49,13 @@ public abstract class UpgradeBaseSO : ScriptableObject
 
     public abstract void Apply(UpgradeContextSO context);
 
+    /// <summary>
+    /// Можно ли сейчас купить/применить это улучшение. По умолчанию — да.
+    /// Переопределяется там, где есть условие (например, недостаточно здоровья
+    /// для "золото за жизнь"). Магазин проверяет это ДО списания цены.
+    /// </summary>
+    public virtual bool CanApply(UpgradeContextSO context) => true;
+
     public virtual string GetLocalizedName()
     {
         var stringTable = localizedStringTable.GetTable();

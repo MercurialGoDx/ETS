@@ -18,9 +18,21 @@ public class BossRewardUI : MonoBehaviour
 
     private float prevTimeScale = 1f;
 
+    /// <summary>
+    /// True, пока открыт экран выбора награды с босса. Пока он открыт, магазин
+    /// (покупки и реролл) заблокирован — см. ShopManager.
+    /// </summary>
+    public static bool IsSelectionOpen { get; private set; }
+
     private void Awake()
     {
         if (panelRoot != null) panelRoot.SetActive(false);
+    }
+
+    private void OnDisable()
+    {
+        // Страховка: если объект выключили/сцену выгрузили с открытым экраном.
+        IsSelectionOpen = false;
     }
 
     public void Open()
@@ -29,6 +41,8 @@ public class BossRewardUI : MonoBehaviour
 
         prevTimeScale = Time.timeScale;
         Time.timeScale = 0f;
+
+        IsSelectionOpen = true;
 
         if (panelRoot != null) panelRoot.SetActive(true);
 
@@ -64,6 +78,8 @@ public class BossRewardUI : MonoBehaviour
 
     public void Close()
     {
+        IsSelectionOpen = false;
+
         if (panelRoot != null) panelRoot.SetActive(false);
         Time.timeScale = prevTimeScale;
         gameSpeedPanel.SetActive(true);

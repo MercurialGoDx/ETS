@@ -197,6 +197,10 @@ public class ShopManager : MonoBehaviour
         if (weapon == null || tower == null)
             return;
 
+        // Во время выбора награды с босса магазин заблокирован.
+        if (BossRewardUI.IsSelectionOpen)
+            return;
+
         if (GoldManager.Instance != null)
         {
             int price = weapon.price;
@@ -292,6 +296,15 @@ public class ShopManager : MonoBehaviour
         if (upgrade == null)
             return;
 
+        // Во время выбора награды с босса магазин заблокирован.
+        if (BossRewardUI.IsSelectionOpen)
+            return;
+
+        // Нельзя купить улучшение, которое сейчас нельзя применить
+        // (например, недостаточно здоровья для "золото за жизнь").
+        if (UpgradesManager.Instance != null && !UpgradesManager.Instance.CanApplyUpgrade(upgrade))
+            return;
+
         if (GoldManager.Instance != null)
         {
             int price = upgrade.price;
@@ -328,6 +341,10 @@ public class ShopManager : MonoBehaviour
 
     public void RerollShop()
     {
+        // Во время выбора награды с босса реролл заблокирован.
+        if (BossRewardUI.IsSelectionOpen)
+            return;
+
         if (GoldManager.Instance != null && currentRerollPrice > 0)
         {
             if (!GoldManager.Instance.HasEnoughGold(currentRerollPrice))
