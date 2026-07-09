@@ -142,3 +142,7 @@ $RECYCLE.BIN/
 [Tt]asks/
 CLAUDE.md
 .claude/
+
+# Build report artifacts (generated)
+/Assets/BuildReports/
+/Assets/BuildReports.meta
