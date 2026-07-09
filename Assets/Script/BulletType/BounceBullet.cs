@@ -43,7 +43,7 @@ public class ChainBullet : MonoBehaviour, IAttackBehaviour
 
         if (context.target == null)
         {
-            Destroy(gameObject);
+            pooledObject.Release();
             return;
         }
 
@@ -63,7 +63,7 @@ public class ChainBullet : MonoBehaviour, IAttackBehaviour
         lifeTimer += Time.deltaTime;
         if (lifeTimer >= maxLifeTime)
         {
-            Destroy(gameObject);
+            pooledObject.Release();
             return;
         }
 
@@ -72,7 +72,7 @@ public class ChainBullet : MonoBehaviour, IAttackBehaviour
             TryFindNextTarget();
             if (currentTarget == null)
             {
-                Destroy(gameObject);
+                pooledObject.Release();
                 return;
             }
         }

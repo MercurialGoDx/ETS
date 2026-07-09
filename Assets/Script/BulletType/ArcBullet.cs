@@ -86,7 +86,7 @@ public class ArcBullet : MonoBehaviour, IAttackBehaviour
         lifeTimer += Time.deltaTime;
         if (lifeTimer >= maxLifeTime)
         {
-            Destroy(gameObject);
+            pooledObject.Release();
             return;
         }
 

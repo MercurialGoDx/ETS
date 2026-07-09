@@ -36,6 +36,13 @@ public class Catapult : MonoBehaviour, IAttackBehaviour
 
     private WeaponDefinition sourceWeapon;
 
+    private PooledObject pooledObject;
+
+    private void Awake()
+    {
+        pooledObject = GetComponent<PooledObject>();
+    }
+
     public void InitAttack(AttackContext context)
     {
         // Безопасно сбрасываем состояние для Object Pooling
@@ -79,7 +86,7 @@ public class Catapult : MonoBehaviour, IAttackBehaviour
         lifeTimer += Time.deltaTime;
         if (lifeTimer >= maxLifeTime)
         {
-            Destroy(gameObject);
+            pooledObject.Release();
             return;
         }
 
@@ -142,7 +149,7 @@ public class Catapult : MonoBehaviour, IAttackBehaviour
             }
         }
 
-        Destroy(gameObject);
+        pooledObject.Release();
     }
 
     private void FindPlayerHealth()

@@ -26,7 +26,21 @@ public class ObjectPool<T> where T : Component
 
     public T Get()
     {
-        T obj = pool.Count > 0 ? pool.Pop() : Create();
+        T obj = null;
+
+        // Пропускаем уничтоженные объекты в стеке (например, снесённые при выгрузке
+        // сцены или ошибочно уничтоженные вместо Release) — иначе обращение к их
+        // .gameObject бросает MissingReferenceException.
+        while (pool.Count > 0)
+        {
+            obj = pool.Pop();
+            if (obj != null) break; // Unity-перегрузка ==: уничтоженный объект == null
+            obj = null;
+        }
+
+        if (obj == null)
+            obj = Create();
+
         obj.gameObject.SetActive(true);
         return obj;
     }
