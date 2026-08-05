@@ -305,9 +305,14 @@ public class Enemy : MonoBehaviour
     {
         if (enemyRigidbody != null)
         {
+            // Скорости сбрасываем только у динамического тела: запись velocity в kinematic
+            // запрещена и сыплет ошибками в консоль. У kinematic обнулять уже нечего.
+            if (!enemyRigidbody.isKinematic)
+            {
+                enemyRigidbody.linearVelocity = Vector3.zero;
+                enemyRigidbody.angularVelocity = Vector3.zero;
+            }
             enemyRigidbody.isKinematic = true;
-            enemyRigidbody.linearVelocity = Vector3.zero;
-            enemyRigidbody.angularVelocity = Vector3.zero;
         }
         if (enemyCollider != null)
         {
@@ -328,9 +333,13 @@ public class Enemy : MonoBehaviour
         // на статичных объектах (забор/фонарь). Коллайдер нужен для попаданий снарядов.
         if (enemyRigidbody != null)
         {
+            // См. DisablePhysics: velocity пишем только пока тело динамическое.
+            if (!enemyRigidbody.isKinematic)
+            {
+                enemyRigidbody.linearVelocity = Vector3.zero;
+                enemyRigidbody.angularVelocity = Vector3.zero;
+            }
             enemyRigidbody.isKinematic = true;
-            enemyRigidbody.linearVelocity = Vector3.zero;
-            enemyRigidbody.angularVelocity = Vector3.zero;
         }
         if (enemyCollider != null)
         {

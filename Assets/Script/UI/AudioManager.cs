@@ -54,7 +54,14 @@ public class AudioManager : MonoBehaviour
         }
 
         Instance = this;
-        DontDestroyOnLoad(gameObject);
+
+        // DontDestroyOnLoad работает только для корневых объектов. Сейчас AudioManager живёт на
+        // Managers/GameManager рядом с другими менеджерами, поэтому переносить его в корень нельзя —
+        // вместе с ним через сцены поехали бы GoldManager, UpgradesManager, UIFlowManager и прочие.
+        // Проект грузит одну сцену, так что переживать её смену не требуется; вызов оставлен на случай,
+        // если AudioManager вынесут на отдельный корневой объект.
+        if (transform.parent == null)
+            DontDestroyOnLoad(gameObject);
 
         if (lowPassFilter != null)
         {
