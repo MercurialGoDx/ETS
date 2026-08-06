@@ -89,6 +89,63 @@ public class ShopManager : MonoBehaviour
         // =========================================================================
     }
 
+    private void OnEnable()
+    {
+        if (ShopUnlockService.Instance != null)
+            ShopUnlockService.Instance.OnUnlocksChanged += HandleUnlocksChanged;
+    }
+
+    private void OnDisable()
+    {
+        if (ShopUnlockService.Instance != null)
+            ShopUnlockService.Instance.OnUnlocksChanged -= HandleUnlocksChanged;
+    }
+
+    /// <summary>
+    /// Купили апгрейд — заполняем только те слоты, которые до этого были закрыты.
+    /// Уже показанные предметы не трогаем: по ТЗ разблокировка не действует задним числом.
+    /// </summary>
+    private void HandleUnlocksChanged()
+    {
+        FillNewlyUnlockedSlots(weaponSlots, true);
+        FillNewlyUnlockedSlots(upgradeSlots, false);
+    }
+
+    private void FillNewlyUnlockedSlots(List<ShopSlot> slots, bool weapons)
+    {
+        if (slots == null)
+            return;
+
+        for (int i = 0; i < slots.Count; i++)
+        {
+            var slot = slots[i];
+            if (slot == null || !slot.IsLocked || !IsColumnUnlocked(i))
+                continue;
+
+            if (weapons)
+            {
+                var weapon = GetRandomWeaponWeighted();
+                if (weapon != null) slot.SetupWeapon(weapon, this);
+                else slot.Clear();
+            }
+            else
+            {
+                var upgrade = GetRandomUpgradeWeighted();
+                if (upgrade != null) slot.SetupUpgrade(upgrade, this);
+                else slot.Clear();
+            }
+        }
+    }
+
+    /// <summary>
+    /// Колонка открыта? Без сервиса считаем всё открытым — магазин работает как до фичи.
+    /// </summary>
+    private static bool IsColumnUnlocked(int column)
+    {
+        return ShopUnlockService.Instance == null
+            || ShopUnlockService.Instance.IsColumnUnlocked(column);
+    }
+
     private void Update()
     {
         // Открытие / закрытие магазина по Q
@@ -140,6 +197,12 @@ public class ShopManager : MonoBehaviour
             var slot = weaponSlots[i];
             if (slot == null)
                 continue;
+
+            if (!IsColumnUnlocked(i))
+            {
+                slot.SetLocked();
+                continue;
+            }
 
             var weapon = GetRandomWeaponWeighted();
             if (weapon != null)
@@ -239,6 +302,12 @@ public class ShopManager : MonoBehaviour
             var slot = upgradeSlots[i];
             if (slot == null)
                 continue;
+
+            if (!IsColumnUnlocked(i))
+            {
+                slot.SetLocked();
+                continue;
+            }
 
             var upgrade = GetRandomUpgradeWeighted();
             if (upgrade != null)
