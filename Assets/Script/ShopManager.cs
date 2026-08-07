@@ -146,6 +146,35 @@ public class ShopManager : MonoBehaviour
             || ShopUnlockService.Instance.IsColumnUnlocked(column);
     }
 
+    /// <summary>
+    /// Тир разблокирован? Без сервиса доступны все — магазин работает как до фичи.
+    /// </summary>
+    private static bool IsTierUnlocked(ItemTier tier)
+    {
+        return ShopUnlockService.Instance == null
+            || ShopUnlockService.Instance.IsTierUnlocked(tier);
+    }
+
+    /// <summary>
+    /// Вес предмета для рулетки магазина. Заблокированный тир даёт 0 — предмет не участвует
+    /// ни в сумме весов, ни в розыгрыше, ни в запасном переборе.
+    /// </summary>
+    private static float GetOfferWeight(WeaponDefinition weapon)
+    {
+        if (weapon == null || !IsTierUnlocked(weapon.itemTier))
+            return 0f;
+
+        return UpgradesManager.Instance.RuntimeData.GetWeaponWeight(weapon);
+    }
+
+    private static float GetOfferWeight(UpgradeBaseSO upgrade)
+    {
+        if (upgrade == null || !IsTierUnlocked(upgrade.itemTier))
+            return 0f;
+
+        return UpgradesManager.Instance.RuntimeData.GetUpgradeWeight(upgrade);
+    }
+
     private void Update()
     {
         // Открытие / закрытие магазина по Q
@@ -223,11 +252,7 @@ public class ShopManager : MonoBehaviour
 
         float totalWeight = 0f;
         for (int i = 0; i < availableWeapons.Count; i++)
-        {
-            var w = availableWeapons[i];
-            if (w != null && UpgradesManager.Instance.RuntimeData.GetWeaponWeight(w) > 0f)
-                totalWeight += UpgradesManager.Instance.RuntimeData.GetWeaponWeight(w);
-        }
+            totalWeight += GetOfferWeight(availableWeapons[i]);
 
         if (totalWeight <= 0f)
             return null;
@@ -237,18 +262,18 @@ public class ShopManager : MonoBehaviour
 
         for (int i = 0; i < availableWeapons.Count; i++)
         {
-            var w = availableWeapons[i];
-            if (w == null || UpgradesManager.Instance.RuntimeData.GetWeaponWeight(w) <= 0f)
+            float weight = GetOfferWeight(availableWeapons[i]);
+            if (weight <= 0f)
                 continue;
 
-            accum += UpgradesManager.Instance.RuntimeData.GetWeaponWeight(w);
+            accum += weight;
             if (rnd <= accum)
-                return w;
+                return availableWeapons[i];
         }
 
         for (int i = availableWeapons.Count - 1; i >= 0; i--)
         {
-            if (availableWeapons[i] != null && availableWeapons[i].weight > 0f)
+            if (GetOfferWeight(availableWeapons[i]) > 0f)
                 return availableWeapons[i];
         }
 
@@ -328,11 +353,7 @@ public class ShopManager : MonoBehaviour
 
         float totalWeight = 0f;
         for (int i = 0; i < availableUpgrades.Count; i++)
-        {
-            var u = availableUpgrades[i];
-            if (u != null && UpgradesManager.Instance.RuntimeData.GetUpgradeWeight(u) > 0f)
-                totalWeight += UpgradesManager.Instance.RuntimeData.GetUpgradeWeight(u);
-        }
+            totalWeight += GetOfferWeight(availableUpgrades[i]);
 
         if (totalWeight <= 0f)
             return null;
@@ -342,18 +363,18 @@ public class ShopManager : MonoBehaviour
 
         for (int i = 0; i < availableUpgrades.Count; i++)
         {
-            var u = availableUpgrades[i];
-            if (u == null || UpgradesManager.Instance.RuntimeData.GetUpgradeWeight(u) <= 0f)
+            float weight = GetOfferWeight(availableUpgrades[i]);
+            if (weight <= 0f)
                 continue;
 
-            accum += UpgradesManager.Instance.RuntimeData.GetUpgradeWeight(u);
+            accum += weight;
             if (rnd <= accum)
-                return u;
+                return availableUpgrades[i];
         }
 
         for (int i = availableUpgrades.Count - 1; i >= 0; i--)
         {
-            if (availableUpgrades[i] != null && availableUpgrades[i].weight > 0f)
+            if (GetOfferWeight(availableUpgrades[i]) > 0f)
                 return availableUpgrades[i];
         }
 
