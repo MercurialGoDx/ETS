@@ -9,7 +9,7 @@ public class ShopManager : MonoBehaviour
     public TowerAttack tower;
 
     [Header("UI магазина")]
-    [Tooltip("Панель магазина, которая включается/выключается по Q.")]
+    [Tooltip("Панель магазина. Показывается на весь забег.")]
     public GameObject shopPanel;
 
     [Tooltip("Кнопка реролла, которая показывается вместе с магазином.")]
@@ -56,8 +56,9 @@ public class ShopManager : MonoBehaviour
     [Tooltip("Интервал автоматического реролла в секундах (0 = отключено).")]
     public float autoRerollInterval = 20f;
 
-    [Header("Клавиша открытия магазина")]
-    public KeyCode toggleShopKey = KeyCode.Q;
+    [Header("Клавиша покупки апгрейда разблокировки")]
+    [Tooltip("Покупает следующий апгрейд из ShopUnlockConfig: слоты + тир.")]
+    public KeyCode buyUnlockUpgradeKey = KeyCode.Q;
 
     // ===================== NEW: обратный таймер =====================
     [Header("Авто-реролл UI (текст)")]
@@ -76,7 +77,7 @@ public class ShopManager : MonoBehaviour
         // Инициализируем текущую стоимость реролла базовой стоимостью
         currentRerollPrice = rerollPrice;
 
-        // При старте панель и кнопка реролла скрыты
+        // Магазин видно всё время забега — скрывать его больше нечем
         if (shopPanel != null)
             shopPanel.SetActive(true);
 
@@ -177,17 +178,14 @@ public class ShopManager : MonoBehaviour
 
     private void Update()
     {
-        // Открытие / закрытие магазина по Q
-        if (Input.GetKeyDown(toggleShopKey))
+        // Покупка апгрейда разблокировки по Q
+        if (Input.GetKeyDown(buyUnlockUpgradeKey))
         {
-            ToggleShopPanel();
+            BuyNextUnlockUpgrade();
         }
 
-        // Реролл по R — только если магазин открыт
-        if (enableRerollHotkey &&
-            shopPanel != null &&
-            shopPanel.activeSelf &&
-            Input.GetKeyDown(rerollKey))
+        // Реролл по R
+        if (enableRerollHotkey && Input.GetKeyDown(rerollKey))
         {
             RerollShop();
         }
@@ -197,21 +195,39 @@ public class ShopManager : MonoBehaviour
         // ============================================================================================
     }
 
-    private void ToggleShopPanel()
+    /// <summary>
+    /// Покупает первый некупленный апгрейд разблокировки. Сервис сам проверит требование,
+    /// хватает ли золота и не куплен ли апгрейд уже — при отказе ничего не списывается.
+    /// </summary>
+    public void BuyNextUnlockUpgrade()
     {
-        if (shopPanel == null)
+        // Во время выбора награды с босса магазин заблокирован — то же правило, что у покупок.
+        if (BossRewardUI.IsSelectionOpen)
             return;
 
-        bool newState = !shopPanel.activeSelf;
-        shopPanel.SetActive(newState);
+        if (GameStateManager.Instance.CurrentState != GameState.Preparing &&
+            GameStateManager.Instance.CurrentState != GameState.Playing)
+            return;
 
-        if (rerollButton != null)
-            rerollButton.SetActive(newState);
+        var service = ShopUnlockService.Instance;
+        if (service == null)
+            return;
 
-        if (!newState && WeaponTooltip.Instance != null)
+        var next = service.GetNextUpgrade();
+        if (next == null)
         {
-            WeaponTooltip.Instance.Hide();
+            Debug.Log("[Shop] Все апгрейды разблокировки уже куплены");
+            return;
         }
+
+        var state = service.GetState(next);
+        if (!service.TryPurchase(next))
+        {
+            Debug.Log($"[Shop] Апгрейд {next.name} не куплен: {state}");
+            return;
+        }
+
+        Debug.Log($"[Shop] Куплен {next.name} за {next.price}");
     }
 
     // ======================== ОРУЖИЕ ========================
