@@ -29,23 +29,33 @@ public class ShopUnlockUpgradeSO : ScriptableObject
     public string nameKey;
     public string descriptionKey;
 
-    public string GetLocalizedName()
+    // Таблица локализации может быть не назначена (ассеты заводятся раньше, чем переводы) —
+    // тогда GetTable() кидает, а не возвращает null. Отдаём ключ, вызывающий сам решит,
+    // что показать.
+    public string GetLocalizedName() => Localize(nameKey, false);
+
+    public string GetLocalizedDescription() => Localize(descriptionKey, true);
+
+    private string Localize(string key, bool withPrice)
     {
-        var table = localizedStringTable.GetTable();
-        if (table == null)
-            return nameKey;
+        if (string.IsNullOrEmpty(key))
+            return key;
 
-        var entry = table.GetEntry(nameKey);
-        return entry?.GetLocalizedString() ?? nameKey;
-    }
+        try
+        {
+            var table = localizedStringTable.GetTable();
+            if (table == null)
+                return key;
 
-    public string GetLocalizedDescription()
-    {
-        var table = localizedStringTable.GetTable();
-        if (table == null)
-            return descriptionKey;
+            var entry = table.GetEntry(key);
+            if (entry == null)
+                return key;
 
-        var entry = table.GetEntry(descriptionKey);
-        return entry != null ? entry.GetLocalizedString(price) : descriptionKey;
+            return withPrice ? entry.GetLocalizedString(price) : entry.GetLocalizedString();
+        }
+        catch
+        {
+            return key;
+        }
     }
 }
