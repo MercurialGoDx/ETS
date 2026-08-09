@@ -9,7 +9,7 @@ public class ShopManager : MonoBehaviour
     public TowerAttack tower;
 
     [Header("UI магазина")]
-    [Tooltip("Панель магазина, которая включается/выключается по Q.")]
+    [Tooltip("Панель магазина. Показывается на весь забег.")]
     public GameObject shopPanel;
 
     [Tooltip("Кнопка реролла, которая показывается вместе с магазином.")]
@@ -56,8 +56,9 @@ public class ShopManager : MonoBehaviour
     [Tooltip("Интервал автоматического реролла в секундах (0 = отключено).")]
     public float autoRerollInterval = 20f;
 
-    [Header("Клавиша открытия магазина")]
-    public KeyCode toggleShopKey = KeyCode.Q;
+    [Header("Клавиша покупки апгрейда разблокировки")]
+    [Tooltip("Покупает следующий апгрейд из ShopUnlockConfig: слоты + тир.")]
+    public KeyCode buyUnlockUpgradeKey = KeyCode.Q;
 
     // ===================== NEW: обратный таймер =====================
     [Header("Авто-реролл UI (текст)")]
@@ -76,7 +77,7 @@ public class ShopManager : MonoBehaviour
         // Инициализируем текущую стоимость реролла базовой стоимостью
         currentRerollPrice = rerollPrice;
 
-        // При старте панель и кнопка реролла скрыты
+        // Магазин видно всё время забега — скрывать его больше нечем
         if (shopPanel != null)
             shopPanel.SetActive(true);
 
@@ -89,19 +90,102 @@ public class ShopManager : MonoBehaviour
         // =========================================================================
     }
 
+    private void OnEnable()
+    {
+        if (ShopUnlockService.Instance != null)
+            ShopUnlockService.Instance.OnUnlocksChanged += HandleUnlocksChanged;
+    }
+
+    private void OnDisable()
+    {
+        if (ShopUnlockService.Instance != null)
+            ShopUnlockService.Instance.OnUnlocksChanged -= HandleUnlocksChanged;
+    }
+
+    /// <summary>
+    /// Купили апгрейд — заполняем только те слоты, которые до этого были закрыты.
+    /// Уже показанные предметы не трогаем: по ТЗ разблокировка не действует задним числом.
+    /// </summary>
+    private void HandleUnlocksChanged()
+    {
+        FillNewlyUnlockedSlots(weaponSlots, true);
+        FillNewlyUnlockedSlots(upgradeSlots, false);
+    }
+
+    private void FillNewlyUnlockedSlots(List<ShopSlot> slots, bool weapons)
+    {
+        if (slots == null)
+            return;
+
+        for (int i = 0; i < slots.Count; i++)
+        {
+            var slot = slots[i];
+            if (slot == null || !slot.IsLocked || !IsColumnUnlocked(i))
+                continue;
+
+            if (weapons)
+            {
+                var weapon = GetRandomWeaponWeighted();
+                if (weapon != null) slot.SetupWeapon(weapon, this);
+                else slot.Clear();
+            }
+            else
+            {
+                var upgrade = GetRandomUpgradeWeighted();
+                if (upgrade != null) slot.SetupUpgrade(upgrade, this);
+                else slot.Clear();
+            }
+        }
+    }
+
+    /// <summary>
+    /// Колонка открыта? Без сервиса считаем всё открытым — магазин работает как до фичи.
+    /// </summary>
+    private static bool IsColumnUnlocked(int column)
+    {
+        return ShopUnlockService.Instance == null
+            || ShopUnlockService.Instance.IsColumnUnlocked(column);
+    }
+
+    /// <summary>
+    /// Тир разблокирован? Без сервиса доступны все — магазин работает как до фичи.
+    /// </summary>
+    private static bool IsTierUnlocked(ItemTier tier)
+    {
+        return ShopUnlockService.Instance == null
+            || ShopUnlockService.Instance.IsTierUnlocked(tier);
+    }
+
+    /// <summary>
+    /// Вес предмета для рулетки магазина. Заблокированный тир даёт 0 — предмет не участвует
+    /// ни в сумме весов, ни в розыгрыше, ни в запасном переборе.
+    /// </summary>
+    private static float GetOfferWeight(WeaponDefinition weapon)
+    {
+        if (weapon == null || !IsTierUnlocked(weapon.itemTier))
+            return 0f;
+
+        return UpgradesManager.Instance.RuntimeData.GetWeaponWeight(weapon);
+    }
+
+    private static float GetOfferWeight(UpgradeBaseSO upgrade)
+    {
+        if (upgrade == null || !IsTierUnlocked(upgrade.itemTier))
+            return 0f;
+
+        return UpgradesManager.Instance.RuntimeData.GetUpgradeWeight(upgrade);
+    }
+
     private void Update()
     {
-        // Открытие / закрытие магазина по Q
-        if (Input.GetKeyDown(toggleShopKey))
+        // Покупка апгрейда разблокировки по Q
+        if (Input.GetKeyDown(buyUnlockUpgradeKey))
         {
-            ToggleShopPanel();
+            BuyNextUnlockUpgrade();
         }
 
-        // Реролл по R — только если магазин открыт
-        if (enableRerollHotkey &&
-            shopPanel != null &&
-            shopPanel.activeSelf &&
-            Input.GetKeyDown(rerollKey))
+        // Реролл по R
+        if (enableRerollHotkey && Input.GetKeyDown(rerollKey))
         {
             RerollShop();
         }
@@ -111,21 +195,39 @@ public class ShopManager : MonoBehaviour
         // ============================================================================================
     }
 
-    private void ToggleShopPanel()
+    /// <summary>
+    /// Покупает первый некупленный апгрейд разблокировки. Сервис сам проверит требование,
+    /// хватает ли золота и не куплен ли апгрейд уже — при отказе ничего не списывается.
+    /// </summary>
+    public void BuyNextUnlockUpgrade()
     {
-        if (shopPanel == null)
+        // Во время выбора награды с босса магазин заблокирован — то же правило, что у покупок.
+        if (BossRewardUI.IsSelectionOpen)
             return;
 
-        bool newState = !shopPanel.activeSelf;
-        shopPanel.SetActive(newState);
+        if (GameStateManager.Instance.CurrentState != GameState.Preparing &&
+            GameStateManager.Instance.CurrentState != GameState.Playing)
+            return;
 
-        if (rerollButton != null)
-            rerollButton.SetActive(newState);
+        var service = ShopUnlockService.Instance;
+        if (service == null)
+            return;
 
-        if (!newState && WeaponTooltip.Instance != null)
+        var next = service.GetNextUpgrade();
+        if (next == null)
         {
-            WeaponTooltip.Instance.Hide();
+            Debug.Log("[Shop] Все апгрейды разблокировки уже куплены");
+            return;
         }
+
+        var state = service.GetState(next);
+        if (!service.TryPurchase(next))
+        {
+            Debug.Log($"[Shop] Апгрейд {next.name} не куплен: {state}");
+            return;
+        }
+
+        Debug.Log($"[Shop] Куплен {next.name} за {next.price}");
     }
 
     // ======================== ОРУЖИЕ ========================
@@ -140,6 +242,12 @@ public class ShopManager : MonoBehaviour
             var slot = weaponSlots[i];
             if (slot == null)
                 continue;
+
+            if (!IsColumnUnlocked(i))
+            {
+                slot.SetLocked();
+                continue;
+            }
 
             var weapon = GetRandomWeaponWeighted();
             if (weapon != null)
@@ -160,11 +268,7 @@ public class ShopManager : MonoBehaviour
 
         float totalWeight = 0f;
         for (int i = 0; i < availableWeapons.Count; i++)
-        {
-            var w = availableWeapons[i];
-            if (w != null && UpgradesManager.Instance.RuntimeData.GetWeaponWeight(w) > 0f)
-                totalWeight += UpgradesManager.Instance.RuntimeData.GetWeaponWeight(w);
-        }
+            totalWeight += GetOfferWeight(availableWeapons[i]);
 
         if (totalWeight <= 0f)
             return null;
@@ -174,18 +278,18 @@ public class ShopManager : MonoBehaviour
 
         for (int i = 0; i < availableWeapons.Count; i++)
         {
-            var w = availableWeapons[i];
-            if (w == null || UpgradesManager.Instance.RuntimeData.GetWeaponWeight(w) <= 0f)
+            float weight = GetOfferWeight(availableWeapons[i]);
+            if (weight <= 0f)
                 continue;
 
-            accum += UpgradesManager.Instance.RuntimeData.GetWeaponWeight(w);
+            accum += weight;
             if (rnd <= accum)
-                return w;
+                return availableWeapons[i];
         }
 
         for (int i = availableWeapons.Count - 1; i >= 0; i--)
         {
-            if (availableWeapons[i] != null && availableWeapons[i].weight > 0f)
+            if (GetOfferWeight(availableWeapons[i]) > 0f)
                 return availableWeapons[i];
         }
 
@@ -240,6 +344,12 @@ public class ShopManager : MonoBehaviour
             if (slot == null)
                 continue;
 
+            if (!IsColumnUnlocked(i))
+            {
+                slot.SetLocked();
+                continue;
+            }
+
             var upgrade = GetRandomUpgradeWeighted();
             if (upgrade != null)
             {
@@ -259,11 +369,7 @@ public class ShopManager : MonoBehaviour
 
         float totalWeight = 0f;
         for (int i = 0; i < availableUpgrades.Count; i++)
-        {
-            var u = availableUpgrades[i];
-            if (u != null && UpgradesManager.Instance.RuntimeData.GetUpgradeWeight(u) > 0f)
-                totalWeight += UpgradesManager.Instance.RuntimeData.GetUpgradeWeight(u);
-        }
+            totalWeight += GetOfferWeight(availableUpgrades[i]);
 
         if (totalWeight <= 0f)
             return null;
@@ -273,18 +379,18 @@ public class ShopManager : MonoBehaviour
 
         for (int i = 0; i < availableUpgrades.Count; i++)
         {
-            var u = availableUpgrades[i];
-            if (u == null || UpgradesManager.Instance.RuntimeData.GetUpgradeWeight(u) <= 0f)
+            float weight = GetOfferWeight(availableUpgrades[i]);
+            if (weight <= 0f)
                 continue;
 
-            accum += UpgradesManager.Instance.RuntimeData.GetUpgradeWeight(u);
+            accum += weight;
             if (rnd <= accum)
-                return u;
+                return availableUpgrades[i];
         }
 
         for (int i = availableUpgrades.Count - 1; i >= 0; i--)
         {
-            if (availableUpgrades[i] != null && availableUpgrades[i].weight > 0f)
+            if (GetOfferWeight(availableUpgrades[i]) > 0f)
                 return availableUpgrades[i];
         }
 

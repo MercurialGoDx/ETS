@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0444b297a050f37428593827abda3f83, type: 3}
+  m_Name: ShopUnlockConfig
+  m_EditorClassIdentifier: 
+  startingUnlockedColumns: 000000000100000002000000
+  startingUnlockedTiers: 0100000002000000
+  upgrades:
+  - {fileID: 11400000, guid: 53310aa610326fc40ba23dd4362b5802, type: 2}
+  - {fileID: 11400000, guid: 45e0cce96f565394686d770f32489b8b, type: 2}
