@@ -71,6 +71,15 @@ public class ShopManager : MonoBehaviour
 
     private void Start()
     {
+        // Баланс из таблицы (если импортирован) перекрывает инспектор.
+        var cfg = BalanceService.Config;
+        if (cfg != null)
+        {
+            rerollPrice = cfg.shop.rerollBaseCost;
+            rerollPriceIncrease = cfg.shop.rerollCostIncrease;
+            autoRerollInterval = cfg.shop.autoRerollInterval;
+        }
+
         // Генерим содержимое магазина, но не показываем UI
         RandomizeShopContents();
 

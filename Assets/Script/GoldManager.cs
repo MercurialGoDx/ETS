@@ -42,6 +42,15 @@ public class GoldManager : MonoBehaviour
 
     private void Start()
     {
+        // Баланс из таблицы (если импортирован) перекрывает инспектор.
+        var cfg = BalanceService.Config;
+        if (cfg != null)
+        {
+            startGold = cfg.shop.startGold;
+            goldPerTick = cfg.shop.passiveGoldPerTick;
+            incomeInterval = cfg.shop.passiveIncomeInterval;
+        }
+
         currentGold = startGold;
         UpdateUI();
 

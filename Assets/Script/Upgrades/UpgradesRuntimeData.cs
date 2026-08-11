@@ -26,6 +26,20 @@ public class UpgradesRuntimeData
     public Dictionary<WeaponDamageType, float> damageTypeFlatPercent = new();
     public Dictionary<WeaponDamageType, float> damageTypePerWeaponPercent = new();
 
+    public UpgradesRuntimeData()
+    {
+        // Засеиваем ключи заранее: апгрейды пишут через `dict[key] += x`,
+        // что на отсутствующем ключе бросает KeyNotFoundException.
+        foreach (WeaponDamageType t in System.Enum.GetValues(typeof(WeaponDamageType)))
+        {
+            damageTypeFlatPercent[t] = 0f;
+            damageTypePerWeaponPercent[t] = 0f;
+        }
+
+        foreach (ItemTier t in System.Enum.GetValues(typeof(ItemTier)))
+            damageTierPercent[t] = 0f;
+    }
+
     private Dictionary<UpgradeBaseSO, int> upgradePurchaseCounts = new();
     private Dictionary<WeaponDefinition, int> weaponPurchaseCounts = new();
 

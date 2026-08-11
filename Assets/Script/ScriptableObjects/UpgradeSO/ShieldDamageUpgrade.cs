@@ -7,7 +7,10 @@ public class ShieldDamageUpgrade : UpgradeBaseSO
 
     public override void Apply(UpgradeContextSO context)
     {
-        context.runtime.damageWhileShieldActivePercent += valuePercent;
+        // Шкала: valuePercent = 50 означает +50%; бонус в калькуляторе — доля.
+        // Без /100 давало бы +5000%. Класс сейчас не используется ассетами,
+        // но оставлен исправленным, чтобы не был ловушкой.
+        context.runtime.damageWhileShieldActivePercent += valuePercent / 100f;
     }
 
     protected override object[] GetSpecificDescriptionArgs()

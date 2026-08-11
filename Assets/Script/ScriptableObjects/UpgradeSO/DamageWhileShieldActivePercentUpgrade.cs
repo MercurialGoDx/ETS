@@ -7,7 +7,11 @@ public class DamageWhileShieldActivePercentUpgrade : UpgradeBaseSO
 
     public override void Apply(UpgradeContextSO context)
     {
-        context.playerShield.AddDamageWhileShieldActivePercent(valuePercent);
+        // Пишем в runtime — его читает ShieldDamageBonus в DamageCalculator.
+        // Старый путь (playerShield.AddDamageWhileShieldActivePercent) никем не
+        // читался: апгрейд не работал вовсе.
+        // Шкала: в ассете 50 (= +50%), бонус в калькуляторе — доля, поэтому /100.
+        context.runtime.damageWhileShieldActivePercent += valuePercent / 100f;
     }
 
     protected override object[] GetSpecificDescriptionArgs()

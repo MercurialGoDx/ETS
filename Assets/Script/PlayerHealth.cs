@@ -60,6 +60,14 @@ public class PlayerHealth : MonoBehaviour
 
     private void Awake()
     {
+        // Баланс из таблицы (если импортирован) перекрывает инспектор.
+        var cfg = BalanceService.Config;
+        if (cfg != null)
+        {
+            baseMaxHealth = cfg.player.playerHp;
+            blockCap = cfg.player.blockCap;
+        }
+
         currentHealth = MaxHealth;
 
         UpdateHealthUI();

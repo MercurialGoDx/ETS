@@ -28,6 +28,15 @@ public class GameSpeedController : MonoBehaviour
         }
         Instance = this;
 
+        // Баланс из таблицы (если импортирован) перекрывает инспектор.
+        var cfg = BalanceService.Config;
+        if (cfg != null)
+        {
+            speedX1 = cfg.player.gameSpeed1;
+            speedX2 = cfg.player.gameSpeed2;
+            speedX3 = cfg.player.gameSpeed3;
+        }
+
         _baseFixedDeltaTime = Time.fixedDeltaTime;
     }
 

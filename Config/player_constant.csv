@@ -1,0 +1,2 @@
+player_hp,player_shield,block_cap,shield_recharge_time,shield_full_restore_after_no_damage,tower_range,volley_window_percent,game_speed_1,game_speed_2,game_speed_3
+200,0,0.8,10,30,20,0.5,1,2,3

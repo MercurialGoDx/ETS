@@ -46,6 +46,17 @@ public class TowerAttack : MonoBehaviour
         return total;
     }
 
+    private void Awake()
+    {
+        // Баланс из таблицы (если импортирован) перекрывает инспектор.
+        var cfg = BalanceService.Config;
+        if (cfg != null)
+        {
+            range = cfg.player.towerRange;
+            volleyWindowPercent = cfg.player.volleyWindowPercent;
+        }
+    }
+
     public void Init(DamageCalculator calculator)
     {
         damageCalculator = calculator;

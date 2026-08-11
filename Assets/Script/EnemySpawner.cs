@@ -75,6 +75,28 @@ public class EnemySpawner : MonoBehaviour
 
     private void Start()
     {
+        // Баланс из таблицы (если импортирован) перекрывает инспектор.
+        // Маппинг вкладки enemy: difficult_* — абсолютные проценты роста за волну,
+        // в коде это база (difficult_start) и два множителя от неё; пороги в таблице
+        // в секундах, в коде — в минутах.
+        var cfg = BalanceService.Config;
+        if (cfg != null)
+        {
+            timeBetweenWaves = cfg.waves.delayPerWave;
+            enemiesPerWave = cfg.waves.enemyPerWave;
+            healthAddPerWave = cfg.waves.hpAddPerWave;
+            damageAddPerWave = cfg.waves.damageAddPerWave;
+
+            multiplierGrowthPercent = cfg.waves.difficultStart;
+            if (cfg.waves.difficultStart > 0f)
+            {
+                growthStage1Multiplier = cfg.waves.difficultMid / cfg.waves.difficultStart;
+                growthStage2Multiplier = cfg.waves.difficultEnd / cfg.waves.difficultStart;
+            }
+            timeMark1Minutes = cfg.waves.timeDifficultMid / 60f;
+            timeMark2Minutes = cfg.waves.timeDifficultEnd / 60f;
+        }
+
         // --- ДОБАВЛЕНО ---
         baseMultiplierGrowthPercent = multiplierGrowthPercent;
         // ---------------

@@ -46,6 +46,16 @@ public class BossManager : MonoBehaviour
 
     private void Start()
     {
+        // Баланс из таблицы (если импортирован) перекрывает инспектор.
+        // Статы самого босса (hp/damage/gold/speed) импортёр стампит в префаб.
+        var cfg = BalanceService.Config;
+        if (cfg != null)
+        {
+            spawnEverySeconds = cfg.boss.spawnInterval;
+            bossHpMultiplier = cfg.boss.hpMultiplier;
+            bossDamageMultiplier = cfg.boss.damageMultiplier;
+        }
+
         FindPlayer();
         BuildBossPool();
         StartCoroutine(BossLoop());

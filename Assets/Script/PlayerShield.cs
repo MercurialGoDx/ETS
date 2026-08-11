@@ -65,6 +65,15 @@ public class PlayerShield : MonoBehaviour, ITakeDamageModifier
 
     private void Awake()
     {
+        // Баланс из таблицы (если импортирован) перекрывает инспектор.
+        var cfg = BalanceService.Config;
+        if (cfg != null)
+        {
+            maxShield = cfg.player.playerShield;
+            shieldRechargeTime = cfg.player.shieldRechargeTime;
+            fullRestoreAfterNoShieldDamageSeconds = cfg.player.shieldFullRestoreAfterNoDamage;
+        }
+
         currentShield = MaxShield;
         shieldActive = MaxShield > 0f;
         shieldRegenTimer = 0f;
