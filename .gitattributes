@@ -6,36 +6,12 @@
 # показало бы половину проекта как изменённую и утопило бы реальные диффы.
 
 # ----------------------------------------------------------------------------
-# Unity YAML — слияние через UnityYAMLMerge, а не построчно
+# Unity YAML
 # ----------------------------------------------------------------------------
-# Драйвер unityyamlmerge каждый регистрирует у себя локально, см. docs/Git.md.
-# Если он не зарегистрирован, Git молча откатывается на обычное текстовое
-# слияние — то есть хуже, но не сломано.
-*.unity                 merge=unityyamlmerge
-*.prefab                merge=unityyamlmerge
-*.asset                 merge=unityyamlmerge
-*.meta                  merge=unityyamlmerge
-*.mat                   merge=unityyamlmerge
-*.anim                  merge=unityyamlmerge
-*.controller            merge=unityyamlmerge
-*.overrideController    merge=unityyamlmerge
-*.mask                  merge=unityyamlmerge
-*.playable              merge=unityyamlmerge
-*.mixer                 merge=unityyamlmerge
-*.preset                merge=unityyamlmerge
-*.renderTexture         merge=unityyamlmerge
-*.spriteatlas           merge=unityyamlmerge
-*.spriteatlasv2         merge=unityyamlmerge
-*.terrainlayer          merge=unityyamlmerge
-*.physicMaterial        merge=unityyamlmerge
-*.physicsMaterial2D     merge=unityyamlmerge
-*.guiskin               merge=unityyamlmerge
-*.fontsettings          merge=unityyamlmerge
-*.flare                 merge=unityyamlmerge
-*.brush                 merge=unityyamlmerge
-*.lighting              merge=unityyamlmerge
-*.shadervariants        merge=unityyamlmerge
-*.signal                merge=unityyamlmerge
+# Мерж-драйвер здесь намеренно не настроен: он требует ручной регистрации на
+# каждой машине, а без неё атрибут всё равно ничего не делает. Git мержит
+# сцены и префабы построчно, поэтому один файл сцены = один человек за раз,
+# см. docs/Git.md.
 
 # ----------------------------------------------------------------------------
 # Исходники: заголовки ханков по-человечески
