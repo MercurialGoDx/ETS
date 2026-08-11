@@ -15,13 +15,13 @@ public class StatRow : MonoBehaviour
 
     private void Awake()
     {
-        ApplyNoWrap();
+        ApplyTextModes();
     }
 
     /// <summary>Обычная строка: подпись и значение.</summary>
     public void Set(string labelText, string valueText)
     {
-        ApplyNoWrap();
+        ApplyTextModes();
 
         if (label != null) label.text = labelText;
         if (value != null)
@@ -34,6 +34,8 @@ public class StatRow : MonoBehaviour
     /// <summary>Заголовок секции: только подпись, значение скрыто.</summary>
     public void SetHeader(string labelText)
     {
+        ApplyTextModes();
+
         if (label != null) label.text = labelText;
         if (value != null)
         {
@@ -43,14 +45,26 @@ public class StatRow : MonoBehaviour
     }
 
     /// <summary>
-    /// Значение не переносим: длинное число должно вылезать за пределы поля, а не
-    /// увеличивать высоту строки — иначе вернётся та же рассинхронизация.
+    /// Ни подпись, ни значение не переносим: длинный текст должен вылезать за пределы
+    /// поля, а не увеличивать высоту строки — иначе вернётся та же рассинхронизация.
+    ///
+    /// Режим строго Overflow. С Ellipsis внутри HorizontalLayoutGroup TMP вычисляет
+    /// ширину до того, как её выставит лэйаут, считает, что не влезает ничего, и
+    /// отрисовывает ноль символов — подпись просто исчезает. Выставляем из кода,
+    /// чтобы это нельзя было случайно вернуть настройкой префаба.
     /// </summary>
-    private void ApplyNoWrap()
+    private void ApplyTextModes()
     {
-        if (value == null) return;
+        if (label != null)
+        {
+            label.textWrappingMode = TextWrappingModes.NoWrap;
+            label.overflowMode = TextOverflowModes.Overflow;
+        }
 
-        value.textWrappingMode = TextWrappingModes.NoWrap;
-        value.overflowMode = TextOverflowModes.Overflow;
+        if (value != null)
+        {
+            value.textWrappingMode = TextWrappingModes.NoWrap;
+            value.overflowMode = TextOverflowModes.Overflow;
+        }
     }
 }
