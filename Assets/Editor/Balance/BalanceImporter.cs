@@ -21,21 +21,8 @@ namespace ETS.BalanceImport
     /// </summary>
     public static class BalanceImporter
     {
-        // ID таблицы "ETS Config" на Google Drive.
-        private const string SheetId = "1MPre5L9U05qZTA9R96mDZbdJjf7dTObvujPIEaeapYs";
-
-        // gid каждой вкладки — виден в URL при переключении вкладок в браузере
-        // (#gid=123456789). После добавления вкладок в таблицу проставить здесь.
-        // -1 = неизвестен, Pull откажется качать, пока не заполнено.
-        private static readonly Dictionary<string, long> TabGids = new Dictionary<string, long>
-        {
-            ["weapon"] = 0,
-            ["enemy"] = -1,
-            ["boss"] = -1,
-            ["shop"] = -1,
-            ["player_constant"] = -1,
-            ["upgrades"] = -1,
-        };
+        // ID таблицы "config ETS" на Google Drive (из URL между /d/ и /edit).
+        private const string SheetId = "1zh7YG5qijXaPp5zZvD2f7_kdI97QPTaOIKes9slpVZI";
 
         private static string ConfigDir => Path.Combine(Directory.GetCurrentDirectory(), "Config");
 
@@ -44,30 +31,26 @@ namespace ETS.BalanceImport
         [MenuItem("Tools/Balance/Pull From Google Sheets + Import")]
         public static void PullAndImport()
         {
-            var missing = TabGids.Where(kv => kv.Value < 0).Select(kv => kv.Key).ToList();
-            if (missing.Count > 0)
-            {
-                EditorUtility.DisplayDialog("Balance",
-                    "Не заполнены gid вкладок: " + string.Join(", ", missing) +
-                    "\n\nОткрой таблицу в браузере, переключись на вкладку и скопируй число из URL (#gid=...) в TabGids (BalanceImporter.cs).",
-                    "Ок");
-                return;
-            }
-
             try
             {
                 using var client = new HttpClient { Timeout = TimeSpan.FromSeconds(30) };
 
-                foreach (var (tab, gid) in TabGids)
+                foreach (var tab in BalanceSheets.TabNames)
                 {
                     EditorUtility.DisplayProgressBar("Balance", $"Скачивание вкладки {tab}…", 0.5f);
 
-                    string url = $"https://docs.google.com/spreadsheets/d/{SheetId}/export?format=csv&gid={gid}";
+                    // gviz-экспорт адресует вкладку ПО ИМЕНИ — gid не нужен.
+                    // Требуется доступ «читатель по ссылке» на таблицу.
+                    string url = $"https://docs.google.com/spreadsheets/d/{SheetId}/gviz/tq?tqx=out:csv&sheet={Uri.EscapeDataString(tab)}";
                     string csv = client.GetStringAsync(url).GetAwaiter().GetResult();
 
                     // Если доступ не открыт, Google отдаёт HTML-страницу логина.
                     if (csv.TrimStart().StartsWith("<"))
                         throw new Exception($"вкладка {tab}: вместо CSV пришёл HTML — таблица не расшарена. Открой доступ «читатель по ссылке».");
+
+                    // Несуществующее имя вкладки gviz отдаёт как ответ с ошибкой в JS-обёртке.
+                    if (csv.Contains("google.visualization.Query.setResponse"))
+                        throw new Exception($"вкладка '{tab}' не найдена в таблице — проверь имена вкладок (нужны: {string.Join(", ", BalanceSheets.TabNames)}).");
 
                     Directory.CreateDirectory(ConfigDir);
                     File.WriteAllText(Path.Combine(ConfigDir, tab + ".csv"), csv, new UTF8Encoding(false));
