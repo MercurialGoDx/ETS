@@ -43,6 +43,13 @@ public class UpgradesRuntimeData
     private Dictionary<UpgradeBaseSO, int> upgradePurchaseCounts = new();
     private Dictionary<WeaponDefinition, int> weaponPurchaseCounts = new();
 
+    /// <summary>
+    /// Купленные улучшения и сколько раз каждое бралось. Наполняется в
+    /// <see cref="RegisterUpgradePurchase"/>, то есть учитывает и магазин, и награды
+    /// за боссов (оба пути идут через UpgradesManager.ApplyUpgrade). Только чтение.
+    /// </summary>
+    public IReadOnlyDictionary<UpgradeBaseSO, int> UpgradePurchaseCounts => upgradePurchaseCounts;
+
     // Отслеживание модификаторов веса от купленных апгрейдов/оружий
     // Ключ: целевой апгрейд/оружие, Значение: список (источник модификатора, процент, количество применений)
     private Dictionary<UpgradeBaseSO, List<WeightModifier>> upgradeWeightModifiers = new();

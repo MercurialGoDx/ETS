@@ -46,6 +46,35 @@ public class TowerAttack : MonoBehaviour
         return total;
     }
 
+    /// <summary>
+    /// Снимок купленного оружия для панелей UI. Только чтение: наружу уходят копии,
+    /// внутренний список и WeaponRuntime мутировать извне нельзя.
+    /// </summary>
+    public readonly struct OwnedWeapon
+    {
+        public readonly WeaponDefinition Def;
+        public readonly int Stacks;
+
+        public OwnedWeapon(WeaponDefinition def, int stacks)
+        {
+            Def = def;
+            Stacks = stacks;
+        }
+    }
+
+    public List<OwnedWeapon> GetOwnedWeapons()
+    {
+        var result = new List<OwnedWeapon>(weapons.Count);
+
+        foreach (var w in weapons)
+        {
+            if (w.def != null)
+                result.Add(new OwnedWeapon(w.def, w.stacks));
+        }
+
+        return result;
+    }
+
     private void Awake()
     {
         // Баланс из таблицы (если импортирован) перекрывает инспектор.

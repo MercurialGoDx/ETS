@@ -25,6 +25,10 @@ public class GoldManager : MonoBehaviour
     public TextMeshProUGUI goldText;  // Можно оставить пустым, если UI не нужен
 
     [SerializeField] private float goldGainBonus = 0f;
+
+    /// <summary>Суммарный бонус к получаемому золоту (0.1 = +10%). Только чтение — для панелей UI.</summary>
+    public float GoldGainBonus => goldGainBonus;
+
     private Coroutine passiveIncomeCoroutine;
     public event System.Action<int, GoldSource, UnityEngine.Vector3?> OnGoldGained;
 
