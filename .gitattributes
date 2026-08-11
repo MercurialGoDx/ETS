@@ -1,0 +1,104 @@
+# ----------------------------------------------------------------------------
+# Переносы строк
+# ----------------------------------------------------------------------------
+# Намеренно НЕ задаём eol/text=auto: в индексе всё уже хранится в LF, а рабочее
+# дерево у команды разложено через core.autocrlf=true. Любое eol=lf здесь
+# показало бы половину проекта как изменённую и утопило бы реальные диффы.
+
+# ----------------------------------------------------------------------------
+# Unity YAML — слияние через UnityYAMLMerge, а не построчно
+# ----------------------------------------------------------------------------
+# Драйвер unityyamlmerge каждый регистрирует у себя локально, см. docs/Git.md.
+# Если он не зарегистрирован, Git молча откатывается на обычное текстовое
+# слияние — то есть хуже, но не сломано.
+*.unity                 merge=unityyamlmerge
+*.prefab                merge=unityyamlmerge
+*.asset                 merge=unityyamlmerge
+*.meta                  merge=unityyamlmerge
+*.mat                   merge=unityyamlmerge
+*.anim                  merge=unityyamlmerge
+*.controller            merge=unityyamlmerge
+*.overrideController    merge=unityyamlmerge
+*.mask                  merge=unityyamlmerge
+*.playable              merge=unityyamlmerge
+*.mixer                 merge=unityyamlmerge
+*.preset                merge=unityyamlmerge
+*.renderTexture         merge=unityyamlmerge
+*.spriteatlas           merge=unityyamlmerge
+*.spriteatlasv2         merge=unityyamlmerge
+*.terrainlayer          merge=unityyamlmerge
+*.physicMaterial        merge=unityyamlmerge
+*.physicsMaterial2D     merge=unityyamlmerge
+*.guiskin               merge=unityyamlmerge
+*.fontsettings          merge=unityyamlmerge
+*.flare                 merge=unityyamlmerge
+*.brush                 merge=unityyamlmerge
+*.lighting              merge=unityyamlmerge
+*.shadervariants        merge=unityyamlmerge
+*.signal                merge=unityyamlmerge
+
+# ----------------------------------------------------------------------------
+# Исходники: заголовки ханков по-человечески
+# ----------------------------------------------------------------------------
+*.cs                    diff=csharp
+
+# ----------------------------------------------------------------------------
+# Бинарники: не диффить, не мержить, не трогать переносы
+# ----------------------------------------------------------------------------
+# Изображения
+*.png                   binary
+*.jpg                   binary
+*.jpeg                  binary
+*.gif                   binary
+*.bmp                   binary
+*.tga                   binary
+*.tif                   binary
+*.tiff                  binary
+*.psd                   binary
+*.exr                   binary
+*.hdr                   binary
+*.iff                   binary
+*.pict                  binary
+
+# Модели
+*.fbx                   binary
+*.obj                   binary
+*.blend                 binary
+*.dae                   binary
+*.3ds                   binary
+*.max                   binary
+*.ma                    binary
+*.mb                    binary
+*.c4d                   binary
+
+# Звук и видео
+*.wav                   binary
+*.mp3                   binary
+*.ogg                   binary
+*.aif                   binary
+*.aiff                  binary
+*.mp4                   binary
+*.mov                   binary
+*.webm                  binary
+
+# Шрифты
+*.ttf                   binary
+*.otf                   binary
+
+# Библиотеки и пакеты
+*.dll                   binary
+*.pdb                   binary
+*.mdb                   binary
+*.so                    binary
+*.dylib                 binary
+*.a                     binary
+*.lib                   binary
+*.bundle                binary
+*.unitypackage          binary
+*.aar                   binary
+*.jar                   binary
+
+# Документы
+*.docx                  binary
+*.xlsx                  binary
+*.pdf                   binary
