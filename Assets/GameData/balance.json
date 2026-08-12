@@ -390,7 +390,7 @@
             "effect_1": "HP, −",
             "value_1": 50.0,
             "effect_2": "золото, +",
-            "value_2": 200.0,
+            "value_2": 1000.0,
             "interval": 0.0,
             "asset": "Sacrifice"
         },
@@ -791,7 +791,7 @@
             "weight": 3.0,
             "cost": 3000,
             "effect_1": "множитель урона от регена",
-            "value_1": 5.0,
+            "value_1": 1.0,
             "effect_2": "",
             "value_2": 0.0,
             "interval": 0.0,
@@ -879,7 +879,7 @@
         "passive_income_interval": 1.0
     },
     "player": {
-        "hp": 200.0,
+        "hp": 999999.0,
         "shield": 0.0,
         "block_cap": 0.800000011920929,
         "shield_recharge_time": 10.0,

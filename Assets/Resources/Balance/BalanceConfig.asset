@@ -36,7 +36,7 @@ MonoBehaviour:
     passiveGoldPerTick: 6
     passiveIncomeInterval: 1
   player:
-    playerHp: 200
+    playerHp: 999999
     playerShield: 0
     blockCap: 0.8
     shieldRechargeTime: 10

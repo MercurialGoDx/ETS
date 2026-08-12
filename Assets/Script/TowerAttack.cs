@@ -246,6 +246,7 @@ public class TowerAttack : MonoBehaviour
             target = target.transform,
             damage = damage,
             projectileSpeed = weapon.def.projectileSpeed,
+            damageCalculator = damageCalculator,
             ownerTower = this,
             weaponFireRate = weapon.def.fireRate,
             owner = transform,
@@ -359,3 +360,4 @@ public class TowerAttack : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position, range);
     }
 }
+

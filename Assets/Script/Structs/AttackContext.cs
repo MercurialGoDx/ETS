@@ -6,13 +6,14 @@ public struct AttackContext
     public Transform target;
     public float damage;
     public float projectileSpeed;
+    public DamageCalculator damageCalculator;
 
     public TowerAttack ownerTower;
     public float weaponFireRate;
 
     public float forwardOffset;
     public float heightOffset;
-    public Transform owner; // башня
+    public Transform owner; // Р±Р°С€РЅСЏ
 
     public WeaponDefinition weapon;
 }

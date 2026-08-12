@@ -38,6 +38,7 @@ public class Catapult : MonoBehaviour, IAttackBehaviour
     private PlayerHealth playerHealth;
 
     private WeaponDefinition sourceWeapon;
+    private DamageCalculator damageCalculator;
 
     private PooledObject pooledObject;
 
@@ -78,6 +79,7 @@ public class Catapult : MonoBehaviour, IAttackBehaviour
 
         debugDamage = debugDamage || (context.ownerTower != null && context.ownerTower.DebugDamageEnabled);
         sourceWeapon = context.weapon;
+        damageCalculator = context.damageCalculator;
     }
 
 
@@ -134,7 +136,22 @@ public class Catapult : MonoBehaviour, IAttackBehaviour
         if (playerHealth != null)
         {
             float maxHP = playerHealth.MaxHealth;
-            float aoeDamage = maxHP * hpPercentAsDamage;
+            float percentBaseDamage = maxHP * hpPercentAsDamage;
+            float aoeDamage = percentBaseDamage;
+            DamageCalculationBreakdown breakdown = null;
+
+            if (damageCalculator != null && sourceWeapon != null)
+            {
+                breakdown = damageCalculator.CalculateWithBreakdown(new DamageContext
+                {
+                    baseDamage = percentBaseDamage,
+                    damageType = sourceWeapon.damageType,
+                    itemTier = sourceWeapon.itemTier,
+                    isSpikes = false
+                });
+
+                aoeDamage = breakdown.FinalDamage;
+            }
 
             if (aoeDamage > 0f)
             {
@@ -143,10 +160,15 @@ public class Catapult : MonoBehaviour, IAttackBehaviour
 
                 if (debugDamage)
                 {
+                    string weaponName = sourceWeapon != null ? sourceWeapon.name : "Catapult";
+                    string breakdownText = breakdown != null
+                        ? breakdown.ToDebugString()
+                        : $"base={percentBaseDamage:0.###}, final={aoeDamage:0.###}";
+
                     Debug.Log(
-                        $"[DamageDebug] {sourceWeapon.name} catapult explode: " +
+                        $"[DamageDebug] {weaponName} catapult explode: " +
                         $"playerMaxHp={maxHP:0.###}, hpPercent={hpPercentAsDamage:0.###}, " +
-                        $"damagePerEnemy={aoeDamage:0.###}, enemies={hits.Length}");
+                        $"enemies={hits.Length} | {breakdownText}");
                 }
 
                 foreach (var col in hits)
@@ -193,3 +215,4 @@ public class Catapult : MonoBehaviour, IAttackBehaviour
         return targetTransform.position;
     }
 }
+
