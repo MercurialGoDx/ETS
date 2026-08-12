@@ -1,5 +1,10 @@
 public interface IDamageBonusProvider
 {
-    /// Возвращает бонус в процентах
+    /// Р’РѕР·РІСЂР°С‰Р°РµС‚ Р±РѕРЅСѓСЃ РІ РІРёРґРµ РґРѕР»Рё: 0.1 = +10%
     float GetDamageBonus(DamageContext ctx);
+}
+
+public interface IDamageBonusDebugProvider
+{
+    string GetDebugLabel(DamageContext ctx, float bonusValue);
 }

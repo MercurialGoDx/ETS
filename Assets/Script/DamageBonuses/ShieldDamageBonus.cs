@@ -1,4 +1,4 @@
-public class ShieldDamageBonus : IDamageBonusProvider
+public class ShieldDamageBonus : IDamageBonusProvider, IDamageBonusDebugProvider
 {
     private readonly UpgradesRuntimeData runtime;
     private readonly PlayerShield shield;
@@ -14,5 +14,10 @@ public class ShieldDamageBonus : IDamageBonusProvider
         return shield.IsShieldActive
             ? runtime.damageWhileShieldActivePercent
             : 0f;
+    }
+
+    public string GetDebugLabel(DamageContext ctx, float bonusValue)
+    {
+        return "Shield active";
     }
 }

@@ -24,6 +24,9 @@ public class Catapult : MonoBehaviour, IAttackBehaviour
     [Tooltip("Процент от максимального здоровья башни, который наносится как урон (0.15 = 15%)")]
     public float hpPercentAsDamage = 0.15f;
 
+    [Header("Debug")]
+    [SerializeField] private bool debugDamage = false;
+
     private Transform target;
     private Vector3 startPos;
     private Vector3 targetPos;
@@ -73,6 +76,7 @@ public class Catapult : MonoBehaviour, IAttackBehaviour
 
         currentArcHeight = baseArcHeight + distance * arcHeightMultiplier;
 
+        debugDamage = debugDamage || (context.ownerTower != null && context.ownerTower.DebugDamageEnabled);
         sourceWeapon = context.weapon;
     }
 
@@ -136,6 +140,14 @@ public class Catapult : MonoBehaviour, IAttackBehaviour
             {
                 Vector3 center = transform.position;
                 Collider[] hits = Physics.OverlapSphere(center, aoeRadius);
+
+                if (debugDamage)
+                {
+                    Debug.Log(
+                        $"[DamageDebug] {sourceWeapon.name} catapult explode: " +
+                        $"playerMaxHp={maxHP:0.###}, hpPercent={hpPercentAsDamage:0.###}, " +
+                        $"damagePerEnemy={aoeDamage:0.###}, enemies={hits.Length}");
+                }
 
                 foreach (var col in hits)
                 {

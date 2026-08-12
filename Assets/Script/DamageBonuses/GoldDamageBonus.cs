@@ -1,6 +1,6 @@
 using System;
 
-public class GoldDamageBonus : IDamageBonusProvider
+public class GoldDamageBonus : IDamageBonusProvider, IDamageBonusDebugProvider
 {
     private readonly UpgradesRuntimeData runtime;
     private readonly Func<int> goldGetter;
@@ -16,5 +16,10 @@ public class GoldDamageBonus : IDamageBonusProvider
     public float GetDamageBonus(DamageContext ctx)
     {
         return (goldGetter() / 100f) * runtime.damagePerValueGoldPercent;
+    }
+
+    public string GetDebugLabel(DamageContext ctx, float bonusValue)
+    {
+        return $"Gold ({goldGetter()})";
     }
 }

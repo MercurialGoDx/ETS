@@ -23,13 +23,16 @@ public class TowerAttack : MonoBehaviour
     public float waveForwardOffset = 1.5f;   // Насколько вынести вперёд от башни
     public float waveHeightOffset = 0f;      // Смещение волны по высоте (обычно 0)
 
-    private bool debugDamage = false;
+    [Header("Debug")]
+    [SerializeField] private bool debugDamage = false;
 
     private DamageCalculator damageCalculator;
 
     private readonly List<Enemy> usedThisVolley = new List<Enemy>();
 
     private List<WeaponRuntime> weapons = new List<WeaponRuntime>();
+
+    public bool DebugDamageEnabled => debugDamage;
 
     public int GetTotalWeaponsOfType(WeaponDamageType type)
     {
@@ -162,7 +165,6 @@ public class TowerAttack : MonoBehaviour
                 bool targetValid = false;
                 if (target != null && !target.isDead)
                 {
-                    //float dist = Vector3.Distance(transform.position, target.transform.position);
                     float sqrRange = range * range;
                     float sqrDist = (transform.position - target.transform.position).sqrMagnitude;
                     if (sqrDist <= sqrRange && target != null && !target.isDead)
@@ -174,7 +176,6 @@ public class TowerAttack : MonoBehaviour
             }
 
             // --- 2) Если цели нет (или режим random) — выбираем новую
-            // Разобраться в правильности нахождения candidates.
             if (target == null)
             {
                 Enemy newTarget = null;
@@ -302,6 +303,7 @@ public class TowerAttack : MonoBehaviour
                         def.itemTier,
                         damageCalculator   //  ключевой момент
                     );
+                    auraInstance.debugDamage = auraInstance.debugDamage || debugDamage;
                     newWeapon.auraInstance = auraInstance;
                 }
             }
@@ -325,18 +327,29 @@ public class TowerAttack : MonoBehaviour
 
     private float GetFinalDamage(WeaponRuntime weapon)
     {
-        float finalDamage = damageCalculator.Calculate(new DamageContext
+        DamageContext context = new DamageContext
         {
             baseDamage = weapon.def.damagePerProjectile,
             damageType = weapon.def.damageType,
             itemTier = weapon.def.itemTier,
             isSpikes = false
-        });
+        };
+
+        var breakdown = damageCalculator.CalculateWithBreakdown(context);
 
         if (debugDamage)
-            Debug.Log($"Final damage for {weapon.def.name} is {finalDamage}");
+        {
+            bool usesCatapultDamage = weapon.def.damagePerProjectile == 0f
+                && weapon.def.bulletPrefab != null
+                && weapon.def.bulletPrefab.GetComponent<Catapult>() != null;
 
-        return finalDamage;
+            if (usesCatapultDamage)
+                Debug.Log($"[DamageDebug] {weapon.def.name}: special catapult damage, see projectile explode log.");
+            else
+                Debug.Log($"[DamageDebug] {weapon.def.name}: {breakdown.ToDebugString()}");
+        }
+
+        return breakdown.FinalDamage;
     }
 
 

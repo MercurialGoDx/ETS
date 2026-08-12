@@ -316,8 +316,12 @@ public class InventoryUI : MonoBehaviour
             // Итог по типу — как в DamageTypeBonus: плоский бонус + за-каждое-оружие × число оружий.
             foreach (WeaponDamageType type in System.Enum.GetValues(typeof(WeaponDamageType)))
             {
-                float flat = runtime.damageTypeFlatPercent.GetValueOrDefault(type);
-                float perWeapon = runtime.damageTypePerWeaponPercent.GetValueOrDefault(type);
+                float flat = runtime.damageTypeFlatPercent.TryGetValue(type, out float flatValue)
+                    ? flatValue
+                    : 0f;
+                float perWeapon = runtime.damageTypePerWeaponPercent.TryGetValue(type, out float perWeaponValue)
+                    ? perWeaponValue
+                    : 0f;
                 float total = flat + towerAttack.GetTotalWeaponsOfType(type) * perWeapon;
 
                 Row(DamageTypeLabels[(int)type], Percent(total));

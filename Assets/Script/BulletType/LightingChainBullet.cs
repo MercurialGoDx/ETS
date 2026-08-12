@@ -30,6 +30,9 @@ public class LightningChainBullet : MonoBehaviour, IAttackBehaviour
     [Header("Target Filtering")]
     [SerializeField] private LayerMask enemyMask = ~0;
 
+    [Header("Debug")]
+    [SerializeField] private bool debugDamage = false;
+
     private float baseDamage;
     private HashSet<Enemy> hitEnemies = new HashSet<Enemy>();
 
@@ -65,6 +68,8 @@ public class LightningChainBullet : MonoBehaviour, IAttackBehaviour
             return;
         }
 
+        debugDamage = debugDamage || (context.ownerTower != null && context.ownerTower.DebugDamageEnabled);
+
         StopAllCoroutines();
         StartCoroutine(ChainRoutine(startPoint, firstTarget));
 
@@ -93,6 +98,13 @@ public class LightningChainBullet : MonoBehaviour, IAttackBehaviour
                 SpawnImpact(GetEnemyCenterPosition(currentTarget));
                 currentTarget.TakeDamage(currentDamage);
                 DamageStatsManager.Instance?.RegisterDamage(sourceWeapon, currentDamage);
+
+                if (debugDamage)
+                {
+                    Debug.Log(
+                        $"[DamageDebug] {sourceWeapon.name} chain hit #{i + 1}: " +
+                        $"damage={currentDamage:0.###}, jumpMultiplier={Mathf.Pow(damageMultiplierPerJump, i):0.###}");
+                }
             }
 
             currentDamage *= damageMultiplierPerJump;
