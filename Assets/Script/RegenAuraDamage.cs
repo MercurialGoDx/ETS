@@ -1,15 +1,15 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 public class RegenAuraDamage : MonoBehaviour
 {
-    [Header("Ãëîáàëüíûé óðîí ïî âñåì âðàãàì îò ðåãåíà")]
-    [Tooltip("Âêëþ÷èòü/âûêëþ÷èòü àóðó óðîíà îò ðåãåíà (âêëþ÷èòñÿ ïðè ïîêóïêå àïãðåéäà).")]
+    [Header("Ð“Ð»Ð¾Ð±Ð°Ð»ÑŒÐ½Ñ‹Ð¹ ÑƒÑ€Ð¾Ð½ Ð¿Ð¾ Ð²ÑÐµÐ¼ Ð²Ñ€Ð°Ð³Ð°Ð¼ Ð¾Ñ‚ Ñ€ÐµÐ³ÐµÐ½Ð°")]
+    [Tooltip("Ð’ÐºÐ»ÑŽÑ‡Ð¸Ñ‚ÑŒ/Ð²Ñ‹ÐºÐ»ÑŽÑ‡Ð¸Ñ‚ÑŒ Ð°ÑƒÑ€Ñƒ ÑƒÑ€Ð¾Ð½Ð° Ð¾Ñ‚ Ñ€ÐµÐ³ÐµÐ½Ð° (Ð²ÐºÐ»ÑŽÑ‡Ð¸Ñ‚ÑÑ Ð¿Ñ€Ð¸ Ð¿Ð¾ÐºÑƒÐ¿ÐºÐµ Ð°Ð¿Ð³Ñ€ÐµÐ¹Ð´Ð°).")]
     public bool regenAuraEnabled = false;
 
-    [Tooltip("Ìíîæèòåëü óðîíà îò ñóììàðíîãî ðåãåíà (2 = óðîí â 2 ðàçà áîëüøå ðåãåíà).")]
+    [Tooltip("ÐœÐ½Ð¾Ð¶Ð¸Ñ‚ÐµÐ»ÑŒ ÑƒÑ€Ð¾Ð½Ð° Ð¾Ñ‚ ÑÑƒÐ¼Ð¼Ð°Ñ€Ð½Ð¾Ð³Ð¾ Ñ€ÐµÐ³ÐµÐ½Ð° (2 = ÑƒÑ€Ð¾Ð½ Ð² 2 Ñ€Ð°Ð·Ð° Ð±Ð¾Ð»ÑŒÑˆÐµ Ñ€ÐµÐ³ÐµÐ½Ð°).")]
     public float regenAuraMultiplier = 0f;
 
-    [Tooltip("Èíòåðâàë ìåæäó òèêàìè óðîíà ïî âñåì âðàãàì (ñåêóíäû).")]
+    [Tooltip("Ð˜Ð½Ñ‚ÐµÑ€Ð²Ð°Ð» Ð¼ÐµÐ¶Ð´Ñƒ Ñ‚Ð¸ÐºÐ°Ð¼Ð¸ ÑƒÑ€Ð¾Ð½Ð° Ð¿Ð¾ Ð²ÑÐµÐ¼ Ð²Ñ€Ð°Ð³Ð°Ð¼ (ÑÐµÐºÑƒÐ½Ð´Ñ‹).")]
     public float regenAuraTickInterval = 1f;
 
     private float regenAuraTimer = 0f;
@@ -40,17 +40,22 @@ public class RegenAuraDamage : MonoBehaviour
 
     private void ApplyRegenAuraDamage()
     {
-        // 1) Ñ÷èòàåì îáùèé ðåãåí èãðîêà â ñåêóíäó
-        float baseRegen = UpgradesManager.Instance.playerHealth.healthRegenPerSecond; // áàçîâûé ðåãåí èç àïãðåéäîâ
+        var upgrades = UpgradesManager.Instance;
+        var playerHealth = upgrades.playerHealth;
+        var playerShield = upgrades.playerShield;
+        var runtime = upgrades.context != null ? upgrades.context.runtime : null;
+
+        // 1) Ð¡Ñ‡Ð¸Ñ‚Ð°ÐµÐ¼ Ð¾Ð±Ñ‰Ð¸Ð¹ Ñ€ÐµÐ³ÐµÐ½ Ð¸Ð³Ñ€Ð¾ÐºÐ° Ð² ÑÐµÐºÑƒÐ½Ð´Ñƒ
+        float baseRegen = playerHealth.healthRegenPerSecond; // Ð±Ð°Ð·Ð¾Ð²Ñ‹Ð¹ Ñ€ÐµÐ³ÐµÐ½ Ð¸Ð· Ð°Ð¿Ð³Ñ€ÐµÐ¹Ð´Ð¾Ð²
 
         float bonusRegen = 0f;
-        // åñëè ìû äåëàëè óëó÷øåíèå "ðåãåí çà íåäîñòàþùåå çäîðîâüå"
-        if (UpgradesManager.Instance.playerHealth.regenPer100MissingHealth > 0f)
+        // ÐµÑÐ»Ð¸ Ð¼Ñ‹ Ð´ÐµÐ»Ð°Ð»Ð¸ ÑƒÐ»ÑƒÑ‡ÑˆÐµÐ½Ð¸Ðµ "Ñ€ÐµÐ³ÐµÐ½ Ð·Ð° Ð½ÐµÐ´Ð¾ÑÑ‚Ð°ÑŽÑ‰ÐµÐµ Ð·Ð´Ð¾Ñ€Ð¾Ð²ÑŒÐµ"
+        if (playerHealth.regenPer100MissingHealth > 0f)
         {
-            float missing = UpgradesManager.Instance.playerHealth.MaxHealth - UpgradesManager.Instance.playerHealth.CurrentHealth;
+            float missing = playerHealth.MaxHealth - playerHealth.CurrentHealth;
             if (missing > 0f)
             {
-                bonusRegen = UpgradesManager.Instance.playerHealth.regenPer100MissingHealth * (missing / 100f);
+                bonusRegen = playerHealth.regenPer100MissingHealth * (missing / 100f);
             }
         }
 
@@ -58,11 +63,18 @@ public class RegenAuraDamage : MonoBehaviour
         if (totalRegen <= 0f)
             return;
 
-        // 2) Ñ÷èòàåì óðîí îò àóðû
-        float damagePerEnemy = totalRegen * regenAuraMultiplier;
+        // 2) Ð¡Ñ‡Ð¸Ñ‚Ð°ÐµÐ¼ Ð±Ð°Ð·Ð¾Ð²Ñ‹Ð¹ ÑƒÑ€Ð¾Ð½ Ð¾Ñ‚ Ð°ÑƒÑ€Ñ‹, Ð° Ð¿Ð¾Ñ‚Ð¾Ð¼ ÑƒÑÐ¸Ð»Ð¸Ð²Ð°ÐµÐ¼ Ñ‚Ð¾Ð»ÑŒÐºÐ¾ Ñ€Ð°Ð·Ñ€ÐµÑˆÑ‘Ð½Ð½Ñ‹Ð¼Ð¸ Ð±Ð¾Ð½ÑƒÑÐ°Ð¼Ð¸.
+        float baseDamagePerEnemy = totalRegen * regenAuraMultiplier;
+        float globalBonus = runtime != null ? runtime.globalDamagePercent : 0f;
+        float generatorBonus = runtime != null ? runtime.totalGeneratorDamagePercent : 0f;
+        float shieldBonus = runtime != null && playerShield != null && playerShield.IsShieldActive
+            ? runtime.damageWhileShieldActivePercent
+            : 0f;
+        float totalAllowedBonus = globalBonus + generatorBonus + shieldBonus;
+        float damagePerEnemy = baseDamagePerEnemy * (1f + totalAllowedBonus);
 
-        // 3) Íàíîñèì óðîí âñåì âðàãàì íà ñöåíå
-        // Õðàíèòü âñåõ äîñòóïíûõ âðàãîâ â îäíîì ëèñòå
+        // 3) ÐÐ°Ð½Ð¾ÑÐ¸Ð¼ ÑƒÑ€Ð¾Ð½ Ð²ÑÐµÐ¼ Ð²Ñ€Ð°Ð³Ð°Ð¼ Ð½Ð° ÑÑ†ÐµÐ½Ðµ
+        // Ð¥Ñ€Ð°Ð½Ð¸Ñ‚ÑŒ Ð²ÑÐµÑ… Ð´Ð¾ÑÑ‚ÑƒÐ¿Ð½Ñ‹Ñ… Ð²Ñ€Ð°Ð³Ð¾Ð² Ð² Ð¾Ð´Ð½Ð¾Ð¼ Ð»Ð¸ÑÑ‚Ðµ
         Enemy[] enemies = Object.FindObjectsByType<Enemy>(FindObjectsSortMode.None);
 
         if (enemies.Length == 0)
@@ -74,7 +86,11 @@ public class RegenAuraDamage : MonoBehaviour
             e.TakeDamage(damagePerEnemy);
         }
 
-        Debug.Log($"[RegenAura] Tick: regen={totalRegen:F1}, mult={regenAuraMultiplier:F2}, " +
-                  $"damage={damagePerEnemy:F1}, enemies={enemies.Length}");
+        Debug.Log(
+            $"[RegenAura] Tick: regen={totalRegen:F1}, mult={regenAuraMultiplier:F2}, " +
+            $"base={baseDamagePerEnemy:F1}, global={globalBonus * 100f:F1}%, " +
+            $"generator={generatorBonus * 100f:F1}%, shield={shieldBonus * 100f:F1}%, " +
+            $"final={damagePerEnemy:F1}, enemies={enemies.Length}");
     }
 }
+

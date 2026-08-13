@@ -75,7 +75,8 @@ MonoBehaviour:
   fixedFlightTime: 1.5
   maxLifeTime: 10
   aoeRadius: 4
-  hpPercentAsDamage: 0.15
+  hpPercentAsDamage: 0.05
+  debugDamage: 0
 --- !u!114 &2674533742480752267
 MonoBehaviour:
   m_ObjectHideFlags: 0

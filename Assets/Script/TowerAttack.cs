@@ -23,13 +23,16 @@ public class TowerAttack : MonoBehaviour
     public float waveForwardOffset = 1.5f;   // Насколько вынести вперёд от башни
     public float waveHeightOffset = 0f;      // Смещение волны по высоте (обычно 0)
 
-    private bool debugDamage = false;
+    [Header("Debug")]
+    [SerializeField] private bool debugDamage = false;
 
     private DamageCalculator damageCalculator;
 
     private readonly List<Enemy> usedThisVolley = new List<Enemy>();
 
     private List<WeaponRuntime> weapons = new List<WeaponRuntime>();
+
+    public bool DebugDamageEnabled => debugDamage;
 
     public int GetTotalWeaponsOfType(WeaponDamageType type)
     {
@@ -44,6 +47,35 @@ public class TowerAttack : MonoBehaviour
         }
 
         return total;
+    }
+
+    /// <summary>
+    /// Снимок купленного оружия для панелей UI. Только чтение: наружу уходят копии,
+    /// внутренний список и WeaponRuntime мутировать извне нельзя.
+    /// </summary>
+    public readonly struct OwnedWeapon
+    {
+        public readonly WeaponDefinition Def;
+        public readonly int Stacks;
+
+        public OwnedWeapon(WeaponDefinition def, int stacks)
+        {
+            Def = def;
+            Stacks = stacks;
+        }
+    }
+
+    public List<OwnedWeapon> GetOwnedWeapons()
+    {
+        var result = new List<OwnedWeapon>(weapons.Count);
+
+        foreach (var w in weapons)
+        {
+            if (w.def != null)
+                result.Add(new OwnedWeapon(w.def, w.stacks));
+        }
+
+        return result;
     }
 
     private void Awake()
@@ -133,7 +165,6 @@ public class TowerAttack : MonoBehaviour
                 bool targetValid = false;
                 if (target != null && !target.isDead)
                 {
-                    //float dist = Vector3.Distance(transform.position, target.transform.position);
                     float sqrRange = range * range;
                     float sqrDist = (transform.position - target.transform.position).sqrMagnitude;
                     if (sqrDist <= sqrRange && target != null && !target.isDead)
@@ -145,7 +176,6 @@ public class TowerAttack : MonoBehaviour
             }
 
             // --- 2) Если цели нет (или режим random) — выбираем новую
-            // Разобраться в правильности нахождения candidates.
             if (target == null)
             {
                 Enemy newTarget = null;
@@ -194,7 +224,7 @@ public class TowerAttack : MonoBehaviour
         if (target == null || target.isDead)
             return;
 
-        float damage = GetFinalDamage(weapon);
+        float damage = GetBaseProjectileDamage(weapon);
 
         LaserBeam existingBeam = LaserBeam.GetActiveBeamFor(target);
         if (existingBeam != null && existingBeam.gameObject.activeSelf)
@@ -216,6 +246,7 @@ public class TowerAttack : MonoBehaviour
             target = target.transform,
             damage = damage,
             projectileSpeed = weapon.def.projectileSpeed,
+            damageCalculator = damageCalculator,
             ownerTower = this,
             weaponFireRate = weapon.def.fireRate,
             owner = transform,
@@ -273,6 +304,7 @@ public class TowerAttack : MonoBehaviour
                         def.itemTier,
                         damageCalculator   //  ключевой момент
                     );
+                    auraInstance.debugDamage = auraInstance.debugDamage || debugDamage;
                     newWeapon.auraInstance = auraInstance;
                 }
             }
@@ -296,18 +328,45 @@ public class TowerAttack : MonoBehaviour
 
     private float GetFinalDamage(WeaponRuntime weapon)
     {
-        float finalDamage = damageCalculator.Calculate(new DamageContext
+        DamageContext context = new DamageContext
         {
             baseDamage = weapon.def.damagePerProjectile,
             damageType = weapon.def.damageType,
             itemTier = weapon.def.itemTier,
             isSpikes = false
-        });
+        };
+
+        var breakdown = damageCalculator.CalculateWithBreakdown(context);
 
         if (debugDamage)
-            Debug.Log($"Final damage for {weapon.def.name} is {finalDamage}");
+        {
+            bool usesCatapultDamage = weapon.def.damagePerProjectile == 0f
+                && weapon.def.bulletPrefab != null
+                && weapon.def.bulletPrefab.GetComponent<Catapult>() != null;
 
-        return finalDamage;
+            if (usesCatapultDamage)
+                Debug.Log($"[DamageDebug] {weapon.def.name}: special catapult damage, see projectile explode log.");
+            else
+                Debug.Log($"[DamageDebug] {weapon.def.name}: {breakdown.ToDebugString()}");
+        }
+
+        return breakdown.FinalDamage;
+    }
+
+    private float GetBaseProjectileDamage(WeaponRuntime weapon)
+    {
+        bool usesCatapultDamage = weapon.def.bulletPrefab != null
+            && weapon.def.bulletPrefab.GetComponent<Catapult>() != null;
+
+        if (usesCatapultDamage)
+        {
+            if (debugDamage)
+                Debug.Log($"[DamageDebug] {weapon.def.name}: catapult base from SO = {weapon.def.damagePerProjectile:0.###}, HP bonus will be added on explode before multipliers.");
+
+            return weapon.def.damagePerProjectile;
+        }
+
+        return GetFinalDamage(weapon);
     }
 
 
@@ -317,3 +376,4 @@ public class TowerAttack : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position, range);
     }
 }
+

@@ -233,7 +233,7 @@
             "name": "Катапульта",
             "id": 307,
             "attack_speed": 0.3499999940395355,
-            "damage": 0.0,
+            "damage": 50.0,
             "tier": 3,
             "weight": 4.0,
             "cost": 1500,
@@ -791,7 +791,7 @@
             "weight": 3.0,
             "cost": 3000,
             "effect_1": "множитель урона от регена",
-            "value_1": 5.0,
+            "value_1": 1.0,
             "effect_2": "",
             "value_2": 0.0,
             "interval": 0.0,
@@ -869,13 +869,13 @@
         "damage_add_per_wave": 0.05000000074505806
     },
     "economy": {
-        "first_upgrade_cost": 150,
-        "second_upgrade_cost": 400,
+        "first_upgrade_cost": 500,
+        "second_upgrade_cost": 1500,
         "reroll_base_cost": 10,
         "reroll_cost_increase": 10,
         "auto_reroll_interval": 20.0,
-        "start_gold": 300,
-        "passive_gold_per_tick": 6,
+        "start_gold": 500,
+        "passive_gold_per_tick": 10,
         "passive_income_interval": 1.0
     },
     "player": {

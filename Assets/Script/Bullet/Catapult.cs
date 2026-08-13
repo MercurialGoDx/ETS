@@ -24,6 +24,9 @@ public class Catapult : MonoBehaviour, IAttackBehaviour
     [Tooltip("Процент от максимального здоровья башни, который наносится как урон (0.15 = 15%)")]
     public float hpPercentAsDamage = 0.15f;
 
+    [Header("Debug")]
+    [SerializeField] private bool debugDamage = false;
+
     private Transform target;
     private Vector3 startPos;
     private Vector3 targetPos;
@@ -35,6 +38,8 @@ public class Catapult : MonoBehaviour, IAttackBehaviour
     private PlayerHealth playerHealth;
 
     private WeaponDefinition sourceWeapon;
+    private DamageCalculator damageCalculator;
+    private float weaponBaseDamage;
 
     private PooledObject pooledObject;
 
@@ -73,7 +78,10 @@ public class Catapult : MonoBehaviour, IAttackBehaviour
 
         currentArcHeight = baseArcHeight + distance * arcHeightMultiplier;
 
+        debugDamage = debugDamage || (context.ownerTower != null && context.ownerTower.DebugDamageEnabled);
         sourceWeapon = context.weapon;
+        damageCalculator = context.damageCalculator;
+        weaponBaseDamage = context.damage;
     }
 
 
@@ -130,12 +138,43 @@ public class Catapult : MonoBehaviour, IAttackBehaviour
         if (playerHealth != null)
         {
             float maxHP = playerHealth.MaxHealth;
-            float aoeDamage = maxHP * hpPercentAsDamage;
+            float healthBasedDamage = maxHP * hpPercentAsDamage;
+            float combinedBaseDamage = weaponBaseDamage + healthBasedDamage;
+            float aoeDamage = combinedBaseDamage;
+            DamageCalculationBreakdown breakdown = null;
+
+            if (damageCalculator != null && sourceWeapon != null)
+            {
+                breakdown = damageCalculator.CalculateWithBreakdown(new DamageContext
+                {
+                    baseDamage = combinedBaseDamage,
+                    damageType = sourceWeapon.damageType,
+                    itemTier = sourceWeapon.itemTier,
+                    isSpikes = false
+                });
+
+                aoeDamage = breakdown.FinalDamage;
+            }
 
             if (aoeDamage > 0f)
             {
                 Vector3 center = transform.position;
                 Collider[] hits = Physics.OverlapSphere(center, aoeRadius);
+
+                if (debugDamage)
+                {
+                    string weaponName = sourceWeapon != null ? sourceWeapon.name : "Catapult";
+                    string breakdownText = breakdown != null
+                        ? breakdown.ToDebugString()
+                        : $"base={combinedBaseDamage:0.###}, final={aoeDamage:0.###}";
+
+                    Debug.Log(
+                        $"[DamageDebug] {weaponName} catapult explode: " +
+                        $"weaponBase={weaponBaseDamage:0.###}, playerMaxHp={maxHP:0.###}, " +
+                        $"hpPercent={hpPercentAsDamage:0.###}, hpDamage={healthBasedDamage:0.###}, " +
+                        $"combinedBase={combinedBaseDamage:0.###}, " +
+                        $"enemies={hits.Length} | {breakdownText}");
+                }
 
                 foreach (var col in hits)
                 {
@@ -181,3 +220,4 @@ public class Catapult : MonoBehaviour, IAttackBehaviour
         return targetTransform.position;
     }
 }
+

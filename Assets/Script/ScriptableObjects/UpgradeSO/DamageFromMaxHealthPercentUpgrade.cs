@@ -7,7 +7,7 @@ public class DamageFromMaxHealthPercentUpgrade : UpgradeBaseSO
 
     public override void Apply(UpgradeContextSO context)
     {
-        context.runtime.damagePerValueHpPercent += context.playerHealth.MaxHealth * (valuePercent / 100);
+        context.runtime.damagePerValueHpPercent += valuePercent / 100f;
     }
 
     protected override object[] GetSpecificDescriptionArgs()

@@ -1,7 +1,6 @@
 using System;
-using System.Collections.Generic;
 
-public class DamageTypeBonus : IDamageBonusProvider
+public class DamageTypeBonus : IDamageBonusProvider, IDamageBonusDebugProvider
 {
     private readonly WeaponDamageType type;
     private readonly Func<int> weaponCount;
@@ -22,9 +21,21 @@ public class DamageTypeBonus : IDamageBonusProvider
         if (ctx.damageType != type)
             return 0f;
 
-        float flat = runtime.damageTypeFlatPercent.GetValueOrDefault(type);
-        float perWeapon = runtime.damageTypePerWeaponPercent.GetValueOrDefault(type);
+        float flat = runtime.damageTypeFlatPercent.TryGetValue(type, out float flatValue)
+            ? flatValue
+            : 0f;
+        float perWeapon = runtime.damageTypePerWeaponPercent.TryGetValue(type, out float perWeaponValue)
+            ? perWeaponValue
+            : 0f;
 
         return flat + weaponCount() * perWeapon;
+    }
+
+    public string GetDebugLabel(DamageContext ctx, float bonusValue)
+    {
+        int count = weaponCount();
+        return count > 0
+            ? $"{type} type ({count} weapon stacks)"
+            : $"{type} type";
     }
 }

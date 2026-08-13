@@ -1,4 +1,4 @@
-public class GlobalDamageBonus : IDamageBonusProvider
+public class GlobalDamageBonus : IDamageBonusProvider, IDamageBonusDebugProvider
 {
     private readonly UpgradesRuntimeData runtime;
 
@@ -13,5 +13,10 @@ public class GlobalDamageBonus : IDamageBonusProvider
             return 0f;
 
         return runtime.globalDamagePercent;
+    }
+
+    public string GetDebugLabel(DamageContext ctx, float bonusValue)
+    {
+        return "Global";
     }
 }

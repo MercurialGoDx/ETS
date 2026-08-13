@@ -73,19 +73,21 @@ public class AuraDamageZone : MonoBehaviour
     private void DoDamage()
     {
         float baseDamage = damagePerStack * stacks;
-
-        float finalDamage = damageCalculator.Calculate(new DamageContext
+        DamageContext context = new DamageContext
         {
             baseDamage = baseDamage,
             damageType = damageType,
             itemTier = itemTier,
             isSpikes = false
-        });
+        };
+
+        var breakdown = damageCalculator.CalculateWithBreakdown(context);
+        float finalDamage = breakdown.FinalDamage;
 
         int hitCount = Physics.OverlapSphereNonAlloc(transform.position, radius, overlapBuffer);
 
         if (debugDamage)
-            Debug.Log($"Enemies amount is {hitCount}");
+            Debug.Log($"[DamageDebug] Aura {name}: {breakdown.ToDebugString()}, stacks={stacks}, enemies={hitCount}");
 
         for (int i = 0; i < hitCount; i++)
         {

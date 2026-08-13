@@ -55,6 +55,28 @@ public class PlayerHealth : MonoBehaviour
 
     public float SpikesDamage => spikesBase * spikesMultiplier;
 
+    /// <summary>
+    /// Итоговый реген в секунду: базовый плюс бонус за недостающее здоровье.
+    /// Единственное место с этой формулой — её же использует Update и панели UI.
+    /// </summary>
+    public float GetTotalRegen()
+    {
+        float regen = healthRegenPerSecond;
+
+        // Бонусный реген за недостающее здоровье
+        if (UpgradesManager.Instance != null &&
+            regenPer100MissingHealth > 0f)
+        {
+            float missing = MaxHealth - currentHealth;
+            if (missing > 0f)
+            {
+                regen += regenPer100MissingHealth * (missing / 100f);
+            }
+        }
+
+        return regen;
+    }
+
     private List<ITakeDamageModifier> modifiers = new();
 
 
@@ -88,18 +110,7 @@ public class PlayerHealth : MonoBehaviour
         // === РЕГЕН ЗДОРОВЬЯ ===
         if (currentHealth < MaxHealth)
         {
-            float regen = healthRegenPerSecond;
-
-            // Бонусный реген за недостающее здоровье
-            if (UpgradesManager.Instance != null &&
-                regenPer100MissingHealth > 0f)
-            {
-                float missing = MaxHealth - currentHealth;
-                if (missing > 0f)
-                {
-                    regen += regenPer100MissingHealth * (missing / 100f);
-                }
-            }
+            float regen = GetTotalRegen();
 
             if (regen > 0f)
             {

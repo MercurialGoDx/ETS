@@ -3,24 +3,23 @@ using UnityEngine.UI;
 using TMPro;
 using UnityEngine.EventSystems;
 
-public class ShopSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
+public class ShopSlot : ItemSlotBase
 {
-    [Header("UI")]
-    [SerializeField] private Image iconImage;
     [SerializeField] private TMP_Text priceText;
 
     [Tooltip("Оверлей закрытого слота. Пусто — соберётся плейсхолдер (затемнение + LOCKED).")]
     [SerializeField] private GameObject lockedOverlay;
 
     [Header("Данные")]
-    private WeaponDefinition currentWeapon;
-    private UpgradeBaseSO currentUpgrade;
     private ShopManager shopManager;
 
     private bool isLocked;
 
     /// <summary>Слот закрыт: предмет не генерируется, клик не покупает.</summary>
     public bool IsLocked => isLocked;
+
+    /// <summary>Закрытый слот не показывает тултип.</summary>
+    protected override bool TooltipAllowed => !isLocked;
 
     // ==== ЗАКРЫТЫЙ СЛОТ ====
 
@@ -35,11 +34,7 @@ public class ShopSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHandle
         shopManager = null;
         isLocked = true;
 
-        if (iconImage != null)
-        {
-            iconImage.sprite = null;
-            iconImage.enabled = false;
-        }
+        SetIcon(null);
 
         if (priceText != null)
             priceText.text = "";
@@ -113,19 +108,7 @@ public class ShopSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHandle
         currentUpgrade = null;
         shopManager = manager;
 
-        if (iconImage != null)
-        {
-            if (weapon != null && weapon.icon != null)
-            {
-                iconImage.sprite = weapon.icon;
-                iconImage.enabled = true;
-            }
-            else
-            {
-                iconImage.sprite = null;
-                iconImage.enabled = false;
-            }
-        }
+        SetIcon(weapon != null ? weapon.icon : null);
 
         if (priceText != null)
             priceText.text = weapon != null ? weapon.price.ToString() : "";
@@ -140,19 +123,7 @@ public class ShopSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHandle
         currentUpgrade = upgrade;
         shopManager = manager;
 
-        if (iconImage != null)
-        {
-            if (upgrade != null && upgrade.icon != null)
-            {
-                iconImage.sprite = upgrade.icon;
-                iconImage.enabled = true;
-            }
-            else
-            {
-                iconImage.sprite = null;
-                iconImage.enabled = false;
-            }
-        }
+        SetIcon(upgrade != null ? upgrade.icon : null);
 
         if (priceText != null)
             priceText.text = upgrade != null ? upgrade.price.ToString() : "";
@@ -167,11 +138,7 @@ public class ShopSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHandle
         currentUpgrade = null;
         shopManager = null;
 
-        if (iconImage != null)
-        {
-            iconImage.sprite = null;
-            iconImage.enabled = false;
-        }
+        SetIcon(null);
 
         if (priceText != null)
             priceText.text = "";
@@ -182,7 +149,7 @@ public class ShopSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHandle
     }
 
     // ==== КЛИК ====
-    public void OnPointerClick(PointerEventData eventData)
+    public override void OnPointerClick(PointerEventData eventData)
     {
         // Закрытый слот не покупается. Проверка здесь, а не через Button.interactable:
         // StateRestrictedButton перезаписывает interactable при каждой смене GameState
@@ -200,32 +167,5 @@ public class ShopSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHandle
         {
             shopManager.BuyUpgrade(currentUpgrade, this);
         }
-    }
-
-    // ==== НАВЕДЕНИЕ ДЛЯ ТУЛТИПА ====
-    public void OnPointerEnter(PointerEventData eventData)
-    {
-        if (isLocked) return;
-
-        if (WeaponTooltip.Instance == null)
-            return;
-
-        if (currentWeapon != null)
-        {
-            WeaponTooltip.Instance.Show(currentWeapon);
-        }
-        else if (currentUpgrade != null)
-        {
-            WeaponTooltip.Instance.Show(
-                currentUpgrade.GetLocalizedName(),
-                currentUpgrade.GetLocalizedDescription()
-            );
-        }
-    }
-
-    public void OnPointerExit(PointerEventData eventData)
-    {
-        if (WeaponTooltip.Instance != null)
-            WeaponTooltip.Instance.Hide();
     }
 }
