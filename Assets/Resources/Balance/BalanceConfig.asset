@@ -32,11 +32,11 @@ MonoBehaviour:
     rerollBaseCost: 10
     rerollCostIncrease: 10
     autoRerollInterval: 20
-    startGold: 300
-    passiveGoldPerTick: 6
+    startGold: 500
+    passiveGoldPerTick: 10
     passiveIncomeInterval: 1
   player:
-    playerHp: 999999
+    playerHp: 200
     playerShield: 0
     blockCap: 0.8
     shieldRechargeTime: 10

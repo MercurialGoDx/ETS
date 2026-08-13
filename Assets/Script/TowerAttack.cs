@@ -224,7 +224,7 @@ public class TowerAttack : MonoBehaviour
         if (target == null || target.isDead)
             return;
 
-        float damage = GetFinalDamage(weapon);
+        float damage = GetBaseProjectileDamage(weapon);
 
         LaserBeam existingBeam = LaserBeam.GetActiveBeamFor(target);
         if (existingBeam != null && existingBeam.gameObject.activeSelf)
@@ -351,6 +351,22 @@ public class TowerAttack : MonoBehaviour
         }
 
         return breakdown.FinalDamage;
+    }
+
+    private float GetBaseProjectileDamage(WeaponRuntime weapon)
+    {
+        bool usesCatapultDamage = weapon.def.bulletPrefab != null
+            && weapon.def.bulletPrefab.GetComponent<Catapult>() != null;
+
+        if (usesCatapultDamage)
+        {
+            if (debugDamage)
+                Debug.Log($"[DamageDebug] {weapon.def.name}: catapult base from SO = {weapon.def.damagePerProjectile:0.###}, HP bonus will be added on explode before multipliers.");
+
+            return weapon.def.damagePerProjectile;
+        }
+
+        return GetFinalDamage(weapon);
     }
 
 

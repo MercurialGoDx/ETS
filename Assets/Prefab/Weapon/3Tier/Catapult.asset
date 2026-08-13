@@ -19,11 +19,21 @@ MonoBehaviour:
   nameKey: catapult.name
   descriptionKey: catapult.desc
   price: 1500
-  damagePerProjectile: 0
+  damagePerProjectile: 50
   fireRate: 0.35
   projectileSpeed: 10
   itemTier: 3
   damageType: 4
   bulletPrefab: {fileID: 304615500963489341, guid: e70518456d9ad4a4683794697df31ad7, type: 3}
   weight: 4
+  weightIncreasePerPurchase: 2
+  maxWeightIncreasePurchases: 5
+  weightDecreaseUpgrades: []
+  weightDecreaseUpgradePercent: 0
+  weightIncreaseUpgrades: []
+  weightIncreaseUpgradePercent: 0
+  weightDecreaseWeapons: []
+  weightDecreaseWeaponPercent: 0
+  weightIncreaseWeapons: []
+  weightIncreaseWeaponPercent: 0
   targetingMode: 0
