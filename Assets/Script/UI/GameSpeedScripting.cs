@@ -46,6 +46,25 @@ public class GameSpeedController : MonoBehaviour
         if (saveSpeed) startSpeed = PlayerPrefs.GetFloat(PrefKey, 1f);
     }
 
+    private void Update()
+    {
+        if (GameStateManager.Instance == null || !GameStateManager.Instance.Is(GameState.Playing))
+            return;
+
+        if (Input.GetKeyDown(KeyCode.Alpha1) || Input.GetKeyDown(KeyCode.Keypad1))
+        {
+            SetX1();
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha2) || Input.GetKeyDown(KeyCode.Keypad2))
+        {
+            SetX2();
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha3) || Input.GetKeyDown(KeyCode.Keypad3))
+        {
+            SetX3();
+        }
+    }
+
     public void SetX1() => ApplySpeed(speedX1);
     public void SetX2() => ApplySpeed(speedX2);
     public void SetX3() => ApplySpeed(speedX3);
