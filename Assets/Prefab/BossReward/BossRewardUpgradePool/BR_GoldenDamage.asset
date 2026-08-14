@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d1ea8090a920a8b4991540395ce6d0ce, type: 3}
+  m_Script: {fileID: 11500000, guid: 604bd0a0c0fe4c9eb145b02512e8838f, type: 3}
   m_Name: BR_GoldenDamage
   m_EditorClassIdentifier: 
   icon: {fileID: 0}
@@ -20,4 +20,4 @@ MonoBehaviour:
       m_TableCollectionName: GUID:164770c6fc8794c4ba4db6f8c7e72db3
   nameKey: br_golden_damage.name
   descriptionKey: br_golden_damage.desc
-  valuePercent: 0.005
+  valuePercent: 0.5

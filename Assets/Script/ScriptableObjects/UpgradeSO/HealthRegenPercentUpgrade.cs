@@ -7,7 +7,7 @@ public class HealthRegenPercentUpgrade : UpgradeBaseSO
 
     public override void Apply(UpgradeContextSO context)
     {
-        context.playerHealth.AddHealthRegen(context.playerHealth.healthRegenPerSecond * (valuePercent / 100));
+        context.playerHealth.AddHealthRegenMultiplier(valuePercent / 100f);
     }
 
     protected override object[] GetSpecificDescriptionArgs()

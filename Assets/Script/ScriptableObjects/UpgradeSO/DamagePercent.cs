@@ -1,13 +1,13 @@
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Upgrades/Weapon/Global Fire Rate")]
-public class GlobalFireRateUpgrade : UpgradeBaseSO
+[CreateAssetMenu(menuName = "Upgrades/Weapon/Damage Percent")]
+public class DamagePercent : UpgradeBaseSO
 {
     public float valuePercent;
 
     public override void Apply(UpgradeContextSO context)
     {
-        context.towerAttack.fireRateMultiplier += valuePercent / 100f;
+        context.runtime.damagePercent += valuePercent / 100f;
     }
 
     protected override object[] GetSpecificDescriptionArgs()

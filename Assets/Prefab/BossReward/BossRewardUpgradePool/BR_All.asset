@@ -15,6 +15,17 @@ MonoBehaviour:
   icon: {fileID: 0}
   price: 0
   weight: 1
+  itemTier: 0
+  weightIncreasePerPurchase: 2
+  maxWeightIncreasePurchases: 5
+  weightDecreaseUpgrades: []
+  weightDecreasePercent: 0
+  weightIncreaseUpgrades: []
+  weightIncreasePercent: 0
+  weightDecreaseWeapons: []
+  weightDecreaseWeaponPercent: 0
+  weightIncreaseWeapons: []
+  weightIncreaseWeaponPercent: 0
   localizedStringTable:
     m_TableReference:
       m_TableCollectionName: GUID:164770c6fc8794c4ba4db6f8c7e72db3
@@ -22,7 +33,7 @@ MonoBehaviour:
   descriptionKey: br_all.desc
   upgrades:
   - {fileID: 11400000, guid: 00db2626055ecd24a800095db7b69516, type: 2}
-  - {fileID: 11400000, guid: 96a1f3b6f159c1c4d86553f89c747b1d, type: 2}
+  - {fileID: 11400000, guid: 8f46f226b0df3a744a0f6226e75f4958, type: 2}
   - {fileID: 11400000, guid: 128b8f29612162a4d88c5ac3fd2eb6da, type: 2}
   - {fileID: 11400000, guid: 195aa815c7b901b40b6739b8e1a9b9d4, type: 2}
   - {fileID: 11400000, guid: 4517448cb1ed64f4c97706c5b81e71e6, type: 2}

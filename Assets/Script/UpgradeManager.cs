@@ -104,6 +104,51 @@ public class UpgradesManager : MonoBehaviour
         upgrade.Apply(context);
     }
 
+    public void ApplyBossReward(UpgradeBaseSO reward)
+    {
+        if (reward == null || context == null) return;
+
+        RuntimeData.RegisterBossReward(reward);
+        ApplyBossRewardEffect(reward);
+
+        Debug.Log($"[BossReward] Applied '{reward.name}'. {GetBossMultiplierDebugString()}");
+    }
+
+    private void ApplyBossRewardEffect(UpgradeBaseSO reward)
+    {
+        if (reward is CompositeUpgrade composite)
+        {
+            if (composite.upgrades == null) return;
+
+            foreach (UpgradeBaseSO child in composite.upgrades)
+            {
+                if (child != null)
+                    ApplyBossRewardEffect(child);
+            }
+
+            return;
+        }
+
+        reward.Apply(context);
+    }
+
+    private string GetBossMultiplierDebugString()
+    {
+        UpgradesRuntimeData runtime = context.runtime;
+        float healthGlobal = context.playerHealth != null ? context.playerHealth.MaxHealthGlobalMultiplier : 1f;
+        float regenGlobal = context.playerHealth != null ? context.playerHealth.HealthRegenGlobalMultiplier : 1f;
+        float spikesGlobal = context.playerHealth != null ? context.playerHealth.SpikesGlobalMultiplier : 1f;
+        float shieldGlobal = context.playerShield != null ? context.playerShield.ShieldGlobalMultiplier : 1f;
+        float fireRateGlobal = context.towerAttack != null ? context.towerAttack.GlobalFireRateMultiplier : 1f;
+        float damageGlobal = runtime != null ? 1f + runtime.globalDamagePercent : 1f;
+        float goldScaling = runtime != null ? runtime.globalDamagePer100GoldPercent : 0f;
+
+        return $"global multipliers: hp=x{healthGlobal:0.###}, regen=x{regenGlobal:0.###}, " +
+               $"shield=x{shieldGlobal:0.###}, spikes=x{spikesGlobal:0.###}, " +
+               $"fireRate=x{fireRateGlobal:0.###}, damage=x{damageGlobal:0.###}, " +
+               $"damagePer100Gold={goldScaling * 100f:0.###}%";
+    }
+
     /// <summary>
     /// Можно ли сейчас купить это улучшение (например, хватает ли здоровья
     /// для "золото за жизнь"). Проверяется магазином до списания цены.

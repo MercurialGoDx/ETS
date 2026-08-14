@@ -8,6 +8,7 @@ public class PlayerShield : MonoBehaviour, ITakeDamageModifier
     [Header("Щит")]
     [SerializeField] private float maxShield = 0f;
     [SerializeField] private float shieldMultiplier = 1f;
+    [SerializeField] private float shieldGlobalMultiplier = 1f;
     [SerializeField] private float shieldRechargeTime = 10f;
     [SerializeField] private float shieldRechargeDelay = 0f; // хранение значения, в логике не используем
     [SerializeField] private float damageWhileShieldActivePercent = 0f; // бонус к урону, когда щит АКТИВЕН
@@ -53,8 +54,9 @@ public class PlayerShield : MonoBehaviour, ITakeDamageModifier
     // управление корутинами
     private Coroutine fadeRoutine;
 
-    public float MaxShield => maxShield * shieldMultiplier;
+    public float MaxShield => maxShield * shieldMultiplier * shieldGlobalMultiplier;
     public float CurrentShield => currentShield;
+    public float ShieldGlobalMultiplier => shieldGlobalMultiplier;
 
     public float ShieldRestorePerEnemyKill => shieldRestorePerEnemyKill;
     public float ShieldRechargeTime => shieldRechargeTime;
@@ -169,6 +171,29 @@ public class PlayerShield : MonoBehaviour, ITakeDamageModifier
 
         shieldMultiplier += amount;
 
+        float newMax = MaxShield;
+        float delta = newMax - oldMax;
+
+        if (oldMax <= 0f)
+        {
+            shieldActive = true;
+            currentShield = newMax;
+            shieldRegenTimer = 0f;
+            noShieldDamageTimer = 0f;
+        }
+        else
+        {
+            currentShield = Mathf.Min(currentShield + delta, newMax);
+        }
+
+        UpdateShieldUI();
+        UpdateShieldVisual();
+    }
+
+    public void AddShieldGlobalMultiplier(float amount)
+    {
+        float oldMax = MaxShield;
+        shieldGlobalMultiplier += amount;
         float newMax = MaxShield;
         float delta = newMax - oldMax;
 

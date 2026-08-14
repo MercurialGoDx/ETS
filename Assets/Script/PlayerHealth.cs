@@ -10,6 +10,9 @@ public class PlayerHealth : MonoBehaviour
     public float maxHealthMultiplier = 1f;
     public float healthRegenPerSecond = 0f;
     public float regenPer100MissingHealth = 0f;
+    [SerializeField] private float healthRegenMultiplier = 1f;
+    [SerializeField] private float maxHealthGlobalMultiplier = 1f;
+    [SerializeField] private float healthRegenGlobalMultiplier = 1f;
 
     [Header("Health - Damage Block (diminishing)")]
     [SerializeField, Range(0f, 0.95f)]
@@ -32,6 +35,7 @@ public class PlayerHealth : MonoBehaviour
     [SerializeField] private WeaponDefinition spikesWeapon;
     [SerializeField] private float spikesBase = 0f;         // базовый урон шипов
     [SerializeField] private float spikesMultiplier = 1f;   // множитель шипов
+    [SerializeField] private float spikesGlobalMultiplier = 1f;
     [SerializeField] private float spikesOnKillBonus = 0f;  // доп. урон за убийство врага
     [SerializeField] private float spikesDamageScalePerEnemyHit = 0f;   // доп. урон за каждое получение урона от врага
     [Header("Эффекты при получении урона")]
@@ -48,12 +52,15 @@ public class PlayerHealth : MonoBehaviour
 
     // === Публичные свойства (для других скриптов) ===
 
-    public float MaxHealth => baseMaxHealth * maxHealthMultiplier;
+    public float MaxHealth => baseMaxHealth * maxHealthMultiplier * maxHealthGlobalMultiplier;
     public float maxHealth => MaxHealth;   // старое имя, на всякий случай
+    public float MaxHealthGlobalMultiplier => maxHealthGlobalMultiplier;
+    public float HealthRegenGlobalMultiplier => healthRegenGlobalMultiplier;
 
     public float CurrentHealth => currentHealth;
 
-    public float SpikesDamage => spikesBase * spikesMultiplier;
+    public float SpikesDamage => spikesBase * spikesMultiplier * spikesGlobalMultiplier;
+    public float SpikesGlobalMultiplier => spikesGlobalMultiplier;
 
     /// <summary>
     /// Итоговый реген в секунду: базовый плюс бонус за недостающее здоровье.
@@ -61,7 +68,7 @@ public class PlayerHealth : MonoBehaviour
     /// </summary>
     public float GetTotalRegen()
     {
-        float regen = healthRegenPerSecond;
+        float regen = healthRegenPerSecond * healthRegenMultiplier;
 
         // Бонусный реген за недостающее здоровье
         if (UpgradesManager.Instance != null &&
@@ -74,7 +81,7 @@ public class PlayerHealth : MonoBehaviour
             }
         }
 
-        return regen;
+        return regen * healthRegenGlobalMultiplier;
     }
 
     private List<ITakeDamageModifier> modifiers = new();
@@ -255,9 +262,29 @@ public class PlayerHealth : MonoBehaviour
         UpdateHealthUI();
     }
 
+    public void AddMaxHealthGlobalMultiplierAndHeal(float percent)
+    {
+        float oldMax = MaxHealth;
+        maxHealthGlobalMultiplier += percent;
+        float newMax = MaxHealth;
+
+        currentHealth = Mathf.Min(currentHealth + newMax - oldMax, newMax);
+        UpdateHealthUI();
+    }
+
     public void AddHealthRegen(float amountPerSecond)
     {
         healthRegenPerSecond += amountPerSecond;
+    }
+
+    public void AddHealthRegenMultiplier(float percent)
+    {
+        healthRegenMultiplier += percent;
+    }
+
+    public void AddHealthRegenGlobalMultiplier(float percent)
+    {
+        healthRegenGlobalMultiplier += percent;
     }
 
     // старые названия для совместимости
@@ -291,6 +318,11 @@ public class PlayerHealth : MonoBehaviour
     public void AddSpikesPercent(float amount)
     {
         spikesMultiplier += amount;
+    }
+
+    public void AddSpikesGlobalMultiplier(float percent)
+    {
+        spikesGlobalMultiplier += percent;
     }
 
     public void AddSpikesDamagePerKill(float amount)

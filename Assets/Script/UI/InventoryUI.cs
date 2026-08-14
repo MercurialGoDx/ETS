@@ -281,7 +281,7 @@ public class InventoryUI : MonoBehaviour
             Row("Щит", Pair(playerShield.CurrentShield, playerShield.MaxShield));
 
         if (towerAttack != null)
-            Row("Скорость атаки", Percent(towerAttack.fireRateMultiplier - 1f));
+            Row("Скорость атаки", Percent(towerAttack.TotalFireRateMultiplier - 1f));
 
         // ВАЖНО: статы пишутся апгрейдами в context.runtime (Apply(context)), а НЕ в
         // UpgradesManager.RuntimeData — GameInstaller создаёт под контекст отдельный
@@ -293,14 +293,14 @@ public class InventoryUI : MonoBehaviour
         if (runtime != null)
         {
             // Доли: 0.45 = +45%, как их читает DamageCalculator.
-            Row("Общий урон", Percent(runtime.globalDamagePercent));
+            Row("Общий урон", Percent(runtime.damagePercent));
             Row("Урон со временем", Percent(runtime.totalGeneratorDamagePercent));
 
             float maxHpBonus = playerHealth != null
                 ? (playerHealth.MaxHealth / 100f) * runtime.damagePerValueHpPercent
                 : 0f;
             Row("Урон от макс. HP", Percent(maxHpBonus));
-            Row("Урон при щите", Percent(runtime.damageWhileShieldActivePercent));
+            Row("Урон при щите", Percent(runtime.adaptiveDamageWhileShieldPercent));
         }
 
         if (GoldManager.Instance != null)
@@ -325,6 +325,52 @@ public class InventoryUI : MonoBehaviour
                 float total = flat + towerAttack.GetTotalWeaponsOfType(type) * perWeapon;
 
                 Row(DamageTypeLabels[(int)type], Percent(total));
+            }
+        }
+
+        bool hasLayerMultipliers =
+            playerHealth != null &&
+            (!Mathf.Approximately(playerHealth.MaxHealthGlobalMultiplier, 1f) ||
+             !Mathf.Approximately(playerHealth.HealthRegenGlobalMultiplier, 1f) ||
+             !Mathf.Approximately(playerHealth.SpikesGlobalMultiplier, 1f));
+        hasLayerMultipliers |= playerShield != null &&
+            !Mathf.Approximately(playerShield.ShieldGlobalMultiplier, 1f);
+        hasLayerMultipliers |= towerAttack != null &&
+            !Mathf.Approximately(towerAttack.GlobalFireRateMultiplier, 1f);
+        hasLayerMultipliers |= runtime != null &&
+            (!Mathf.Approximately(runtime.globalDamagePercent, 0f) ||
+             !Mathf.Approximately(runtime.globalDamagePer100GoldPercent, 0f) ||
+             !Mathf.Approximately(runtime.adaptiveDamageWhileShieldPercent, 0f));
+
+        if (hasLayerMultipliers)
+        {
+            Header("Global / Adaptive");
+
+            if (playerHealth != null)
+            {
+                Row("Здоровье", Multiplier(playerHealth.MaxHealthGlobalMultiplier));
+                Row("Реген", Multiplier(playerHealth.HealthRegenGlobalMultiplier));
+                Row("Шипы", Multiplier(playerHealth.SpikesGlobalMultiplier));
+            }
+
+            if (playerShield != null)
+                Row("Щит", Multiplier(playerShield.ShieldGlobalMultiplier));
+
+            if (towerAttack != null)
+                Row("Скорость атаки", Multiplier(towerAttack.GlobalFireRateMultiplier));
+
+            if (runtime != null)
+            {
+                int currentGold = GoldManager.Instance != null ? GoldManager.Instance.currentGold : 0;
+                float goldBonus = (currentGold / 100f) * runtime.globalDamagePer100GoldPercent;
+                float globalDamageMultiplier = 1f + runtime.globalDamagePercent + goldBonus;
+                float adaptiveMultiplier = playerShield != null && playerShield.IsShieldActive
+                    ? 1f + runtime.adaptiveDamageWhileShieldPercent
+                    : 1f;
+
+                Row("Урон: global", Multiplier(globalDamageMultiplier));
+                Row("Мидас (текущее золото)", Percent(goldBonus));
+                Row("Урон: adaptive", Multiplier(adaptiveMultiplier));
             }
         }
 
@@ -377,6 +423,11 @@ public class InventoryUI : MonoBehaviour
     private static string Percent(float fraction)
     {
         return fraction > Eps ? "+" + Mathf.RoundToInt(fraction * 100f) + "%" : "—";
+    }
+
+    private static string Multiplier(float value)
+    {
+        return "x" + value.ToString("0.###", NumFormat);
     }
 
     /// <summary>Целое с разделителем тысяч: 22 190.</summary>

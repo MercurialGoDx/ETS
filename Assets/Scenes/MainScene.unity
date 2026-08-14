@@ -16825,7 +16825,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 435a79e6cce19054789e49b89283cd6d, type: 2}
   - {fileID: 11400000, guid: 6189997885b022743aa192c2dabe939a, type: 2}
   availableUpgrades:
-  - {fileID: 11400000, guid: 765075ac3250aba4dbcee28f9d522eb6, type: 2}
   - {fileID: 11400000, guid: c865db2b9fc16994a94f8905491a2e1a, type: 2}
   - {fileID: 11400000, guid: 5fb0841288e711148b576156be0549ff, type: 2}
   - {fileID: 11400000, guid: 64dca25193c11984faf5362a473201e7, type: 2}
@@ -21654,6 +21653,11 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 283095da21a3b4c4fb872a3c958fd122, type: 2}
   - {fileID: 11400000, guid: 37c4c3bf621bc214eb0cbd51ae03e6de, type: 2}
   - {fileID: 11400000, guid: cb797761aa1ec884689da40b0ef6976e, type: 2}
+  - {fileID: 11400000, guid: 0eb284303da7cae47bd9f9fba127611d, type: 2}
+  - {fileID: 11400000, guid: 391a4bb5d3b6bb447a13e27a5de4ff99, type: 2}
+  - {fileID: 11400000, guid: 49732a3b015736641bace06cfaa645aa, type: 2}
+  - {fileID: 11400000, guid: d7ec681b4647a3447830aa3205d101d1, type: 2}
+  - {fileID: 11400000, guid: e4638f87233a6f945bcc9ec4cd576885, type: 2}
 --- !u!114 &1102466067
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -23598,7 +23602,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -43.80005, y: -146.39996}
+  m_AnchoredPosition: {x: -43.800293, y: -146.3999}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 1, y: 0}
 --- !u!114 &1180183279
@@ -28343,10 +28347,12 @@ MonoBehaviour:
     damageTypeMultipliers: []
     damageTypeStacks: 
     enemySpawner: {fileID: 0}
+    damagePercent: 0
     globalDamagePercent: 0
+    globalDamagePer100GoldPercent: 0
     generatorDamagePercent: 0
     totalGeneratorDamagePercent: 0
-    damageWhileShieldActivePercent: 0
+    adaptiveDamageWhileShieldPercent: 0
     damagePerValueHpPercent: 0
     damagePerValueGoldPercent: 0
   playerHealth: {fileID: 1695926638903416467}
