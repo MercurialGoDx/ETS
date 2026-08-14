@@ -75,7 +75,7 @@ MonoBehaviour:
   homing: 1
   maxLifeTime: 10
   useAoe: 1
-  aoeRadius: 3
+  aoeRadius: 4
   hitHeightOffset: 0.3
 --- !u!114 &-1552873405703722884
 MonoBehaviour:

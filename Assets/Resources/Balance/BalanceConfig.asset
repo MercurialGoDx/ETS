@@ -16,12 +16,12 @@ MonoBehaviour:
   waves:
     delayPerWave: 10
     enemyPerWave: 12
-    difficultStart: 3.5
-    difficultMid: 5.25
-    difficultEnd: 10.5
+    difficultStart: 3
+    difficultMid: 6
+    difficultEnd: 9
     timeDifficultStart: 0
     timeDifficultMid: 720
-    timeDifficultEnd: 1200
+    timeDifficultEnd: 1500
     hpAddPerWave: 2
     damageAddPerWave: 0.05
   boss:

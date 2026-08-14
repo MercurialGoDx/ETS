@@ -10,22 +10,22 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f3a9287f7cdfa744ebf102da5de8f389, type: 3}
-  m_Name: MagicCircle
+  m_Name: Weapon
   m_EditorClassIdentifier: 
-  icon: {fileID: 21300000, guid: 7f64f4d646f2caf4b89a9d9a2c471285, type: 3}
+  icon: {fileID: 0}
   localizedStringTable:
     m_TableReference:
-      m_TableCollectionName: GUID:32a974e0a609fb740a2db5dde9508098
-  nameKey: magic_circle.name
-  descriptionKey: magic_circle.desc
-  price: 3000
-  damagePerProjectile: 150
-  fireRate: 0.2
+      m_TableCollectionName: 
+  nameKey: 
+  descriptionKey: 
+  price: 10
+  damagePerProjectile: 5
+  fireRate: 1
   projectileSpeed: 10
-  itemTier: 4
+  itemTier: 1
   damageType: 0
-  bulletPrefab: {fileID: 1907847517366949446, guid: b5f956294110ccd49859e5e46f527382, type: 3}
-  weight: 2
+  bulletPrefab: {fileID: 0}
+  weight: 1
   weightIncreasePerPurchase: 2
   maxWeightIncreasePurchases: 5
   weightDecreaseUpgrades: []

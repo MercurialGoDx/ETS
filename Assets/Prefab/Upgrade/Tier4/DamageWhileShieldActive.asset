@@ -31,4 +31,4 @@ MonoBehaviour:
       m_TableCollectionName: GUID:164770c6fc8794c4ba4db6f8c7e72db3
   nameKey: damage_while_shield_active.name
   descriptionKey: damage_while_shield_active.desc
-  valuePercent: 50
+  valuePercent: 20

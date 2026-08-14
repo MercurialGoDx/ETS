@@ -19,11 +19,21 @@ MonoBehaviour:
   nameKey: chaos_wave.name
   descriptionKey: chaos_wave.desc
   price: 1500
-  damagePerProjectile: 80
+  damagePerProjectile: 75
   fireRate: 0.6
   projectileSpeed: 25
   itemTier: 3
   damageType: 5
   bulletPrefab: {fileID: 7355821390746544617, guid: 173cc582acdef9f4499c390492f594e2, type: 3}
   weight: 4
+  weightIncreasePerPurchase: 2
+  maxWeightIncreasePurchases: 5
+  weightDecreaseUpgrades: []
+  weightDecreaseUpgradePercent: 0
+  weightIncreaseUpgrades: []
+  weightIncreaseUpgradePercent: 0
+  weightDecreaseWeapons: []
+  weightDecreaseWeaponPercent: 0
+  weightIncreaseWeapons: []
+  weightIncreaseWeaponPercent: 0
   targetingMode: 0

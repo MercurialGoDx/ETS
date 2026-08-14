@@ -19,11 +19,21 @@ MonoBehaviour:
   nameKey: blizzard.name
   descriptionKey: blizzard.desc
   price: 3000
-  damagePerProjectile: 225
+  damagePerProjectile: 200
   fireRate: 0.6
   projectileSpeed: 10
   itemTier: 4
   damageType: 0
   bulletPrefab: {fileID: 7923825170990938251, guid: 60bfc24b373e2874eba32275c5424d2a, type: 3}
   weight: 2
+  weightIncreasePerPurchase: 2
+  maxWeightIncreasePurchases: 5
+  weightDecreaseUpgrades: []
+  weightDecreaseUpgradePercent: 0
+  weightIncreaseUpgrades: []
+  weightIncreaseUpgradePercent: 0
+  weightDecreaseWeapons: []
+  weightDecreaseWeaponPercent: 0
+  weightIncreaseWeapons: []
+  weightIncreaseWeaponPercent: 0
   targetingMode: 0

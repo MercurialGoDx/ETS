@@ -19,11 +19,21 @@ MonoBehaviour:
   nameKey: log.name
   descriptionKey: log.desc
   price: 1500
-  damagePerProjectile: 160
+  damagePerProjectile: 140
   fireRate: 0.4
   projectileSpeed: 13
   itemTier: 3
   damageType: 4
   bulletPrefab: {fileID: 7446537798224516572, guid: 0a54143786110674583c9ecd60b1951c, type: 3}
   weight: 4
+  weightIncreasePerPurchase: 2
+  maxWeightIncreasePurchases: 5
+  weightDecreaseUpgrades: []
+  weightDecreaseUpgradePercent: 0
+  weightIncreaseUpgrades: []
+  weightIncreaseUpgradePercent: 0
+  weightDecreaseWeapons: []
+  weightDecreaseWeaponPercent: 0
+  weightIncreaseWeapons: []
+  weightIncreaseWeaponPercent: 0
   targetingMode: 0

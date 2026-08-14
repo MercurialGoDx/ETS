@@ -19,11 +19,21 @@ MonoBehaviour:
   nameKey: meteor.name
   descriptionKey: meteor.desc
   price: 3000
-  damagePerProjectile: 340
+  damagePerProjectile: 345
   fireRate: 0.3
   projectileSpeed: 18
   itemTier: 4
   damageType: 5
   bulletPrefab: {fileID: 9124597016870509411, guid: 4a00cc4f70356df4ea12796c2752b61c, type: 3}
   weight: 2
+  weightIncreasePerPurchase: 2
+  maxWeightIncreasePurchases: 5
+  weightDecreaseUpgrades: []
+  weightDecreaseUpgradePercent: 0
+  weightIncreaseUpgrades: []
+  weightIncreaseUpgradePercent: 0
+  weightDecreaseWeapons: []
+  weightDecreaseWeaponPercent: 0
+  weightIncreaseWeapons: []
+  weightIncreaseWeaponPercent: 0
   targetingMode: 0

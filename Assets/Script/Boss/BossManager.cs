@@ -21,10 +21,10 @@ public class BossManager : MonoBehaviour
     [Header("Difficulty scaling")]
     public EnemySpawner enemySpawner;
 
-    [Tooltip("Множитель HP босса поверх общего множителя сложности (босс — жирная цель).")]
+    [Tooltip("Множитель базового HP босса до применения общей сложности.")]
     public float bossHpMultiplier = 1.5f;
 
-    [Tooltip("Множитель урона босса. Урон растёт по КОРНЮ из множителя сложности, иначе на поздних минутах босс ваншотит башню.")]
+    [Tooltip("Множитель базового урона босса до применения общей сложности.")]
     public float bossDamageMultiplier = 1f;
 
     private Transform player;
@@ -160,25 +160,46 @@ public class BossManager : MonoBehaviour
         chosen.instance.transform.position = spawnPos;
         chosen.instance.transform.rotation = Quaternion.identity;
 
-        float difficultyMult = 1f;
-        if (enemySpawner != null)
-            difficultyMult = enemySpawner.difficultyMultiplier;
-
-        // HP и урон масштабируются раздельно: HP — линейно по множителю сложности (жирная цель),
-        // урон — по КОРНЮ из множителя (давит, но не ваншотит даже на поздних минутах).
-        chosen.enemy.InitStats(
-            chosen.baseHealth * difficultyMult * bossHpMultiplier,
-            chosen.baseDamage * Mathf.Sqrt(difficultyMult) * bossDamageMultiplier
-        );
-
         chosen.instance.SetActive(true);
         activeBossEnemy = chosen.enemy;
         activeBossEnemy.isDead = false;
 
+        float difficultyMult = 1f;
+        float flatHealth = 0f;
+        float flatDamage = 0f;
+
+        if (enemySpawner != null)
+        {
+            enemySpawner.InitializeSpawnedEnemy(
+                chosen.enemy,
+                chosen.baseHealth,
+                chosen.baseDamage,
+                bossHpMultiplier,
+                bossDamageMultiplier);
+
+            difficultyMult = enemySpawner.CurrentMultiplier;
+            flatHealth = enemySpawner.CurrentFlatHealthBonus;
+            flatDamage = enemySpawner.CurrentFlatDamageBonus;
+        }
+        else
+        {
+            chosen.enemy.InitStats(
+                chosen.baseHealth * bossHpMultiplier,
+                chosen.baseDamage * bossDamageMultiplier);
+
+            EnemyEffectManager.Instance?.ApplyEffectsToEnemy(chosen.enemy);
+            Debug.LogWarning("[BossManager] EnemySpawner is not assigned; boss spawned without wave scaling");
+        }
+
         if (bossHealthBar != null)
             bossHealthBar.Show(activeBossEnemy);
 
-        Debug.Log($"[BossManager] Boss spawned ({chosen.instance.name}) | mult={difficultyMult:F2} hp x{bossHpMultiplier:F1} dmg x{bossDamageMultiplier:F1}");
+        Debug.Log(
+            $"[BossManager] Boss spawned ({chosen.instance.name}) | " +
+            $"baseHp={chosen.baseHealth:F1}, baseDmg={chosen.baseDamage:F1}, " +
+            $"difficulty=x{difficultyMult:F3}, flatHp={flatHealth:F1}, flatDmg={flatDamage:F1}, " +
+            $"bossHp=x{bossHpMultiplier:F2}, bossDmg=x{bossDamageMultiplier:F2}, " +
+            $"finalHp={chosen.enemy.maxHealth:F1}, finalDmg={chosen.enemy.damageToPlayer:F1}");
     }
 
     private Vector3 GetRandomPointAroundPlayer()

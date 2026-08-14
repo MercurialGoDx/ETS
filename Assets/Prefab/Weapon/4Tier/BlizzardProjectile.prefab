@@ -51,7 +51,7 @@ MonoBehaviour:
   delayBeforeStrike: 0.3
   portalLifeTime: 3
   damage: 180
-  radius: 4
+  radius: 3
 --- !u!114 &-5342132770544457188
 MonoBehaviour:
   m_ObjectHideFlags: 0

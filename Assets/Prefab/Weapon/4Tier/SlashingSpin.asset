@@ -19,7 +19,7 @@ MonoBehaviour:
   nameKey: slashing_spin.name
   descriptionKey: slashing_spin.desc
   price: 3000
-  damagePerProjectile: 200
+  damagePerProjectile: 125
   fireRate: 1
   projectileSpeed: 10
   itemTier: 4
