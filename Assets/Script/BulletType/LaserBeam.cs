@@ -240,7 +240,7 @@ public class LaserBeam : MonoBehaviour, IAttackBehaviour
             }
 
             // просто для примера, multiplier можно использовать для доп.логики
-            float multiplier = ownerTower != null ? ownerTower.fireRateMultiplier : 1f;
+            float multiplier = ownerTower != null ? ownerTower.TotalFireRateMultiplier : 1f;
         }
 
         pooledObject.Release();
@@ -254,7 +254,7 @@ public class LaserBeam : MonoBehaviour, IAttackBehaviour
     {
         float multiplier = 1f;
         if (ownerTower != null)
-            multiplier = Mathf.Max(0.01f, ownerTower.fireRateMultiplier);
+            multiplier = Mathf.Max(0.01f, ownerTower.TotalFireRateMultiplier);
 
         currentTickInterval = 1f / (baseFireRate * multiplier);
 

@@ -15,6 +15,17 @@ MonoBehaviour:
   icon: {fileID: 0}
   price: 0
   weight: 0
+  itemTier: 0
+  weightIncreasePerPurchase: 2
+  maxWeightIncreasePurchases: 5
+  weightDecreaseUpgrades: []
+  weightDecreasePercent: 0
+  weightIncreaseUpgrades: []
+  weightIncreasePercent: 0
+  weightDecreaseWeapons: []
+  weightDecreaseWeaponPercent: 0
+  weightIncreaseWeapons: []
+  weightIncreaseWeaponPercent: 0
   localizedStringTable:
     m_TableReference:
       m_TableCollectionName: 

@@ -18,6 +18,9 @@ public class TowerAttack : MonoBehaviour
 
     [Header("Глобальные бонусы")]
     public float fireRateMultiplier = 1f;   // 1 = без бонусов
+    [SerializeField] private float globalFireRateMultiplier = 1f;
+    public float GlobalFireRateMultiplier => globalFireRateMultiplier;
+    public float TotalFireRateMultiplier => fireRateMultiplier * globalFireRateMultiplier;
 
     [Header("Wave настройки")]
     public float waveForwardOffset = 1.5f;   // Насколько вынести вперёд от башни
@@ -109,7 +112,7 @@ public class TowerAttack : MonoBehaviour
             {
                 bool fired = FireWeapon(weapon);
                 if (fired)
-                    weapon.cooldown = 1f / (weapon.def.fireRate * fireRateMultiplier);
+                    weapon.cooldown = 1f / (weapon.def.fireRate * TotalFireRateMultiplier);
             }
         }
     }
@@ -134,7 +137,7 @@ public class TowerAttack : MonoBehaviour
         if (stacks <= 0) yield break;
 
         // Время между атаками (учитывает GlobalFireRate через fireRateMultiplier)
-        float attackInterval = 1f / (weapon.def.fireRate * fireRateMultiplier);
+        float attackInterval = 1f / (weapon.def.fireRate * TotalFireRateMultiplier);
 
         // Окно залпа = 50% (или сколько поставишь в инспекторе)
         float volleyWindow = attackInterval * Mathf.Clamp01(volleyWindowPercent);
@@ -324,6 +327,11 @@ public class TowerAttack : MonoBehaviour
                 fireRateMultiplier += add;
                 break;
         }
+    }
+
+    public void AddGlobalFireRateMultiplier(float percent)
+    {
+        globalFireRateMultiplier += percent;
     }
 
     private float GetFinalDamage(WeaponRuntime weapon)

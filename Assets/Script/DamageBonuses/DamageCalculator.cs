@@ -19,16 +19,28 @@ public sealed class DamageCalculationBreakdown
 {
     private const float Epsilon = 0.0001f;
 
-    public DamageCalculationBreakdown(float baseDamage, float totalBonus, float finalDamage, List<DamageBonusContribution> contributions)
+    public DamageCalculationBreakdown(
+        float baseDamage,
+        float normalBonus,
+        float globalBonus,
+        float adaptiveBonus,
+        float finalDamage,
+        List<DamageBonusContribution> contributions)
     {
         BaseDamage = baseDamage;
-        TotalBonus = totalBonus;
+        NormalBonus = normalBonus;
+        GlobalBonus = globalBonus;
+        AdaptiveBonus = adaptiveBonus;
         FinalDamage = finalDamage;
         Contributions = contributions;
     }
 
     public float BaseDamage { get; }
-    public float TotalBonus { get; }
+    public float NormalBonus { get; }
+    public float GlobalBonus { get; }
+    public float AdaptiveBonus { get; }
+    public float TotalMultiplierDamage => (1f + NormalBonus) * (1f + GlobalBonus) * (1f + AdaptiveBonus);
+    public float TotalBonus => TotalMultiplierDamage - 1f;
     public float FinalDamage { get; }
     public IReadOnlyList<DamageBonusContribution> Contributions { get; }
 
@@ -36,7 +48,10 @@ public sealed class DamageCalculationBreakdown
     {
         var sb = new StringBuilder();
         sb.Append("base=").Append(FormatNumber(BaseDamage));
-        sb.Append(", totalBonus=").Append(FormatPercent(TotalBonus));
+        sb.Append(", normal=x").Append(FormatMultiplier(1f + NormalBonus));
+        sb.Append(", global=x").Append(FormatMultiplier(1f + GlobalBonus));
+        sb.Append(", adaptive=x").Append(FormatMultiplier(1f + AdaptiveBonus));
+        sb.Append(", total=x").Append(FormatMultiplier(TotalMultiplierDamage));
         sb.Append(", final=").Append(FormatNumber(FinalDamage));
 
         bool hasNonZeroContributions = false;
@@ -79,6 +94,11 @@ public sealed class DamageCalculationBreakdown
         return value.ToString("0.###", CultureInfo.InvariantCulture);
     }
 
+    private static string FormatMultiplier(float value)
+    {
+        return value.ToString("0.###", CultureInfo.InvariantCulture);
+    }
+
     private static string FormatPercent(float value)
     {
         return (value >= 0f ? "+" : string.Empty)
@@ -94,6 +114,12 @@ public class DamageCalculator
     public void AddBonus(IDamageBonusProvider bonus)
     {
         bonuses.Add(bonus);
+
+        // Layer providers follow their normal counterparts in every calculator.
+        if (bonus is GlobalDamageBonus global)
+            bonuses.Add(new GlobalDamageMultiplierBonus(global.Runtime));
+        else if (bonus is GoldDamageBonus gold)
+            bonuses.Add(new GlobalGoldDamageBonus(gold.Runtime, gold.GoldGetter));
     }
 
     public float Calculate(DamageContext ctx)
@@ -103,18 +129,46 @@ public class DamageCalculator
 
     public DamageCalculationBreakdown CalculateWithBreakdown(DamageContext ctx)
     {
-        float totalBonus = 0f;
+        float normalBonus = 0f;
+        float globalBonus = 0f;
+        float adaptiveBonus = 0f;
         var contributions = new List<DamageBonusContribution>(bonuses.Count);
 
         foreach (var bonus in bonuses)
         {
             float bonusValue = bonus.GetDamageBonus(ctx);
-            totalBonus += bonusValue;
+            DamageMultiplierLayer layer = bonus is IDamageMultiplierLayerProvider layerProvider
+                ? layerProvider.Layer
+                : DamageMultiplierLayer.Normal;
+
+            switch (layer)
+            {
+                case DamageMultiplierLayer.Global:
+                    globalBonus += bonusValue;
+                    break;
+                case DamageMultiplierLayer.Adaptive:
+                    adaptiveBonus += bonusValue;
+                    break;
+                default:
+                    normalBonus += bonusValue;
+                    break;
+            }
+
             contributions.Add(new DamageBonusContribution(GetLabel(bonus, ctx, bonusValue), bonusValue));
         }
 
-        float finalDamage = ctx.baseDamage * (1f + totalBonus);
-        return new DamageCalculationBreakdown(ctx.baseDamage, totalBonus, finalDamage, contributions);
+        float finalDamage = ctx.baseDamage
+            * (1f + normalBonus)
+            * (1f + globalBonus)
+            * (1f + adaptiveBonus);
+
+        return new DamageCalculationBreakdown(
+            ctx.baseDamage,
+            normalBonus,
+            globalBonus,
+            adaptiveBonus,
+            finalDamage,
+            contributions);
     }
 
     private static string GetLabel(IDamageBonusProvider bonus, DamageContext ctx, float bonusValue)

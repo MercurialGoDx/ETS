@@ -64,7 +64,7 @@
         {
             "name": "Арбалет",
             "id": 106,
-            "attack_speed": 1.5,
+            "attack_speed": 1.25,
             "damage": 4.0,
             "tier": 1,
             "weight": 20.0,
@@ -495,7 +495,7 @@
             "value_1": 1.0,
             "effect_2": "",
             "value_2": 0.0,
-            "interval": 10.0,
+            "interval": 20.0,
             "asset": "Generator"
         },
         {
@@ -819,7 +819,7 @@
             "effect_1": "макс. HP, +%",
             "value_1": 25.0,
             "effect_2": "урон от макс. HP, +%",
-            "value_2": 5.0,
+            "value_2": 2.0,
             "interval": 0.0,
             "asset": "MytrhillMaterial"
         }

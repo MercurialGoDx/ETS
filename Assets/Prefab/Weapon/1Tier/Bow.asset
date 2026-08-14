@@ -20,7 +20,7 @@ MonoBehaviour:
   descriptionKey: bow.desc
   price: 100
   damagePerProjectile: 4
-  fireRate: 1.5
+  fireRate: 1.25
   projectileSpeed: 25
   itemTier: 1
   damageType: 3

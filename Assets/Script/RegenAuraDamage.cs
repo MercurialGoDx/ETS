@@ -45,33 +45,30 @@ public class RegenAuraDamage : MonoBehaviour
         var playerShield = upgrades.playerShield;
         var runtime = upgrades.context != null ? upgrades.context.runtime : null;
 
-        // 1) Считаем общий реген игрока в секунду
-        float baseRegen = playerHealth.healthRegenPerSecond; // базовый реген из апгрейдов
-
-        float bonusRegen = 0f;
-        // если мы делали улучшение "реген за недостающее здоровье"
-        if (playerHealth.regenPer100MissingHealth > 0f)
-        {
-            float missing = playerHealth.MaxHealth - playerHealth.CurrentHealth;
-            if (missing > 0f)
-            {
-                bonusRegen = playerHealth.regenPer100MissingHealth * (missing / 100f);
-            }
-        }
-
-        float totalRegen = baseRegen + bonusRegen;
+        // 1) Use the same final regeneration value as healing and the stats UI.
+        float totalRegen = playerHealth.GetTotalRegen();
         if (totalRegen <= 0f)
             return;
 
         // 2) Считаем базовый урон от ауры, а потом усиливаем только разрешёнными бонусами.
         float baseDamagePerEnemy = totalRegen * regenAuraMultiplier;
-        float globalBonus = runtime != null ? runtime.globalDamagePercent : 0f;
+        float normalBonus = runtime != null ? runtime.damagePercent : 0f;
         float generatorBonus = runtime != null ? runtime.totalGeneratorDamagePercent : 0f;
-        float shieldBonus = runtime != null && playerShield != null && playerShield.IsShieldActive
-            ? runtime.damageWhileShieldActivePercent
+        float adaptiveBonus = runtime != null && playerShield != null && playerShield.IsShieldActive
+            ? runtime.adaptiveDamageWhileShieldPercent
             : 0f;
-        float totalAllowedBonus = globalBonus + generatorBonus + shieldBonus;
-        float damagePerEnemy = baseDamagePerEnemy * (1f + totalAllowedBonus);
+        float globalDamageBonus = runtime != null ? runtime.globalDamagePercent : 0f;
+        int currentGold = upgrades.context != null && upgrades.context.goldManager != null
+            ? upgrades.context.goldManager.currentGold
+            : 0;
+        float globalGoldBonus = runtime != null
+            ? (currentGold / 100f) * runtime.globalDamagePer100GoldPercent
+            : 0f;
+        float globalLayerBonus = globalDamageBonus + globalGoldBonus;
+        float damagePerEnemy = baseDamagePerEnemy
+            * (1f + normalBonus + generatorBonus)
+            * (1f + globalLayerBonus)
+            * (1f + adaptiveBonus);
 
         // 3) Наносим урон всем врагам на сцене
         // Хранить всех доступных врагов в одном листе
@@ -88,8 +85,9 @@ public class RegenAuraDamage : MonoBehaviour
 
         Debug.Log(
             $"[RegenAura] Tick: regen={totalRegen:F1}, mult={regenAuraMultiplier:F2}, " +
-            $"base={baseDamagePerEnemy:F1}, global={globalBonus * 100f:F1}%, " +
-            $"generator={generatorBonus * 100f:F1}%, shield={shieldBonus * 100f:F1}%, " +
+            $"base={baseDamagePerEnemy:F1}, normal=x{1f + normalBonus + generatorBonus:F3}, " +
+            $"global=x{1f + globalLayerBonus:F3} (gold={currentGold}), " +
+            $"adaptive=x{1f + adaptiveBonus:F3}, " +
             $"final={damagePerEnemy:F1}, enemies={enemies.Length}");
     }
 }

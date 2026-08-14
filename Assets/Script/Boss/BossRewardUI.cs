@@ -70,7 +70,7 @@ public class BossRewardUI : MonoBehaviour
         // применяем апгрейд (через UpgradesManager, как у тебя уже в проекте)
         if (reward != null && UpgradesManager.Instance != null)
         {
-            UpgradesManager.Instance.ApplyUpgrade(reward);
+            UpgradesManager.Instance.ApplyBossReward(reward);
         }
 
         Close();

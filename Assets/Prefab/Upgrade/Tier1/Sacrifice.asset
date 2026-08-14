@@ -33,4 +33,4 @@ MonoBehaviour:
   descriptionKey: sacrifice.desc
   lifeLoseValue: 50
   basicGold: 200
-  multGold: 5
+  multGold: 0

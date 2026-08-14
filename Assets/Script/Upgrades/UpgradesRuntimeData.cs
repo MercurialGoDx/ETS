@@ -13,10 +13,12 @@ public class UpgradesRuntimeData
 
     public EnemySpawner enemySpawner;
 
-    public float globalDamagePercent; // +% ко всем типам
+    public float damagePercent;
+    public float globalDamagePercent;
+    public float globalDamagePer100GoldPercent;
     public float generatorDamagePercent; // +% со временем
     public float totalGeneratorDamagePercent;
-    public float damageWhileShieldActivePercent; // +% при щите
+    public float adaptiveDamageWhileShieldPercent;
 
 
     public float damagePerValueHpPercent;
@@ -41,6 +43,7 @@ public class UpgradesRuntimeData
     }
 
     private Dictionary<UpgradeBaseSO, int> upgradePurchaseCounts = new();
+    private Dictionary<UpgradeBaseSO, int> bossRewardCounts = new();
     private Dictionary<WeaponDefinition, int> weaponPurchaseCounts = new();
 
     /// <summary>
@@ -49,6 +52,7 @@ public class UpgradesRuntimeData
     /// за боссов (оба пути идут через UpgradesManager.ApplyUpgrade). Только чтение.
     /// </summary>
     public IReadOnlyDictionary<UpgradeBaseSO, int> UpgradePurchaseCounts => upgradePurchaseCounts;
+    public IReadOnlyDictionary<UpgradeBaseSO, int> BossRewardCounts => bossRewardCounts;
 
     // Отслеживание модификаторов веса от купленных апгрейдов/оружий
     // Ключ: целевой апгрейд/оружие, Значение: список (источник модификатора, процент, количество применений)
@@ -402,6 +406,19 @@ public class UpgradesRuntimeData
 
         // Регистрируем модификаторы веса от этого апгрейда
         RegisterUpgradeWeightModifiers(upgrade);
+    }
+
+    public void RegisterBossReward(UpgradeBaseSO reward)
+    {
+        if (reward == null)
+            return;
+
+        RegisterUpgradePurchase(reward);
+
+        if (!bossRewardCounts.ContainsKey(reward))
+            bossRewardCounts[reward] = 0;
+
+        bossRewardCounts[reward]++;
     }
 
     public void RegisterWeaponPurchase(WeaponDefinition weapon)

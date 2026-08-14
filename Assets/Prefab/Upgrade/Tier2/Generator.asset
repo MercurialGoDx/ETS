@@ -31,5 +31,5 @@ MonoBehaviour:
       m_TableCollectionName: GUID:164770c6fc8794c4ba4db6f8c7e72db3
   nameKey: generator.name
   descriptionKey: generator.desc
-  interval: 10
+  interval: 20
   valuePercent: 1

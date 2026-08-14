@@ -1,4 +1,4 @@
-public class ShieldDamageBonus : IDamageBonusProvider, IDamageBonusDebugProvider
+public class ShieldDamageBonus : IDamageBonusProvider, IDamageBonusDebugProvider, IDamageMultiplierLayerProvider
 {
     private readonly UpgradesRuntimeData runtime;
     private readonly PlayerShield shield;
@@ -9,15 +9,17 @@ public class ShieldDamageBonus : IDamageBonusProvider, IDamageBonusDebugProvider
         this.shield = shield;
     }
 
+    public DamageMultiplierLayer Layer => DamageMultiplierLayer.Adaptive;
+
     public float GetDamageBonus(DamageContext ctx)
     {
         return shield.IsShieldActive
-            ? runtime.damageWhileShieldActivePercent
+            ? runtime.adaptiveDamageWhileShieldPercent
             : 0f;
     }
 
     public string GetDebugLabel(DamageContext ctx, float bonusValue)
     {
-        return "Shield active";
+        return "Adaptive damage while shield active";
     }
 }
