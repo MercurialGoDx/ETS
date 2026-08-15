@@ -19,7 +19,7 @@ MonoBehaviour:
   nameKey: ultimate_laser.name
   descriptionKey: ultimate_laser.desc
   price: 3000
-  damagePerProjectile: 0
+  damagePerProjectile: 35
   fireRate: 2
   projectileSpeed: 10
   itemTier: 4

@@ -18,30 +18,6 @@ MonoBehaviour:
   m_Metadata:
     m_Items: []
   m_TableData: []
-  - m_Id: 74576184482758691
-    m_Localized: <color=#ffd700>Jagd</color>
-    m_Metadata:
-      m_Items: []
-  - m_Id: 74576184482758692
-    m_Localized: 'Gegner werden mit einer Chance von <color=#ffd700>{0}%</color> golden. Goldene Gegner haben <color=#ffd700>x{1}</color> Leben, <color=#ffd700>x{2}</color> Schaden und geben <color=#ffd700>x{3}</color> Gold.\n\n<color=#ffd700>Kosten: {4}</color>'
-    m_Metadata:
-      m_Items: []
-  - m_Id: 74576184482758693
-    m_Localized: <color=#ffd700>Duplikator</color>
-    m_Metadata:
-      m_Items: []
-  - m_Id: 74576184482758694
-    m_Localized: 'Der nächste Kauf einer Waffe oder Verbesserung des Tiers <color=#ffd700>{0}</color> gewährt <color=#ffd700>{1}</color> zusätzliche Kopien. Nicht stapelbar, solange aktiv.\n\n<color=#ffd700>Kosten: {2}</color>'
-    m_Metadata:
-      m_Items: []
-  - m_Id: 74576184482758695
-    m_Localized: <color=#BA0606>Bossvertrag</color>
-    m_Metadata:
-      m_Items: []
-  - m_Id: 74576184482758696
-    m_Localized: 'Der nächste Boss hat <color=#BA0606>x{0}</color> Leben und <color=#BA0606>x{1}</color> Schaden. Besiege ihn für eine zusätzliche Bossbelohnung. Verträge stapeln sich bis zum Erscheinen des Bosses.\n\n<color=#ffd700>Kosten: {2}</color>'
-    m_Metadata:
-      m_Items: []
   references:
     version: 2
     RefIds: []

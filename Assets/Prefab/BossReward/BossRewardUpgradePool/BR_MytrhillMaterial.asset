@@ -29,8 +29,8 @@ MonoBehaviour:
   localizedStringTable:
     m_TableReference:
       m_TableCollectionName: GUID:164770c6fc8794c4ba4db6f8c7e72db3
-  nameKey: mythrill.name
-  descriptionKey: mythrill.desc
+  nameKey: br_mythrill.name
+  descriptionKey: br_mythrill.desc
   upgrades:
   - {fileID: 11400000, guid: c20e202d922afc94ebd7440699139e18, type: 2}
   - {fileID: 11400000, guid: 435ee0d89d09eaa4a82325c83398cad1, type: 2}

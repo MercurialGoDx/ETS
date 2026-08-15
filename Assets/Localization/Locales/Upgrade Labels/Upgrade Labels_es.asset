@@ -18,30 +18,6 @@ MonoBehaviour:
   m_Metadata:
     m_Items: []
   m_TableData: []
-  - m_Id: 74576184482758691
-    m_Localized: <color=#ffd700>Cacería</color>
-    m_Metadata:
-      m_Items: []
-  - m_Id: 74576184482758692
-    m_Localized: 'Los enemigos tienen un <color=#ffd700>{0}%</color> de probabilidad de volverse dorados. Tienen <color=#ffd700>x{1}</color> de salud, <color=#ffd700>x{2}</color> de daño y dan <color=#ffd700>x{3}</color> de oro.\n\n<color=#ffd700>Coste: {4}</color>'
-    m_Metadata:
-      m_Items: []
-  - m_Id: 74576184482758693
-    m_Localized: <color=#ffd700>Duplicador</color>
-    m_Metadata:
-      m_Items: []
-  - m_Id: 74576184482758694
-    m_Localized: 'La próxima compra de un arma o mejora de nivel <color=#ffd700>{0}</color> otorga <color=#ffd700>{1}</color> copias adicionales. No se acumula mientras está activo.\n\n<color=#ffd700>Coste: {2}</color>'
-    m_Metadata:
-      m_Items: []
-  - m_Id: 74576184482758695
-    m_Localized: <color=#BA0606>Contrato del jefe</color>
-    m_Metadata:
-      m_Items: []
-  - m_Id: 74576184482758696
-    m_Localized: 'El próximo jefe tiene <color=#BA0606>x{0}</color> de salud y <color=#BA0606>x{1}</color> de daño. Derrótalo para elegir una recompensa de jefe adicional. Los contratos se acumulan hasta que aparezca.\n\n<color=#ffd700>Coste: {2}</color>'
-    m_Metadata:
-      m_Items: []
   references:
     version: 2
     RefIds: []

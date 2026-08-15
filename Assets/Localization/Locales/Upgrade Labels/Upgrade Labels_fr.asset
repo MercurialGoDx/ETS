@@ -18,30 +18,6 @@ MonoBehaviour:
   m_Metadata:
     m_Items: []
   m_TableData: []
-  - m_Id: 74576184482758691
-    m_Localized: <color=#ffd700>Chasse</color>
-    m_Metadata:
-      m_Items: []
-  - m_Id: 74576184482758692
-    m_Localized: 'Les ennemis ont <color=#ffd700>{0}%</color> de chances de devenir dorés. Ils ont <color=#ffd700>x{1}</color> points de vie, <color=#ffd700>x{2}</color> dégâts et donnent <color=#ffd700>x{3}</color> or.\n\n<color=#ffd700>Coût : {4}</color>'
-    m_Metadata:
-      m_Items: []
-  - m_Id: 74576184482758693
-    m_Localized: <color=#ffd700>Duplicateur</color>
-    m_Metadata:
-      m_Items: []
-  - m_Id: 74576184482758694
-    m_Localized: 'Le prochain achat d’une arme ou amélioration de niveau <color=#ffd700>{0}</color> donne <color=#ffd700>{1}</color> copies supplémentaires. Non cumulable tant que l’effet est actif.\n\n<color=#ffd700>Coût : {2}</color>'
-    m_Metadata:
-      m_Items: []
-  - m_Id: 74576184482758695
-    m_Localized: <color=#BA0606>Contrat de boss</color>
-    m_Metadata:
-      m_Items: []
-  - m_Id: 74576184482758696
-    m_Localized: 'Le prochain boss a <color=#BA0606>x{0}</color> points de vie et <color=#BA0606>x{1}</color> dégâts. Battez-le pour choisir une récompense de boss supplémentaire. Les contrats se cumulent jusqu’à son apparition.\n\n<color=#ffd700>Coût : {2}</color>'
-    m_Metadata:
-      m_Items: []
   references:
     version: 2
     RefIds: []

@@ -18,30 +18,6 @@ MonoBehaviour:
   m_Metadata:
     m_Items: []
   m_TableData: []
-  - m_Id: 74576184482758691
-    m_Localized: <color=#ffd700>Caçada</color>
-    m_Metadata:
-      m_Items: []
-  - m_Id: 74576184482758692
-    m_Localized: 'Os inimigos têm <color=#ffd700>{0}%</color> de chance de se tornarem dourados. Eles têm <color=#ffd700>x{1}</color> de vida, <color=#ffd700>x{2}</color> de dano e dão <color=#ffd700>x{3}</color> de ouro.\n\n<color=#ffd700>Custo: {4}</color>'
-    m_Metadata:
-      m_Items: []
-  - m_Id: 74576184482758693
-    m_Localized: <color=#ffd700>Duplicador</color>
-    m_Metadata:
-      m_Items: []
-  - m_Id: 74576184482758694
-    m_Localized: 'A próxima compra de uma arma ou melhoria do tier <color=#ffd700>{0}</color> concede <color=#ffd700>{1}</color> cópias adicionais. Não acumula enquanto estiver ativo.\n\n<color=#ffd700>Custo: {2}</color>'
-    m_Metadata:
-      m_Items: []
-  - m_Id: 74576184482758695
-    m_Localized: <color=#BA0606>Contrato do chefe</color>
-    m_Metadata:
-      m_Items: []
-  - m_Id: 74576184482758696
-    m_Localized: 'O próximo chefe tem <color=#BA0606>x{0}</color> de vida e <color=#BA0606>x{1}</color> de dano. Derrote-o para escolher uma recompensa adicional. Os contratos acumulam até ele aparecer.\n\n<color=#ffd700>Custo: {2}</color>'
-    m_Metadata:
-      m_Items: []
   references:
     version: 2
     RefIds: []

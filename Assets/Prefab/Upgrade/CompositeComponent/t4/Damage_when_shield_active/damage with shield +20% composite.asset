@@ -9,15 +9,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f9f75ca1bc064ba9b5107c2db0f0aa54, type: 3}
-  m_Name: BR_Spike
+  m_Script: {fileID: 11500000, guid: 80d1f87d3b9000f4597edd45fec47446, type: 3}
+  m_Name: damage with shield +20% composite
   m_EditorClassIdentifier: 
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: cf8ceae95ce83b6488c8aaf8bee74a88, type: 3}
   price: 0
   weight: 0
   itemTier: 0
-  weightIncreasePerPurchase: 2
-  maxWeightIncreasePurchases: 5
+  weightIncreasePerPurchase: 0
+  maxWeightIncreasePurchases: 0
   weightDecreaseUpgrades: []
   weightDecreasePercent: 0
   weightIncreaseUpgrades: []
@@ -29,6 +29,6 @@ MonoBehaviour:
   localizedStringTable:
     m_TableReference:
       m_TableCollectionName: GUID:164770c6fc8794c4ba4db6f8c7e72db3
-  nameKey: br_spike.name
-  descriptionKey: br_spike.desc
-  valuePercent: 30
+  nameKey: 
+  descriptionKey: 
+  valuePercent: 20
