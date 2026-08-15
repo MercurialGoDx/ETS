@@ -351,6 +351,14 @@ MonoBehaviour:
     m_Key: boss_contract.desc
     m_Metadata:
       m_Items: []
+  - m_Id: 74849647629991936
+    m_Key: ultimate_hp.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74849647671934976
+    m_Key: ultimate_hp.desc
+    m_Metadata:
+      m_Items: []
   - m_Id: 74576184482758671
     m_Key: br_all.name
     m_Metadata:
