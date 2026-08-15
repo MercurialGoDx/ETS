@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Text;
 
 namespace ETS.BalanceImport
@@ -65,7 +66,9 @@ namespace ETS.BalanceImport
             if (records.Count == 0)
                 return table;
 
-            table.Columns = records[0];
+            // Шапку тримим: лишний пробел в ячейке заголовка иначе читался бы
+            // как «нет обязательной колонки».
+            table.Columns = records[0].Select(c => c.Trim()).ToList();
 
             for (int r = 1; r < records.Count; r++)
             {

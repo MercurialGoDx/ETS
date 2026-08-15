@@ -98,7 +98,7 @@ namespace ETS.BalanceImport
             return count;
         }
 
-        private static UnityEngine.Object FindCompositeChild(UpgradeBaseSO parent, string childTypeName)
+        internal static UnityEngine.Object FindCompositeChild(UpgradeBaseSO parent, string childTypeName)
         {
             if (parent is not CompositeUpgrade composite || composite.upgrades == null)
                 return null;
@@ -112,7 +112,7 @@ namespace ETS.BalanceImport
 
         // ---------------- враги и босс ----------------
 
-        private static readonly (string prefab, string dmgCol, string hpCol, string speedCol)[] EnemyPrefabs =
+        internal static readonly (string prefab, string dmgCol, string hpCol, string speedCol)[] EnemyPrefabs =
         {
             ("Assets/Prefab/Enemy/MeleeEnemy.prefab", "damage_melee", "hp_melee", "speed_melee"),
             ("Assets/Prefab/Enemy/MidrangeEnemy.prefab", "damage_mid", "hp_mid", "speed_mid"),

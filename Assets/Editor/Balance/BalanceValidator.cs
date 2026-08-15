@@ -47,6 +47,22 @@ namespace ETS.BalanceImport
             "effect_1", "value_1", "effect_2", "value_2", "interval",
             "weight_increase_per_purchase", "max_weight_increase_purchases", "asset_name" };
 
+        /// <summary>
+        /// Обязательные колонки вкладки. Нужны не только валидатору: по ним
+        /// скачивание опознаёт, ту ли вкладку вернул Google (см. BalanceImporter),
+        /// и по ним же строится шапка при экспорте.
+        /// </summary>
+        public static string[] RequiredColumns(string tab) => tab switch
+        {
+            "weapon" => WeaponCols,
+            "enemy" => EnemyCols,
+            "boss" => BossCols,
+            "shop" => ShopCols,
+            "player_constant" => PlayerCols,
+            "upgrades" => UpgradeCols,
+            _ => Array.Empty<string>(),
+        };
+
         public static List<Issue> Validate(BalanceSheets sheets)
         {
             var issues = new List<Issue>();

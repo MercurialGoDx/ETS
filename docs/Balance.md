@@ -1,5 +1,9 @@
 # Баланс: оружия и улучшения
 
+> Числа ниже собираются из таблицы «config ETS» через `Tools/Balance`. Как устроен пайплайн,
+> что делает каждая команда меню и как правильно добавлять, менять и удалять оружие
+> и улучшения — в [BalancePipeline.md](BalancePipeline.md).
+
 Конспект по тирам с фактическими параметрами из ассетов (`Assets/Prefab/Weapon`,
 `Assets/Prefab/Upgrade`). DPS = `damagePerProjectile × fireRate` (подтверждено в
 `TowerAttack`: `cooldown = 1 / fireRate`, т.е. `fireRate` = выстрелов/сек). Для AoE и

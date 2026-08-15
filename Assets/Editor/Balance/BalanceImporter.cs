@@ -31,13 +31,17 @@ namespace ETS.BalanceImport
         [MenuItem("Tools/Balance/Pull From Google Sheets + Import")]
         public static void PullAndImport()
         {
+            var downloaded = new Dictionary<string, string>();
+
             try
             {
                 using var client = new HttpClient { Timeout = TimeSpan.FromSeconds(30) };
 
-                foreach (var tab in BalanceSheets.TabNames)
+                for (int i = 0; i < BalanceSheets.TabNames.Length; i++)
                 {
-                    EditorUtility.DisplayProgressBar("Balance", $"Скачивание вкладки {tab}…", 0.5f);
+                    string tab = BalanceSheets.TabNames[i];
+                    EditorUtility.DisplayProgressBar("Balance", $"Скачивание вкладки {tab}…",
+                        (float)i / BalanceSheets.TabNames.Length);
 
                     // gviz-экспорт адресует вкладку ПО ИМЕНИ — gid не нужен.
                     // Требуется доступ «читатель по ссылке» на таблицу.
@@ -48,18 +52,14 @@ namespace ETS.BalanceImport
                     if (csv.TrimStart().StartsWith("<"))
                         throw new Exception($"вкладка {tab}: вместо CSV пришёл HTML — таблица не расшарена. Открой доступ «читатель по ссылке».");
 
-                    // Несуществующее имя вкладки gviz отдаёт как ответ с ошибкой в JS-обёртке.
-                    if (csv.Contains("google.visualization.Query.setResponse"))
-                        throw new Exception($"вкладка '{tab}' не найдена в таблице — проверь имена вкладок (нужны: {string.Join(", ", BalanceSheets.TabNames)}).");
-
-                    Directory.CreateDirectory(ConfigDir);
-                    File.WriteAllText(Path.Combine(ConfigDir, tab + ".csv"), csv, new UTF8Encoding(false));
+                    EnsureRequestedTab(tab, csv);
+                    downloaded[tab] = csv;
                 }
             }
             catch (Exception e)
             {
                 EditorUtility.ClearProgressBar();
-                Debug.LogError($"[Balance] Скачивание не удалось: {e.Message}. Можно импортировать локальные CSV: Tools → Balance → Import (Local CSV).");
+                Debug.LogError($"[Balance] Скачивание не удалось: {e.Message}\nConfig/*.csv не тронуты — можно импортировать локальные: Tools → Balance → Import (Local CSV).");
                 return;
             }
             finally
@@ -67,7 +67,36 @@ namespace ETS.BalanceImport
                 EditorUtility.ClearProgressBar();
             }
 
+            // Пишем на диск только когда скачались ВСЕ вкладки: иначе в Config/
+            // осталась бы смесь новых и старых файлов.
+            Directory.CreateDirectory(ConfigDir);
+            foreach (var (tab, csv) in downloaded)
+                File.WriteAllText(Path.Combine(ConfigDir, tab + ".csv"), csv, new UTF8Encoding(false));
+
             Import(writeChanges: true);
+        }
+
+        /// <summary>
+        /// Google на НЕСУЩЕСТВУЮЩЕЕ имя вкладки отвечает 200 OK и отдаёт первую
+        /// вкладку таблицы вместо ошибки. Без этой проверки переименованная в
+        /// таблице вкладка молча затирала бы свой Config/*.csv чужими данными.
+        /// Опознаём вкладку по шапке: в ней обязаны быть её колонки.
+        /// </summary>
+        private static void EnsureRequestedTab(string tab, string csv)
+        {
+            var required = BalanceValidator.RequiredColumns(tab);
+            if (required.Length == 0) return;
+
+            var header = BalanceSheets.ParseCsv(tab, csv).Columns;
+            var missing = required.Where(c => !header.Contains(c)).ToList();
+            if (missing.Count == 0) return;
+
+            string got = string.Join(", ", header.Where(c => !string.IsNullOrWhiteSpace(c)).Take(6));
+            throw new Exception(
+                $"вкладка '{tab}': пришли не те колонки (нет {string.Join(", ", missing.Take(5))}" +
+                (missing.Count > 5 ? $" и ещё {missing.Count - 5}" : "") + $"; в шапке: {got}…). " +
+                "Google отдаёт ПЕРВУЮ вкладку, когда вкладки с таким именем нет — " +
+                $"проверь, что в таблице есть вкладка ровно с именем '{tab}'.");
         }
 
         [MenuItem("Tools/Balance/Import (Local CSV)")]
