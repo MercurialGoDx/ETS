@@ -1,2 +1,2 @@
 "first_upgrade_cost","second_upgrade_cost","reroll_base_cost","reroll_cost_increase","auto_reroll_interval","start_gold","passive_gold_per_tick","passive_income_interval","start_unlocked_columns","start_unlocked_tiers","first_upgrade_unlocks_column","first_upgrade_unlocks_tier","second_upgrade_unlocks_column","second_upgrade_unlocks_tier"
-"500","1500","10","10","20","500","10","1","0;1;2","1;2","3","3","4","4"
+"750","3000","10","10","20","500","10","1","0;1;2","1;2","3","3","4","4"

@@ -19,290 +19,203 @@ MonoBehaviour:
     m_Items: []
   m_TableData:
   - m_Id: 1385907683844096
-    m_Localized: <color=#ffd700>Hache</color>
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787136
-    m_Localized: "<color=#ffd700>D\xE9g\xE2ts:</color> {0}\\n<color=#ffd700>Type
-      de d\xE9g\xE2ts:</color> {1}\\n<color=#ffd700>Vitesse d'attaque:</color> {2}\\n\\n<color=#ffd700>Co\xFBt:</color>
-      {3}"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787137
-    m_Localized: "<color=#ffd700>Arbal\xE8te</color>"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787138
-    m_Localized: "<color=#ffd700>D\xE9g\xE2ts:</color> {0}\\n<color=#ffd700>Type
-      de d\xE9g\xE2ts:</color> {1}\\n<color=#ffd700>Vitesse d'attaque:</color> {2}\\n\\n<color=#ffd700>Co\xFBt:</color>
-      {3}"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787139
-    m_Localized: <color=#ffd700>Orbe du chaos</color>
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787140
-    m_Localized: "<color=#ffd700>D\xE9g\xE2ts:</color> {0}\\n<color=#ffd700>Type
-      de d\xE9g\xE2ts:</color> {1}\\n<color=#ffd700>Vitesse d'attaque:</color> {2}\\n\\n<color=#ffd700>Co\xFBt:</color>
-      {3}"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787141
-    m_Localized: <color=#ffd700>Orbe magique</color>
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787142
-    m_Localized: "<color=#ffd700>D\xE9g\xE2ts:</color> {0}\\n<color=#ffd700>Type
-      de d\xE9g\xE2ts:</color> {1}\\n<color=#ffd700>Vitesse d'attaque:</color> {2}\\n\\n<color=#ffd700>Co\xFBt:</color>
-      {3}"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787143
-    m_Localized: <color=#ffd700>Lance</color>
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787144
-    m_Localized: "<color=#ffd700>D\xE9g\xE2ts:</color> {0}\\n<color=#ffd700>Type
-      de d\xE9g\xE2ts:</color> {1}\\n<color=#ffd700>Vitesse d'attaque:</color> {2}\\n\\n<color=#ffd700>Co\xFBt:</color>
-      {3}"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787145
-    m_Localized: <color=#ffd700>Rocher</color>
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787146
-    m_Localized: "<color=#ffd700>D\xE9g\xE2ts:</color> {0}\\n<color=#ffd700>Type
-      de d\xE9g\xE2ts:</color> {1}\\n<color=#ffd700>Vitesse d'attaque:</color> {2}\\n\\n<color=#ffd700>Co\xFBt:</color>
-      {3}"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787147
-    m_Localized: <color=#ffd700>Chakram</color>
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787148
-    m_Localized: "Au contact, rebondit vers l'ennemi le plus proche \xE0 port\xE9e.
-      <color=#ffd700>Se r\xE9p\xE8te 3 fois</color>\\n<color=#ffd700>D\xE9g\xE2ts:</color>
-      {0}\\n<color=#ffd700>Type de d\xE9g\xE2ts:</color> {1}\\n<color=#ffd700>Vitesse
-      d'attaque:</color> {2}\\n\\n<color=#ffd700>Co\xFBt:</color> {3}"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787149
-    m_Localized: "<color=#ffd700>\xC9clair en cha\xEEne</color>"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787150
-    m_Localized: "La foudre se propage aux ennemis proches\\n<color=#ffd700>D\xE9g\xE2ts:</color>
-      {0}\\n<color=#ffd700>Type de d\xE9g\xE2ts:</color> {1}\\n<color=#ffd700>Vitesse
-      d'attaque:</color> {2}\\n\\n<color=#ffd700>Co\xFBt:</color> {3}"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787151
-    m_Localized: "<color=#ffd700>Fl\xE8che de glace</color>"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787152
-    m_Localized: "Ralentit l'ennemi de 30% pendant 2 secondes\\n<color=#ffd700>D\xE9g\xE2ts:</color>
-      {0}\\n<color=#ffd700>Type de d\xE9g\xE2ts:</color> {1}\\n<color=#ffd700>Vitesse
-      d'attaque:</color> {2}\\n\\n<color=#ffd700>Co\xFBt:</color> {3}"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787153
-    m_Localized: <color=#ffd700>Siphon de vie</color>
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787154
-    m_Localized: "Augmente la vie maximale de 2 en tuant un ennemi\\n<color=#ffd700>D\xE9g\xE2ts:</color>
-      {0}\\n<color=#ffd700>Type de d\xE9g\xE2ts:</color> {1}\\n<color=#ffd700>Vitesse
-      d'attaque:</color> {2}\\n\\n<color=#ffd700>Co\xFBt:</color> {3}"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787155
-    m_Localized: "<color=#ffd700>Missile \xE0 t\xEAte chercheuse</color>"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787156
-    m_Localized: "<color=#ffd700>D\xE9g\xE2ts:</color> {0}\\n<color=#ffd700>Type
-      de d\xE9g\xE2ts:</color> {1}\\n<color=#ffd700>Vitesse d'attaque:</color> {2}\\n\\n<color=#ffd700>Co\xFBt:</color>
-      {3}"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787157
-    m_Localized: <color=#ffd700>Mortier</color>
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787158
-    m_Localized: "<color=#ffd700>D\xE9g\xE2ts:</color> {0}\\n<color=#ffd700>Type
-      de d\xE9g\xE2ts:</color> {1}\\n<color=#ffd700>Vitesse d'attaque:</color> {2}\\n\\n<color=#ffd700>Co\xFBt:</color>
-      {3}"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787159
-    m_Localized: <color=#ffd700>Onde de choc</color>
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787160
-    m_Localized: "Envoie une onde qui inflige des d\xE9g\xE2ts \xE0 tous sur son
-      passage\\n<color=#ffd700>D\xE9g\xE2ts:</color> {0}\\n<color=#ffd700>Type de
-      d\xE9g\xE2ts:</color> {1}\\n<color=#ffd700>Vitesse d'attaque:</color> {2}\\n\\n<color=#ffd700>Co\xFBt:</color>
-      {3}"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787161
-    m_Localized: <color=#ffd700>Baliste</color>
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787162
-    m_Localized: "<color=#ffd700>D\xE9g\xE2ts:</color> {0}\\n<color=#ffd700>Type
-      de d\xE9g\xE2ts:</color> {1}\\n<color=#ffd700>Vitesse d'attaque:</color> {2}\\n\\n<color=#ffd700>Co\xFBt:</color>
-      {3}"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787163
-    m_Localized: <color=#ffd700>Catapulte</color>
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787164
-    m_Localized: "Inflige des d\xE9g\xE2ts de zone \xE9gaux \xE0 <color=#ffd700>15%</color>
-      de la vie maximale de la tour\\n<color=#ffd700>D\xE9g\xE2ts:</color> {0}\\n<color=#ffd700>Type
-      de d\xE9g\xE2ts:</color> {1}\\n<color=#ffd700>Vitesse d'attaque:</color> {2}\\n<color=#ffd700>D\xE9g\xE2ts
-      de zone:</color> Oui\\n\\n<color=#ffd700>Co\xFBt:</color> {3}"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787165
-    m_Localized: <color=#ffd700>Onde de chaos</color>
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787166
-    m_Localized: "Envoie une onde qui inflige des d\xE9g\xE2ts \xE0 tous sur son
-      passage. Soigne la tour de <color=#ffd700>10</color> points de vie par ennemi
-      touch\xE9\\n<color=#ffd700>D\xE9g\xE2ts:</color> {0}\\n<color=#ffd700>Type
-      de d\xE9g\xE2ts:</color> {1}\\n<color=#ffd700>Vitesse d'attaque:</color> {2}\\n\\n<color=#ffd700>Co\xFBt:</color>
-      {3}"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787167
-    m_Localized: "<color=#ffd700>Marteau de temp\xEAte</color>"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787168
-    m_Localized: "<color=#ffd700>D\xE9g\xE2ts:</color> {0}\\n<color=#ffd700>Type
-      de d\xE9g\xE2ts:</color> {1}\\n<color=#ffd700>Vitesse d'attaque:</color> {2}\\n\\n<color=#ffd700>Co\xFBt:</color>
-      {3}"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787169
-    m_Localized: <color=#ffd700>Focalisation arcanique</color>
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787170
-    m_Localized: "<color=#ffd700>D\xE9g\xE2ts:</color> {0}\\n<color=#ffd700>Type
-      de d\xE9g\xE2ts:</color> {1}\\n<color=#ffd700>Vitesse d'attaque:</color> {2}\\n\\n<color=#ffd700>Co\xFBt:</color>
-      {3}"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787171
-    m_Localized: <color=#ffd700>Rondin</color>
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787172
-    m_Localized: "Lance un rondin qui inflige des d\xE9g\xE2ts \xE0 tous sur son
-      passage\\n<color=#ffd700>D\xE9g\xE2ts:</color> {0}\\n<color=#ffd700>Type de
-      d\xE9g\xE2ts:</color> {1}\\n<color=#ffd700>Vitesse d'attaque:</color> {2}\\n\\n<color=#ffd700>Co\xFBt:</color>
-      {3}"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787173
-    m_Localized: <color=#ffd700>Tornade</color>
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787174
-    m_Localized: "Au contact, repousse l'ennemi loin de la tour. Inflige des d\xE9g\xE2ts
-      \xE0 tous les ennemis sur son passage. Change de cible apr\xE8s chaque tir\\n<color=#ffd700>D\xE9g\xE2ts:</color>
-      {0}\\n<color=#ffd700>Type de d\xE9g\xE2ts:</color> {1}\\n<color=#ffd700>Vitesse
-      d'attaque:</color> {2}\\n\\n<color=#ffd700>Co\xFBt:</color> {3}"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787175
-    m_Localized: <color=#ffd700>Blizzard</color>
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787176
-    m_Localized: "Une temp\xEAte de glace s'abat du ciel, infligeant des d\xE9g\xE2ts
-      de zone\\n<color=#ffd700>D\xE9g\xE2ts:</color> {0}\\n<color=#ffd700>Type de
-      d\xE9g\xE2ts:</color> {1}\\n<color=#ffd700>Vitesse d'attaque:</color> {2}\\n<color=#ffd700>D\xE9g\xE2ts
-      de zone:</color> Oui\\n\\n<color=#ffd700>Co\xFBt:</color> {3}"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787177
-    m_Localized: <color=#ffd700>Feu du destin</color>
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787178
-    m_Localized: "Cr\xE9e une aura de feu autour de la tour qui inflige progressivement
-      des d\xE9g\xE2ts aux ennemis\\n<color=#ffd700>D\xE9g\xE2ts:</color> {0}\\n<color=#ffd700>Type
-      de d\xE9g\xE2ts:</color> {1}\\n<color=#ffd700>Vitesse d'attaque:</color> {2}\\n\\n<color=#ffd700>Co\xFBt:</color>
-      {3}"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787179
-    m_Localized: <color=#ffd700>Cercle magique</color>
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787180
-    m_Localized: "Cr\xE9e une force magique autour de la tour qui inflige des d\xE9g\xE2ts
-      \xE0 tous les ennemis de la carte\\n<color=#ffd700>D\xE9g\xE2ts:</color> {0}\\n<color=#ffd700>Type
-      de d\xE9g\xE2ts:</color> {1}\\n<color=#ffd700>Vitesse d'attaque:</color> {2}\\n\\n<color=#ffd700>Co\xFBt:</color>
-      {3}"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787181
-    m_Localized: "<color=#ffd700>M\xE9t\xE9ore</color>"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787182
-    m_Localized: "Un m\xE9t\xE9ore tombe du ciel, infligeant d'\xE9normes d\xE9g\xE2ts
-      de zone\\n<color=#ffd700>D\xE9g\xE2ts:</color> {0}\\n<color=#ffd700>Type de
-      d\xE9g\xE2ts:</color> {1}\\n<color=#ffd700>Vitesse d'attaque:</color> {2}\\n<color=#ffd700>D\xE9g\xE2ts
-      de zone:</color> Oui\\n\\n<color=#ffd700>Co\xFBt:</color> {3}"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787183
-    m_Localized: <color=#ffd700>Lames tournoyantes</color>
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787184
-    m_Localized: "Fait appara\xEEtre des lames \xE0 un endroit al\xE9atoire pendant
-      15 secondes, infligeant des d\xE9g\xE2ts aux ennemis proches\\n<color=#ffd700>D\xE9g\xE2ts:</color>
-      {0}\\n<color=#ffd700>Type de d\xE9g\xE2ts:</color> {1}\\n<color=#ffd700>Vitesse
-      d'attaque:</color> {2}\\n<color=#ffd700>D\xE9g\xE2ts de zone:</color> Oui\\n\\n<color=#ffd700>Co\xFBt:</color>
-      {3}"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 59785492072226816
-    m_Localized: Magique
-    m_Metadata:
-      m_Items: []
-  - m_Id: 59785492101586944
-    m_Localized: Perforant
-    m_Metadata:
-      m_Items: []
-  - m_Id: 59785492101586945
-    m_Localized: Normal
-    m_Metadata:
-      m_Items: []
-  - m_Id: 59785492101586946
-    m_Localized: Projectile
-    m_Metadata:
-      m_Items: []
-  - m_Id: 59785492101586947
-    m_Localized: Lourd
-    m_Metadata:
-      m_Items: []
-  - m_Id: 59785492101586948
-    m_Localized: Chaos
+    m_Localized: 
     m_Metadata:
       m_Items: []
   references:

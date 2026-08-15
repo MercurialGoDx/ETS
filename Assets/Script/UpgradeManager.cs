@@ -55,6 +55,8 @@ public class UpgradesManager : MonoBehaviour
     private float regenAuraTimer = 0f;
     public int goldBonusPerKill = 0;
 
+    public UpgradesRuntimeData GameplayRuntimeData => context != null ? context.runtime : null;
+
     private void Awake()
     {
         if (Instance != null && Instance != this)

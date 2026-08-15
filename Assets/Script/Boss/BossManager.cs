@@ -43,6 +43,7 @@ public class BossManager : MonoBehaviour
 
     private readonly List<BossEntry> bosses = new List<BossEntry>();
     private Enemy activeBossEnemy = null;
+    private int activeBossRewardSelections = 1;
 
     private void Start()
     {
@@ -191,6 +192,36 @@ public class BossManager : MonoBehaviour
             Debug.LogWarning("[BossManager] EnemySpawner is not assigned; boss spawned without wave scaling");
         }
 
+        activeBossRewardSelections = 1;
+        UpgradesRuntimeData runtime = UpgradesManager.Instance?.GameplayRuntimeData;
+        if (runtime != null && runtime.TryConsumeBossContract(
+                out int contractStacks,
+                out float contractHealthMultiplier,
+                out float contractDamageMultiplier,
+                out Material contractOutlineMaterial,
+                out Color contractOutlineColor,
+                out float contractOutlineWidth,
+                out float contractGlowIntensity,
+                out float contractScaleMultiplier))
+        {
+            chosen.enemy.InitStats(
+                chosen.enemy.maxHealth * contractHealthMultiplier,
+                chosen.enemy.damageToPlayer * contractDamageMultiplier);
+            chosen.enemy.ApplyBossContractVisual(
+                contractOutlineMaterial,
+                contractOutlineColor,
+                contractOutlineWidth,
+                contractGlowIntensity,
+                contractScaleMultiplier);
+            activeBossRewardSelections += contractStacks;
+
+            Debug.Log(
+                $"[BossContract] Applied to {chosen.instance.name}: stacks={contractStacks}, " +
+                $"HP=x{contractHealthMultiplier:0.##}, damage=x{contractDamageMultiplier:0.##}, " +
+                $"outline={contractOutlineWidth:0.###}, glow={contractGlowIntensity:0.##}, " +
+                $"reward selections={activeBossRewardSelections}.");
+        }
+
         if (bossHealthBar != null)
             bossHealthBar.Show(activeBossEnemy);
 
@@ -225,12 +256,15 @@ public class BossManager : MonoBehaviour
         if (bossHealthBar != null)
             bossHealthBar.Hide();
 
+        int rewardSelections = activeBossRewardSelections;
+        activeBossRewardSelections = 1;
+
         if (bossRewardUI != null)
-            bossRewardUI.Open();
+            bossRewardUI.Open(rewardSelections);
         else
             Debug.LogWarning("[BossManager] BossRewardUI not assigned");
 
-        Debug.Log("[BossManager] Boss defeated → reward selection opened");
+        Debug.Log($"[BossManager] Boss defeated -> reward selections opened: {rewardSelections}.");
     }
 
 #if UNITY_EDITOR

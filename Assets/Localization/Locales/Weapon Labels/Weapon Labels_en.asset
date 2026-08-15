@@ -154,10 +154,10 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787164
-    m_Localized: Deals area damage equal to <color=#ffd700>15%</color> of the tower's
-      maximum health\n<color=#ffd700>Damage:</color> {0}\n<color=#ffd700>Damage type:</color>
-      {1}\n<color=#ffd700>Attack speed:</color> {2}\n<color=#ffd700>Area damage:</color>
-      Yes\n\n<color=#ffd700>Cost:</color> {3}
+    m_Localized: Deals area damage equal to <color=#ffd700>50 + 2% of the tower's
+      maximum health</color>\n<color=#ffd700>Damage:</color> {0}\n<color=#ffd700>Damage
+      type:</color> {1}\n<color=#ffd700>Attack speed:</color> {2}\n<color=#ffd700>Area
+      damage:</color> Yes\n\n<color=#ffd700>Cost:</color> {3}
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787165
@@ -276,28 +276,21 @@ MonoBehaviour:
       {2}\n\n<color=#ffd700>Cost:</color> {3}
     m_Metadata:
       m_Items: []
-  - m_Id: 59785492072226816
-    m_Localized: Magic
+  - m_Id: 74621472677330944
+    m_Localized: "<color=#ffd700>\u041E\u0440\u0443\u0436\u0438\u0435</color>"
     m_Metadata:
       m_Items: []
-  - m_Id: 59785492101586944
-    m_Localized: Piercing
-    m_Metadata:
-      m_Items: []
-  - m_Id: 59785492101586945
-    m_Localized: Normal
-    m_Metadata:
-      m_Items: []
-  - m_Id: 59785492101586946
-    m_Localized: Projectile
-    m_Metadata:
-      m_Items: []
-  - m_Id: 59785492101586947
-    m_Localized: Heavy
-    m_Metadata:
-      m_Items: []
-  - m_Id: 59785492101586948
-    m_Localized: Chaos
+  - m_Id: 74621472828325888
+    m_Localized: "\u0412 \u0441\u043B\u0443\u0447\u0430\u0439\u043D\u043E\u0439 \u0442\u043E\u0447\u043A\u0435
+      \u0441\u043E\u0437\u0434\u0430\u0435\u0442 \u043A\u043B\u0438\u043D\u043A\u0438
+      \u043D\u0430 15 \u0441\u0435\u043A\u0443\u043D\u0434, \u043A\u043E\u0442\u043E\u0440\u044B\u0435
+      \u043D\u0430\u043D\u043E\u0441\u044F\u0442 \u0443\u0440\u043E\u043D \u0432\u0440\u0430\u0433\u0430\u043C
+      \u0432\u043E\u043A\u0440\u0443\u0433 \u0441\u0435\u0431\u044F\\n<color=#ffd700>\u0423\u0440\u043E\u043D:</color>
+      {0}\\n<color=#ffd700>\u0422\u0438\u043F \u0443\u0440\u043E\u043D\u0430:</color>
+      {1}\\n<color=#ffd700>\u0421\u043A\u043E\u0440\u043E\u0441\u0442\u044C \u0430\u0442\u0430\u043A\u0438:</color>
+      {2}\\n<color=#ffd700>\u0423\u0440\u043E\u043D \u043F\u043E \u043E\u0431\u043B\u0430\u0441\u0442\u0438:</color>
+      \u0414\u0430\\n\\n<color=#ffd700>\u0421\u0442\u043E\u0438\u043C\u043E\u0441\u0442\u044C:</color> 
+      {3}"
     m_Metadata:
       m_Items: []
   references:

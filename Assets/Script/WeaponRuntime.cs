@@ -7,6 +7,9 @@ public class WeaponRuntime
     public float cooldown = 0f;
     public List<Enemy> lastTargets = new List<Enemy>();
     public AuraDamageZone auraInstance;
+    public bool isVolleyInProgress;
+    public bool immediateRetargetRequested;
+    public float baseDamageBonus;
 
     public float totalDamageDealt;
 }

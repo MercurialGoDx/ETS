@@ -186,6 +186,7 @@ public class EnemySpawner : MonoBehaviour
             enemyInstance.isDead = false;
 
             InitializeSpawnedEnemy(enemyInstance, baseHealth, baseDamage);
+            TryApplyHunt(enemyInstance);
         }
 
         NotifyUI();
@@ -198,6 +199,40 @@ public class EnemySpawner : MonoBehaviour
 
         flatHealthBonus += healthAddPerWave;
         flatDamageBonus += damageAddPerWave;
+    }
+
+    private static void TryApplyHunt(Enemy enemy)
+    {
+        UpgradesRuntimeData runtime = UpgradesManager.Instance?.GameplayRuntimeData;
+        if (runtime == null || enemy == null || enemy.IsGolden)
+            return;
+
+        if (!runtime.TryGetHuntModifiers(
+                out float healthMultiplier,
+                out float damageMultiplier,
+                out float goldMultiplier,
+                out Color tint,
+                out float tintStrength))
+        {
+            return;
+        }
+
+        if (UnityEngine.Random.value > runtime.GoldenEnemyChance)
+            return;
+
+        if (!enemy.ApplyGoldenModifiers(
+                healthMultiplier,
+                damageMultiplier,
+                goldMultiplier,
+                tint,
+                tintStrength))
+        {
+            return;
+        }
+
+        Debug.Log(
+            $"[Hunt] Golden enemy spawned: {enemy.name}, " +
+            $"HP={enemy.maxHealth:0.##}, damage={enemy.damageToPlayer:0.##}, gold=x{goldMultiplier:0.##}.");
     }
 
     // --- ДОБАВЛЕНО ---

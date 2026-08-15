@@ -15,416 +15,420 @@ MonoBehaviour:
   m_TableCollectionName: Upgrade Labels
   m_TableCollectionNameGuidString: 164770c6fc8794c4ba4db6f8c7e72db3
   m_Entries:
-  - m_Id: 1340877749596160
+  - m_Id: 74576184419844096
     m_Key: basic_shield.name
     m_Metadata:
       m_Items: []
-  - m_Id: 1340877875425280
+  - m_Id: 74576184474370048
     m_Key: basic_shield.desc
     m_Metadata:
       m_Items: []
-  - m_Id: 1401183729082373
+  - m_Id: 74576184474370049
     m_Key: max_health.name
     m_Metadata:
       m_Items: []
-  - m_Id: 1401183729082374
+  - m_Id: 74576184474370050
     m_Key: max_health.desc
     m_Metadata:
       m_Items: []
-  - m_Id: 1401183682945024
+  - m_Id: 74576184474370051
     m_Key: basic_regen.name
     m_Metadata:
       m_Items: []
-  - m_Id: 1401183729082368
+  - m_Id: 74576184474370052
     m_Key: basic_regen.desc
     m_Metadata:
       m_Items: []
-  - m_Id: 1401183729082369
+  - m_Id: 74576184474370053
     m_Key: basic_spike.name
     m_Metadata:
       m_Items: []
-  - m_Id: 1401183729082370
+  - m_Id: 74576184474370054
     m_Key: basic_spike.desc
     m_Metadata:
       m_Items: []
-  - m_Id: 5661681011949568
+  - m_Id: 74576184478564352
     m_Key: chaos_damage.name
     m_Metadata:
       m_Items: []
-  - m_Id: 5661681066475520
+  - m_Id: 74576184478564353
     m_Key: chaos_damage.desc
     m_Metadata:
       m_Items: []
-  - m_Id: 1401183729082371
+  - m_Id: 74576184478564354
     m_Key: damage.name
     m_Metadata:
       m_Items: []
-  - m_Id: 1401183729082372
+  - m_Id: 74576184478564355
     m_Key: damage.desc
     m_Metadata:
       m_Items: []
-  - m_Id: 5661681066475521
+  - m_Id: 74576184478564356
     m_Key: heavy_damage.name
     m_Metadata:
       m_Items: []
-  - m_Id: 5661681066475522
+  - m_Id: 74576184478564357
     m_Key: heavy_damage.desc
     m_Metadata:
       m_Items: []
-  - m_Id: 5679906292752384
+  - m_Id: 74576184478564358
     m_Key: magic_damage.name
     m_Metadata:
       m_Items: []
-  - m_Id: 5661681066475524
+  - m_Id: 74576184478564359
     m_Key: magic_damage.desc
     m_Metadata:
       m_Items: []
-  - m_Id: 5661681066475525
+  - m_Id: 74576184478564360
     m_Key: normal_damage.name
     m_Metadata:
       m_Items: []
-  - m_Id: 5661681066475526
+  - m_Id: 74576184478564361
     m_Key: normal_damage.desc
     m_Metadata:
       m_Items: []
-  - m_Id: 1401183729082375
+  - m_Id: 74576184478564362
     m_Key: passive_gold.name
     m_Metadata:
       m_Items: []
-  - m_Id: 1401183729082376
+  - m_Id: 74576184478564363
     m_Key: passive_gold.desc
     m_Metadata:
       m_Items: []
-  - m_Id: 5661681066475527
+  - m_Id: 74576184478564364
     m_Key: piercing_damage.name
     m_Metadata:
       m_Items: []
-  - m_Id: 5661681066475528
+  - m_Id: 74576184478564365
     m_Key: piercing_damage.desc
     m_Metadata:
       m_Items: []
-  - m_Id: 5661681066475529
+  - m_Id: 74576184478564366
     m_Key: projectile_damage.name
     m_Metadata:
       m_Items: []
-  - m_Id: 5661681066475530
+  - m_Id: 74576184478564367
     m_Key: projectile_damage.desc
     m_Metadata:
       m_Items: []
-  - m_Id: 1401183729082377
+  - m_Id: 74576184478564368
     m_Key: sacrifice.name
     m_Metadata:
       m_Items: []
-  - m_Id: 1401183729082378
+  - m_Id: 74576184478564369
     m_Key: sacrifice.desc
     m_Metadata:
       m_Items: []
-  - m_Id: 5661681066475531
+  - m_Id: 74576184478564370
     m_Key: basic_damage_reduction.name
     m_Metadata:
       m_Items: []
-  - m_Id: 5661681066475532
+  - m_Id: 74576184478564371
     m_Key: basic_damage_reduction.desc
     m_Metadata:
       m_Items: []
-  - m_Id: 1401183729082379
+  - m_Id: 74576184478564372
     m_Key: death_mask.name
     m_Metadata:
       m_Items: []
-  - m_Id: 1401183729082380
+  - m_Id: 74576184478564373
     m_Key: death_mask.desc
     m_Metadata:
       m_Items: []
-  - m_Id: 1401183729082381
+  - m_Id: 74576184478564374
     m_Key: generator.name
     m_Metadata:
       m_Items: []
-  - m_Id: 1401183729082382
+  - m_Id: 74576184478564375
     m_Key: generator.desc
     m_Metadata:
       m_Items: []
-  - m_Id: 1401183729082383
+  - m_Id: 74576184478564376
     m_Key: gold_mine.name
     m_Metadata:
       m_Items: []
-  - m_Id: 1401183729082384
+  - m_Id: 74576184478564377
     m_Key: gold_mine.desc
     m_Metadata:
       m_Items: []
-  - m_Id: 1401183729082385
+  - m_Id: 74576184478564378
     m_Key: heal_on_kill.name
     m_Metadata:
       m_Items: []
-  - m_Id: 1401183729082386
+  - m_Id: 74576184478564379
     m_Key: heal_on_kill.desc
     m_Metadata:
       m_Items: []
-  - m_Id: 1401183729082387
+  - m_Id: 74576184478564380
     m_Key: health_per_tick.name
     m_Metadata:
       m_Items: []
-  - m_Id: 1401183729082388
+  - m_Id: 74576184478564381
     m_Key: health_per_tick.desc
     m_Metadata:
       m_Items: []
-  - m_Id: 1401183729082389
+  - m_Id: 74576184478564382
     m_Key: shield_per_tick.name
     m_Metadata:
       m_Items: []
-  - m_Id: 1401183729082390
+  - m_Id: 74576184478564383
     m_Key: shield_per_tick.desc
     m_Metadata:
       m_Items: []
-  - m_Id: 5661681066475533
+  - m_Id: 74576184478564384
     m_Key: shield_revival.name
     m_Metadata:
       m_Items: []
-  - m_Id: 5661681066475534
+  - m_Id: 74576184478564385
     m_Key: shield_revival.desc
     m_Metadata:
       m_Items: []
-  - m_Id: 1401183729082391
+  - m_Id: 74576184478564386
     m_Key: attack_speed.name
     m_Metadata:
       m_Items: []
-  - m_Id: 1401183729082392
+  - m_Id: 74576184478564387
     m_Key: attack_speed.desc
     m_Metadata:
       m_Items: []
-  - m_Id: 5661681066475535
+  - m_Id: 74576184478564388
     m_Key: block.name
     m_Metadata:
       m_Items: []
-  - m_Id: 5661681066475536
+  - m_Id: 74576184478564389
     m_Key: block.desc
     m_Metadata:
       m_Items: []
-  - m_Id: 5661681066475537
+  - m_Id: 74576184478564390
     m_Key: hp_regen_percent.name
     m_Metadata:
       m_Items: []
-  - m_Id: 5661681066475538
+  - m_Id: 74576184478564391
     m_Key: hp_regen_percent.desc
     m_Metadata:
       m_Items: []
-  - m_Id: 5661681066475539
+  - m_Id: 74576184478564392
     m_Key: more_enemy.name
     m_Metadata:
       m_Items: []
-  - m_Id: 5661681066475540
+  - m_Id: 74576184478564393
     m_Key: more_enemy.desc
     m_Metadata:
       m_Items: []
-  - m_Id: 5661681066475541
+  - m_Id: 74576184478564394
     m_Key: nature_blessing.name
     m_Metadata:
       m_Items: []
-  - m_Id: 5661681066475542
+  - m_Id: 74576184478564395
     m_Key: nature_blessing.desc
     m_Metadata:
       m_Items: []
-  - m_Id: 1401183729082395
+  - m_Id: 74576184478564396
     m_Key: regen_per_tick.name
     m_Metadata:
       m_Items: []
-  - m_Id: 1401183729082396
+  - m_Id: 74576184478564397
     m_Key: regen_per_tick.desc
     m_Metadata:
       m_Items: []
-  - m_Id: 1401183729082397
+  - m_Id: 74576184478564398
     m_Key: shield_multiply.name
     m_Metadata:
       m_Items: []
-  - m_Id: 1401183729082398
+  - m_Id: 74576184478564399
     m_Key: shield_multiply.desc
     m_Metadata:
       m_Items: []
-  - m_Id: 1401183729082399
+  - m_Id: 74576184478564400
     m_Key: spike_scaling.name
     m_Metadata:
       m_Items: []
-  - m_Id: 1401183729082400
+  - m_Id: 74576184478564401
     m_Key: spike_scaling.desc
     m_Metadata:
       m_Items: []
-  - m_Id: 5661681066475543
+  - m_Id: 74576184478564402
     m_Key: super_bullet.name
     m_Metadata:
       m_Items: []
-  - m_Id: 5661681066475544
+  - m_Id: 74576184478564403
     m_Key: super_bullet.desc
     m_Metadata:
       m_Items: []
-  - m_Id: 5661681066475545
+  - m_Id: 74576184478564404
     m_Key: chaos_ultimate.name
     m_Metadata:
       m_Items: []
-  - m_Id: 5661681066475546
+  - m_Id: 74576184478564405
     m_Key: chaos_ultimate.desc
     m_Metadata:
       m_Items: []
-  - m_Id: 1401183729082401
+  - m_Id: 74576184478564406
     m_Key: damage_while_shield_active.name
     m_Metadata:
       m_Items: []
-  - m_Id: 1401183729082402
+  - m_Id: 74576184482758656
     m_Key: damage_while_shield_active.desc
     m_Metadata:
       m_Items: []
-  - m_Id: 1401183729082403
+  - m_Id: 74576184482758657
     m_Key: degen_aura.name
     m_Metadata:
       m_Items: []
-  - m_Id: 1401183729082404
+  - m_Id: 74576184482758658
     m_Key: degen_aura.desc
     m_Metadata:
       m_Items: []
-  - m_Id: 5661681074864128
+  - m_Id: 74576184482758659
     m_Key: heavy_ultimate.name
     m_Metadata:
       m_Items: []
-  - m_Id: 5661681074864129
+  - m_Id: 74576184482758660
     m_Key: heavy_ultimate.desc
     m_Metadata:
       m_Items: []
-  - m_Id: 5661681074864130
+  - m_Id: 74576184482758661
     m_Key: magic_ultimate.name
     m_Metadata:
       m_Items: []
-  - m_Id: 5661681074864131
+  - m_Id: 74576184482758662
     m_Key: magic_ultimate.desc
     m_Metadata:
       m_Items: []
-  - m_Id: 5795877734875136
-    m_Key: mythrill.name
-    m_Metadata:
-      m_Items: []
-  - m_Id: 5795877797789696
-    m_Key: mythrill.desc
-    m_Metadata:
-      m_Items: []
-  - m_Id: 5661681074864132
+  - m_Id: 74576184482758663
     m_Key: normal_ultimate.name
     m_Metadata:
       m_Items: []
-  - m_Id: 5661681074864133
+  - m_Id: 74576184482758664
     m_Key: normal_ultimate.desc
     m_Metadata:
       m_Items: []
-  - m_Id: 5661681074864134
+  - m_Id: 74576184482758665
     m_Key: piercing_ultimate.name
     m_Metadata:
       m_Items: []
-  - m_Id: 5661681074864135
+  - m_Id: 74576184482758666
     m_Key: piercing_ultimate.desc
     m_Metadata:
       m_Items: []
-  - m_Id: 5661681074864136
+  - m_Id: 74576184482758667
     m_Key: projectile_ultimate.name
     m_Metadata:
       m_Items: []
-  - m_Id: 5661681074864137
+  - m_Id: 74576184482758668
     m_Key: projectile_ultimate.desc
     m_Metadata:
       m_Items: []
-  - m_Id: 1401183729082405
+  - m_Id: 74576184482758669
     m_Key: spike_ultimate.name
     m_Metadata:
       m_Items: []
-  - m_Id: 1401183729082406
+  - m_Id: 74576184482758670
     m_Key: spike_ultimate.desc
     m_Metadata:
       m_Items: []
-  - m_Id: 5661681074864138
+  - m_Id: 74576184482758671
     m_Key: br_all.name
     m_Metadata:
       m_Items: []
-  - m_Id: 5661681074864139
+  - m_Id: 74576184482758672
     m_Key: br_all.desc
     m_Metadata:
       m_Items: []
-  - m_Id: 1401183729082407
+  - m_Id: 74576184482758673
     m_Key: br_damage.name
     m_Metadata:
       m_Items: []
-  - m_Id: 1401183729082408
+  - m_Id: 74576184482758674
     m_Key: br_damage.desc
     m_Metadata:
       m_Items: []
-  - m_Id: 1401183729082409
+  - m_Id: 74576184482758675
     m_Key: br_gold.name
     m_Metadata:
       m_Items: []
-  - m_Id: 1401183729082410
+  - m_Id: 74576184482758676
     m_Key: br_gold.desc
     m_Metadata:
       m_Items: []
-  - m_Id: 5661681074864140
+  - m_Id: 74576184482758677
     m_Key: br_golden_damage.name
     m_Metadata:
       m_Items: []
-  - m_Id: 5661681074864141
+  - m_Id: 74576184482758678
     m_Key: br_golden_damage.desc
     m_Metadata:
       m_Items: []
-  - m_Id: 1401183729082411
+  - m_Id: 74576184482758679
     m_Key: br_health.name
     m_Metadata:
       m_Items: []
-  - m_Id: 1401183729082412
+  - m_Id: 74576184482758680
     m_Key: br_health.desc
     m_Metadata:
       m_Items: []
-  - m_Id: 1401183729082413
+  - m_Id: 74576184482758681
     m_Key: br_regen.name
     m_Metadata:
       m_Items: []
-  - m_Id: 1401183729082414
+  - m_Id: 74576184482758682
     m_Key: br_regen.desc
     m_Metadata:
       m_Items: []
-  - m_Id: 1401183729082415
+  - m_Id: 74576184482758683
     m_Key: br_shield.name
     m_Metadata:
       m_Items: []
-  - m_Id: 1401183729082416
+  - m_Id: 74576184482758684
     m_Key: br_shield.desc
     m_Metadata:
       m_Items: []
-  - m_Id: 5661681074864142
+  - m_Id: 74576184482758685
     m_Key: br_spike.name
     m_Metadata:
       m_Items: []
-  - m_Id: 5661681074864143
+  - m_Id: 74576184482758686
     m_Key: br_spike.desc
     m_Metadata:
       m_Items: []
-  - m_Id: 57261875413377024
-    m_Key: spikes.name
+  - m_Id: 74576184482758687
+    m_Key: br_attack_speed.name
     m_Metadata:
       m_Items: []
-  - m_Id: 59955273685524480
-    m_Key: dtype.magic
+  - m_Id: 74576184482758688
+    m_Key: br_attack_speed.desc
     m_Metadata:
       m_Items: []
-  - m_Id: 59955273723273216
-    m_Key: dtype.piercing
+  - m_Id: 74576184482758689
+    m_Key: br_mythrill.name
     m_Metadata:
       m_Items: []
-  - m_Id: 59955273723273217
-    m_Key: dtype.normal
+  - m_Id: 74576184482758690
+    m_Key: br_mythrill.desc
     m_Metadata:
       m_Items: []
-  - m_Id: 59955273723273218
-    m_Key: dtype.projectile
+  - m_Id: 74576184482758691
+    m_Key: hunt.name
     m_Metadata:
       m_Items: []
-  - m_Id: 59955273723273219
-    m_Key: dtype.heavy
+  - m_Id: 74576184482758692
+    m_Key: hunt.desc
     m_Metadata:
       m_Items: []
-  - m_Id: 59955273723273220
-    m_Key: dtype.chaos
+  - m_Id: 74576184482758693
+    m_Key: duplicator.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184482758694
+    m_Key: duplicator.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184482758695
+    m_Key: boss_contract.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184482758696
+    m_Key: boss_contract.desc
     m_Metadata:
       m_Items: []
   m_Metadata:

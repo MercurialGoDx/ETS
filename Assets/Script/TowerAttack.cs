@@ -31,8 +31,6 @@ public class TowerAttack : MonoBehaviour
 
     private DamageCalculator damageCalculator;
 
-    private readonly List<Enemy> usedThisVolley = new List<Enemy>();
-
     private List<WeaponRuntime> weapons = new List<WeaponRuntime>();
 
     public bool DebugDamageEnabled => debugDamage;
@@ -122,11 +120,15 @@ public class TowerAttack : MonoBehaviour
         if (weapon.def.bulletPrefab == null || firePoint == null)
             return false;
 
+        if (weapon.isVolleyInProgress)
+            return false;
+
         List<Enemy> enemiesInRange = EnemyManager.Instance.GetEnemiesInRange(transform.position, range);
         if (enemiesInRange.Count == 0)
             return false;
 
         // Стартуем "залп с задержками"
+        weapon.isVolleyInProgress = true;
         StartCoroutine(FireWeaponStaggered(weapon, enemiesInRange));
         return true; // важно: чтобы кулдаун поставился, как и раньше
     }
@@ -134,7 +136,11 @@ public class TowerAttack : MonoBehaviour
     private IEnumerator FireWeaponStaggered(WeaponRuntime weapon, List<Enemy> enemiesInRange)
     {
         int stacks = weapon.stacks;
-        if (stacks <= 0) yield break;
+        if (stacks <= 0)
+        {
+            FinishWeaponVolley(weapon);
+            yield break;
+        }
 
         // Время между атаками (учитывает GlobalFireRate через fireRateMultiplier)
         float attackInterval = 1f / (weapon.def.fireRate * TotalFireRateMultiplier);
@@ -154,7 +160,7 @@ public class TowerAttack : MonoBehaviour
 
         bool randomEachShot = (weapon.def.targetingMode == WeaponTargetingMode.RandomEachShot);
 
-        usedThisVolley.Clear();
+        var usedThisVolley = new HashSet<Enemy>();
 
         for (int i = 0; i < stacks; i++)
         {
@@ -213,27 +219,35 @@ public class TowerAttack : MonoBehaviour
                 if (!randomEachShot)
                     weapon.lastTargets[i] = target;
 
-                SpawnBullet(weapon, target);
+                SpawnBullet(weapon, target, i);
             }
 
             // задержка до следующего выстрела в залпе
             if (stepDelay > 0f && i < stacks - 1)
                 yield return new WaitForSeconds(stepDelay);
         }
+
+        FinishWeaponVolley(weapon);
     }
 
-    private void SpawnBullet(WeaponRuntime weapon, Enemy target)
+    private void SpawnBullet(WeaponRuntime weapon, Enemy target, int stackIndex)
     {
         if (target == null || target.isDead)
             return;
 
+        float runtimeBaseDamage = GetRuntimeBaseDamage(weapon);
         float damage = GetBaseProjectileDamage(weapon);
 
-        LaserBeam existingBeam = LaserBeam.GetActiveBeamFor(target);
+        LaserBeam existingBeam = LaserBeam.GetActiveBeamFor(target, weapon.def, stackIndex);
         if (existingBeam != null && existingBeam.gameObject.activeSelf)
         {
             // обновляем только параметры, не создаём новый
-            existingBeam.RefreshContext(firePoint, damage, this, weapon.def.fireRate);
+            existingBeam.RefreshContext(
+                firePoint,
+                runtimeBaseDamage,
+                damage,
+                this,
+                weapon.def.fireRate);
             return;
         }
 
@@ -247,6 +261,7 @@ public class TowerAttack : MonoBehaviour
         {
             firePoint = firePoint,
             target = target.transform,
+            baseDamage = runtimeBaseDamage,
             damage = damage,
             projectileSpeed = weapon.def.projectileSpeed,
             damageCalculator = damageCalculator,
@@ -255,8 +270,49 @@ public class TowerAttack : MonoBehaviour
             owner = transform,
             heightOffset = waveHeightOffset,
             forwardOffset = waveForwardOffset,
-            weapon = weapon.def
+            weapon = weapon.def,
+            weaponStackIndex = stackIndex
         });
+    }
+
+    public void RequestImmediateRetarget(WeaponDefinition weaponDefinition)
+    {
+        if (weaponDefinition == null)
+            return;
+
+        foreach (var weapon in weapons)
+        {
+            if (weapon.def != weaponDefinition)
+                continue;
+
+            for (int i = 0; i < weapon.lastTargets.Count; i++)
+            {
+                Enemy target = weapon.lastTargets[i];
+                if (target == null || target.isDead || !target.gameObject.activeInHierarchy)
+                    weapon.lastTargets[i] = null;
+            }
+
+            if (weapon.isVolleyInProgress)
+                weapon.immediateRetargetRequested = true;
+            else
+                weapon.cooldown = 0f;
+
+            if (debugDamage)
+                Debug.Log($"[Laser] Immediate retarget requested for {weaponDefinition.name}.");
+
+            return;
+        }
+    }
+
+    private static void FinishWeaponVolley(WeaponRuntime weapon)
+    {
+        weapon.isVolleyInProgress = false;
+
+        if (!weapon.immediateRetargetRequested)
+            return;
+
+        weapon.immediateRetargetRequested = false;
+        weapon.cooldown = 0f;
     }
 
     public void AddWeapon(WeaponDefinition def)
@@ -285,7 +341,10 @@ public class TowerAttack : MonoBehaviour
             stacks = 1,
             cooldown = 0f,
             lastTargets = new List<Enemy>(),
-            auraInstance = null
+            auraInstance = null,
+            isVolleyInProgress = false,
+            immediateRetargetRequested = false,
+            baseDamageBonus = 0f
         };
 
         // 🔹 Проверяем, является ли пулей для этого оружия аура
@@ -316,6 +375,36 @@ public class TowerAttack : MonoBehaviour
         weapons.Add(newWeapon);
     }
 
+    public bool AddWeaponBaseDamage(WeaponDefinition def, float amount)
+    {
+        if (def == null || amount <= 0f)
+            return false;
+
+        foreach (var weapon in weapons)
+        {
+            if (weapon.def != def)
+                continue;
+
+            weapon.baseDamageBonus += amount;
+
+            if (debugDamage)
+            {
+                float currentBaseDamage = GetRuntimeBaseDamage(weapon);
+                Debug.Log(
+                    $"[DamageDebug] {def.name}: kill scaling +{amount:0.###} base damage, " +
+                    $"SO base={def.damagePerProjectile:0.###}, accumulated bonus={weapon.baseDamageBonus:0.###}, " +
+                    $"runtime base={currentBaseDamage:0.###}, stacks={weapon.stacks}.");
+            }
+
+            return true;
+        }
+
+        if (debugDamage)
+            Debug.LogWarning($"[DamageDebug] Cannot add base damage: {def.name} is not owned by the tower.");
+
+        return false;
+    }
+
     public void ApplyUpgrade(UpgradeDefinition upgrade)
     {
         if (upgrade == null) return;
@@ -338,7 +427,7 @@ public class TowerAttack : MonoBehaviour
     {
         DamageContext context = new DamageContext
         {
-            baseDamage = weapon.def.damagePerProjectile,
+            baseDamage = GetRuntimeBaseDamage(weapon),
             damageType = weapon.def.damageType,
             itemTier = weapon.def.itemTier,
             isSpikes = false
@@ -363,18 +452,24 @@ public class TowerAttack : MonoBehaviour
 
     private float GetBaseProjectileDamage(WeaponRuntime weapon)
     {
+        float runtimeBaseDamage = GetRuntimeBaseDamage(weapon);
         bool usesCatapultDamage = weapon.def.bulletPrefab != null
             && weapon.def.bulletPrefab.GetComponent<Catapult>() != null;
 
         if (usesCatapultDamage)
         {
             if (debugDamage)
-                Debug.Log($"[DamageDebug] {weapon.def.name}: catapult base from SO = {weapon.def.damagePerProjectile:0.###}, HP bonus will be added on explode before multipliers.");
+                Debug.Log($"[DamageDebug] {weapon.def.name}: runtime base = {runtimeBaseDamage:0.###}, HP bonus will be added on explode before multipliers.");
 
-            return weapon.def.damagePerProjectile;
+            return runtimeBaseDamage;
         }
 
         return GetFinalDamage(weapon);
+    }
+
+    private static float GetRuntimeBaseDamage(WeaponRuntime weapon)
+    {
+        return weapon.def.damagePerProjectile + weapon.baseDamageBonus;
     }
 
 

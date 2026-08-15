@@ -26,4 +26,14 @@ MonoBehaviour:
   damageType: 2
   bulletPrefab: {fileID: 2459226596520842175, guid: 8e038340aa8ae4f42ae2176b3323fabf, type: 3}
   weight: 8
+  weightIncreasePerPurchase: 0
+  maxWeightIncreasePurchases: 0
+  weightDecreaseUpgrades: []
+  weightDecreaseUpgradePercent: 0
+  weightIncreaseUpgrades: []
+  weightIncreaseUpgradePercent: 0
+  weightDecreaseWeapons: []
+  weightDecreaseWeaponPercent: 0
+  weightIncreaseWeapons: []
+  weightIncreaseWeaponPercent: 0
   targetingMode: 0

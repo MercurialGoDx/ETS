@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -16,7 +17,13 @@ public class BossRewardUI : MonoBehaviour
     public BossRewardCardUI card2;
     public BossRewardCardUI card3;
 
+    [Header("Multiple Selections")]
+    [SerializeField, Min(0f)] private float selectionTransitionDelay = 0.08f;
+
     private float prevTimeScale = 1f;
+    private int remainingSelections;
+    private bool isResolvingSelection;
+    private CanvasGroup panelCanvasGroup;
 
     /// <summary>
     /// True, пока открыт экран выбора награды с босса. Пока он открыт, магазин
@@ -35,16 +42,19 @@ public class BossRewardUI : MonoBehaviour
         IsSelectionOpen = false;
     }
 
-    public void Open()
+    public void Open(int selectionCount = 1)
     {
-        gameSpeedPanel.SetActive(false);
+        if (gameSpeedPanel != null) gameSpeedPanel.SetActive(false);
 
         prevTimeScale = Time.timeScale;
         Time.timeScale = 0f;
 
+        remainingSelections = Mathf.Max(1, selectionCount);
+        isResolvingSelection = false;
         IsSelectionOpen = true;
 
         if (panelRoot != null) panelRoot.SetActive(true);
+        SetPanelVisible(true);
 
         ShowRewards();
     }
@@ -67,21 +77,69 @@ public class BossRewardUI : MonoBehaviour
 
     private void OnChosen(UpgradeBaseSO reward)
     {
+        if (isResolvingSelection)
+            return;
+
+        isResolvingSelection = true;
+
         // применяем апгрейд (через UpgradesManager, как у тебя уже в проекте)
         if (reward != null && UpgradesManager.Instance != null)
         {
             UpgradesManager.Instance.ApplyBossReward(reward);
         }
 
+        remainingSelections--;
+        if (remainingSelections > 0)
+        {
+            StartCoroutine(ShowNextSelection());
+            return;
+        }
+
         Close();
+    }
+
+    private IEnumerator ShowNextSelection()
+    {
+        SetPanelVisible(false);
+
+        if (selectionTransitionDelay > 0f)
+            yield return new WaitForSecondsRealtime(selectionTransitionDelay);
+        else
+            yield return null;
+
+        ShowRewards();
+        SetPanelVisible(true);
+        isResolvingSelection = false;
+
+        Debug.Log($"[BossRewardUI] Next selection opened; remaining={remainingSelections}.");
     }
 
     public void Close()
     {
+        StopAllCoroutines();
+        remainingSelections = 0;
+        isResolvingSelection = false;
         IsSelectionOpen = false;
 
         if (panelRoot != null) panelRoot.SetActive(false);
         Time.timeScale = prevTimeScale;
-        gameSpeedPanel.SetActive(true);
+        if (gameSpeedPanel != null) gameSpeedPanel.SetActive(true);
+    }
+
+    private void SetPanelVisible(bool visible)
+    {
+        if (panelRoot == null)
+            return;
+
+        if (panelCanvasGroup == null)
+        {
+            panelCanvasGroup = panelRoot.GetComponent<CanvasGroup>();
+            if (panelCanvasGroup == null)
+                panelCanvasGroup = panelRoot.AddComponent<CanvasGroup>();
+        }
+
+        panelCanvasGroup.alpha = visible ? 1f : 0f;
+        panelCanvasGroup.interactable = visible;
+        panelCanvasGroup.blocksRaycasts = visible;
     }
 }

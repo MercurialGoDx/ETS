@@ -327,6 +327,7 @@ public class ShopManager : MonoBehaviour
         UpgradesManager.Instance.RegisterWeaponPurchase(weapon);
 
         tower.AddWeapon(weapon);
+        DuplicateWeaponIfArmed(weapon);
 
         if (PurchaseHistoryManager.Instance != null)
             PurchaseHistoryManager.Instance.AddWeapon(weapon);
@@ -434,6 +435,9 @@ public class ShopManager : MonoBehaviour
         if (UpgradesManager.Instance != null)
             UpgradesManager.Instance.ApplyUpgrade(upgrade);
 
+        if (upgrade is not DuplicatorUpgrade)
+            DuplicateUpgradeIfArmed(upgrade);
+
         if (PurchaseHistoryManager.Instance != null)
             PurchaseHistoryManager.Instance.AddUpgrade(upgrade);
 
@@ -444,6 +448,42 @@ public class ShopManager : MonoBehaviour
 
         if (slot != null)
             slot.Clear();
+    }
+
+    private void DuplicateWeaponIfArmed(WeaponDefinition weapon)
+    {
+        UpgradesManager upgradesManager = UpgradesManager.Instance;
+        UpgradesRuntimeData runtime = upgradesManager?.GameplayRuntimeData;
+        if (runtime == null || !runtime.TryConsumeDuplicator(weapon.itemTier, out int copies))
+            return;
+
+        for (int i = 0; i < copies; i++)
+        {
+            upgradesManager.RegisterWeaponPurchase(weapon);
+            tower.AddWeapon(weapon);
+        }
+
+        Debug.Log($"[Duplicator] Granted {copies} free weapon copies: {weapon.name}.");
+    }
+
+    private void DuplicateUpgradeIfArmed(UpgradeBaseSO upgrade)
+    {
+        UpgradesManager upgradesManager = UpgradesManager.Instance;
+        UpgradesRuntimeData runtime = upgradesManager?.GameplayRuntimeData;
+        if (runtime == null || !runtime.TryConsumeDuplicator(upgrade.itemTier, out int copies))
+            return;
+
+        int appliedCopies = 0;
+        for (int i = 0; i < copies; i++)
+        {
+            if (!upgradesManager.CanApplyUpgrade(upgrade))
+                break;
+
+            upgradesManager.ApplyUpgrade(upgrade);
+            appliedCopies++;
+        }
+
+        Debug.Log($"[Duplicator] Granted {appliedCopies}/{copies} free upgrade copies: {upgrade.name}.");
     }
 
     // ======================== РЕРОЛЛ / РАНДОМИЗАЦИЯ ========================

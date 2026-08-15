@@ -72,25 +72,34 @@ public class WeaponDefinition : ScriptableObject
 
     public virtual string GetLocalizedName()
     {
+        if (localizedStringTable == null || localizedStringTable.IsEmpty || string.IsNullOrWhiteSpace(nameKey))
+            return name;
+
         // Получаем таблицу для текущей локали
         var stringTable = localizedStringTable.GetTable();
         if (stringTable == null)
         {
-            Debug.LogError($"Localization table not found for upgrade: {name}");
-            return nameKey;
+            Debug.LogWarning($"Localization table not found for weapon: {name}");
+            return name;
         }
 
         // Получаем строку по ключу
         var entry = stringTable.GetEntry(nameKey);
-        return entry?.GetLocalizedString() ?? nameKey;
+        return entry?.GetLocalizedString() ?? name;
     }
 
     public virtual string GetLocalizedDescription()
     {
+        if (string.IsNullOrWhiteSpace(descriptionKey))
+            return string.Empty;
+
+        if (localizedStringTable == null || localizedStringTable.IsEmpty)
+            return descriptionKey;
+
         var stringTable = localizedStringTable.GetTable();
         if (stringTable == null)
         {
-            Debug.LogError($"Localization table not found for upgrade: {name}");
+            Debug.LogWarning($"Localization table not found for weapon: {name}");
             return descriptionKey;
         }
 
@@ -109,7 +118,9 @@ public class WeaponDefinition : ScriptableObject
 
     protected string GetLocalizedDamageType()
     {
-        var stringTable = localizedStringTable.GetTable();
+        var stringTable = localizedStringTable != null && !localizedStringTable.IsEmpty
+            ? localizedStringTable.GetTable()
+            : null;
         if (stringTable != null)
         {
             var entry = stringTable.GetEntry("dtype." + damageType.ToString().ToLowerInvariant());

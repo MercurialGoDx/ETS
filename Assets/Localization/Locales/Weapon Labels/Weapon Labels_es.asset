@@ -19,286 +19,203 @@ MonoBehaviour:
     m_Items: []
   m_TableData:
   - m_Id: 1385907683844096
-    m_Localized: <color=#ffd700>Hacha</color>
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787136
-    m_Localized: "<color=#ffd700>Da\xF1o:</color> {0}\\n<color=#ffd700>Tipo de da\xF1o:</color>
-      {1}\\n<color=#ffd700>Velocidad de ataque:</color> {2}\\n\\n<color=#ffd700>Coste:</color>
-      {3}"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787137
-    m_Localized: <color=#ffd700>Ballesta</color>
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787138
-    m_Localized: "<color=#ffd700>Da\xF1o:</color> {0}\\n<color=#ffd700>Tipo de da\xF1o:</color>
-      {1}\\n<color=#ffd700>Velocidad de ataque:</color> {2}\\n\\n<color=#ffd700>Coste:</color>
-      {3}"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787139
-    m_Localized: <color=#ffd700>Orbe del caos</color>
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787140
-    m_Localized: "<color=#ffd700>Da\xF1o:</color> {0}\\n<color=#ffd700>Tipo de da\xF1o:</color>
-      {1}\\n<color=#ffd700>Velocidad de ataque:</color> {2}\\n\\n<color=#ffd700>Coste:</color>
-      {3}"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787141
-    m_Localized: "<color=#ffd700>Orbe m\xE1gico</color>"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787142
-    m_Localized: "<color=#ffd700>Da\xF1o:</color> {0}\\n<color=#ffd700>Tipo de da\xF1o:</color>
-      {1}\\n<color=#ffd700>Velocidad de ataque:</color> {2}\\n\\n<color=#ffd700>Coste:</color>
-      {3}"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787143
-    m_Localized: <color=#ffd700>Lanza</color>
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787144
-    m_Localized: "<color=#ffd700>Da\xF1o:</color> {0}\\n<color=#ffd700>Tipo de da\xF1o:</color>
-      {1}\\n<color=#ffd700>Velocidad de ataque:</color> {2}\\n\\n<color=#ffd700>Coste:</color>
-      {3}"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787145
-    m_Localized: <color=#ffd700>Roca</color>
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787146
-    m_Localized: "<color=#ffd700>Da\xF1o:</color> {0}\\n<color=#ffd700>Tipo de da\xF1o:</color>
-      {1}\\n<color=#ffd700>Velocidad de ataque:</color> {2}\\n\\n<color=#ffd700>Coste:</color>
-      {3}"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787147
-    m_Localized: <color=#ffd700>Chakram</color>
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787148
-    m_Localized: "Al impactar, rebota al enemigo m\xE1s cercano dentro del alcance.
-      <color=#ffd700>Se repite 3 veces</color>\\n<color=#ffd700>Da\xF1o:</color>
-      {0}\\n<color=#ffd700>Tipo de da\xF1o:</color> {1}\\n<color=#ffd700>Velocidad
-      de ataque:</color> {2}\\n\\n<color=#ffd700>Coste:</color> {3}"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787149
-    m_Localized: <color=#ffd700>Rayo en cadena</color>
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787150
-    m_Localized: "Encadena rayos a los enemigos cercanos\\n<color=#ffd700>Da\xF1o:</color>
-      {0}\\n<color=#ffd700>Tipo de da\xF1o:</color> {1}\\n<color=#ffd700>Velocidad
-      de ataque:</color> {2}\\n\\n<color=#ffd700>Coste:</color> {3}"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787151
-    m_Localized: <color=#ffd700>Flecha de hielo</color>
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787152
-    m_Localized: "Ralentiza al enemigo un 30% durante 2 segundos\\n<color=#ffd700>Da\xF1o:</color>
-      {0}\\n<color=#ffd700>Tipo de da\xF1o:</color> {1}\\n<color=#ffd700>Velocidad
-      de ataque:</color> {2}\\n\\n<color=#ffd700>Coste:</color> {3}"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787153
-    m_Localized: "<color=#ffd700>Sif\xF3n de vida</color>"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787154
-    m_Localized: "Aumenta la salud m\xE1xima en 2 al matar a un enemigo\\n<color=#ffd700>Da\xF1o:</color>
-      {0}\\n<color=#ffd700>Tipo de da\xF1o:</color> {1}\\n<color=#ffd700>Velocidad
-      de ataque:</color> {2}\\n\\n<color=#ffd700>Coste:</color> {3}"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787155
-    m_Localized: <color=#ffd700>Misil teledirigido</color>
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787156
-    m_Localized: "<color=#ffd700>Da\xF1o:</color> {0}\\n<color=#ffd700>Tipo de da\xF1o:</color>
-      {1}\\n<color=#ffd700>Velocidad de ataque:</color> {2}\\n\\n<color=#ffd700>Coste:</color>
-      {3}"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787157
-    m_Localized: <color=#ffd700>Mortero</color>
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787158
-    m_Localized: "<color=#ffd700>Da\xF1o:</color> {0}\\n<color=#ffd700>Tipo de da\xF1o:</color>
-      {1}\\n<color=#ffd700>Velocidad de ataque:</color> {2}\\n\\n<color=#ffd700>Coste:</color>
-      {3}"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787159
-    m_Localized: <color=#ffd700>Onda de choque</color>
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787160
-    m_Localized: "Env\xEDa una onda que da\xF1a a todos en su camino\\n<color=#ffd700>Da\xF1o:</color>
-      {0}\\n<color=#ffd700>Tipo de da\xF1o:</color> {1}\\n<color=#ffd700>Velocidad
-      de ataque:</color> {2}\\n\\n<color=#ffd700>Coste:</color> {3}"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787161
-    m_Localized: <color=#ffd700>Balista</color>
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787162
-    m_Localized: "<color=#ffd700>Da\xF1o:</color> {0}\\n<color=#ffd700>Tipo de da\xF1o:</color>
-      {1}\\n<color=#ffd700>Velocidad de ataque:</color> {2}\\n\\n<color=#ffd700>Coste:</color>
-      {3}"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787163
-    m_Localized: <color=#ffd700>Catapulta</color>
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787164
-    m_Localized: "Inflige da\xF1o en \xE1rea igual al <color=#ffd700>15%</color>
-      de la salud m\xE1xima de la torre\\n<color=#ffd700>Da\xF1o:</color> {0}\\n<color=#ffd700>Tipo
-      de da\xF1o:</color> {1}\\n<color=#ffd700>Velocidad de ataque:</color> {2}\\n<color=#ffd700>Da\xF1o
-      en \xE1rea:</color> S\xED\\n\\n<color=#ffd700>Coste:</color> {3}"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787165
-    m_Localized: <color=#ffd700>Onda de caos</color>
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787166
-    m_Localized: "Env\xEDa una onda que da\xF1a a todos en su camino. Cura a la torre
-      <color=#ffd700>10</color> de salud por cada enemigo golpeado\\n<color=#ffd700>Da\xF1o:</color>
-      {0}\\n<color=#ffd700>Tipo de da\xF1o:</color> {1}\\n<color=#ffd700>Velocidad
-      de ataque:</color> {2}\\n\\n<color=#ffd700>Coste:</color> {3}"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787167
-    m_Localized: <color=#ffd700>Martillo de tormenta</color>
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787168
-    m_Localized: "<color=#ffd700>Da\xF1o:</color> {0}\\n<color=#ffd700>Tipo de da\xF1o:</color>
-      {1}\\n<color=#ffd700>Velocidad de ataque:</color> {2}\\n\\n<color=#ffd700>Coste:</color>
-      {3}"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787169
-    m_Localized: <color=#ffd700>Foco arcano</color>
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787170
-    m_Localized: "<color=#ffd700>Da\xF1o:</color> {0}\\n<color=#ffd700>Tipo de da\xF1o:</color>
-      {1}\\n<color=#ffd700>Velocidad de ataque:</color> {2}\\n\\n<color=#ffd700>Coste:</color>
-      {3}"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787171
-    m_Localized: <color=#ffd700>Tronco</color>
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787172
-    m_Localized: "Lanza un tronco que da\xF1a a todos en su camino\\n<color=#ffd700>Da\xF1o:</color>
-      {0}\\n<color=#ffd700>Tipo de da\xF1o:</color> {1}\\n<color=#ffd700>Velocidad
-      de ataque:</color> {2}\\n\\n<color=#ffd700>Coste:</color> {3}"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787173
-    m_Localized: <color=#ffd700>Tornado</color>
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787174
-    m_Localized: "Al impactar, empuja al enemigo lejos de la torre. Da\xF1a a todos
-      los enemigos en su camino. Cambia de objetivo tras cada disparo\\n<color=#ffd700>Da\xF1o:</color>
-      {0}\\n<color=#ffd700>Tipo de da\xF1o:</color> {1}\\n<color=#ffd700>Velocidad
-      de ataque:</color> {2}\\n\\n<color=#ffd700>Coste:</color> {3}"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787175
-    m_Localized: <color=#ffd700>Ventisca</color>
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787176
-    m_Localized: "Una tormenta de hielo cae del cielo, infligiendo da\xF1o en \xE1rea\\n<color=#ffd700>Da\xF1o:</color>
-      {0}\\n<color=#ffd700>Tipo de da\xF1o:</color> {1}\\n<color=#ffd700>Velocidad
-      de ataque:</color> {2}\\n<color=#ffd700>Da\xF1o en \xE1rea:</color> S\xED\\n\\n<color=#ffd700>Coste:</color>
-      {3}"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787177
-    m_Localized: "<color=#ffd700>Fuego fat\xEDdico</color>"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787178
-    m_Localized: "Crea un aura de fuego alrededor de la torre que da\xF1a gradualmente
-      a los enemigos\\n<color=#ffd700>Da\xF1o:</color> {0}\\n<color=#ffd700>Tipo
-      de da\xF1o:</color> {1}\\n<color=#ffd700>Velocidad de ataque:</color> {2}\\n\\n<color=#ffd700>Coste:</color>
-      {3}"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787179
-    m_Localized: "<color=#ffd700>C\xEDrculo m\xE1gico</color>"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787180
-    m_Localized: "Crea una fuerza m\xE1gica alrededor de la torre que da\xF1a a todos
-      los enemigos del mapa\\n<color=#ffd700>Da\xF1o:</color> {0}\\n<color=#ffd700>Tipo
-      de da\xF1o:</color> {1}\\n<color=#ffd700>Velocidad de ataque:</color> {2}\\n\\n<color=#ffd700>Coste:</color>
-      {3}"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787181
-    m_Localized: <color=#ffd700>Meteoro</color>
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787182
-    m_Localized: "Un meteoro cae del cielo, infligiendo un enorme da\xF1o en \xE1rea\\n<color=#ffd700>Da\xF1o:</color>
-      {0}\\n<color=#ffd700>Tipo de da\xF1o:</color> {1}\\n<color=#ffd700>Velocidad
-      de ataque:</color> {2}\\n<color=#ffd700>Da\xF1o en \xE1rea:</color> S\xED\\n\\n<color=#ffd700>Coste:</color>
-      {3}"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787183
-    m_Localized: <color=#ffd700>Cuchillas giratorias</color>
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787184
-    m_Localized: "Genera cuchillas en un lugar aleatorio durante 15 segundos, da\xF1ando
-      a los enemigos cercanos\\n<color=#ffd700>Da\xF1o:</color> {0}\\n<color=#ffd700>Tipo
-      de da\xF1o:</color> {1}\\n<color=#ffd700>Velocidad de ataque:</color> {2}\\n<color=#ffd700>Da\xF1o
-      en \xE1rea:</color> S\xED\\n\\n<color=#ffd700>Coste:</color> {3}"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 59785492072226816
-    m_Localized: "M\xE1gico"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 59785492101586944
-    m_Localized: Perforante
-    m_Metadata:
-      m_Items: []
-  - m_Id: 59785492101586945
-    m_Localized: Normal
-    m_Metadata:
-      m_Items: []
-  - m_Id: 59785492101586946
-    m_Localized: Proyectil
-    m_Metadata:
-      m_Items: []
-  - m_Id: 59785492101586947
-    m_Localized: Pesado
-    m_Metadata:
-      m_Items: []
-  - m_Id: 59785492101586948
-    m_Localized: Caos
+    m_Localized: 
     m_Metadata:
       m_Items: []
   references:

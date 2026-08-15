@@ -10,24 +10,24 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f3a9287f7cdfa744ebf102da5de8f389, type: 3}
-  m_Name: Weapon
+  m_Name: UltimateLaser
   m_EditorClassIdentifier: 
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: 989ddb8cfe3148f4da8d8699b2eed075, type: 3}
   localizedStringTable:
     m_TableReference:
-      m_TableCollectionName: 
-  nameKey: 
-  descriptionKey: 
-  price: 10
-  damagePerProjectile: 5
-  fireRate: 1
+      m_TableCollectionName: GUID:32a974e0a609fb740a2db5dde9508098
+  nameKey: ultimate_laser.name
+  descriptionKey: ultimate_laser.desc
+  price: 3000
+  damagePerProjectile: 0
+  fireRate: 2
   projectileSpeed: 10
-  itemTier: 1
-  damageType: 0
-  bulletPrefab: {fileID: 0}
-  weight: 1
-  weightIncreasePerPurchase: 2
-  maxWeightIncreasePurchases: 5
+  itemTier: 4
+  damageType: 1
+  bulletPrefab: {fileID: 3621047873860463696, guid: a46ce5a6f29fd3b449666cbf7ff7b2dd, type: 3}
+  weight: 2
+  weightIncreasePerPurchase: 0
+  maxWeightIncreasePurchases: 0
   weightDecreaseUpgrades: []
   weightDecreaseUpgradePercent: 0
   weightIncreaseUpgrades: []

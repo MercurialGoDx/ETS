@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public enum EnemyAttackType
@@ -9,6 +10,17 @@ public enum EnemyAttackType
 
 public class Enemy : MonoBehaviour
 {
+    private sealed class RendererPropertyState
+    {
+        public Renderer renderer;
+        public int materialIndex;
+        public MaterialPropertyBlock originalProperties;
+    }
+
+    private static readonly int BaseColorId = Shader.PropertyToID("_BaseColor");
+    private static readonly int ColorId = Shader.PropertyToID("_Color");
+    private static readonly int EmissionColorId = Shader.PropertyToID("_EmissionColor");
+
     [Header("Параметры врага")]
     public float speed = 2f;
     public float maxHealth = 20f;
@@ -39,6 +51,10 @@ public class Enemy : MonoBehaviour
     private EnemyAttackFeedback attackFeedback;
     [HideInInspector]
     public int bonusGold = 0;
+
+    private readonly List<RendererPropertyState> variantRendererStates = new();
+    private float goldRewardMultiplier = 1f;
+    public bool IsGolden { get; private set; }
 
 
     // ---- Замедление ----
@@ -235,6 +251,41 @@ public class Enemy : MonoBehaviour
         currentHealth = maxHealth;   // важно обновить текущее здоровье под новый максимум
     }
 
+    public bool ApplyGoldenModifiers(
+        float healthMultiplier,
+        float damageMultiplier,
+        float rewardMultiplier,
+        Color tint,
+        float tintStrength)
+    {
+        if (IsGolden)
+            return false;
+
+        healthMultiplier = Mathf.Max(1f, healthMultiplier);
+        damageMultiplier = Mathf.Max(1f, damageMultiplier);
+        goldRewardMultiplier = Mathf.Max(1f, rewardMultiplier);
+
+        InitStats(maxHealth * healthMultiplier, damageToPlayer * damageMultiplier);
+        ApplyVariantTint(tint, Mathf.Clamp01(tintStrength), Color.black, 0f);
+        IsGolden = true;
+        return true;
+    }
+
+    public void ApplyBossContractVisual(
+        Material outlineMaterial,
+        Color outlineColor,
+        float outlineWidth,
+        float glowIntensity,
+        float scaleMultiplier)
+    {
+        BossContractOutline outline = GetComponent<BossContractOutline>();
+        if (outline == null)
+            outline = gameObject.AddComponent<BossContractOutline>();
+
+        outline.Show(outlineMaterial, outlineColor, outlineWidth, glowIntensity);
+        transform.localScale = originalScale * Mathf.Max(1f, scaleMultiplier);
+    }
+
     public void TakeDamage(float amount, bool isFromSpikes = false)
     {
         if (isDead) return;
@@ -276,7 +327,8 @@ public class Enemy : MonoBehaviour
             if (UpgradesManager.Instance != null)
                 perKillBonus = UpgradesManager.Instance.goldBonusPerKill;
 
-            int goldReward = baseGold + bonusGold + perKillBonus;
+            int baseReward = baseGold + bonusGold + perKillBonus;
+            int goldReward = Mathf.Max(0, Mathf.RoundToInt(baseReward * goldRewardMultiplier));
             GoldManager.Instance.AddGold(goldReward, GoldSource.Kill, transform.position);
         }
 
@@ -327,6 +379,8 @@ public class Enemy : MonoBehaviour
         isSlowed = false;
         isKnockedBack = false;
         bonusGold = 0;
+        goldRewardMultiplier = 1f;
+        RestoreVariantVisual();
 
         // Враги двигаются через transform, поэтому держим Rigidbody кинематическим:
         // так физика не отбрасывает их друг от друга и от башни и они не застревают
@@ -360,6 +414,76 @@ public class Enemy : MonoBehaviour
 
         // Подстраховка: основной сброс масштаба выполняется ДО ухода в пул (см. OnDeathAnimationFinished).
         transform.localScale = originalScale;
+    }
+
+    private void ApplyVariantTint(
+        Color tint,
+        float strength,
+        Color emission,
+        float emissionIntensity)
+    {
+        RestoreVariantVisual();
+
+        Renderer[] renderers = GetComponentsInChildren<Renderer>(true);
+        foreach (Renderer targetRenderer in renderers)
+        {
+            if (targetRenderer is ParticleSystemRenderer ||
+                targetRenderer is TrailRenderer ||
+                targetRenderer is LineRenderer)
+            {
+                continue;
+            }
+
+            Material[] materials = targetRenderer.sharedMaterials;
+            for (int materialIndex = 0; materialIndex < materials.Length; materialIndex++)
+            {
+                Material material = materials[materialIndex];
+                if (material == null)
+                    continue;
+
+                int colorProperty;
+                if (material.HasProperty(BaseColorId))
+                    colorProperty = BaseColorId;
+                else if (material.HasProperty(ColorId))
+                    colorProperty = ColorId;
+                else
+                    continue;
+
+                var originalProperties = new MaterialPropertyBlock();
+                targetRenderer.GetPropertyBlock(originalProperties, materialIndex);
+                variantRendererStates.Add(new RendererPropertyState
+                {
+                    renderer = targetRenderer,
+                    materialIndex = materialIndex,
+                    originalProperties = originalProperties
+                });
+
+                var goldenProperties = new MaterialPropertyBlock();
+                targetRenderer.GetPropertyBlock(goldenProperties, materialIndex);
+
+                Color originalColor = material.GetColor(colorProperty);
+                Color goldenColor = Color.Lerp(originalColor, tint, strength);
+                goldenColor.a = originalColor.a;
+                goldenProperties.SetColor(colorProperty, goldenColor);
+
+                if (emissionIntensity > 0f && material.HasProperty(EmissionColorId))
+                    goldenProperties.SetColor(EmissionColorId, emission * emissionIntensity);
+
+                targetRenderer.SetPropertyBlock(goldenProperties, materialIndex);
+            }
+        }
+    }
+
+    private void RestoreVariantVisual()
+    {
+        foreach (RendererPropertyState state in variantRendererStates)
+        {
+            if (state.renderer != null)
+                state.renderer.SetPropertyBlock(state.originalProperties, state.materialIndex);
+        }
+
+        variantRendererStates.Clear();
+        IsGolden = false;
     }
 
     #endregion

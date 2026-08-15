@@ -4,6 +4,7 @@ public struct AttackContext
 {
     public Transform firePoint;
     public Transform target;
+    public float baseDamage;
     public float damage;
     public float projectileSpeed;
     public DamageCalculator damageCalculator;
@@ -16,4 +17,5 @@ public struct AttackContext
     public Transform owner; // башня
 
     public WeaponDefinition weapon;
+    public int weaponStackIndex;
 }

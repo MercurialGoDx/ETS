@@ -4709,13 +4709,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2139684195088285981}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.7071068, y: 0, z: 0.7071068, w: 0}
+  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 3, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 1, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3677957709632093428}
-  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 180}
+  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!198 &2110553862620467859
 ParticleSystem:
   m_ObjectHideFlags: 0
@@ -4888,7 +4888,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 0.085153535, g: 0.77205884, b: 0.74363506, a: 0.684}
-      maxColor: {r: 0.1910683, g: 0.4097662, b: 0.83823526, a: 0.672}
+      maxColor: {r: 0.1910683, g: 0.4097662, b: 0.83823526, a: 0.8509804}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -6046,8 +6046,8 @@ ParticleSystem:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 0}
         key1: {r: 1, g: 1, b: 1, a: 1}
-        key2: {r: 0, g: 0, b: 0, a: 0}
-        key3: {r: 0, g: 0, b: 0, a: 0}
+        key2: {r: 0, g: 0, b: 0, a: 1}
+        key3: {r: 0, g: 0, b: 0, a: 0.88824886}
         key4: {r: 0, g: 0, b: 0, a: 0}
         key5: {r: 0, g: 0, b: 0, a: 0}
         key6: {r: 0, g: 0, b: 0, a: 0}
@@ -6061,17 +6061,17 @@ ParticleSystem:
         ctime6: 0
         ctime7: 0
         atime0: 0
-        atime1: 32768
-        atime2: 65535
-        atime3: 0
-        atime4: 0
+        atime1: 4433
+        atime2: 32768
+        atime3: 50308
+        atime4: 65535
         atime5: 0
         atime6: 0
         atime7: 0
         m_Mode: 0
-        m_ColorSpace: -1
+        m_ColorSpace: 0
         m_NumColorKeys: 2
-        m_NumAlphaKeys: 3
+        m_NumAlphaKeys: 5
       minGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -9595,7 +9595,7 @@ GameObject:
   - component: {fileID: -9101767028526927828}
   - component: {fileID: -7624680980495913559}
   m_Layer: 0
-  m_Name: FX_LootDrop_Blue
+  m_Name: ultimateLaserProjectile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9610,7 +9610,7 @@ Transform:
   m_GameObject: {fileID: 3621047873860463696}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -1.0935, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -13532,7 +13532,7 @@ ParticleSystem:
   TrailModule:
     enabled: 0
     mode: 0
-    ratio: 1
+    ratio: 0
     lifetime:
       serializedVersion: 2
       minMaxState: 0
@@ -14454,8 +14454,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damagePerTick: 10
-  beamMesh: {fileID: 0}
+  beamMesh: {fileID: 3677957709632093428}
+  beamAxis: 1
+  referenceLength: 6
+  centerBeamMesh: 0
+  reverseBeamVisual: 1
   maxLifeTime: 15
+  enableDamageRamp: 1
+  damageGainPerSecondPercent: 100
+  maxDamageBonusPercent: 500
   increasePlayerMaxHealthOnKill: 0
   maxHealthIncreaseAmount: 10
 --- !u!1 &4487081461202973391
@@ -19194,13 +19201,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5415007470868902177}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 1, w: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 3, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 1, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3677957709632093428}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 180}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!198 &5559042201126845649
 ParticleSystem:
   m_ObjectHideFlags: 0
@@ -19373,7 +19380,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 0.085153535, g: 0.77205884, b: 0.74363506, a: 0.684}
-      maxColor: {r: 0.1910683, g: 0.4097662, b: 0.83823526, a: 0.672}
+      maxColor: {r: 0.1910683, g: 0.4097662, b: 0.83823526, a: 0.9019608}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
