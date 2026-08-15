@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c27422c313552df40af37641a13e294d, type: 3}
   m_Name: UltimateHp
   m_EditorClassIdentifier: 
-  icon: {fileID: 0}
-  price: 0
-  weight: 0
-  itemTier: 0
-  weightIncreasePerPurchase: 2
-  maxWeightIncreasePurchases: 5
+  icon: {fileID: 21300000, guid: 708c1e52264d1d74d8fbf70923b93078, type: 3}
+  price: 3000
+  weight: 3
+  itemTier: 4
+  weightIncreasePerPurchase: 0
+  maxWeightIncreasePurchases: 0
   weightDecreaseUpgrades: []
   weightDecreasePercent: 0
   weightIncreaseUpgrades: []
@@ -28,7 +28,10 @@ MonoBehaviour:
   weightIncreaseWeaponPercent: 0
   localizedStringTable:
     m_TableReference:
-      m_TableCollectionName: 
-  nameKey: 
-  descriptionKey: 
-  upgrades: []
+      m_TableCollectionName: GUID:164770c6fc8794c4ba4db6f8c7e72db3
+  nameKey: ultimate_hp.name
+  descriptionKey: ultimate_hp.desc
+  upgrades:
+  - {fileID: 11400000, guid: aef33e7fe9293e54d9308b1d40884d02, type: 2}
+  - {fileID: 11400000, guid: 5d5c819d07a83914191f7b60db8250e5, type: 2}
+  - {fileID: 11400000, guid: 1a2e27023e0dd8746ad97c7234b28c56, type: 2}
