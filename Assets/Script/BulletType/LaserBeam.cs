@@ -2,50 +2,74 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum LaserBeamAxis
+{
+    PositiveZ,
+    PositiveY
+}
+
 public class LaserBeam : MonoBehaviour, IAttackBehaviour
 {
-    [Header("Параметры лазера")]
-    [Tooltip("Урон за один тик (будет задаваться из WeaponDefinition)")]
+    [Header("Laser Settings")]
+    [Tooltip("Damage dealt by one tick. Set from WeaponDefinition at runtime.")]
     public float damagePerTick = 10f;
 
-    [Tooltip("Ребёнок, вытянутый вдоль локальной оси Z (визуал луча)")]
+    [Tooltip("Visual transform stretched along the configured local axis.")]
     public Transform beamMesh;
 
-    [Header("Время жизни")]
-    [Tooltip("Максимальное время жизни лазера в секундах (защита от зависания).")]
+    [SerializeField] private LaserBeamAxis beamAxis = LaserBeamAxis.PositiveZ;
+    [SerializeField, Min(0.01f)] private float referenceLength = 1f;
+    [SerializeField] private bool centerBeamMesh = true;
+    [SerializeField] private bool reverseBeamVisual;
+
+    [Header("Lifetime")]
+    [Tooltip("Maximum beam lifetime in seconds.")]
     public float maxLifeTime = 15f;
 
-    [Header("Эффект при убийстве")]
-    [Tooltip("Если true, при убийстве врага этим лучом игроку увеличится максимальное здоровье.")]
-    public bool increasePlayerMaxHealthOnKill = false;
+    [Header("Damage Ramp")]
+    [SerializeField, Tooltip("Enables damage growth while this beam continuously holds the same target.")]
+    private bool enableDamageRamp;
+    [SerializeField, Min(0f), Tooltip("Bonus base damage gained for each completed second on the same target.")]
+    private float damageGainPerSecondPercent = 20f;
+    [SerializeField, Min(0f), Tooltip("Maximum bonus base damage. 200% means up to 3x total base damage.")]
+    private float maxDamageBonusPercent = 200f;
 
-    [Tooltip("На сколько увеличивать максимальное здоровье при каждом убийстве.")]
+    [Header("Kill Effect")]
+    public bool increasePlayerMaxHealthOnKill = false;
     public float maxHealthIncreaseAmount = 10f;
+
+    private static readonly Dictionary<BeamKey, LaserBeam> ActiveBeams = new Dictionary<BeamKey, LaserBeam>();
 
     private Transform firePoint;
     private Enemy targetEnemy;
     private Transform targetTransform;
-
     private TowerAttack ownerTower;
-    private float baseFireRate = 1f;       // fireRate из WeaponDefinition
+    private DamageCalculator damageCalculator;
+    private float baseDamagePerTick;
+    private float baseFireRate = 1f;
     private float currentTickInterval = 1f;
-
     private Coroutine damageRoutine;
-
     private PlayerHealth cachedPlayerHealth;
-    private float lifeTimer = 0f;
-
+    private float lifeTimer;
+    private float targetLockStartTime;
     private WeaponDefinition sourceWeapon;
-
+    private int weaponStackIndex;
     private PooledObject pooledObject;
 
-    // ====== ОДИН ЛУЧ НА ОДНОГО ВРАГА ======
-    private static Dictionary<Enemy, LaserBeam> activeBeams = new Dictionary<Enemy, LaserBeam>();
+    private Vector3 initialBeamLocalPosition;
+    private Vector3 initialBeamLocalScale;
+    private Quaternion initialBeamLocalRotation;
+    private bool hasInitialBeamTransform;
+    private bool isReleasing;
+    private BeamKey activeBeamKey;
+    private bool hasActiveBeamKey;
 
-    public static LaserBeam GetActiveBeamFor(Enemy enemy)
+    public static LaserBeam GetActiveBeamFor(Enemy enemy, WeaponDefinition weapon, int stackIndex)
     {
-        if (enemy == null) return null;
-        activeBeams.TryGetValue(enemy, out var beam);
+        if (enemy == null || weapon == null)
+            return null;
+
+        ActiveBeams.TryGetValue(new BeamKey(enemy, weapon, stackIndex), out var beam);
         return beam;
     }
 
@@ -53,22 +77,73 @@ public class LaserBeam : MonoBehaviour, IAttackBehaviour
     {
         pooledObject = GetComponent<PooledObject>();
 
-        if (increasePlayerMaxHealthOnKill)
+        if (beamMesh != null)
         {
-            FindPlayerHealth();
+            initialBeamLocalPosition = beamMesh.localPosition;
+            initialBeamLocalScale = beamMesh.localScale;
+            initialBeamLocalRotation = beamMesh.localRotation;
+            hasInitialBeamTransform = true;
         }
+
+        if (increasePlayerMaxHealthOnKill)
+            FindPlayerHealth();
     }
 
-    private void FindPlayerHealth()
+    private void OnEnable()
     {
-        if (cachedPlayerHealth != null)
-            return;
+        lifeTimer = 0f;
+        targetLockStartTime = 0f;
+        isReleasing = false;
+    }
 
-        GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
-        if (playerObj != null)
+    private void OnDisable()
+    {
+        if (damageRoutine != null)
         {
-            cachedPlayerHealth = playerObj.GetComponent<PlayerHealth>();
+            StopCoroutine(damageRoutine);
+            damageRoutine = null;
         }
+
+        if (targetEnemy != null)
+            targetEnemy.OnDeath -= HandleTargetDeath;
+
+        if (hasActiveBeamKey &&
+            ActiveBeams.TryGetValue(activeBeamKey, out var beam) &&
+            beam == this)
+        {
+            ActiveBeams.Remove(activeBeamKey);
+        }
+
+        ResetBeamVisual();
+
+        firePoint = null;
+        targetEnemy = null;
+        targetTransform = null;
+        ownerTower = null;
+        damageCalculator = null;
+        baseDamagePerTick = 0f;
+        sourceWeapon = null;
+        weaponStackIndex = 0;
+        targetLockStartTime = 0f;
+        hasActiveBeamKey = false;
+    }
+
+    private void Update()
+    {
+        lifeTimer += Time.deltaTime;
+        if (lifeTimer >= maxLifeTime)
+        {
+            ReleaseBeam();
+            return;
+        }
+
+        if (!IsTargetValid())
+        {
+            ReleaseBeam();
+            return;
+        }
+
+        UpdateBeamTransform();
     }
 
     public void InitAttack(AttackContext context)
@@ -77,198 +152,268 @@ public class LaserBeam : MonoBehaviour, IAttackBehaviour
             ? context.target.GetComponent<Enemy>()
             : null;
 
-        if (enemy == null)
+        if (enemy == null || context.weapon == null)
         {
-            pooledObject.Release();
+            ReleaseBeam();
             return;
         }
-
-        InitInternal(
-            context.firePoint,
-            enemy,
-            context.damage,
-            context.ownerTower,
-            context.weaponFireRate
-        );
 
         sourceWeapon = context.weapon;
-    }
+        weaponStackIndex = context.weaponStackIndex;
+        firePoint = context.firePoint;
+        targetEnemy = enemy;
+        targetTransform = enemy.transform;
+        ownerTower = context.ownerTower;
+        damageCalculator = context.damageCalculator;
+        baseDamagePerTick = context.baseDamage;
+        damagePerTick = context.damage;
+        baseFireRate = Mathf.Max(0.01f, context.weaponFireRate);
+        targetLockStartTime = Time.time;
 
-    /// <summary>
-    /// firePoint      — точка на башне, откуда рисуем луч
-    /// target         — цель (враг)
-    /// damagePerTick  — урон за один тик
-    /// owner          — TowerAttack, чтобы брать fireRateMultiplier
-    /// weaponFireRate — базовая fireRate из WeaponDefinition (выстрелов в секунду)
-    /// </summary>
-    private void InitInternal(
-        Transform firePoint,
-        Enemy target,
-        float damagePerTick,
-        TowerAttack owner,
-        float weaponFireRate)
-    {
-        this.firePoint       = firePoint;
-        this.targetEnemy     = target;
-        this.targetTransform = target != null ? target.transform : null;
-        this.ownerTower      = owner;
-        this.damagePerTick   = damagePerTick;
-        this.baseFireRate    = Mathf.Max(0.01f, weaponFireRate);
+        targetEnemy.OnDeath += HandleTargetDeath;
 
-        if (targetEnemy == null || targetTransform == null)
+        activeBeamKey = new BeamKey(targetEnemy, sourceWeapon, weaponStackIndex);
+        hasActiveBeamKey = true;
+
+        if (ActiveBeams.TryGetValue(activeBeamKey, out var existing) &&
+            existing != null &&
+            existing != this)
         {
-            Debug.LogWarning("[LASER] Init: targetEnemy == null, уничтожаем луч");
-            pooledObject.Release();
-            return;
+            existing.ReleaseBeam();
         }
 
-        // Регистрируем этот луч как активный для данного врага
-        if (activeBeams.TryGetValue(targetEnemy, out var existing) && existing != null && existing != this)
-        {
-            // на всякий случай удаляем предыдущий (если каким-то образом остался)
-            existing.pooledObject.Release();
-        }
-        activeBeams[targetEnemy] = this;
+        ActiveBeams[activeBeamKey] = this;
 
         RecalculateTickInterval();
-
-        // запускаем корутину урона
+        UpdateBeamTransform();
         damageRoutine = StartCoroutine(DamageLoop());
     }
 
-    private void Update()
+    public void RefreshContext(
+        Transform newFirePoint,
+        float newBaseDamagePerTick,
+        float newDamagePerTick,
+        TowerAttack owner,
+        float weaponFireRate)
     {
-        // Проверка времени жизни
-        lifeTimer += Time.deltaTime;
-        if (lifeTimer >= maxLifeTime)
-        {
-            pooledObject.Release();
-            return;
-        }
+        firePoint = newFirePoint;
+        baseDamagePerTick = newBaseDamagePerTick;
+        damagePerTick = newDamagePerTick;
+        ownerTower = owner;
+        baseFireRate = Mathf.Max(0.01f, weaponFireRate);
+        lifeTimer = 0f;
 
-        // если цель или точка вылета потерялись — гасим луч
-        if (firePoint == null || targetEnemy == null || targetTransform == null)
-        {
-            pooledObject.Release();
-            return;
-        }
-
-        // если враг выключен/умер — гасим луч
-        if (targetEnemy.isDead)
-        {
-            pooledObject.Release();
-            return;
-        }
-
-        UpdateBeamTransform();
+        RecalculateTickInterval();
     }
 
-    private void OnDestroy()
-    {
-        // снимаем регистрацию этого луча
-        if (targetEnemy != null &&
-            activeBeams.TryGetValue(targetEnemy, out var beam) &&
-            beam == this)
-        {
-            activeBeams.Remove(targetEnemy);
-        }
-    }
-
-    // ====== ВИЗУАЛ ЛАЗЕРА ======
-    private void UpdateBeamTransform()
-    {
-        if (firePoint == null || targetTransform == null || targetEnemy == null)
-            return;
-
-        Vector3 start = firePoint.position;
-        Vector3 end   = targetEnemy.GetCenterPosition();
-        Vector3 dir   = end - start;
-        float dist    = dir.magnitude;
-
-        if (dist <= 0.001f)
-            return;
-
-        // позиция — в точке вылета
-        transform.position = start;
-        // поворот — в сторону цели
-        transform.rotation = Quaternion.LookRotation(dir.normalized, Vector3.up);
-
-        if (beamMesh != null)
-        {
-            beamMesh.localPosition = new Vector3(0f, 0f, dist * 0.5f);
-
-            Vector3 ls = beamMesh.localScale;
-            ls.z = dist;
-            beamMesh.localScale = ls;
-        }
-    }
-
-    // ====== ЛОГИКА ТИКОВ УРОНА ======
     private IEnumerator DamageLoop()
     {
-        while (true)
+        while (IsTargetValid())
         {
-            if (targetEnemy == null || !targetEnemy.gameObject.activeInHierarchy)
-                break;
-
             RecalculateTickInterval();
-
             yield return new WaitForSeconds(currentTickInterval);
 
-            if (targetEnemy == null || !targetEnemy.gameObject.activeInHierarchy)
+            if (!IsTargetValid())
                 break;
 
-            // сохраняем здоровье до нанесения урона
-            float hpBefore = targetEnemy.CurrentHealth;
+            Enemy attackedEnemy = targetEnemy;
+            WeaponDefinition attackingWeapon = sourceWeapon;
+            float healthBefore = attackedEnemy.CurrentHealth;
+            float rampBonusPercent = GetCurrentRampBonusPercent();
+            float rampedBaseDamage = baseDamagePerTick * (1f + rampBonusPercent / 100f);
+            float currentDamage = CalculateRampedDamage(rampedBaseDamage);
 
-            // наносим урон
-            targetEnemy.TakeDamage(damagePerTick);
-            DamageStatsManager.Instance?.RegisterDamage(sourceWeapon, damagePerTick);
+            if (ownerTower != null && ownerTower.DebugDamageEnabled && enableDamageRamp)
+            {
+                float elapsed = Mathf.Max(0f, Time.time - targetLockStartTime);
+                Debug.Log(
+                    $"[DamageDebug] {attackingWeapon.name}: laser ramp time={elapsed:0.###}s, " +
+                    $"bonus=+{rampBonusPercent:0.###}%, base={baseDamagePerTick:0.###}, " +
+                    $"ramped base={rampedBaseDamage:0.###}, final={currentDamage:0.###}, " +
+                    $"stack={weaponStackIndex}.");
+            }
 
-            // если этот тик добил врага — бафаем игрока (если включено)
+            attackedEnemy.TakeDamage(currentDamage);
+            DamageStatsManager.Instance?.RegisterDamage(attackingWeapon, currentDamage);
+
             if (increasePlayerMaxHealthOnKill &&
-                hpBefore > 0f &&
-                targetEnemy.CurrentHealth <= 0f)
+                healthBefore > 0f &&
+                attackedEnemy.CurrentHealth <= 0f)
             {
                 if (cachedPlayerHealth == null)
                     FindPlayerHealth();
 
                 if (cachedPlayerHealth != null)
-                {
                     cachedPlayerHealth.IncreaseMaxHealth(maxHealthIncreaseAmount, alsoHeal: true);
-                }
             }
-
-            // просто для примера, multiplier можно использовать для доп.логики
-            float multiplier = ownerTower != null ? ownerTower.TotalFireRateMultiplier : 1f;
         }
 
-        pooledObject.Release();
+        ReleaseBeam();
     }
 
-    /// <summary>
-    /// N — задержка между тиками.
-    /// N = 1 / (fireRate * fireRateMultiplier).
-    /// </summary>
+    private float CalculateRampedDamage(float rampedBaseDamage)
+    {
+        if (!enableDamageRamp || damageCalculator == null || sourceWeapon == null)
+            return damagePerTick;
+
+        return damageCalculator.Calculate(new DamageContext
+        {
+            baseDamage = rampedBaseDamage,
+            damageType = sourceWeapon.damageType,
+            itemTier = sourceWeapon.itemTier,
+            isSpikes = false
+        });
+    }
+
+    private float GetCurrentRampBonusPercent()
+    {
+        if (!enableDamageRamp || damageGainPerSecondPercent <= 0f || maxDamageBonusPercent <= 0f)
+            return 0f;
+
+        float elapsed = Mathf.Max(0f, Time.time - targetLockStartTime);
+        int completedSeconds = Mathf.FloorToInt(elapsed + 0.0001f);
+        return Mathf.Min(maxDamageBonusPercent, completedSeconds * damageGainPerSecondPercent);
+    }
+
+    private bool IsTargetValid()
+    {
+        return firePoint != null &&
+            targetEnemy != null &&
+            targetTransform != null &&
+            !targetEnemy.isDead &&
+            targetEnemy.gameObject.activeInHierarchy;
+    }
+
+    private void UpdateBeamTransform()
+    {
+        if (!IsTargetValid())
+            return;
+
+        Vector3 start = firePoint.position;
+        Vector3 direction = targetEnemy.GetCenterPosition() - start;
+        float distance = direction.magnitude;
+
+        if (distance <= 0.001f)
+            return;
+
+        transform.position = start;
+        transform.rotation = beamAxis == LaserBeamAxis.PositiveY
+            ? Quaternion.FromToRotation(Vector3.up, direction.normalized)
+            : Quaternion.LookRotation(direction.normalized, Vector3.up);
+
+        if (beamMesh == null)
+            return;
+
+        Vector3 localAxis = beamAxis == LaserBeamAxis.PositiveY ? Vector3.up : Vector3.forward;
+        float worldAxisScale = beamAxis == LaserBeamAxis.PositiveY
+            ? Mathf.Abs(transform.lossyScale.y)
+            : Mathf.Abs(transform.lossyScale.z);
+        float localDistance = distance / Mathf.Max(0.0001f, worldAxisScale);
+        float lengthScale = localDistance / Mathf.Max(0.01f, referenceLength);
+        Vector3 localScale = hasInitialBeamTransform ? initialBeamLocalScale : Vector3.one;
+
+        if (beamAxis == LaserBeamAxis.PositiveY)
+            localScale.y = lengthScale;
+        else
+            localScale.z = lengthScale;
+
+        beamMesh.localScale = localScale;
+
+        if (reverseBeamVisual)
+        {
+            Vector3 reversalAxis = beamAxis == LaserBeamAxis.PositiveY ? Vector3.forward : Vector3.up;
+            beamMesh.localRotation = initialBeamLocalRotation * Quaternion.AngleAxis(180f, reversalAxis);
+            beamMesh.localPosition = initialBeamLocalPosition + localAxis * localDistance;
+        }
+        else
+        {
+            beamMesh.localRotation = initialBeamLocalRotation;
+            beamMesh.localPosition = centerBeamMesh
+                ? initialBeamLocalPosition + localAxis * (localDistance * 0.5f)
+                : initialBeamLocalPosition;
+        }
+    }
+
     private void RecalculateTickInterval()
     {
-        float multiplier = 1f;
-        if (ownerTower != null)
-            multiplier = Mathf.Max(0.01f, ownerTower.TotalFireRateMultiplier);
+        float multiplier = ownerTower != null
+            ? Mathf.Max(0.01f, ownerTower.TotalFireRateMultiplier)
+            : 1f;
 
-        currentTickInterval = 1f / (baseFireRate * multiplier);
-
-        if (currentTickInterval < 0.05f)
-            currentTickInterval = 0.05f;
+        currentTickInterval = Mathf.Max(0.05f, 1f / (baseFireRate * multiplier));
     }
 
-    public void RefreshContext(Transform firePoint, float damagePerTick, TowerAttack owner, float weaponFireRate)
+    private void HandleTargetDeath(Enemy enemy)
     {
-        this.firePoint = firePoint;
-        this.damagePerTick = damagePerTick;
-        this.ownerTower = owner;
-        this.baseFireRate = Mathf.Max(0.01f, weaponFireRate);
+        if (enemy != targetEnemy)
+            return;
 
-        RecalculateTickInterval();
+        ownerTower?.RequestImmediateRetarget(sourceWeapon);
+        ReleaseBeam();
+    }
+
+    private void FindPlayerHealth()
+    {
+        if (cachedPlayerHealth != null)
+            return;
+
+        GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
+        if (playerObject != null)
+            cachedPlayerHealth = playerObject.GetComponent<PlayerHealth>();
+    }
+
+    private void ReleaseBeam()
+    {
+        if (isReleasing || !gameObject.activeSelf)
+            return;
+
+        isReleasing = true;
+
+        if (pooledObject != null)
+            pooledObject.Release();
+        else
+            gameObject.SetActive(false);
+    }
+
+    private void ResetBeamVisual()
+    {
+        if (!hasInitialBeamTransform || beamMesh == null)
+            return;
+
+        beamMesh.localPosition = initialBeamLocalPosition;
+        beamMesh.localScale = initialBeamLocalScale;
+        beamMesh.localRotation = initialBeamLocalRotation;
+    }
+
+    private readonly struct BeamKey
+    {
+        private readonly Enemy enemy;
+        private readonly WeaponDefinition weapon;
+        private readonly int stackIndex;
+
+        public BeamKey(Enemy enemy, WeaponDefinition weapon, int stackIndex)
+        {
+            this.enemy = enemy;
+            this.weapon = weapon;
+            this.stackIndex = stackIndex;
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is BeamKey other &&
+                ReferenceEquals(enemy, other.enemy) &&
+                ReferenceEquals(weapon, other.weapon) &&
+                stackIndex == other.stackIndex;
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                int enemyHash = !ReferenceEquals(enemy, null) ? enemy.GetInstanceID() : 0;
+                int weaponHash = !ReferenceEquals(weapon, null) ? weapon.GetInstanceID() : 0;
+                return (((enemyHash * 397) ^ weaponHash) * 397) ^ stackIndex;
+            }
+        }
     }
 }

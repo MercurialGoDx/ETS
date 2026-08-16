@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: ShopUnlock_1
   m_EditorClassIdentifier: 
   icon: {fileID: 0}
-  price: 500
+  price: 750
   unlockedColumns: 03000000
   unlockedTier: 3
   requiredUpgrade: {fileID: 0}

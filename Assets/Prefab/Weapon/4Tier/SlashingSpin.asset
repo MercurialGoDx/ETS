@@ -19,15 +19,15 @@ MonoBehaviour:
   nameKey: slashing_spin.name
   descriptionKey: slashing_spin.desc
   price: 3000
-  damagePerProjectile: 200
+  damagePerProjectile: 125
   fireRate: 1
   projectileSpeed: 10
   itemTier: 4
   damageType: 2
   bulletPrefab: {fileID: 4116661310692132536, guid: 34ad58fbb75dd8c4db9ded182ebf16e3, type: 3}
   weight: 2
-  weightIncreasePerPurchase: 2
-  maxWeightIncreasePurchases: 5
+  weightIncreasePerPurchase: 0
+  maxWeightIncreasePurchases: 0
   weightDecreaseUpgrades: []
   weightDecreaseUpgradePercent: 0
   weightIncreaseUpgrades: []

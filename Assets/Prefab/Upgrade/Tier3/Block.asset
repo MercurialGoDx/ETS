@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   icon: {fileID: 21300000, guid: b7b63f9edbf3f334f80b943a5af62993, type: 3}
   price: 1500
-  weight: 7
+  weight: 8
   itemTier: 3
-  weightIncreasePerPurchase: 2
-  maxWeightIncreasePurchases: 5
+  weightIncreasePerPurchase: 0
+  maxWeightIncreasePurchases: 0
   weightDecreaseUpgrades: []
   weightDecreasePercent: 0
   weightIncreaseUpgrades: []

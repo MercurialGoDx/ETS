@@ -19,10 +19,22 @@ public class BossRewardCardUI : MonoBehaviour
         reward = upgrade;
         onClick = onClicked;
 
+        if (upgrade == null)
+        {
+            if (titleText != null) titleText.text = "-";
+            if (descText != null) descText.text = string.Empty;
+            if (button != null)
+            {
+                button.onClick.RemoveAllListeners();
+                button.interactable = false;
+            }
+            return;
+        }
+
         //if (titleText != null) titleText.text = upgrade != null ? upgrade.upgradeName : "—";
 
-        titleText.text = upgrade.GetLocalizedName();
-        descText.text = upgrade.GetLocalizedDescription();
+        if (titleText != null) titleText.text = upgrade.GetLocalizedName();
+        if (descText != null) descText.text = upgrade.GetLocalizedDescription();
         //if (descText != null) descText.text = upgrade != null ? upgrade.description : "";
 
         //if (frameImage != null)
@@ -30,6 +42,7 @@ public class BossRewardCardUI : MonoBehaviour
 
         if (button != null)
         {
+            button.interactable = true;
             button.onClick.RemoveAllListeners();
             button.onClick.AddListener(() =>
             {

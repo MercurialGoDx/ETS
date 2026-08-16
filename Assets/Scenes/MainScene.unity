@@ -3384,7 +3384,7 @@ RectTransform:
   m_Father: {fileID: 1220493782}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -16824,6 +16824,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: dd0ee4e15c4eeaa499144ad5180018d0, type: 2}
   - {fileID: 11400000, guid: 435a79e6cce19054789e49b89283cd6d, type: 2}
   - {fileID: 11400000, guid: 6189997885b022743aa192c2dabe939a, type: 2}
+  - {fileID: 11400000, guid: 3a19fa0886247084883b49fe55fe9747, type: 2}
+  - {fileID: 11400000, guid: 8f4164a9bc2148638e0f46ce45f580aa, type: 2}
   availableUpgrades:
   - {fileID: 11400000, guid: c865db2b9fc16994a94f8905491a2e1a, type: 2}
   - {fileID: 11400000, guid: 5fb0841288e711148b576156be0549ff, type: 2}
@@ -16834,7 +16836,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: d27df4b8453118c4ba5145202aab7c21, type: 2}
   - {fileID: 11400000, guid: 6dbb62074edc83b4393f72bc85f65737, type: 2}
   - {fileID: 11400000, guid: d3fec4c77b7a56a45af90feac53e6535, type: 2}
-  - {fileID: 11400000, guid: e89174fe7ee78334dad6537d6ca2b067, type: 2}
+  - {fileID: 11400000, guid: 0e7eb23c723fec5428fcc2e28f7f1437, type: 2}
   - {fileID: 11400000, guid: dc41743e5f8705d489e2976821936579, type: 2}
   - {fileID: 11400000, guid: 641ea8c5d401bf2459863113beefc2da, type: 2}
   - {fileID: 11400000, guid: 47696bdc5bbcaa848ae69d1fdb16a580, type: 2}
@@ -16848,7 +16850,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 391cb36c999faca45bddd2faad43f679, type: 2}
   - {fileID: 11400000, guid: 66e67a5d150d92641bea88a59d191dd7, type: 2}
   - {fileID: 11400000, guid: 0b5d05169be9376489914dfc3165277f, type: 2}
-  - {fileID: 11400000, guid: 9ab5d3ccfd06c34479000a3655179b60, type: 2}
   - {fileID: 11400000, guid: 0b2a8fcf1db9f52459d16e4d9405090e, type: 2}
   - {fileID: 11400000, guid: 2c39f32b0339dea4dafad0b1cbe890ef, type: 2}
   - {fileID: 11400000, guid: f7ab2cbc0ed667a4daf665e0dc149cbf, type: 2}
@@ -16864,6 +16865,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: b54f5f82755bb66458befd1ef6ac62c0, type: 2}
   - {fileID: 11400000, guid: c7511bdb93fb4b04d8700af670f00c1a, type: 2}
   - {fileID: 11400000, guid: 5d25c101ca49f4949ad0c6105198f155, type: 2}
+  - {fileID: 11400000, guid: a078ff2ab0fe4a76980e19e75e798115, type: 2}
+  - {fileID: 11400000, guid: c13cdb13ff564da58abda23df0a749a1, type: 2}
+  - {fileID: 11400000, guid: 1081547ad45746a9ae8520a225cef8f6, type: 2}
+  - {fileID: 11400000, guid: 9b4354926add7e74b86383ed2c56d840, type: 2}
   rerollPrice: 10
   rerollPriceIncrease: 10
   enableRerollHotkey: 1
@@ -17269,7 +17274,7 @@ RectTransform:
   m_Father: {fileID: 626868040}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: -2.300003, y: 0.0000047683716}
   m_SizeDelta: {x: 20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -21636,6 +21641,7 @@ MonoBehaviour:
   card1: {fileID: 306199385}
   card2: {fileID: 449952318}
   card3: {fileID: 510722662}
+  selectionTransitionDelay: 0.08
 --- !u!114 &1102466066
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21658,6 +21664,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 49732a3b015736641bace06cfaa645aa, type: 2}
   - {fileID: 11400000, guid: d7ec681b4647a3447830aa3205d101d1, type: 2}
   - {fileID: 11400000, guid: e4638f87233a6f945bcc9ec4cd576885, type: 2}
+  - {fileID: 11400000, guid: 9ab5d3ccfd06c34479000a3655179b60, type: 2}
 --- !u!114 &1102466067
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -33547,8 +33554,8 @@ MonoBehaviour:
   difficultyMultiplier: 1
   multiplierGrowthPercent: 3.5
   timeMark1Minutes: 12
-  timeMark2Minutes: 20
-  growthStage1Multiplier: 1.5
+  timeMark2Minutes: 25
+  growthStage1Multiplier: 2
   growthStage2Multiplier: 3
   healthAddPerWave: 2
   damageAddPerWave: 0.05

@@ -16,8 +16,8 @@ MonoBehaviour:
   price: 3000
   weight: 3
   itemTier: 4
-  weightIncreasePerPurchase: 2
-  maxWeightIncreasePurchases: 5
+  weightIncreasePerPurchase: 0
+  maxWeightIncreasePurchases: 0
   weightDecreaseUpgrades: []
   weightDecreasePercent: 0
   weightIncreaseUpgrades: []
@@ -31,4 +31,4 @@ MonoBehaviour:
       m_TableCollectionName: GUID:164770c6fc8794c4ba4db6f8c7e72db3
   nameKey: spike_ultimate.name
   descriptionKey: spike_ultimate.desc
-  valuePercent: 100
+  valuePercent: 50

@@ -154,10 +154,10 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787164
-    m_Localized: Deals area damage equal to <color=#ffd700>15%</color> of the tower's
-      maximum health\n<color=#ffd700>Damage:</color> {0}\n<color=#ffd700>Damage type:</color>
-      {1}\n<color=#ffd700>Attack speed:</color> {2}\n<color=#ffd700>Area damage:</color>
-      Yes\n\n<color=#ffd700>Cost:</color> {3}
+    m_Localized: Deals area damage equal to <color=#ffd700>50 + 2% of the tower's
+      maximum health</color>\n<color=#ffd700>Damage:</color> {0}\n<color=#ffd700>Damage
+      type:</color> {1}\n<color=#ffd700>Attack speed:</color> {2}\n<color=#ffd700>Area
+      damage:</color> Yes\n\n<color=#ffd700>Cost:</color> {3}
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787165
@@ -276,28 +276,26 @@ MonoBehaviour:
       {2}\n\n<color=#ffd700>Cost:</color> {3}
     m_Metadata:
       m_Items: []
-  - m_Id: 59785492072226816
-    m_Localized: Magic
+  - m_Id: 74621472677330944
+    m_Localized: <color=#ffd700>Concentration of Power</color>
     m_Metadata:
       m_Items: []
-  - m_Id: 59785492101586944
-    m_Localized: Piercing
+  - m_Id: 74621472828325888
+    m_Localized: Every second, as long as the weapon does not switch targets, its
+      base damage increases by <color=#ffd700>100%</color>, up to <color=#ffd700>500%</color>\n<color=#ffd700>Damage:</color>
+      {0}\n<color=#ffd700>Damage type:</color> {1}\n<color=#ffd700>Attack speed:</color>
+      {2}\n\n<color=#ffd700>Cost:</color> {3}
     m_Metadata:
       m_Items: []
-  - m_Id: 59785492101586945
-    m_Localized: Normal
+  - m_Id: 74605534590566400
+    m_Localized: <color=#ffd700>Temptation</color>
     m_Metadata:
       m_Items: []
-  - m_Id: 59785492101586946
-    m_Localized: Projectile
-    m_Metadata:
-      m_Items: []
-  - m_Id: 59785492101586947
-    m_Localized: Heavy
-    m_Metadata:
-      m_Items: []
-  - m_Id: 59785492101586948
-    m_Localized: Chaos
+  - m_Id: 74605534649286656
+    m_Localized: Each time this weapon kills an enemy, all <color=#ffd700>"Temptation"</color>
+      instances gain <color=#ffd700>+0.5</color> base damage\n<color=#ffd700>Damage:</color>
+      {0}\n<color=#ffd700>Damage type:</color> {1}\n<color=#ffd700>Attack speed:</color>
+      {2}\n\n<color=#ffd700>Cost:</color> {3}
     m_Metadata:
       m_Items: []
   references:

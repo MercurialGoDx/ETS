@@ -19,11 +19,21 @@ MonoBehaviour:
   nameKey: tornado.name
   descriptionKey: tornado.desc
   price: 1500
-  damagePerProjectile: 85
+  damagePerProjectile: 75
   fireRate: 0.65
   projectileSpeed: 20
   itemTier: 3
   damageType: 0
   bulletPrefab: {fileID: 3609825440051925845, guid: ad867411428a7384f8627633e36dd767, type: 3}
   weight: 4
+  weightIncreasePerPurchase: 0
+  maxWeightIncreasePurchases: 0
+  weightDecreaseUpgrades: []
+  weightDecreaseUpgradePercent: 0
+  weightIncreaseUpgrades: []
+  weightIncreaseUpgradePercent: 0
+  weightDecreaseWeapons: []
+  weightDecreaseWeaponPercent: 0
+  weightIncreaseWeapons: []
+  weightIncreaseWeaponPercent: 0
   targetingMode: 1

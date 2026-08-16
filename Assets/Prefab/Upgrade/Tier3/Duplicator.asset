@@ -9,15 +9,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4b53b2f839a3f9846bb7dc123c9555af, type: 3}
-  m_Name: Max_hp +25% Composite
+  m_Script: {fileID: 11500000, guid: 7c90a47ab51c5a0489ca5a71cc10685f, type: 3}
+  m_Name: Duplicator
   m_EditorClassIdentifier: 
-  icon: {fileID: 0}
-  price: 0
-  weight: 0
-  itemTier: 4
-  weightIncreasePerPurchase: 2
-  maxWeightIncreasePurchases: 5
+  icon: {fileID: 21300000, guid: 897e0fe20b2aadc419d9cf0cae9115c3, type: 3}
+  price: 1500
+  weight: 8
+  itemTier: 3
+  weightIncreasePerPurchase: 0
+  maxWeightIncreasePurchases: 0
   weightDecreaseUpgrades: []
   weightDecreasePercent: 0
   weightIncreaseUpgrades: []
@@ -28,7 +28,8 @@ MonoBehaviour:
   weightIncreaseWeaponPercent: 0
   localizedStringTable:
     m_TableReference:
-      m_TableCollectionName: 
-  nameKey: 
-  descriptionKey: 
-  percentValue: 25
+      m_TableCollectionName: GUID:164770c6fc8794c4ba4db6f8c7e72db3
+  nameKey: duplicator.name
+  descriptionKey: duplicator.desc
+  targetTier: 1
+  duplicateCopies: 2

@@ -19,15 +19,15 @@ MonoBehaviour:
   nameKey: magic_circle.name
   descriptionKey: magic_circle.desc
   price: 3000
-  damagePerProjectile: 325
+  damagePerProjectile: 150
   fireRate: 0.2
   projectileSpeed: 10
   itemTier: 4
   damageType: 0
   bulletPrefab: {fileID: 1907847517366949446, guid: b5f956294110ccd49859e5e46f527382, type: 3}
   weight: 2
-  weightIncreasePerPurchase: 2
-  maxWeightIncreasePurchases: 5
+  weightIncreasePerPurchase: 0
+  maxWeightIncreasePurchases: 0
   weightDecreaseUpgrades: []
   weightDecreaseUpgradePercent: 0
   weightIncreaseUpgrades: []

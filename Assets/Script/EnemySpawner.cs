@@ -73,6 +73,26 @@ public class EnemySpawner : MonoBehaviour
         }
     }
 
+    public void InitializeSpawnedEnemy(
+        Enemy enemy,
+        float baseHealth,
+        float baseDamage,
+        float baseHealthMultiplier = 1f,
+        float baseDamageMultiplier = 1f)
+    {
+        if (enemy == null)
+            return;
+
+        float health = (baseHealth * baseHealthMultiplier * difficultyMultiplier) + flatHealthBonus;
+        float damage = (baseDamage * baseDamageMultiplier * difficultyMultiplier) + flatDamageBonus;
+
+        enemy.InitStats(health, damage);
+
+        // Every spawned enemy receives the same wave rewards and runtime effects.
+        enemy.bonusGold = currentWaveIndex / 20;
+        EnemyEffectManager.Instance?.ApplyEffectsToEnemy(enemy);
+    }
+
     private void Start()
     {
         // Баланс из таблицы (если импортирован) перекрывает инспектор.
@@ -152,8 +172,6 @@ public class EnemySpawner : MonoBehaviour
         float baseHealth = prefabEnemy.maxHealth;
         float baseDamage = prefabEnemy.damageToPlayer;
 
-        float currentMult = difficultyMultiplier;
-
         int countToSpawn = CurrentEnemiesPerWave;
 
         for (int i = 0; i < countToSpawn; i++)
@@ -167,17 +185,8 @@ public class EnemySpawner : MonoBehaviour
 
             enemyInstance.isDead = false;
 
-            float hp = (baseHealth * currentMult) + flatHealthBonus;
-            float dmg = (baseDamage * currentMult) + flatDamageBonus;
-
-            enemyInstance.InitStats(hp, dmg);
-
-            // Награда золотом растёт с волнами (+1 за каждые 20 волн), чтобы доход игрока
-            // поспевал за ростом сложности, а не оставался константой.
-            enemyInstance.bonusGold = currentWaveIndex / 20;
-
-            if (EnemyEffectManager.Instance != null)
-                EnemyEffectManager.Instance.ApplyEffectsToEnemy(enemyInstance);
+            InitializeSpawnedEnemy(enemyInstance, baseHealth, baseDamage);
+            TryApplyHunt(enemyInstance);
         }
 
         NotifyUI();
@@ -190,6 +199,40 @@ public class EnemySpawner : MonoBehaviour
 
         flatHealthBonus += healthAddPerWave;
         flatDamageBonus += damageAddPerWave;
+    }
+
+    private static void TryApplyHunt(Enemy enemy)
+    {
+        UpgradesRuntimeData runtime = UpgradesManager.Instance?.GameplayRuntimeData;
+        if (runtime == null || enemy == null || enemy.IsGolden)
+            return;
+
+        if (!runtime.TryGetHuntModifiers(
+                out float healthMultiplier,
+                out float damageMultiplier,
+                out float goldMultiplier,
+                out Color tint,
+                out float tintStrength))
+        {
+            return;
+        }
+
+        if (UnityEngine.Random.value > runtime.GoldenEnemyChance)
+            return;
+
+        if (!enemy.ApplyGoldenModifiers(
+                healthMultiplier,
+                damageMultiplier,
+                goldMultiplier,
+                tint,
+                tintStrength))
+        {
+            return;
+        }
+
+        Debug.Log(
+            $"[Hunt] Golden enemy spawned: {enemy.name}, " +
+            $"HP={enemy.maxHealth:0.##}, damage={enemy.damageToPlayer:0.##}, gold=x{goldMultiplier:0.##}.");
     }
 
     // --- ДОБАВЛЕНО ---

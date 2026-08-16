@@ -19,11 +19,21 @@ MonoBehaviour:
   nameKey: balista.name
   descriptionKey: balista.desc
   price: 1500
-  damagePerProjectile: 250
+  damagePerProjectile: 240
   fireRate: 0.35
   projectileSpeed: 60
   itemTier: 3
   damageType: 3
   bulletPrefab: {fileID: 1652208503069715880, guid: b2b4e68e8b825ec4a82dc4583c416379, type: 3}
   weight: 4
+  weightIncreasePerPurchase: 0
+  maxWeightIncreasePurchases: 0
+  weightDecreaseUpgrades: []
+  weightDecreaseUpgradePercent: 0
+  weightIncreaseUpgrades: []
+  weightIncreaseUpgradePercent: 0
+  weightDecreaseWeapons: []
+  weightDecreaseWeaponPercent: 0
+  weightIncreaseWeapons: []
+  weightIncreaseWeaponPercent: 0
   targetingMode: 0

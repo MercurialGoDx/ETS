@@ -19,287 +19,203 @@ MonoBehaviour:
     m_Items: []
   m_TableData:
   - m_Id: 1385907683844096
-    m_Localized: <color=#ffd700>Axt</color>
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787136
-    m_Localized: <color=#ffd700>Schaden:</color> {0}\n<color=#ffd700>Schadensart:</color>
-      {1}\n<color=#ffd700>Angriffstempo:</color> {2}\n\n<color=#ffd700>Kosten:</color>
-      {3}
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787137
-    m_Localized: <color=#ffd700>Armbrust</color>
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787138
-    m_Localized: <color=#ffd700>Schaden:</color> {0}\n<color=#ffd700>Schadensart:</color>
-      {1}\n<color=#ffd700>Angriffstempo:</color> {2}\n\n<color=#ffd700>Kosten:</color>
-      {3}
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787139
-    m_Localized: <color=#ffd700>Chaoskugel</color>
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787140
-    m_Localized: <color=#ffd700>Schaden:</color> {0}\n<color=#ffd700>Schadensart:</color>
-      {1}\n<color=#ffd700>Angriffstempo:</color> {2}\n\n<color=#ffd700>Kosten:</color>
-      {3}
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787141
-    m_Localized: <color=#ffd700>Magiekugel</color>
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787142
-    m_Localized: <color=#ffd700>Schaden:</color> {0}\n<color=#ffd700>Schadensart:</color>
-      {1}\n<color=#ffd700>Angriffstempo:</color> {2}\n\n<color=#ffd700>Kosten:</color>
-      {3}
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787143
-    m_Localized: <color=#ffd700>Speer</color>
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787144
-    m_Localized: <color=#ffd700>Schaden:</color> {0}\n<color=#ffd700>Schadensart:</color>
-      {1}\n<color=#ffd700>Angriffstempo:</color> {2}\n\n<color=#ffd700>Kosten:</color>
-      {3}
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787145
-    m_Localized: <color=#ffd700>Felsbrocken</color>
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787146
-    m_Localized: <color=#ffd700>Schaden:</color> {0}\n<color=#ffd700>Schadensart:</color>
-      {1}\n<color=#ffd700>Angriffstempo:</color> {2}\n\n<color=#ffd700>Kosten:</color>
-      {3}
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787147
-    m_Localized: <color=#ffd700>Chakram</color>
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787148
-    m_Localized: "Trifft und springt zum n\xE4chsten Gegner in Reichweite. <color=#ffd700>Wiederholt
-      sich 3 Mal</color>\\n<color=#ffd700>Schaden:</color> {0}\\n<color=#ffd700>Schadensart:</color>
-      {1}\\n<color=#ffd700>Angriffstempo:</color> {2}\\n\\n<color=#ffd700>Kosten:</color>
-      {3}"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787149
-    m_Localized: <color=#ffd700>Kettenblitz</color>
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787150
-    m_Localized: "Blitze springen auf nahe Gegner \xFCber\\n<color=#ffd700>Schaden:</color>
-      {0}\\n<color=#ffd700>Schadensart:</color> {1}\\n<color=#ffd700>Angriffstempo:</color>
-      {2}\\n\\n<color=#ffd700>Kosten:</color> {3}"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787151
-    m_Localized: <color=#ffd700>Eispfeil</color>
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787152
-    m_Localized: "Verlangsamt den Gegner f\xFCr 2 Sekunden um 30%\\n<color=#ffd700>Schaden:</color>
-      {0}\\n<color=#ffd700>Schadensart:</color> {1}\\n<color=#ffd700>Angriffstempo:</color>
-      {2}\\n\\n<color=#ffd700>Kosten:</color> {3}"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787153
-    m_Localized: <color=#ffd700>Lebenssauger</color>
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787154
-    m_Localized: "Erh\xF6ht die maximale Lebenskraft um 2 bei einem Kill\\n<color=#ffd700>Schaden:</color>
-      {0}\\n<color=#ffd700>Schadensart:</color> {1}\\n<color=#ffd700>Angriffstempo:</color>
-      {2}\\n\\n<color=#ffd700>Kosten:</color> {3}"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787155
-    m_Localized: <color=#ffd700>Lenkrakete</color>
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787156
-    m_Localized: <color=#ffd700>Schaden:</color> {0}\n<color=#ffd700>Schadensart:</color>
-      {1}\n<color=#ffd700>Angriffstempo:</color> {2}\n\n<color=#ffd700>Kosten:</color>
-      {3}
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787157
-    m_Localized: "<color=#ffd700>M\xF6rser</color>"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787158
-    m_Localized: <color=#ffd700>Schaden:</color> {0}\n<color=#ffd700>Schadensart:</color>
-      {1}\n<color=#ffd700>Angriffstempo:</color> {2}\n\n<color=#ffd700>Kosten:</color>
-      {3}
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787159
-    m_Localized: <color=#ffd700>Schockwelle</color>
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787160
-    m_Localized: "Sendet eine Welle, die allen Gegnern auf ihrem Weg Schaden zuf\xFCgt\\n<color=#ffd700>Schaden:</color>
-      {0}\\n<color=#ffd700>Schadensart:</color> {1}\\n<color=#ffd700>Angriffstempo:</color>
-      {2}\\n\\n<color=#ffd700>Kosten:</color> {3}"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787161
-    m_Localized: <color=#ffd700>Balliste</color>
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787162
-    m_Localized: <color=#ffd700>Schaden:</color> {0}\n<color=#ffd700>Schadensart:</color>
-      {1}\n<color=#ffd700>Angriffstempo:</color> {2}\n\n<color=#ffd700>Kosten:</color>
-      {3}
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787163
-    m_Localized: <color=#ffd700>Katapult</color>
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787164
-    m_Localized: "Verursacht Fl\xE4chenschaden in H\xF6he von <color=#ffd700>15%</color>
-      der maximalen Lebenskraft des Turms\\n<color=#ffd700>Schaden:</color> {0}\\n<color=#ffd700>Schadensart:</color>
-      {1}\\n<color=#ffd700>Angriffstempo:</color> {2}\\n<color=#ffd700>Fl\xE4chenschaden:</color>
-      Ja\\n\\n<color=#ffd700>Kosten:</color> {3}"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787165
-    m_Localized: <color=#ffd700>Chaoswelle</color>
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787166
-    m_Localized: "Sendet eine Welle, die allen auf ihrem Weg Schaden zuf\xFCgt. Heilt
-      den Turm um <color=#ffd700>10</color> Leben pro getroffenem Gegner\\n<color=#ffd700>Schaden:</color>
-      {0}\\n<color=#ffd700>Schadensart:</color> {1}\\n<color=#ffd700>Angriffstempo:</color>
-      {2}\\n\\n<color=#ffd700>Kosten:</color> {3}"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787167
-    m_Localized: <color=#ffd700>Sturmhammer</color>
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787168
-    m_Localized: <color=#ffd700>Schaden:</color> {0}\n<color=#ffd700>Schadensart:</color>
-      {1}\n<color=#ffd700>Angriffstempo:</color> {2}\n\n<color=#ffd700>Kosten:</color>
-      {3}
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787169
-    m_Localized: <color=#ffd700>Arkaner Fokus</color>
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787170
-    m_Localized: <color=#ffd700>Schaden:</color> {0}\n<color=#ffd700>Schadensart:</color>
-      {1}\n<color=#ffd700>Angriffstempo:</color> {2}\n\n<color=#ffd700>Kosten:</color>
-      {3}
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787171
-    m_Localized: <color=#ffd700>Baumstamm</color>
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787172
-    m_Localized: "Rollt einen Baumstamm, der allen Gegnern auf seinem Weg Schaden
-      zuf\xFCgt\\n<color=#ffd700>Schaden:</color> {0}\\n<color=#ffd700>Schadensart:</color>
-      {1}\\n<color=#ffd700>Angriffstempo:</color> {2}\\n\\n<color=#ffd700>Kosten:</color>
-      {3}"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787173
-    m_Localized: <color=#ffd700>Tornado</color>
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787174
-    m_Localized: "St\xF6\xDFt den Gegner beim Treffer vom Turm weg. Verursacht Schaden
-      an allen Gegnern auf dem Weg. Wechselt nach jedem Schuss das Ziel\\n<color=#ffd700>Schaden:</color>
-      {0}\\n<color=#ffd700>Schadensart:</color> {1}\\n<color=#ffd700>Angriffstempo:</color>
-      {2}\\n\\n<color=#ffd700>Kosten:</color> {3}"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787175
-    m_Localized: <color=#ffd700>Blizzard</color>
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787176
-    m_Localized: "Ein Eissturm st\xFCrzt vom Himmel herab und verursacht Fl\xE4chenschaden\\n<color=#ffd700>Schaden:</color>
-      {0}\\n<color=#ffd700>Schadensart:</color> {1}\\n<color=#ffd700>Angriffstempo:</color>
-      {2}\\n<color=#ffd700>Fl\xE4chenschaden:</color> Ja\\n\\n<color=#ffd700>Kosten:</color>
-      {3}"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787177
-    m_Localized: "<color=#ffd700>Verh\xE4ngnisfeuer</color>"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787178
-    m_Localized: "Erzeugt eine feurige Aura um den Turm, die Gegnern nach und nach
-      Schaden zuf\xFCgt\\n<color=#ffd700>Schaden:</color> {0}\\n<color=#ffd700>Schadensart:</color>
-      {1}\\n<color=#ffd700>Angriffstempo:</color> {2}\\n\\n<color=#ffd700>Kosten:</color>
-      {3}"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787179
-    m_Localized: <color=#ffd700>Magischer Kreis</color>
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787180
-    m_Localized: "Erzeugt eine magische Kraft um den Turm, die allen Gegnern auf
-      der Karte Schaden zuf\xFCgt\\n<color=#ffd700>Schaden:</color> {0}\\n<color=#ffd700>Schadensart:</color>
-      {1}\\n<color=#ffd700>Angriffstempo:</color> {2}\\n\\n<color=#ffd700>Kosten:</color>
-      {3}"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787181
-    m_Localized: <color=#ffd700>Meteor</color>
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787182
-    m_Localized: "Ein Meteor f\xE4llt vom Himmel und verursacht massiven Fl\xE4chenschaden\\n<color=#ffd700>Schaden:</color>
-      {0}\\n<color=#ffd700>Schadensart:</color> {1}\\n<color=#ffd700>Angriffstempo:</color>
-      {2}\\n<color=#ffd700>Fl\xE4chenschaden:</color> Ja\\n\\n<color=#ffd700>Kosten:</color>
-      {3}"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787183
-    m_Localized: <color=#ffd700>Wirbelnde Klingen</color>
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787184
-    m_Localized: "Erzeugt f\xFCr 15 Sekunden Klingen an einem zuf\xE4lligen Ort,
-      die nahen Gegnern Schaden zuf\xFCgen\\n<color=#ffd700>Schaden:</color> {0}\\n<color=#ffd700>Schadensart:</color>
-      {1}\\n<color=#ffd700>Angriffstempo:</color> {2}\\n<color=#ffd700>Fl\xE4chenschaden:</color>
-      Ja\\n\\n<color=#ffd700>Kosten:</color> {3}"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 59785492072226816
-    m_Localized: Magisch
-    m_Metadata:
-      m_Items: []
-  - m_Id: 59785492101586944
-    m_Localized: Durchdringend
-    m_Metadata:
-      m_Items: []
-  - m_Id: 59785492101586945
-    m_Localized: Normal
-    m_Metadata:
-      m_Items: []
-  - m_Id: 59785492101586946
-    m_Localized: Projektil
-    m_Metadata:
-      m_Items: []
-  - m_Id: 59785492101586947
-    m_Localized: Schwer
-    m_Metadata:
-      m_Items: []
-  - m_Id: 59785492101586948
-    m_Localized: Chaos
+    m_Localized: 
     m_Metadata:
       m_Items: []
   references:

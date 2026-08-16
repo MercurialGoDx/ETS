@@ -15,9 +15,20 @@ MonoBehaviour:
   icon: {fileID: 0}
   price: 0
   weight: 0
+  itemTier: 0
+  weightIncreasePerPurchase: 0
+  maxWeightIncreasePurchases: 0
+  weightDecreaseUpgrades: []
+  weightDecreasePercent: 0
+  weightIncreaseUpgrades: []
+  weightIncreasePercent: 0
+  weightDecreaseWeapons: []
+  weightDecreaseWeaponPercent: 0
+  weightIncreaseWeapons: []
+  weightIncreaseWeaponPercent: 0
   localizedStringTable:
     m_TableReference:
       m_TableCollectionName: GUID:164770c6fc8794c4ba4db6f8c7e72db3
   nameKey: br_spike.name
   descriptionKey: br_spike.desc
-  valuePercent: 50
+  valuePercent: 30

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: ShopUnlock_2
   m_EditorClassIdentifier: 
   icon: {fileID: 0}
-  price: 1500
+  price: 3000
   unlockedColumns: 04000000
   unlockedTier: 4
   requiredUpgrade: {fileID: 11400000, guid: 53310aa610326fc40ba23dd4362b5802, type: 2}

@@ -28,6 +28,41 @@ public class UpgradesRuntimeData
     public Dictionary<WeaponDamageType, float> damageTypeFlatPercent = new();
     public Dictionary<WeaponDamageType, float> damageTypePerWeaponPercent = new();
 
+    private float goldenEnemyChance;
+    private int huntStacks;
+    private float huntDiminishingFactor = 0.9f;
+    private float goldenEnemyHealthMultiplier = 1f;
+    private float goldenEnemyDamageMultiplier = 1f;
+    private float goldenEnemyGoldMultiplier = 1f;
+    private Color goldenEnemyTint = new Color(1f, 0.72f, 0.2f, 1f);
+    private float goldenEnemyTintStrength = 0.35f;
+
+    private bool isDuplicatorArmed;
+    private ItemTier duplicatorTargetTier = ItemTier.Tier1;
+    private int duplicatorCopies;
+
+    private int pendingBossContractStacks;
+    private float pendingBossContractHealthMultiplier;
+    private float pendingBossContractDamageMultiplier;
+    private Material pendingBossContractOutlineMaterial;
+    private Color pendingBossContractOutlineColor = new(1f, 0.02f, 0f, 1f);
+    private float pendingBossContractOutlineWidth;
+    private float pendingBossContractGlowIntensity;
+    private float pendingBossContractScaleMultiplier = 1f;
+
+    public float GoldenEnemyChance => goldenEnemyChance;
+    public int HuntStacks => huntStacks;
+    public float HuntDiminishingFactor => huntDiminishingFactor;
+    public float GoldenEnemyHealthMultiplier => goldenEnemyHealthMultiplier;
+    public float GoldenEnemyDamageMultiplier => goldenEnemyDamageMultiplier;
+    public float GoldenEnemyGoldMultiplier => goldenEnemyGoldMultiplier;
+    public bool IsDuplicatorArmed => isDuplicatorArmed;
+    public ItemTier DuplicatorTargetTier => duplicatorTargetTier;
+    public int DuplicatorCopies => duplicatorCopies;
+    public int PendingBossContractStacks => pendingBossContractStacks;
+    public float PendingBossContractHealthMultiplier => pendingBossContractHealthMultiplier;
+    public float PendingBossContractDamageMultiplier => pendingBossContractDamageMultiplier;
+
     public UpgradesRuntimeData()
     {
         // Засеиваем ключи заранее: апгрейды пишут через `dict[key] += x`,
@@ -40,6 +75,131 @@ public class UpgradesRuntimeData
 
         foreach (ItemTier t in System.Enum.GetValues(typeof(ItemTier)))
             damageTierPercent[t] = 0f;
+    }
+
+    public void AddHunt(
+        float chancePercent,
+        float diminishingFactor,
+        float healthMultiplier,
+        float damageMultiplier,
+        float goldMultiplier,
+        Color tint,
+        float tintStrength)
+    {
+        huntStacks++;
+        huntDiminishingFactor = Mathf.Clamp01(diminishingFactor);
+
+        float firstIncrease = Mathf.Max(0f, chancePercent) / 100f;
+        if (Mathf.Approximately(huntDiminishingFactor, 1f))
+        {
+            goldenEnemyChance = Mathf.Clamp01(firstIncrease * huntStacks);
+        }
+        else
+        {
+            goldenEnemyChance = Mathf.Clamp01(
+                firstIncrease *
+                (1f - Mathf.Pow(huntDiminishingFactor, huntStacks)) /
+                (1f - huntDiminishingFactor));
+        }
+
+        goldenEnemyHealthMultiplier = Mathf.Max(goldenEnemyHealthMultiplier, Mathf.Max(healthMultiplier, 1f));
+        goldenEnemyDamageMultiplier = Mathf.Max(goldenEnemyDamageMultiplier, Mathf.Max(damageMultiplier, 1f));
+        goldenEnemyGoldMultiplier = Mathf.Max(goldenEnemyGoldMultiplier, Mathf.Max(goldMultiplier, 1f));
+        goldenEnemyTint = tint;
+        goldenEnemyTintStrength = Mathf.Clamp01(tintStrength);
+    }
+
+    public bool TryGetHuntModifiers(
+        out float healthMultiplier,
+        out float damageMultiplier,
+        out float goldMultiplier,
+        out Color tint,
+        out float tintStrength)
+    {
+        healthMultiplier = goldenEnemyHealthMultiplier;
+        damageMultiplier = goldenEnemyDamageMultiplier;
+        goldMultiplier = goldenEnemyGoldMultiplier;
+        tint = goldenEnemyTint;
+        tintStrength = goldenEnemyTintStrength;
+        return goldenEnemyChance > 0f;
+    }
+
+    public bool TryArmDuplicator(ItemTier targetTier, int copies)
+    {
+        if (isDuplicatorArmed || targetTier == ItemTier.None || copies <= 0)
+            return false;
+
+        isDuplicatorArmed = true;
+        duplicatorTargetTier = targetTier;
+        duplicatorCopies = copies;
+        return true;
+    }
+
+    public bool TryConsumeDuplicator(ItemTier purchasedTier, out int copies)
+    {
+        copies = 0;
+        if (!isDuplicatorArmed || purchasedTier != duplicatorTargetTier)
+            return false;
+
+        copies = duplicatorCopies;
+        isDuplicatorArmed = false;
+        duplicatorTargetTier = ItemTier.None;
+        duplicatorCopies = 0;
+        return copies > 0;
+    }
+
+    public void AddBossContract(
+        float healthMultiplier,
+        float damageMultiplier,
+        Material outlineMaterial,
+        Color outlineColor,
+        float outlineWidth,
+        float glowIntensity,
+        float scaleMultiplier)
+    {
+        pendingBossContractStacks++;
+        pendingBossContractHealthMultiplier += Mathf.Max(1f, healthMultiplier);
+        pendingBossContractDamageMultiplier += Mathf.Max(1f, damageMultiplier);
+        pendingBossContractOutlineMaterial = outlineMaterial;
+        pendingBossContractOutlineColor = outlineColor;
+        pendingBossContractOutlineWidth = Mathf.Max(
+            pendingBossContractOutlineWidth,
+            Mathf.Max(0f, outlineWidth));
+        pendingBossContractGlowIntensity = Mathf.Max(
+            pendingBossContractGlowIntensity,
+            Mathf.Max(0f, glowIntensity));
+        pendingBossContractScaleMultiplier = Mathf.Max(
+            pendingBossContractScaleMultiplier,
+            Mathf.Max(1f, scaleMultiplier));
+    }
+
+    public bool TryConsumeBossContract(
+        out int stacks,
+        out float healthMultiplier,
+        out float damageMultiplier,
+        out Material outlineMaterial,
+        out Color outlineColor,
+        out float outlineWidth,
+        out float glowIntensity,
+        out float scaleMultiplier)
+    {
+        stacks = pendingBossContractStacks;
+        healthMultiplier = pendingBossContractHealthMultiplier;
+        damageMultiplier = pendingBossContractDamageMultiplier;
+        outlineMaterial = pendingBossContractOutlineMaterial;
+        outlineColor = pendingBossContractOutlineColor;
+        outlineWidth = pendingBossContractOutlineWidth;
+        glowIntensity = pendingBossContractGlowIntensity;
+        scaleMultiplier = pendingBossContractScaleMultiplier;
+
+        pendingBossContractStacks = 0;
+        pendingBossContractHealthMultiplier = 0f;
+        pendingBossContractDamageMultiplier = 0f;
+        pendingBossContractOutlineMaterial = null;
+        pendingBossContractOutlineWidth = 0f;
+        pendingBossContractGlowIntensity = 0f;
+        pendingBossContractScaleMultiplier = 1f;
+        return stacks > 0;
     }
 
     private Dictionary<UpgradeBaseSO, int> upgradePurchaseCounts = new();

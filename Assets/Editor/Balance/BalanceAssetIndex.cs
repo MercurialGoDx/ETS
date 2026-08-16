@@ -184,6 +184,8 @@ namespace ETS.BalanceImport
                 ValueBinding.Child("value_1", "EnemiesPerWavePercentUpgrade", "valuePercent"),
                 ValueBinding.Child("value_2", "GoldOnPurchaseUpgrade", "basicGold"),
             },
+            ["Hunt"] = new ValueBinding[0],
+            ["Duplicator"] = new ValueBinding[0],
 
             // ---- Tier 4 ----
             // valuePercentPerWeapon хранится долей: 0.02 в ассете = +2% за оружие → scale 0.01
@@ -196,6 +198,7 @@ namespace ETS.BalanceImport
             ["DamageWhileShieldActive"] = new[] { ValueBinding.Self("value_1", "valuePercent") },
             ["DegenAura"] = new[] { ValueBinding.Self("value_1", "valueFlat") },
             ["SpikeUltimate"] = new[] { ValueBinding.Self("value_1", "valuePercent") },
+            ["BossContract"] = new ValueBinding[0],
             ["MytrhillMaterial"] = new[]
             {
                 ValueBinding.Child("value_1", "MaxHealthPercentUpgrade", "percentValue"),

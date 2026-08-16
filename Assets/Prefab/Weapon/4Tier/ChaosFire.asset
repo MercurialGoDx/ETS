@@ -19,11 +19,21 @@ MonoBehaviour:
   nameKey: chaos_fire.name
   descriptionKey: chaos_fire.desc
   price: 3000
-  damagePerProjectile: 100
+  damagePerProjectile: 115
   fireRate: 1
   projectileSpeed: 10
   itemTier: 4
   damageType: 5
   bulletPrefab: {fileID: 2203616357393551454, guid: fcd4534687d8c65408d45b4f0d2f1017, type: 3}
   weight: 2
+  weightIncreasePerPurchase: 0
+  maxWeightIncreasePurchases: 0
+  weightDecreaseUpgrades: []
+  weightDecreaseUpgradePercent: 0
+  weightIncreaseUpgrades: []
+  weightIncreaseUpgradePercent: 0
+  weightDecreaseWeapons: []
+  weightDecreaseWeaponPercent: 0
+  weightIncreaseWeapons: []
+  weightIncreaseWeaponPercent: 0
   targetingMode: 0

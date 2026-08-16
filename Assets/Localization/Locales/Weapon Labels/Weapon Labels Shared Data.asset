@@ -215,28 +215,20 @@ MonoBehaviour:
     m_Key: slashing_spin.desc
     m_Metadata:
       m_Items: []
-  - m_Id: 59785492072226816
-    m_Key: dtype.magic
+  - m_Id: 74621472677330944
+    m_Key: ultimate_laser.name
     m_Metadata:
       m_Items: []
-  - m_Id: 59785492101586944
-    m_Key: dtype.piercing
+  - m_Id: 74621472828325888
+    m_Key: ultimate_laser.desc
     m_Metadata:
       m_Items: []
-  - m_Id: 59785492101586945
-    m_Key: dtype.normal
+  - m_Id: 74605534590566400
+    m_Key: lighting_death.name
     m_Metadata:
       m_Items: []
-  - m_Id: 59785492101586946
-    m_Key: dtype.projectile
-    m_Metadata:
-      m_Items: []
-  - m_Id: 59785492101586947
-    m_Key: dtype.heavy
-    m_Metadata:
-      m_Items: []
-  - m_Id: 59785492101586948
-    m_Key: dtype.chaos
+  - m_Id: 74605534649286656
+    m_Key: lighting_death.desc
     m_Metadata:
       m_Items: []
   m_Metadata:

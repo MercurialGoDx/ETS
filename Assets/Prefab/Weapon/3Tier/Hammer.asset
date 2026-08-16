@@ -19,15 +19,15 @@ MonoBehaviour:
   nameKey: hammer.name
   descriptionKey: hammer.desc
   price: 1500
-  damagePerProjectile: 125
+  damagePerProjectile: 170
   fireRate: 0.5
   projectileSpeed: 20
   itemTier: 3
   damageType: 2
   bulletPrefab: {fileID: 9132800865255854338, guid: aaccdd3189282004ca1e7da8bfe3ae01, type: 3}
   weight: 4
-  weightIncreasePerPurchase: 2
-  maxWeightIncreasePurchases: 5
+  weightIncreasePerPurchase: 0
+  maxWeightIncreasePurchases: 0
   weightDecreaseUpgrades: []
   weightDecreaseUpgradePercent: 0
   weightIncreaseUpgrades: []

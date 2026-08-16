@@ -9,15 +9,26 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8b11036a0cc387242856548eaaeec53a, type: 3}
-  m_Name: Spike Scaling on Kill +1 COMPOSITE
+  m_Script: {fileID: 11500000, guid: 0362b1874b9092345a6c273b899e2e4d, type: 3}
+  m_Name: Hp +400 composite
   m_EditorClassIdentifier: 
   icon: {fileID: 0}
   price: 0
   weight: 0
+  itemTier: 0
+  weightIncreasePerPurchase: 2
+  maxWeightIncreasePurchases: 5
+  weightDecreaseUpgrades: []
+  weightDecreasePercent: 0
+  weightIncreaseUpgrades: []
+  weightIncreasePercent: 0
+  weightDecreaseWeapons: []
+  weightDecreaseWeaponPercent: 0
+  weightIncreaseWeapons: []
+  weightIncreaseWeaponPercent: 0
   localizedStringTable:
     m_TableReference:
       m_TableCollectionName: 
   nameKey: 
   descriptionKey: 
-  valueFlat: 1
+  valueFlat: 400
