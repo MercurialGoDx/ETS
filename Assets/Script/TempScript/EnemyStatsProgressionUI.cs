@@ -31,10 +31,10 @@ public class EnemyStatsProgressionUI : MonoBehaviour
     /// Считаются напрямую из спавнера, поэтому работают, даже когда сам текст выключен.
     /// </summary>
     public float CurrentEnemyHealth =>
-        spawner != null ? (baseHp * spawner.CurrentMultiplier) + spawner.CurrentFlatHealthBonus : 0f;
+        spawner != null ? (baseHp * spawner.CurrentHealthMultiplier) + spawner.CurrentFlatHealthBonus : 0f;
 
     public float CurrentEnemyDamage =>
-        spawner != null ? (baseDmg * spawner.CurrentMultiplier) + spawner.CurrentFlatDamageBonus : 0f;
+        spawner != null ? (baseDmg * spawner.CurrentDamageMultiplier) + spawner.CurrentFlatDamageBonus : 0f;
 
     // Аргументы для smart-строк. Хранятся как object, чтобы можно было показать "-" до старта.
     private readonly object[] hpArgs = new object[] { "-" };
