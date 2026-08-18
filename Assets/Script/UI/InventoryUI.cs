@@ -369,8 +369,11 @@ public class InventoryUI : MonoBehaviour
             Row("Доход", Int(GoldManager.Instance.goldPerTick) + "/с");
         }
 
-        if (UpgradesManager.Instance != null)
-            Row("Золото за убийство", Num(UpgradesManager.Instance.goldBonusPerKill));
+        // Процентный бонус к получаемому золоту (GoldenSkull и подобные). Пассивный доход
+        // он не трогает — только убийства, награды и прочие разовые начисления.
+        // Не путать с UpgradesManager.goldBonusPerKill: в то поле никто не пишет.
+        if (GoldManager.Instance != null)
+            Row("Бонус золота", Percent(GoldManager.Instance.GoldGainBonus));
 
         // Охота: шанс, что заспавнится золотой враг (EnemySpawner сверяется с этим значением).
         if (runtime != null)
