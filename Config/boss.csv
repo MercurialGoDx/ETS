@@ -1,2 +1,2 @@
-"damage_boss","hp_boss","gold_for_boss","speed_boss","attack_interval","attack_range","spawn_interval","hp_multiplier","damage_multiplier"
-"8","215","150","0,9","1","4,5","300","1,5","1"
+"damage_boss","hp_boss","gold_for_boss","speed_boss","attack_interval","attack_range","spawn_interval","hp_multiplier","damage_multiplier","additional_damage_boss"
+"6","215","50","0,9","1","4,5","300","1,5","1","20"

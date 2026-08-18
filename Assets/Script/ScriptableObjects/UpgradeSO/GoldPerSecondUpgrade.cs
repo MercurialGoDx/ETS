@@ -3,7 +3,7 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Upgrades/Gold/Gold Per Second")]
 public class GoldPerSecondUpgrade : UpgradeBaseSO
 {
-    public int goldPerSecond;
+    public float goldPerSecond;
 
     public override void Apply(UpgradeContextSO context)
     {

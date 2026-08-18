@@ -13,6 +13,7 @@ public class PlayerHealth : MonoBehaviour
     [SerializeField] private float healthRegenMultiplier = 1f;
     [SerializeField] private float maxHealthGlobalMultiplier = 1f;
     [SerializeField] private float healthRegenGlobalMultiplier = 1f;
+    [SerializeField] private float healAmplificationPercent = 0f;
 
     [Header("Health - Damage Block (diminishing)")]
     [SerializeField, Range(0f, 0.95f)]
@@ -62,6 +63,7 @@ public class PlayerHealth : MonoBehaviour
     public float maxHealth => MaxHealth;   // старое имя, на всякий случай
     public float MaxHealthGlobalMultiplier => maxHealthGlobalMultiplier;
     public float HealthRegenGlobalMultiplier => healthRegenGlobalMultiplier;
+    public float HealAmplificationPercent => healAmplificationPercent;
 
     public float CurrentHealth => currentHealth;
 
@@ -165,12 +167,24 @@ public class PlayerHealth : MonoBehaviour
         blockChance = Mathf.Min(blockChance, blockCap);
     }
 
+    /// <summary>
+    /// Единая точка входа для любого мгновенного лечения (килл, попадание врагом, оружие
+    /// вроде Chaos Wave). Усиление лечения (healAmplificationPercent) применяется здесь —
+    /// значит действует на всё, что сюда попадёт, включая будущие источники, без правок в них.
+    /// Реген (GetTotalRegen) через этот метод не идёт — это отдельная механика.
+    /// </summary>
     public void Heal(float amount)
     {
         if (amount <= 0f) return;
 
+        amount *= (1f + healAmplificationPercent);
         currentHealth = Mathf.Min(currentHealth + amount, maxHealth);
         UpdateHealthUI();
+    }
+
+    public void AddHealAmplificationPercent(float percent)
+    {
+        healAmplificationPercent += percent;
     }
 
     // === УРОН ===

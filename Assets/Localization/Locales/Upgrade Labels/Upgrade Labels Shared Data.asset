@@ -15,6 +15,22 @@ MonoBehaviour:
   m_TableCollectionName: Upgrade Labels
   m_TableCollectionNameGuidString: 164770c6fc8794c4ba4db6f8c7e72db3
   m_Entries:
+  - m_Id: 75989083889631232
+    m_Key: shopunlock.1.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 75989083956740096
+    m_Key: shopunlock.1.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 75989083956740097
+    m_Key: shopunlock.2.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 75989083956740098
+    m_Key: shopunlock.2.desc
+    m_Metadata:
+      m_Items: []
   - m_Id: 74576184419844096
     m_Key: basic_shield.name
     m_Metadata:
@@ -143,12 +159,20 @@ MonoBehaviour:
     m_Key: generator.desc
     m_Metadata:
       m_Items: []
-  - m_Id: 74576184478564376
-    m_Key: gold_mine.name
+  - m_Id: 75409454487560192
+    m_Key: golden_skull.name
     m_Metadata:
       m_Items: []
-  - m_Id: 74576184478564377
-    m_Key: gold_mine.desc
+  - m_Id: 75409454537891840
+    m_Key: golden_skull.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 75409454537891841
+    m_Key: heal_amp.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 75409454537891842
+    m_Key: heal_amp.desc
     m_Metadata:
       m_Items: []
   - m_Id: 74576184478564378
@@ -205,14 +229,6 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 74576184478564391
     m_Key: hp_regen_percent.desc
-    m_Metadata:
-      m_Items: []
-  - m_Id: 74576184478564392
-    m_Key: more_enemy.name
-    m_Metadata:
-      m_Items: []
-  - m_Id: 74576184478564393
-    m_Key: more_enemy.desc
     m_Metadata:
       m_Items: []
   - m_Id: 74576184478564394
@@ -359,6 +375,14 @@ MonoBehaviour:
     m_Key: ultimate_hp.desc
     m_Metadata:
       m_Items: []
+  - m_Id: 74576184478564376
+    m_Key: gold_mine.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184478564377
+    m_Key: gold_mine.desc
+    m_Metadata:
+      m_Items: []
   - m_Id: 74576184482758671
     m_Key: br_all.name
     m_Metadata:
@@ -437,6 +461,14 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 74576184482758690
     m_Key: br_mythrill.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 75409454542086144
+    m_Key: br_more_enemy.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 75409454542086145
+    m_Key: br_more_enemy.desc
     m_Metadata:
       m_Items: []
   m_Metadata:

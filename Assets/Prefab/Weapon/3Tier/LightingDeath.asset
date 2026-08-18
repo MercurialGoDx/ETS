@@ -23,7 +23,7 @@ MonoBehaviour:
   fireRate: 0.6
   projectileSpeed: 10
   itemTier: 3
-  damageType: 0
+  damageType: 1
   bulletPrefab: {fileID: 100000, guid: 6a168bb40c274105a787888ac3b4df72, type: 3}
   weight: 4
   weightIncreasePerPurchase: 0
@@ -36,4 +36,4 @@ MonoBehaviour:
   weightDecreaseWeaponPercent: 0
   weightIncreaseWeapons: []
   weightIncreaseWeaponPercent: 0
-  targetingMode: 0
+  targetingMode: 1

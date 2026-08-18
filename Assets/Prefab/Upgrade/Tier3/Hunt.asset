@@ -35,6 +35,6 @@ MonoBehaviour:
   diminishingFactor: 0.9
   healthMultiplier: 4
   damageMultiplier: 2
-  goldMultiplier: 15
+  goldMultiplier: 10
   goldenTint: {r: 1, g: 0.72, b: 0.2, a: 1}
   tintStrength: 0.95

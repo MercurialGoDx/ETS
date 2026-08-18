@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 /// <summary>
 /// Полоса здоровья босса. Показывается, когда появляется босс (вызывает <see cref="BossManager"/>),
@@ -12,6 +13,8 @@ public class BossHealthBar : MonoBehaviour
     [SerializeField] private GameObject barRoot;
     [Tooltip("Image заливки (тип Filled) — fillAmount = текущее/максимальное здоровье босса.")]
     [SerializeField] private Image fillBar;
+    [Tooltip("Текст 'текущее/максимум' поверх полоски. Не задан — просто не выводится.")]
+    [SerializeField] private TMP_Text healthText;
 
     private Enemy boss;
 
@@ -62,11 +65,16 @@ public class BossHealthBar : MonoBehaviour
 
     private void UpdateFill()
     {
-        if (fillBar == null || boss == null)
+        if (boss == null)
             return;
 
         float max = Mathf.Max(boss.maxHealth, 1f);
         float current = Mathf.Max(boss.CurrentHealth, 0f);
-        fillBar.fillAmount = Mathf.Clamp01(current / max);
+
+        if (fillBar != null)
+            fillBar.fillAmount = Mathf.Clamp01(current / max);
+
+        if (healthText != null)
+            healthText.text = $"{Mathf.CeilToInt(current)} / {Mathf.CeilToInt(max)}";
     }
 }

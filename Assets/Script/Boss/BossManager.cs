@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -15,8 +14,8 @@ public class BossManager : MonoBehaviour
     public float spawnY = 6f;
 
     [Header("Timing")]
+    [Tooltip("Интервал спавна босса. Таймер и решение \"волна или босс\" держит EnemySpawner — здесь только значение.")]
     public float spawnEverySeconds = 300f; // 5 минут
-    public bool waitBossDeathBeforeNextSpawn = true;
 
     [Header("Difficulty scaling")]
     public EnemySpawner enemySpawner;
@@ -26,6 +25,9 @@ public class BossManager : MonoBehaviour
 
     [Tooltip("Множитель базового урона босса до применения общей сложности.")]
     public float bossDamageMultiplier = 1f;
+
+    [Tooltip("Плоская прибавка к урону босса, не участвующая в умножении (не растёт вместе с damageMultiplier/сложностью).")]
+    public float bossAdditionalDamage = 0f;
 
     private Transform player;
     public BossRewardUI bossRewardUI;
@@ -55,11 +57,11 @@ public class BossManager : MonoBehaviour
             spawnEverySeconds = cfg.boss.spawnInterval;
             bossHpMultiplier = cfg.boss.hpMultiplier;
             bossDamageMultiplier = cfg.boss.damageMultiplier;
+            bossAdditionalDamage = cfg.boss.additionalDamage;
         }
 
         FindPlayer();
         BuildBossPool();
-        StartCoroutine(BossLoop());
     }
 
     private void FindPlayer()
@@ -121,20 +123,12 @@ public class BossManager : MonoBehaviour
         }
     }
 
-    private IEnumerator BossLoop()
-    {
-        while (true)
-        {
-            yield return new WaitForSeconds(spawnEverySeconds);
-
-            if (waitBossDeathBeforeNextSpawn && activeBossEnemy != null)
-                continue;
-
-            SpawnRandomBoss();
-        }
-    }
-
-    private void SpawnRandomBoss()
+    /// <summary>
+    /// Вызывается извне (EnemySpawner — по расписанию раз в spawnEverySeconds, вместо
+    /// очередной волны) и из читов. Спавнит нового босса, даже если предыдущий ещё жив —
+    /// расписание боссов ни от чего не зависит.
+    /// </summary>
+    public void SpawnRandomBoss()
     {
         if (player == null)
         {
@@ -165,7 +159,8 @@ public class BossManager : MonoBehaviour
         activeBossEnemy = chosen.enemy;
         activeBossEnemy.isDead = false;
 
-        float difficultyMult = 1f;
+        float healthDifficultyMult = 1f;
+        float damageDifficultyMult = 1f;
         float flatHealth = 0f;
         float flatDamage = 0f;
 
@@ -176,9 +171,11 @@ public class BossManager : MonoBehaviour
                 chosen.baseHealth,
                 chosen.baseDamage,
                 bossHpMultiplier,
-                bossDamageMultiplier);
+                bossDamageMultiplier,
+                bossAdditionalDamage);
 
-            difficultyMult = enemySpawner.CurrentMultiplier;
+            healthDifficultyMult = enemySpawner.CurrentHealthMultiplier;
+            damageDifficultyMult = enemySpawner.CurrentDamageMultiplier;
             flatHealth = enemySpawner.CurrentFlatHealthBonus;
             flatDamage = enemySpawner.CurrentFlatDamageBonus;
         }
@@ -186,7 +183,7 @@ public class BossManager : MonoBehaviour
         {
             chosen.enemy.InitStats(
                 chosen.baseHealth * bossHpMultiplier,
-                chosen.baseDamage * bossDamageMultiplier);
+                chosen.baseDamage * bossDamageMultiplier + bossAdditionalDamage);
 
             EnemyEffectManager.Instance?.ApplyEffectsToEnemy(chosen.enemy);
             Debug.LogWarning("[BossManager] EnemySpawner is not assigned; boss spawned without wave scaling");
@@ -228,8 +225,9 @@ public class BossManager : MonoBehaviour
         Debug.Log(
             $"[BossManager] Boss spawned ({chosen.instance.name}) | " +
             $"baseHp={chosen.baseHealth:F1}, baseDmg={chosen.baseDamage:F1}, " +
-            $"difficulty=x{difficultyMult:F3}, flatHp={flatHealth:F1}, flatDmg={flatDamage:F1}, " +
-            $"bossHp=x{bossHpMultiplier:F2}, bossDmg=x{bossDamageMultiplier:F2}, " +
+            $"difficultyHp=x{healthDifficultyMult:F3}, difficultyDmg=x{damageDifficultyMult:F3}, " +
+            $"flatHp={flatHealth:F1}, flatDmg={flatDamage:F1}, " +
+            $"bossHp=x{bossHpMultiplier:F2}, bossDmg=x{bossDamageMultiplier:F2}, additionalDmg={bossAdditionalDamage:F1}, " +
             $"finalHp={chosen.enemy.maxHealth:F1}, finalDmg={chosen.enemy.damageToPlayer:F1}");
     }
 

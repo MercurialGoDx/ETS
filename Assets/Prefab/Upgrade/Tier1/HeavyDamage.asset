@@ -16,8 +16,8 @@ MonoBehaviour:
   price: 100
   weight: 8
   itemTier: 1
-  weightIncreasePerPurchase: 0
-  maxWeightIncreasePurchases: 0
+  weightIncreasePerPurchase: 3
+  maxWeightIncreasePurchases: 8
   weightDecreaseUpgrades: []
   weightDecreasePercent: 0
   weightIncreaseUpgrades: []

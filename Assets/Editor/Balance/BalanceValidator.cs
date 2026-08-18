@@ -21,14 +21,18 @@ namespace ETS.BalanceImport
         private static readonly string[] EnemyCols = {
             "damage_melee", "hp_melee", "damage_mid", "hp_mid", "damage_range", "hp_range",
             "gold_for_enemy", "delay_per_wave", "enemy_per_wave",
-            "difficult_start", "difficult_mid", "difficult_end",
-            "time_difficult_start", "time_difficult_mid", "time_difficult_end",
+            "health_difficult_start", "damage_difficult_start",
+            "growth_stage1_multiplier_health", "growth_stage1_multiplier_damage",
+            "growth_stage2_multiplier_health", "growth_stage2_multiplier_damage",
+            "growth_stage3_multiplier_health", "growth_stage3_multiplier_damage",
+            "time_difficult_stage1", "time_difficult_stage2", "time_difficult_stage3",
             "speed_melee", "speed_mid", "speed_range", "attack_interval",
             "hp_add_per_wave", "damage_add_per_wave" };
 
         private static readonly string[] BossCols = {
             "damage_boss", "hp_boss", "gold_for_boss", "speed_boss",
-            "attack_interval", "attack_range", "spawn_interval", "hp_multiplier", "damage_multiplier" };
+            "attack_interval", "attack_range", "spawn_interval", "hp_multiplier", "damage_multiplier",
+            "additional_damage_boss" };
 
         private static readonly string[] ShopCols = {
             "first_upgrade_cost", "second_upgrade_cost", "reroll_base_cost", "reroll_cost_increase",
@@ -44,7 +48,7 @@ namespace ETS.BalanceImport
 
         private static readonly string[] UpgradeCols = {
             "name", "id", "tier", "weight", "cost",
-            "effect_1", "value_1", "effect_2", "value_2", "interval",
+            "effect_1", "value_1", "effect_2", "value_2", "effect_3", "value_3", "interval",
             "weight_increase_per_purchase", "max_weight_increase_purchases", "asset_name" };
 
         /// <summary>
@@ -225,7 +229,7 @@ namespace ETS.BalanceImport
                 var bindings = UpgradeValueMap.Get(assetName);
                 if (bindings == null)
                 {
-                    issues.Add(Issue.Error(where, $"'{assetName}' не описан в карте значений импортёра (UpgradeValueMap) — добавьте маппинг value_1/value_2 на поля ассета"));
+                    issues.Add(Issue.Error(where, $"'{assetName}' не описан в карте значений импортёра (UpgradeValueMap) — добавьте маппинг value_1/value_2/value_3 на поля ассета"));
                 }
                 else
                 {
@@ -262,20 +266,30 @@ namespace ETS.BalanceImport
             if (Cell.Int(row, "enemy_per_wave", w, issues) <= 0)
                 issues.Add(Issue.Error(w, "enemy_per_wave должно быть > 0"));
 
-            float dStart = Cell.Float(row, "difficult_start", w, issues);
-            float dMid = Cell.Float(row, "difficult_mid", w, issues);
-            float dEnd = Cell.Float(row, "difficult_end", w, issues);
-            if (dStart <= 0f) issues.Add(Issue.Error(w, "difficult_start должно быть > 0"));
-            if (!(dStart <= dMid && dMid <= dEnd))
-                issues.Add(Issue.Error(w, $"ожидается difficult_start <= difficult_mid <= difficult_end (сейчас {dStart} / {dMid} / {dEnd})"));
+            float healthStart = Cell.Float(row, "health_difficult_start", w, issues);
+            float damageStart = Cell.Float(row, "damage_difficult_start", w, issues);
+            if (healthStart <= 0f) issues.Add(Issue.Error(w, "health_difficult_start должно быть > 0"));
+            if (damageStart <= 0f) issues.Add(Issue.Error(w, "damage_difficult_start должно быть > 0"));
 
-            float tStart = Cell.Float(row, "time_difficult_start", w, issues);
-            float tMid = Cell.Float(row, "time_difficult_mid", w, issues);
-            float tEnd = Cell.Float(row, "time_difficult_end", w, issues);
-            if (!(tStart < tMid && tMid < tEnd))
-                issues.Add(Issue.Error(w, $"ожидается time_difficult_start < time_difficult_mid < time_difficult_end (сейчас {tStart} / {tMid} / {tEnd})"));
-            if (tStart != 0f)
-                issues.Add(Issue.Warning(w, $"time_difficult_start = {tStart}, но игра применяет difficult_start с нулевой секунды — значение игнорируется"));
+            float stage1Health = Cell.Float(row, "growth_stage1_multiplier_health", w, issues);
+            float stage2Health = Cell.Float(row, "growth_stage2_multiplier_health", w, issues);
+            float stage3Health = Cell.Float(row, "growth_stage3_multiplier_health", w, issues);
+            if (stage1Health <= 0f) issues.Add(Issue.Error(w, "growth_stage1_multiplier_health должно быть > 0"));
+            if (!(stage1Health <= stage2Health && stage2Health <= stage3Health))
+                issues.Add(Issue.Error(w, $"ожидается growth_stage1_multiplier_health <= growth_stage2_multiplier_health <= growth_stage3_multiplier_health (сейчас {stage1Health} / {stage2Health} / {stage3Health})"));
+
+            float stage1Damage = Cell.Float(row, "growth_stage1_multiplier_damage", w, issues);
+            float stage2Damage = Cell.Float(row, "growth_stage2_multiplier_damage", w, issues);
+            float stage3Damage = Cell.Float(row, "growth_stage3_multiplier_damage", w, issues);
+            if (stage1Damage <= 0f) issues.Add(Issue.Error(w, "growth_stage1_multiplier_damage должно быть > 0"));
+            if (!(stage1Damage <= stage2Damage && stage2Damage <= stage3Damage))
+                issues.Add(Issue.Error(w, $"ожидается growth_stage1_multiplier_damage <= growth_stage2_multiplier_damage <= growth_stage3_multiplier_damage (сейчас {stage1Damage} / {stage2Damage} / {stage3Damage})"));
+
+            float t1 = Cell.Float(row, "time_difficult_stage1", w, issues);
+            float t2 = Cell.Float(row, "time_difficult_stage2", w, issues);
+            float t3 = Cell.Float(row, "time_difficult_stage3", w, issues);
+            if (!(t1 < t2 && t2 < t3))
+                issues.Add(Issue.Error(w, $"ожидается time_difficult_stage1 < time_difficult_stage2 < time_difficult_stage3 (сейчас {t1} / {t2} / {t3})"));
         }
 
         // ---------------- boss ----------------
@@ -289,6 +303,7 @@ namespace ETS.BalanceImport
             if (Cell.Float(row, "hp_boss", w, issues) <= 0f) issues.Add(Issue.Error(w, "hp_boss должно быть > 0"));
             if (Cell.Float(row, "damage_boss", w, issues) < 0f) issues.Add(Issue.Error(w, "damage_boss должно быть >= 0"));
             if (Cell.Float(row, "gold_for_boss", w, issues) < 0f) issues.Add(Issue.Error(w, "gold_for_boss должно быть >= 0"));
+            if (Cell.Float(row, "additional_damage_boss", w, issues) < 0f) issues.Add(Issue.Error(w, "additional_damage_boss должно быть >= 0"));
 
             foreach (var col in new[] { "speed_boss", "attack_interval", "attack_range", "spawn_interval", "hp_multiplier", "damage_multiplier" })
                 if (Cell.Float(row, col, w, issues) <= 0f)

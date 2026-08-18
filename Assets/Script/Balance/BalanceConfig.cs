@@ -24,12 +24,24 @@ public class BalanceConfig : ScriptableObject
     {
         public float delayPerWave = 10f;         // delay_per_wave
         public int enemyPerWave = 12;            // enemy_per_wave
-        public float difficultStart = 3.5f;      // difficult_start: % роста множителя за волну (база)
-        public float difficultMid = 5.25f;       // difficult_mid: % после timeDifficultMid
-        public float difficultEnd = 10.5f;       // difficult_end: % после timeDifficultEnd
-        public float timeDifficultStart = 0f;    // time_difficult_start (сек): база действует с этого времени
-        public float timeDifficultMid = 720f;    // time_difficult_mid (сек)
-        public float timeDifficultEnd = 1200f;   // time_difficult_end (сек)
+
+        // Раздельный рост сложности для HP и урона врагов: у каждого свой базовый
+        // % роста за волну (health_difficult_start / damage_difficult_start) и свои
+        // множители ускорения по порогам времени (growth_stage*_multiplier_health/damage).
+        // Пороги времени (timeDifficultStage*), после которых включается очередной
+        // множитель, — общие для HP и урона.
+        public float healthDifficultStart = 3.5f;   // health_difficult_start: % роста HP за волну (база)
+        public float damageDifficultStart = 3.5f;   // damage_difficult_start: % роста урона за волну (база)
+        public float growthStage1MultiplierHealth = 2f;   // growth_stage1_multiplier_health: во сколько раз ускоряется рост HP после timeDifficultStage1
+        public float growthStage1MultiplierDamage = 2f;   // growth_stage1_multiplier_damage: во сколько раз ускоряется рост урона после timeDifficultStage1
+        public float growthStage2MultiplierHealth = 3f;   // growth_stage2_multiplier_health: после timeDifficultStage2
+        public float growthStage2MultiplierDamage = 3f;   // growth_stage2_multiplier_damage: после timeDifficultStage2
+        public float growthStage3MultiplierHealth = 3f;   // growth_stage3_multiplier_health: после timeDifficultStage3
+        public float growthStage3MultiplierDamage = 3f;   // growth_stage3_multiplier_damage: после timeDifficultStage3
+        public float timeDifficultStage1 = 720f;    // time_difficult_stage1 (сек)
+        public float timeDifficultStage2 = 1500f;   // time_difficult_stage2 (сек)
+        public float timeDifficultStage3 = 2400f;   // time_difficult_stage3 (сек)
+
         public float hpAddPerWave = 2f;          // hp_add_per_wave: фикс. прибавка HP врагов за волну
         public float damageAddPerWave = 0.05f;   // damage_add_per_wave
     }
@@ -41,6 +53,11 @@ public class BalanceConfig : ScriptableObject
         public float spawnInterval = 300f;       // spawn_interval (сек)
         public float hpMultiplier = 1.5f;        // hp_multiplier
         public float damageMultiplier = 1f;      // damage_multiplier
+
+        // Плоская прибавка к урону босса, не участвующая в умножении на damageMultiplier
+        // и на волновой множитель сложности — формула: additionalDamage + flatDamageBonus
+        // + (damage_boss * damageMultiplier * damageDifficultyMultiplier).
+        public float additionalDamage = 0f;      // additional_damage_boss
     }
 
     [Serializable]

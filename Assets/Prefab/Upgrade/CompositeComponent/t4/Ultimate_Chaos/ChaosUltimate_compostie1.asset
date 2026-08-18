@@ -32,4 +32,4 @@ MonoBehaviour:
   nameKey: 
   descriptionKey: 
   damageType: 5
-  valuePercentPerWeapon: 0.02
+  valuePercentPerWeapon: 0.03

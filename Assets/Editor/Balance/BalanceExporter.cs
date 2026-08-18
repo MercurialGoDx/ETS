@@ -268,12 +268,20 @@ namespace ETS.BalanceImport
 
             row["delay_per_wave"] = Num(config.waves.delayPerWave);
             row["enemy_per_wave"] = Num(config.waves.enemyPerWave);
-            row["difficult_start"] = Num(config.waves.difficultStart);
-            row["difficult_mid"] = Num(config.waves.difficultMid);
-            row["difficult_end"] = Num(config.waves.difficultEnd);
-            row["time_difficult_start"] = Num(config.waves.timeDifficultStart);
-            row["time_difficult_mid"] = Num(config.waves.timeDifficultMid);
-            row["time_difficult_end"] = Num(config.waves.timeDifficultEnd);
+            // Рост сложности разделён на HP и урон, у каждого своя база и по три
+            // множителя ускорения; пороги времени общие. Колонки те же, что читает
+            // BalanceAssetWriter, иначе экспорт разошёлся бы с импортом.
+            row["health_difficult_start"] = Num(config.waves.healthDifficultStart);
+            row["damage_difficult_start"] = Num(config.waves.damageDifficultStart);
+            row["growth_stage1_multiplier_health"] = Num(config.waves.growthStage1MultiplierHealth);
+            row["growth_stage1_multiplier_damage"] = Num(config.waves.growthStage1MultiplierDamage);
+            row["growth_stage2_multiplier_health"] = Num(config.waves.growthStage2MultiplierHealth);
+            row["growth_stage2_multiplier_damage"] = Num(config.waves.growthStage2MultiplierDamage);
+            row["growth_stage3_multiplier_health"] = Num(config.waves.growthStage3MultiplierHealth);
+            row["growth_stage3_multiplier_damage"] = Num(config.waves.growthStage3MultiplierDamage);
+            row["time_difficult_stage1"] = Num(config.waves.timeDifficultStage1);
+            row["time_difficult_stage2"] = Num(config.waves.timeDifficultStage2);
+            row["time_difficult_stage3"] = Num(config.waves.timeDifficultStage3);
             row["hp_add_per_wave"] = Num(config.waves.hpAddPerWave);
             row["damage_add_per_wave"] = Num(config.waves.damageAddPerWave);
 

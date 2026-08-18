@@ -9,13 +9,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c27422c313552df40af37641a13e294d, type: 3}
-  m_Name: MoreEnemy
+  m_Script: {fileID: 11500000, guid: aebd3401ebf0bfb42b7f8e699cd66e15, type: 3}
+  m_Name: BR_Gold + 5
   m_EditorClassIdentifier: 
-  icon: {fileID: 21300000, guid: 1de744f2e1a5fb4498c7ed3a3a414295, type: 3}
+  icon: {fileID: 0}
   price: 0
-  weight: 6
-  itemTier: 3
+  weight: 1
+  itemTier: 0
   weightIncreasePerPurchase: 0
   maxWeightIncreasePurchases: 0
   weightDecreaseUpgrades: []
@@ -29,7 +29,6 @@ MonoBehaviour:
   localizedStringTable:
     m_TableReference:
       m_TableCollectionName: GUID:164770c6fc8794c4ba4db6f8c7e72db3
-  nameKey: more_enemy.name
-  descriptionKey: more_enemy.desc
-  upgrades:
-  - {fileID: 11400000, guid: cd29495474f3bc4488b30625629a7565, type: 2}
+  nameKey: br_gold.name
+  descriptionKey: br_gold.desc
+  goldPerSecond: 5

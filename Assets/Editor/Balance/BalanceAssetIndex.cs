@@ -23,8 +23,8 @@ namespace ETS.BalanceImport
         {
             "Assets/Prefab/Upgrade/CompositeComponent",
             "Assets/Prefab/Upgrade/ShopUnlock",
-            "Assets/Prefab/Upgrade/Tier3/MoreEnemy",
             "Assets/Prefab/Upgrade/Tier3/NatureBlessing",
+            "Assets/Prefab/Upgrade/Tier3/GoldMine",
         };
 
         // Мёртвые ассеты, сознательно не участвующие в балансе.
@@ -139,7 +139,6 @@ namespace ETS.BalanceImport
                 ValueBinding.Self("value_1", "valuePercent"),
                 ValueBinding.Self("interval", "interval"),
             },
-            ["GoldMine"] = new[] { ValueBinding.Self("value_1", "valuePercent") },
             ["HealOnKill"] = new[] { ValueBinding.Self("value_1", "valueFlat") },
             ["HpPerTick"] = new[]
             {
@@ -157,6 +156,8 @@ namespace ETS.BalanceImport
                 ValueBinding.Child("value_1", "SpikesBaseUpgrade", "valueFlat"),
                 ValueBinding.Child("value_2", "HealPerEnemyHitUpgrade", "valueFlat"),
             },
+            ["GoldenSkull"] = new[] { ValueBinding.Self("value_1", "valuePercent") },
+            ["Heal_ampl"] = new[] { ValueBinding.Self("value_1", "valuePercent") },
 
             // ---- Tier 3 ----
             ["AttackSpeed"] = new[] { ValueBinding.Self("value_1", "valuePercent") },
@@ -179,10 +180,10 @@ namespace ETS.BalanceImport
                 ValueBinding.Child("value_1", "SpikesBaseUpgrade", "valueFlat"),
                 ValueBinding.Child("value_2", "SpikesScalingOnKillUpgrade", "valueFlat"),
             },
-            ["MoreEnemy"] = new[]
+            ["GoldMine"] = new[]
             {
-                ValueBinding.Child("value_1", "EnemiesPerWavePercentUpgrade", "valuePercent"),
-                ValueBinding.Child("value_2", "GoldOnPurchaseUpgrade", "basicGold"),
+                ValueBinding.Child("value_1", "GoldPerSecondPercentUpgrade", "valuePercent"),
+                ValueBinding.Child("value_2", "GoldPerSecondUpgrade", "goldPerSecond"),
             },
             ["Hunt"] = new ValueBinding[0],
             ["Duplicator"] = new ValueBinding[0],
@@ -195,8 +196,18 @@ namespace ETS.BalanceImport
             ["MagicDamageUltimate"] = Ultimate(),
             ["HeavyDamageUltimate"] = Ultimate(),
             ["ChaosDamageUltimate"] = Ultimate(),
-            ["DamageWhileShieldActive"] = new[] { ValueBinding.Self("value_1", "valuePercent") },
+            ["DamageWhileShieldActive"] = new[]
+            {
+                ValueBinding.Child("value_1", "MaxShieldFlatUpgrade", "valueFlat"),
+                ValueBinding.Child("value_2", "AdaptiveDamageWhileShield", "valuePercent"),
+            },
             ["DegenAura"] = new[] { ValueBinding.Self("value_1", "valueFlat") },
+            ["UltimateHp"] = new[]
+            {
+                ValueBinding.Child("value_1", "MaxHealthFlatUpgrade", "valueFlat"),
+                ValueBinding.Child("value_2", "MaxHealthPercentUpgrade", "percentValue"),
+                ValueBinding.Child("value_3", "DamageReductiondUpgrade", "valuePercent"),
+            },
             ["SpikeUltimate"] = new[] { ValueBinding.Self("value_1", "valuePercent") },
             ["BossContract"] = new ValueBinding[0],
             ["MytrhillMaterial"] = new[]

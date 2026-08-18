@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Upgrades/Economy/Hunt")]
+[CreateAssetMenu(menuName = "Upgrades/Gold/Hunt")]
 public class HuntUpgrade : UpgradeBaseSO
 {
     [Header("Golden Enemy")]

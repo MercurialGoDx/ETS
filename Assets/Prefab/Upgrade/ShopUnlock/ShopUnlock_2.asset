@@ -19,6 +19,6 @@ MonoBehaviour:
   requiredUpgrade: {fileID: 11400000, guid: 53310aa610326fc40ba23dd4362b5802, type: 2}
   localizedStringTable:
     m_TableReference:
-      m_TableCollectionName: 
+      m_TableCollectionName: GUID:164770c6fc8794c4ba4db6f8c7e72db3
   nameKey: shopunlock.2.name
   descriptionKey: shopunlock.2.desc
