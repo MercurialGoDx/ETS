@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Upgrades/Challenge/Boss Contract")]
+[CreateAssetMenu(menuName = "Upgrades/Utility/Boss Contract")]
 public class BossContractUpgrade : UpgradeBaseSO
 {
     [Header("Next Boss")]

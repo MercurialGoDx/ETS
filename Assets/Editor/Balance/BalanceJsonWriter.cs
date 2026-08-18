@@ -40,6 +40,7 @@ namespace ETS.BalanceImport
             public string name; public int id; public int tier; public float weight; public int cost;
             public string effect_1; public float value_1;
             public string effect_2; public float value_2;
+            public string effect_3; public float value_3;
             public float interval; public string asset;
         }
 
@@ -58,13 +59,17 @@ namespace ETS.BalanceImport
             public float damage; public float hp; public int gold; public float speed;
             public float attack_interval; public float attack_range;
             public float spawn_interval; public float hp_multiplier; public float damage_multiplier;
+            public float additional_damage_boss;
         }
 
         [Serializable] public class WavesJson
         {
             public float delay_per_wave; public int enemy_per_wave;
-            public float difficult_start; public float difficult_mid; public float difficult_end;
-            public float time_difficult_start; public float time_difficult_mid; public float time_difficult_end;
+            public float health_difficult_start; public float damage_difficult_start;
+            public float growth_stage1_multiplier_health; public float growth_stage1_multiplier_damage;
+            public float growth_stage2_multiplier_health; public float growth_stage2_multiplier_damage;
+            public float growth_stage3_multiplier_health; public float growth_stage3_multiplier_damage;
+            public float time_difficult_stage1; public float time_difficult_stage2; public float time_difficult_stage3;
             public float hp_add_per_wave; public float damage_add_per_wave;
         }
 
@@ -113,6 +118,8 @@ namespace ETS.BalanceImport
                 value_1 = FOpt(r, "value_1"),
                 effect_2 = Cell.Text(r, "effect_2"),
                 value_2 = FOpt(r, "value_2"),
+                effect_3 = Cell.Text(r, "effect_3"),
+                value_3 = FOpt(r, "value_3"),
                 interval = FOpt(r, "interval"),
                 asset = Cell.Text(r, "asset_name"),
             }).OrderBy(x => x.id).ToArray();
@@ -133,15 +140,21 @@ namespace ETS.BalanceImport
             root.boss.spawn_interval = F(b["spawn_interval"]);
             root.boss.hp_multiplier = F(b["hp_multiplier"]);
             root.boss.damage_multiplier = F(b["damage_multiplier"]);
+            root.boss.additional_damage_boss = F(b["additional_damage_boss"]);
 
             root.waves.delay_per_wave = F(e["delay_per_wave"]);
             root.waves.enemy_per_wave = I(e["enemy_per_wave"]);
-            root.waves.difficult_start = F(e["difficult_start"]);
-            root.waves.difficult_mid = F(e["difficult_mid"]);
-            root.waves.difficult_end = F(e["difficult_end"]);
-            root.waves.time_difficult_start = F(e["time_difficult_start"]);
-            root.waves.time_difficult_mid = F(e["time_difficult_mid"]);
-            root.waves.time_difficult_end = F(e["time_difficult_end"]);
+            root.waves.health_difficult_start = F(e["health_difficult_start"]);
+            root.waves.damage_difficult_start = F(e["damage_difficult_start"]);
+            root.waves.growth_stage1_multiplier_health = F(e["growth_stage1_multiplier_health"]);
+            root.waves.growth_stage1_multiplier_damage = F(e["growth_stage1_multiplier_damage"]);
+            root.waves.growth_stage2_multiplier_health = F(e["growth_stage2_multiplier_health"]);
+            root.waves.growth_stage2_multiplier_damage = F(e["growth_stage2_multiplier_damage"]);
+            root.waves.growth_stage3_multiplier_health = F(e["growth_stage3_multiplier_health"]);
+            root.waves.growth_stage3_multiplier_damage = F(e["growth_stage3_multiplier_damage"]);
+            root.waves.time_difficult_stage1 = F(e["time_difficult_stage1"]);
+            root.waves.time_difficult_stage2 = F(e["time_difficult_stage2"]);
+            root.waves.time_difficult_stage3 = F(e["time_difficult_stage3"]);
             root.waves.hp_add_per_wave = F(e["hp_add_per_wave"]);
             root.waves.damage_add_per_wave = F(e["damage_add_per_wave"]);
 

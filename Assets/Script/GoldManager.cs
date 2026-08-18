@@ -15,8 +15,9 @@ public class GoldManager : MonoBehaviour
     [Tooltip("Включить/выключить пассивный доход золота по времени (для дебага)")]
     public bool enablePassiveIncome = true;
 
-    [Tooltip("Сколько золота выдавать за один тик (обычно = золото в секунду)")]
-    public int goldPerTick = 5;
+    [Tooltip("Сколько золота выдавать за один тик (обычно = золото в секунду). Может быть дробным " +
+             "(напр. 0.5) — сама выдача на баланс всё равно идёт целыми монетами, остаток копится.")]
+    public float goldPerTick = 5f;
 
     [Tooltip("Интервал между тиками дохода (в секундах)")]
     public float incomeInterval = 1f;
@@ -30,6 +31,10 @@ public class GoldManager : MonoBehaviour
     public float GoldGainBonus => goldGainBonus;
 
     private Coroutine passiveIncomeCoroutine;
+
+    // Дробный остаток от goldPerTick (напр. 0.5/тик — каждый второй тик реально
+    // выдаёт 1 золото). currentGold всегда остаётся целым — копится только здесь.
+    private float pendingPassiveGold = 0f;
     public event System.Action<int, GoldSource, UnityEngine.Vector3?> OnGoldGained;
 
 
@@ -73,15 +78,31 @@ public class GoldManager : MonoBehaviour
         goldGainBonus += percent / 100f;
         if (goldGainBonus < 0f) goldGainBonus = 0f;
     }
-    public void AddPassiveIncome(int amountPerSecond)
+    public void AddPassiveIncome(float amountPerSecond)
     {
-        if (amountPerSecond == 0) return;
+        if (amountPerSecond == 0f) return;
 
         // Автоматически включаем пассивный доход, если апгрейд куплен
         enablePassiveIncome = true;
 
         goldPerTick += amountPerSecond;
         if (goldPerTick < 0) goldPerTick = 0;
+
+        TryStartPassiveIncome();
+    }
+
+    /// <summary>
+    /// Умножает текущий пассивный доход (в отличие от AddGoldGainPercent — это именно
+    /// множитель на плоское значение goldPerTick, а не отдельный накопительный бонус).
+    /// Пример: было 15/сек, +100% -> 30/сек. Порядок покупок важен: апгрейд применяется
+    /// к тому, что уже накоплено на момент покупки, а не пересчитывается задним числом.
+    /// </summary>
+    public void MultiplyPassiveIncome(float percent)
+    {
+        if (percent == 0f) return;
+
+        goldPerTick *= (1f + percent / 100f);
+        if (goldPerTick < 0f) goldPerTick = 0f;
 
         TryStartPassiveIncome();
     }
@@ -109,9 +130,16 @@ public class GoldManager : MonoBehaviour
         {
             yield return wait;
 
-            if (enablePassiveIncome && goldPerTick > 0)
+            if (enablePassiveIncome && goldPerTick > 0f)
             {
-                AddGold(goldPerTick, GoldSource.PassiveTick);
+                pendingPassiveGold += goldPerTick;
+
+                int wholeGold = Mathf.FloorToInt(pendingPassiveGold);
+                if (wholeGold > 0)
+                {
+                    pendingPassiveGold -= wholeGold;
+                    AddGold(wholeGold, GoldSource.PassiveTick);
+                }
             }
         }
     }

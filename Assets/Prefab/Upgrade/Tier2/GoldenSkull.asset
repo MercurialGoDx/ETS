@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 61e4fb40263b2a74d818e0c2b9d973d0, type: 3}
-  m_Name: GoldMine
+  m_Name: GoldenSkull
   m_EditorClassIdentifier: 
-  icon: {fileID: 21300000, guid: 505488e7e8617a649bacb2974cdc2295, type: 3}
+  icon: {fileID: 21300000, guid: 8770abc78314b4a48b524dfe2d79e3bd, type: 3}
   price: 400
-  weight: 14
+  weight: 10
   itemTier: 2
   weightIncreasePerPurchase: 0
   maxWeightIncreasePurchases: 0
@@ -29,6 +29,6 @@ MonoBehaviour:
   localizedStringTable:
     m_TableReference:
       m_TableCollectionName: GUID:164770c6fc8794c4ba4db6f8c7e72db3
-  nameKey: gold_mine.name
-  descriptionKey: gold_mine.desc
-  valuePercent: 10
+  nameKey: golden_skull.name
+  descriptionKey: golden_skull.desc
+  valuePercent: 25

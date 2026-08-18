@@ -124,14 +124,22 @@ namespace ETS.BalanceImport
             int enemiesStamped = BalanceAssetWriter.StampEnemies(sheets.Enemy, writeIssues);
             bool bossStamped = BalanceAssetWriter.StampBoss(sheets.Boss, writeIssues);
             BalanceAssetWriter.StampShopUnlocks(sheets.Shop, writeIssues);
-            BalanceAssetWriter.WriteBalanceConfig(sheets);
+            var balanceConfig = BalanceAssetWriter.WriteBalanceConfig(sheets);
             BalanceJsonWriter.Write(sheets);
+
+            // Часть баланса живёт на компонентах прямо на сцене (EnemySpawner, BossManager
+            // и т.п.) — их Start()/Awake() перекрывает инспектор конфигом только в Play-режиме.
+            // Проставляем те же значения и в открытую сцену, чтобы инспектор совпадал сразу.
+            BalanceSceneStamper.StampSceneObjects(balanceConfig, writeIssues);
 
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
 
             foreach (var issue in writeIssues)
-                Debug.LogError("[Balance] " + issue);
+            {
+                if (issue.Severity == IssueSeverity.Error) Debug.LogError("[Balance] " + issue);
+                else Debug.LogWarning("[Balance] " + issue);
+            }
 
             string summary =
                 $"Оружий: {weaponsStamped}, улучшений: {upgradesStamped}, врагов: {enemiesStamped}, босс: {(bossStamped ? "да" : "НЕТ")}.\n" +

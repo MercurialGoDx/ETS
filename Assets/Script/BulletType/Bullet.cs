@@ -29,7 +29,8 @@ public class Bullet : MonoBehaviour, IAttackBehaviour
     protected PlayerHealth cachedPlayerHealth;
     private float lifeTimer = 0f;
 
-    private WeaponDefinition sourceWeapon;
+    protected WeaponDefinition sourceWeapon;
+    protected TowerAttack ownerTower;
 
     private PooledObject pooledObject;
 
@@ -49,6 +50,7 @@ public class Bullet : MonoBehaviour, IAttackBehaviour
         speed = context.projectileSpeed;
         SetTarget(context.target);
         sourceWeapon = context.weapon;
+        ownerTower = context.ownerTower;
         lifeTimer = 0f;
     }
 

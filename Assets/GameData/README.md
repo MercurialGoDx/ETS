@@ -48,19 +48,26 @@
 | `gold_for_enemy` | целое | ≥ 0 | Золото за убийство (любой обычный враг). Игра добавляет +1 за каждые 20 волн |
 | `delay_per_wave` | число | > 0 | Секунд между волнами |
 | `enemy_per_wave` | целое | > 0 | Врагов в волне (апгрейд «Больше врагов» добавляет % сверху) |
-| `difficult_start` | число | > 0 | % роста множителя сложности за волну — с начала забега |
-| `difficult_mid` | число | ≥ start | % роста после `time_difficult_mid` секунд |
-| `difficult_end` | число | ≥ mid | % роста после `time_difficult_end` секунд |
-| `time_difficult_start` | число | = 0 | Зарезервировано: рост действует с 0 сек, значение игнорируется (warning, если не 0) |
-| `time_difficult_mid` | число | > start | Секунда включения `difficult_mid` |
-| `time_difficult_end` | число | > mid | Секунда включения `difficult_end` |
+| `health_difficult_start` | число | > 0 | Базовый % роста множителя **здоровья** за волну — с начала забега |
+| `damage_difficult_start` | число | > 0 | Базовый % роста множителя **урона** за волну — с начала забега |
+| `growth_stage1_multiplier_health` | число | > 0 | Во сколько раз ускоряется рост **здоровья** после `time_difficult_stage1` секунд |
+| `growth_stage1_multiplier_damage` | число | > 0 | Во сколько раз ускоряется рост **урона** после `time_difficult_stage1` секунд |
+| `growth_stage2_multiplier_health` | число | ≥ stage1_health | То же для здоровья после `time_difficult_stage2` секунд |
+| `growth_stage2_multiplier_damage` | число | ≥ stage1_damage | То же для урона после `time_difficult_stage2` секунд |
+| `growth_stage3_multiplier_health` | число | ≥ stage2_health | То же для здоровья после `time_difficult_stage3` секунд |
+| `growth_stage3_multiplier_damage` | число | ≥ stage2_damage | То же для урона после `time_difficult_stage3` секунд |
+| `time_difficult_stage1` | число | > 0 | Секунда включения множителей stage1 (общая для HP и урона) |
+| `time_difficult_stage2` | число | > stage1 | Секунда включения множителей stage2 (общая для HP и урона) |
+| `time_difficult_stage3` | число | > stage2 | Секунда включения множителей stage3 (общая для HP и урона) |
 | `speed_melee/mid/range` | число | > 0 | Скорость движения |
 | `attack_interval` | число | > 0 | Секунд между ударами по башне |
 | `hp_add_per_wave` | число | ≥ 0 | Фиксированная прибавка HP врагам за каждую волну (поверх множителя) |
 | `damage_add_per_wave` | число | ≥ 0 | То же для урона |
 
-Итоговые статы врага в волне N: `(база × множитель_сложности) + фикс_прибавка × N`.
-Множитель растёт на `difficult_*`% за волну.
+Итоговые статы врага в волне N: `(база × множитель_сложности) + фикс_прибавка × N`. HP и урон растут
+**раздельно**: у каждого свой базовый % за волну (`health_difficult_start` / `damage_difficult_start`)
+и свой множитель ускорения на каждом пороге (`growth_stage1/2/3_multiplier_health` /
+`growth_stage1/2/3_multiplier_damage`). Общие только пороги по времени (`time_difficult_stage1/2/3`).
 
 Дальность атаки врагов задаётся кодом по типу (Melee 2.5 / Mid 6 / Range 10) и в таблицу не вынесена.
 
@@ -77,9 +84,16 @@
 | `spawn_interval` | число | > 0 | Секунд между спавнами босса (300 = каждые 5 минут) |
 | `hp_multiplier` | число | > 0 | Множитель HP поверх сложности |
 | `damage_multiplier` | число | > 0 | Множитель урона |
+| `additional_damage_boss` | число | ≥ 0 | Плоская прибавка к урону босса — НЕ участвует в умножении на `damage_multiplier` и волновой множитель сложности, прибавляется после |
 
-Итог при спавне: `HP = hp_boss × сложность × hp_multiplier`;
-`урон = damage_boss × √сложность × damage_multiplier` (корень — чтобы на поздних минутах босс не ваншотил).
+Итог при спавне:
+`HP = (hp_boss × сложность_HP × hp_multiplier) + flatHealthBonus`
+`урон = additional_damage_boss + flatDamageBonus + (damage_boss × сложность_урона × damage_multiplier)`
+
+`сложность_HP`/`сложность_урона` — общий волновой множитель сложности (см. вкладку `enemy`,
+раздельный для HP и урона). `flatHealthBonus`/`flatDamageBonus` — тоже общие с обычными врагами
+плоские прибавки (растут от `hp_add_per_wave`/`damage_add_per_wave`), не умножаются повторно.
+`additional_damage_boss` — то же самое, но только для босса, поверх общей прибавки.
 
 ## Вкладка `shop` (одна строка значений)
 

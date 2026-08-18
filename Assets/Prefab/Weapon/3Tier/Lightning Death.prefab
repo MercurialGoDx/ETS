@@ -57,7 +57,7 @@ MonoBehaviour:
   morphSpeed: 42
   strikeDuration: 0.25
   fadeDuration: 0.05
-  baseDamageGainOnKill: 0.5
+  baseDamageGainOnKill: 0.2
   lineMaterial: {fileID: 2100000, guid: 477ea5a4675cfbe44bed754e41db2116, type: 2}
   glowWidth: 0.34
   boltWidth: 0.14

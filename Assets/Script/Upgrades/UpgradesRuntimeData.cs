@@ -38,8 +38,10 @@ public class UpgradesRuntimeData
     private float goldenEnemyTintStrength = 0.35f;
 
     private bool isDuplicatorArmed;
-    private ItemTier duplicatorTargetTier = ItemTier.Tier1;
-    private int duplicatorCopies;
+    private ItemTier duplicatorTier1 = ItemTier.None;
+    private int duplicatorCopies1;
+    private ItemTier duplicatorTier2 = ItemTier.None;
+    private int duplicatorCopies2;
 
     private int pendingBossContractStacks;
     private float pendingBossContractHealthMultiplier;
@@ -57,8 +59,10 @@ public class UpgradesRuntimeData
     public float GoldenEnemyDamageMultiplier => goldenEnemyDamageMultiplier;
     public float GoldenEnemyGoldMultiplier => goldenEnemyGoldMultiplier;
     public bool IsDuplicatorArmed => isDuplicatorArmed;
-    public ItemTier DuplicatorTargetTier => duplicatorTargetTier;
-    public int DuplicatorCopies => duplicatorCopies;
+    public ItemTier DuplicatorTier1 => duplicatorTier1;
+    public int DuplicatorCopies1 => duplicatorCopies1;
+    public ItemTier DuplicatorTier2 => duplicatorTier2;
+    public int DuplicatorCopies2 => duplicatorCopies2;
     public int PendingBossContractStacks => pendingBossContractStacks;
     public float PendingBossContractHealthMultiplier => pendingBossContractHealthMultiplier;
     public float PendingBossContractDamageMultiplier => pendingBossContractDamageMultiplier;
@@ -124,27 +128,51 @@ public class UpgradesRuntimeData
         return goldenEnemyChance > 0f;
     }
 
-    public bool TryArmDuplicator(ItemTier targetTier, int copies)
+    /// <summary>
+    /// Армит оба слота одновременно (разные тиры или один и тот же — на выбор апгрейда).
+    /// Слот срабатывает от покупки предмета своего тира; какой из двух сработает первым,
+    /// тот и даёт копии — оба слота гаснут одновременно (см. TryConsumeDuplicator).
+    /// </summary>
+    public bool TryArmDuplicator(ItemTier tier1, int copies1, ItemTier tier2, int copies2)
     {
-        if (isDuplicatorArmed || targetTier == ItemTier.None || copies <= 0)
+        if (isDuplicatorArmed)
+            return false;
+        if (tier1 == ItemTier.None || copies1 <= 0)
+            return false;
+        if (tier2 == ItemTier.None || copies2 <= 0)
             return false;
 
         isDuplicatorArmed = true;
-        duplicatorTargetTier = targetTier;
-        duplicatorCopies = copies;
+        duplicatorTier1 = tier1;
+        duplicatorCopies1 = copies1;
+        duplicatorTier2 = tier2;
+        duplicatorCopies2 = copies2;
         return true;
     }
 
+    /// <summary>
+    /// Проверяет купленный тир против обоих слотов. Срабатывает только один (первый
+    /// совпавший), но заряд одноразовый целиком — второй слот гаснет вместе с ним,
+    /// даже если сам не сработал.
+    /// </summary>
     public bool TryConsumeDuplicator(ItemTier purchasedTier, out int copies)
     {
         copies = 0;
-        if (!isDuplicatorArmed || purchasedTier != duplicatorTargetTier)
+        if (!isDuplicatorArmed)
             return false;
 
-        copies = duplicatorCopies;
+        if (purchasedTier == duplicatorTier1)
+            copies = duplicatorCopies1;
+        else if (purchasedTier == duplicatorTier2)
+            copies = duplicatorCopies2;
+        else
+            return false;
+
         isDuplicatorArmed = false;
-        duplicatorTargetTier = ItemTier.None;
-        duplicatorCopies = 0;
+        duplicatorTier1 = ItemTier.None;
+        duplicatorCopies1 = 0;
+        duplicatorTier2 = ItemTier.None;
+        duplicatorCopies2 = 0;
         return copies > 0;
     }
 

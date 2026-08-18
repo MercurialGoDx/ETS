@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: BossContract
   m_EditorClassIdentifier: 
   icon: {fileID: 21300000, guid: 1787ccde8447da6449a5889d5675c6bd, type: 3}
-  price: 3000
+  price: 0
   weight: 3
   itemTier: 4
   weightIncreasePerPurchase: 0
@@ -32,7 +32,7 @@ MonoBehaviour:
   nameKey: boss_contract.name
   descriptionKey: boss_contract.desc
   healthMultiplier: 5
-  damageMultiplier: 3
+  damageMultiplier: 2
   outlineMaterial: {fileID: 2100000, guid: 69c9a6157904481790f73bb69521ef6c, type: 2}
   outlineColor: {r: 1, g: 0.02, b: 0, a: 1}
   outlineWidth: 0.055

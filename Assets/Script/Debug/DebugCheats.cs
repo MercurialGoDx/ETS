@@ -4,7 +4,6 @@
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
 
 using System.Collections.Generic;
-using System.Reflection;
 using UnityEngine;
 
 /// <summary>
@@ -253,19 +252,11 @@ public class DebugCheats : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// BossManager.SpawnRandomBoss приватный. Дёргаем рефлексией, чтобы не расширять
-    /// публичный API боевого класса ради отладки.
-    /// </summary>
     private void SpawnBoss()
     {
         var boss = FindFirstObjectByType<BossManager>();
-        if (boss == null) return;
-
-        MethodInfo m = typeof(BossManager).GetMethod(
-            "SpawnRandomBoss", BindingFlags.NonPublic | BindingFlags.Instance);
-        if (m != null)
-            m.Invoke(boss, null);
+        if (boss != null)
+            boss.SpawnRandomBoss();
     }
 }
 

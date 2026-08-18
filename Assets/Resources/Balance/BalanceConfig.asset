@@ -16,24 +16,30 @@ MonoBehaviour:
   waves:
     delayPerWave: 10
     enemyPerWave: 12
-    difficultStart: 3
-    difficultMid: 6
-    difficultEnd: 9
-    timeDifficultStart: 0
-    timeDifficultMid: 720
-    timeDifficultEnd: 1500
-    hpAddPerWave: 2
+    healthDifficultStart: 3
+    damageDifficultStart: 3
+    growthStage1MultiplierHealth: 2
+    growthStage1MultiplierDamage: 1.5
+    growthStage2MultiplierHealth: 3
+    growthStage2MultiplierDamage: 2
+    growthStage3MultiplierHealth: 3
+    growthStage3MultiplierDamage: 2
+    timeDifficultStage1: 720
+    timeDifficultStage2: 1500
+    timeDifficultStage3: 2400
+    hpAddPerWave: 1.2
     damageAddPerWave: 0.05
   boss:
     spawnInterval: 300
     hpMultiplier: 1.5
     damageMultiplier: 1
+    additionalDamage: 20
   shop:
     rerollBaseCost: 10
     rerollCostIncrease: 10
     autoRerollInterval: 20
     startGold: 500
-    passiveGoldPerTick: 10
+    passiveGoldPerTick: 8
     passiveIncomeInterval: 1
   player:
     playerHp: 200

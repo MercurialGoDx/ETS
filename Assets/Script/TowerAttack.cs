@@ -79,6 +79,38 @@ public class TowerAttack : MonoBehaviour
         return result;
     }
 
+    /// <summary>
+    /// Стаки от механики "килл -> бонус урона" (см. AddWeaponBaseDamage) — отдельно от
+    /// weapon.stacks (это количество купленных копий оружия, другая величина).
+    /// </summary>
+    public readonly struct WeaponKillStack
+    {
+        public readonly WeaponDefinition Def;
+        public readonly int Stacks;
+
+        public WeaponKillStack(WeaponDefinition def, int stacks)
+        {
+            Def = def;
+            Stacks = stacks;
+        }
+    }
+
+    /// <summary>Срабатывает при каждом килл-стаке любого оружия — для HUD-панели стаков.</summary>
+    public event System.Action OnWeaponKillStacksChanged;
+
+    public List<WeaponKillStack> GetWeaponKillStacks()
+    {
+        var result = new List<WeaponKillStack>();
+
+        foreach (var w in weapons)
+        {
+            if (w.def != null && w.killStacks > 0)
+                result.Add(new WeaponKillStack(w.def, w.killStacks));
+        }
+
+        return result;
+    }
+
     private void Awake()
     {
         // Баланс из таблицы (если импортирован) перекрывает инспектор.
@@ -386,6 +418,8 @@ public class TowerAttack : MonoBehaviour
                 continue;
 
             weapon.baseDamageBonus += amount;
+            weapon.killStacks++;
+            OnWeaponKillStacksChanged?.Invoke();
 
             if (debugDamage)
             {
@@ -393,7 +427,7 @@ public class TowerAttack : MonoBehaviour
                 Debug.Log(
                     $"[DamageDebug] {def.name}: kill scaling +{amount:0.###} base damage, " +
                     $"SO base={def.damagePerProjectile:0.###}, accumulated bonus={weapon.baseDamageBonus:0.###}, " +
-                    $"runtime base={currentBaseDamage:0.###}, stacks={weapon.stacks}.");
+                    $"runtime base={currentBaseDamage:0.###}, killStacks={weapon.killStacks}, stacks={weapon.stacks}.");
             }
 
             return true;
@@ -469,7 +503,20 @@ public class TowerAttack : MonoBehaviour
 
     private static float GetRuntimeBaseDamage(WeaponRuntime weapon)
     {
-        return weapon.def.damagePerProjectile + weapon.baseDamageBonus;
+        float baseDamage = weapon.def.damagePerProjectile + weapon.baseDamageBonus;
+
+        // Монета: бонус от текущего золота должен быть частью БАЗЫ, а не плоской
+        // прибавкой поверх готового урона — иначе множители (тип/global/adaptive)
+        // на него не действуют. Конфиг стаков читаем прямо с префаба, тот же приём,
+        // что уже используется для Catapult чуть ниже.
+        if (weapon.def.bulletPrefab != null)
+        {
+            CoinBullet coinBullet = weapon.def.bulletPrefab.GetComponent<CoinBullet>();
+            if (coinBullet != null)
+                baseDamage += coinBullet.GetGoldDamageBonus();
+        }
+
+        return baseDamage;
     }
 
 

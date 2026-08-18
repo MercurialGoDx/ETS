@@ -10,6 +10,7 @@ public class WeaponRuntime
     public bool isVolleyInProgress;
     public bool immediateRetargetRequested;
     public float baseDamageBonus;
+    public int killStacks;
 
     public float totalDamageDealt;
 }

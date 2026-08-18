@@ -66,10 +66,10 @@ public class EnemyStatsProgressionUI : MonoBehaviour
         UpdateFromSpawner();
     }
 
-    private void HandleWaveSpawned(int waveNumber, float mult, float flatHp, float flatDmg)
+    private void HandleWaveSpawned(int waveNumber, float healthMult, float damageMult, float flatHp, float flatDmg)
     {
         if (!isStarted) return;
-        UpdateUI(waveNumber, mult, flatHp, flatDmg);
+        UpdateUI(waveNumber, healthMult, damageMult, flatHp, flatDmg);
     }
 
     public void ResetUI()
@@ -90,16 +90,17 @@ public class EnemyStatsProgressionUI : MonoBehaviour
 
         UpdateUI(
             spawner.CurrentWaveNumber,
-            spawner.CurrentMultiplier,
+            spawner.CurrentHealthMultiplier,
+            spawner.CurrentDamageMultiplier,
             spawner.CurrentFlatHealthBonus,
             spawner.CurrentFlatDamageBonus
         );
     }
 
-    private void UpdateUI(int waveNumber, float mult, float flatHp, float flatDmg)
+    private void UpdateUI(int waveNumber, float healthMult, float damageMult, float flatHp, float flatDmg)
     {
-        float hp = (baseHp * mult) + flatHp;
-        float dmg = (baseDmg * mult) + flatDmg;
+        float hp = (baseHp * healthMult) + flatHp;
+        float dmg = (baseDmg * damageMult) + flatDmg;
 
         hpArgs[0] = Mathf.RoundToInt(hp);
         dmgArgs[0] = Mathf.RoundToInt(dmg);

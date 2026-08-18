@@ -256,17 +256,23 @@ namespace ETS.BalanceImport
 
             config.waves.delayPerWave = ParseFloat(enemy["delay_per_wave"]);
             config.waves.enemyPerWave = ParseInt(enemy["enemy_per_wave"]);
-            config.waves.difficultStart = ParseFloat(enemy["difficult_start"]);
-            config.waves.difficultMid = ParseFloat(enemy["difficult_mid"]);
-            config.waves.difficultEnd = ParseFloat(enemy["difficult_end"]);
-            config.waves.timeDifficultStart = ParseFloat(enemy["time_difficult_start"]);
-            config.waves.timeDifficultMid = ParseFloat(enemy["time_difficult_mid"]);
-            config.waves.timeDifficultEnd = ParseFloat(enemy["time_difficult_end"]);
+            config.waves.healthDifficultStart = ParseFloat(enemy["health_difficult_start"]);
+            config.waves.damageDifficultStart = ParseFloat(enemy["damage_difficult_start"]);
+            config.waves.growthStage1MultiplierHealth = ParseFloat(enemy["growth_stage1_multiplier_health"]);
+            config.waves.growthStage1MultiplierDamage = ParseFloat(enemy["growth_stage1_multiplier_damage"]);
+            config.waves.growthStage2MultiplierHealth = ParseFloat(enemy["growth_stage2_multiplier_health"]);
+            config.waves.growthStage2MultiplierDamage = ParseFloat(enemy["growth_stage2_multiplier_damage"]);
+            config.waves.growthStage3MultiplierHealth = ParseFloat(enemy["growth_stage3_multiplier_health"]);
+            config.waves.growthStage3MultiplierDamage = ParseFloat(enemy["growth_stage3_multiplier_damage"]);
+            config.waves.timeDifficultStage1 = ParseFloat(enemy["time_difficult_stage1"]);
+            config.waves.timeDifficultStage2 = ParseFloat(enemy["time_difficult_stage2"]);
+            config.waves.timeDifficultStage3 = ParseFloat(enemy["time_difficult_stage3"]);
             config.waves.hpAddPerWave = ParseFloat(enemy["hp_add_per_wave"]);
             config.waves.damageAddPerWave = ParseFloat(enemy["damage_add_per_wave"]);
 
             config.boss.spawnInterval = ParseFloat(boss["spawn_interval"]);
             config.boss.hpMultiplier = ParseFloat(boss["hp_multiplier"]);
+            config.boss.additionalDamage = ParseFloat(boss["additional_damage_boss"]);
             config.boss.damageMultiplier = ParseFloat(boss["damage_multiplier"]);
 
             config.shop.rerollBaseCost = ParseInt(shop["reroll_base_cost"]);

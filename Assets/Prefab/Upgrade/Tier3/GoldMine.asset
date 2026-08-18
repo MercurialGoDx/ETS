@@ -9,13 +9,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aebd3401ebf0bfb42b7f8e699cd66e15, type: 3}
-  m_Name: BR_Gold +
+  m_Script: {fileID: 11500000, guid: c27422c313552df40af37641a13e294d, type: 3}
+  m_Name: GoldMine
   m_EditorClassIdentifier: 
-  icon: {fileID: 0}
-  price: 0
-  weight: 1
-  itemTier: 0
+  icon: {fileID: 21300000, guid: 505488e7e8617a649bacb2974cdc2295, type: 3}
+  price: 1500
+  weight: 7
+  itemTier: 3
   weightIncreasePerPurchase: 0
   maxWeightIncreasePurchases: 0
   weightDecreaseUpgrades: []
@@ -29,6 +29,8 @@ MonoBehaviour:
   localizedStringTable:
     m_TableReference:
       m_TableCollectionName: GUID:164770c6fc8794c4ba4db6f8c7e72db3
-  nameKey: br_gold.name
-  descriptionKey: br_gold.desc
-  goldPerSecond: 4
+  nameKey: gold_mine.name
+  descriptionKey: gold_mine.desc
+  upgrades:
+  - {fileID: 11400000, guid: 64ce7d3b43186064087c5a4f0d6d5eb7, type: 2}
+  - {fileID: 11400000, guid: 29b8a073f5185ba4b82b0de8b27908ff, type: 2}

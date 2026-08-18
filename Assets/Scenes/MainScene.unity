@@ -16766,6 +16766,7 @@ RectTransform:
   - {fileID: 1199642472}
   - {fileID: 791404193}
   - {fileID: 364410540}
+  - {fileID: 1272789888}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -16826,6 +16827,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 6189997885b022743aa192c2dabe939a, type: 2}
   - {fileID: 11400000, guid: 3a19fa0886247084883b49fe55fe9747, type: 2}
   - {fileID: 11400000, guid: 8f4164a9bc2148638e0f46ce45f580aa, type: 2}
+  - {fileID: 11400000, guid: 241095db2a19a5644bc41460f1f60ee2, type: 2}
   availableUpgrades:
   - {fileID: 11400000, guid: c865db2b9fc16994a94f8905491a2e1a, type: 2}
   - {fileID: 11400000, guid: 5fb0841288e711148b576156be0549ff, type: 2}
@@ -16869,6 +16871,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: c13cdb13ff564da58abda23df0a749a1, type: 2}
   - {fileID: 11400000, guid: 1081547ad45746a9ae8520a225cef8f6, type: 2}
   - {fileID: 11400000, guid: 9b4354926add7e74b86383ed2c56d840, type: 2}
+  - {fileID: 11400000, guid: 9076ad7a3d4bbd747a66fb55c3b1ade3, type: 2}
+  - {fileID: 11400000, guid: 2028399c8f6b7c940acd0e32dbf8a5a8, type: 2}
   rerollPrice: 10
   rerollPriceIncrease: 10
   enableRerollHotkey: 1
@@ -22846,6 +22850,7 @@ GameObject:
   - component: {fileID: 1152623972}
   - component: {fileID: 1152623971}
   - component: {fileID: 1152623970}
+  - component: {fileID: 1152623974}
   m_Layer: 0
   m_Name: UnlockUpgradeButton
   m_TagString: Untagged
@@ -22897,6 +22902,20 @@ MonoBehaviour:
   purchasedTint: {r: 0.5, g: 0.75, b: 0.5, a: 1}
   purchasedLabel: "\u041A\u0423\u041F\u041B\u0415\u041D\u041E"
   allDoneLabel: "\u2014"
+--- !u!114 &1152623974
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1152623968}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a15b04fc4ac44f8a65e7de58db4771c, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+  allDoneTitle: "\u0420\u0430\u0437\u0431\u043B\u043E\u043A\u0438\u0440\u043E\u0432\u043A\u0438"
+  allDoneDescription: "\u0412\u0441\u0435 \u0430\u043F\u0433\u0440\u0435\u0439\u0434\u044B \u0440\u0430\u0437\u0431\u043B\u043E\u043A\u0438\u0440\u043E\u0432\u043A\u0438 \u0443\u0436\u0435 \u043A\u0443\u043F\u043B\u0435\u043D\u044B."
 --- !u!114 &1152623971
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -25928,6 +25947,84 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1269187518}
   m_CullTransparentMesh: 1
+--- !u!1 &1272789887
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1272789888}
+  - component: {fileID: 1272789890}
+  - component: {fileID: 1272789889}
+  m_Layer: 5
+  m_Name: WeaponKillStacksPanel
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1272789888
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1272789887}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 861629550}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 30, y: -178.5}
+  m_SizeDelta: {x: 400, y: 100}
+  m_Pivot: {x: 0, y: 1}
+--- !u!114 &1272789889
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1272789887}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c4a393b4f0e5fc49ac641c34206da5e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tower: {fileID: 7296673054036822643}
+  slotPrefab: {fileID: 8276457892682273380, guid: 7277a08b28cad9d4b80852499efe48d8, type: 3}
+  container: {fileID: 5711354667509872754, guid: 7277a08b28cad9d4b80852499efe48d8, type: 3}
+--- !u!114 &1272789890
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1272789887}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30649d3a9faa99c48a7b1166b86bf2a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Padding:
+    m_Left: 0
+    m_Right: 0
+    m_Top: 0
+    m_Bottom: 0
+  m_ChildAlignment: 0
+  m_Spacing: 10
+  m_ChildForceExpandWidth: 1
+  m_ChildForceExpandHeight: 1
+  m_ChildControlWidth: 0
+  m_ChildControlHeight: 0
+  m_ChildScaleWidth: 0
+  m_ChildScaleHeight: 0
+  m_ReverseArrangement: 0
 --- !u!4 &1278655060 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4759644284210773602, guid: 47490ed8bcdce3f4382f5555146d49a5, type: 3}
@@ -28314,10 +28411,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cfa176c8e5423484bba202346e31358a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startGold: 300
+  startGold: 500
   currentGold: 0
   enablePassiveIncome: 1
-  goldPerTick: 6
+  goldPerTick: 8
   incomeInterval: 1
   goldText: {fileID: 1526326470}
   goldGainBonus: 0
@@ -28330,11 +28427,11 @@ Transform:
   m_GameObject: {fileID: 1420567237}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -1.7028369, y: -4.072636, z: -4.560888}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 2077851515}
+  m_Father: {fileID: 1442877242}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1420567240
 MonoBehaviour:
@@ -29131,7 +29228,8 @@ Transform:
   m_LocalPosition: {x: 1.7028369, y: 4.072636, z: 4.560888}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1420567239}
   m_Father: {fileID: 2077851515}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1442877243
@@ -33543,6 +33641,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tower: {fileID: 8371277131797966377}
   waveTimerUI: {fileID: 1566690066}
+  bossManager: {fileID: 1717298191}
   enemyPrefabs:
   - {fileID: 2604920207847695257, guid: 068644ded60bdde4f8d45fe16c21ffab, type: 3}
   - {fileID: 2398899897793033779, guid: ad087c63a59f7e048b61cb977ccfd768, type: 3}
@@ -33551,14 +33650,23 @@ MonoBehaviour:
   timeBetweenWaves: 10
   spawnRadiusMin: 18
   spawnRadiusMax: 20
-  difficultyMultiplier: 1
-  multiplierGrowthPercent: 3.5
+  healthGrowthPercent: 3
+  damageGrowthPercent: 3
   timeMark1Minutes: 12
   timeMark2Minutes: 25
-  growthStage1Multiplier: 2
-  growthStage2Multiplier: 3
-  healthAddPerWave: 2
+  timeMark3Minutes: 40
+  growthStage1MultiplierHealth: 2
+  growthStage1MultiplierDamage: 1.5
+  growthStage2MultiplierHealth: 3
+  growthStage2MultiplierDamage: 2
+  growthStage3MultiplierHealth: 3
+  growthStage3MultiplierDamage: 2
+  healthAddPerWave: 1.2
   damageAddPerWave: 0.05
+  goldBonusWavePeriod: 0
+  goldBonusPerPeriod: 1
+  healthDifficultyMultiplier: 1
+  damageDifficultyMultiplier: 1
   flatHealthBonus: 0
   flatDamageBonus: 0
   enemiesPerWavePercentBonus: 0
@@ -33614,10 +33722,10 @@ MonoBehaviour:
   spawnRadius: 20
   spawnY: 6
   spawnEverySeconds: 300
-  waitBossDeathBeforeNextSpawn: 0
   enemySpawner: {fileID: 1717298188}
   bossHpMultiplier: 1.5
   bossDamageMultiplier: 1
+  bossAdditionalDamage: 20
   bossRewardUI: {fileID: 1102466065}
   bossHealthBar: {fileID: 1717298193}
 --- !u!114 &1717298192
@@ -40815,7 +40923,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1420567239}
   - {fileID: 1442877242}
   - {fileID: 1717298189}
   - {fileID: 192757771}
@@ -42118,6 +42225,10 @@ PrefabInstance:
     - target: {fileID: 819545682127635013, guid: 6b6150d1d8045e5408288fd0d250e315, type: 3}
       propertyPath: fullRestoreAfterNoShieldDamageSeconds
       value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 1311410435002872812, guid: 6b6150d1d8045e5408288fd0d250e315, type: 3}
+      propertyPath: debugDamage
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1311410435002872812, guid: 6b6150d1d8045e5408288fd0d250e315, type: 3}
       propertyPath: waveHeightOffset

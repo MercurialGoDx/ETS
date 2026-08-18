@@ -7,8 +7,11 @@ public class ShopSlot : ItemSlotBase
 {
     [SerializeField] private TMP_Text priceText;
 
-    [Tooltip("Оверлей закрытого слота. Пусто — соберётся плейсхолдер (затемнение + LOCKED).")]
+    [Tooltip("Оверлей закрытого слота. Пусто — соберётся плейсхолдер (затемнение + иконка замка).")]
     [SerializeField] private GameObject lockedOverlay;
+
+    [Tooltip("Иконка замка для плейсхолдера закрытого слота. Не задана — оверлей будет без иконки (только затемнение).")]
+    [SerializeField] private Sprite lockIcon;
 
     [Header("Данные")]
     private ShopManager shopManager;
@@ -62,8 +65,9 @@ public class ShopSlot : ItemSlotBase
     }
 
     /// <summary>
-    /// Временный вид закрытого слота, пока нет иконки замка: затемнение на всю ячейку и подпись.
-    /// Как только в lockedOverlay положат готовый объект, этот код перестанет вызываться.
+    /// Временный вид закрытого слота, пока в lockedOverlay не положили готовый объект:
+    /// затемнение на всю ячейку (цвет не трогать — так и должно оставаться) плюс иконка
+    /// замка по центру, если она задана в lockIcon.
     /// </summary>
     private GameObject BuildPlaceholderOverlay()
     {
@@ -79,22 +83,20 @@ public class ShopSlot : ItemSlotBase
         bg.color = new Color(0f, 0f, 0f, 0.72f);
         bg.raycastTarget = false; // клик остаётся на самом слоте, он и решает, что делать
 
-        var labelGo = new GameObject("Label", typeof(RectTransform), typeof(TextMeshProUGUI));
-        var labelRt = labelGo.GetComponent<RectTransform>();
-        labelRt.SetParent(rt, false);
-        labelRt.anchorMin = Vector2.zero;
-        labelRt.anchorMax = Vector2.one;
-        labelRt.offsetMin = Vector2.zero;
-        labelRt.offsetMax = Vector2.zero;
+        var iconGo = new GameObject("LockIcon", typeof(RectTransform), typeof(Image));
+        var iconRt = iconGo.GetComponent<RectTransform>();
+        iconRt.SetParent(rt, false);
+        // Иконка по центру, не на всю ячейку — как и обычные иконки предметов в слоте.
+        iconRt.anchorMin = new Vector2(0.2f, 0.2f);
+        iconRt.anchorMax = new Vector2(0.8f, 0.8f);
+        iconRt.offsetMin = Vector2.zero;
+        iconRt.offsetMax = Vector2.zero;
 
-        var label = labelGo.GetComponent<TextMeshProUGUI>();
-        label.text = "LOCKED";
-        label.alignment = TextAlignmentOptions.Center;
-        label.enableAutoSizing = true;
-        label.fontSizeMin = 10f;
-        label.fontSizeMax = 72f;
-        label.color = new Color(1f, 1f, 1f, 0.85f);
-        label.raycastTarget = false;
+        var iconImage = iconGo.GetComponent<Image>();
+        iconImage.sprite = lockIcon;
+        iconImage.enabled = lockIcon != null;
+        iconImage.preserveAspect = true;
+        iconImage.raycastTarget = false;
 
         return go;
     }
