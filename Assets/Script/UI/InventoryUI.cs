@@ -320,9 +320,10 @@ public class InventoryUI : MonoBehaviour
 
         // ВАЖНО: статы пишутся апгрейдами в context.runtime (Apply(context)), а НЕ в
         // UpgradesManager.RuntimeData — GameInstaller создаёт под контекст отдельный
-        // экземпляр. Читаем тот же, что и DamageCalculator, иначе всё показывает прочерки.
-        var runtime = UpgradesManager.Instance != null && UpgradesManager.Instance.context != null
-            ? UpgradesManager.Instance.context.runtime
+        // экземпляр. GameplayRuntimeData отдаёт именно тот, что читает DamageCalculator;
+        // через второй всё показывало бы прочерки.
+        var runtime = UpgradesManager.Instance != null
+            ? UpgradesManager.Instance.GameplayRuntimeData
             : null;
 
         // Порядок осмысленный: сначала выживание (HP и лечение), затем митигация
@@ -334,6 +335,7 @@ public class InventoryUI : MonoBehaviour
             Row("Регенерация здоровья", Rate(playerHealth.GetTotalRegen()));
             Row("Лечение за убийство", Num(playerHealth.HealOnKillPerEnemy));
             Row("Лечение при получении урона", Num(playerHealth.HealOnHitFromEnemy));
+            Row("Усиление лечения", Percent(playerHealth.HealAmplificationPercent));
         }
 
         if (playerShield != null)
@@ -366,6 +368,13 @@ public class InventoryUI : MonoBehaviour
             // поэтому показываем ровно ту сумму, что капает в секунду.
             Row("Доход", Int(GoldManager.Instance.goldPerTick) + "/с");
         }
+
+        if (UpgradesManager.Instance != null)
+            Row("Золото за убийство", Num(UpgradesManager.Instance.goldBonusPerKill));
+
+        // Охота: шанс, что заспавнится золотой враг (EnemySpawner сверяется с этим значением).
+        if (runtime != null)
+            Row("Шанс охоты", Percent(runtime.GoldenEnemyChance));
 
         // Блок урона по типам живёт в отдельном контейнере под своим заголовком.
         // Заголовок — объект сцены, а не сгенерированная строка: так его текст, шрифт
