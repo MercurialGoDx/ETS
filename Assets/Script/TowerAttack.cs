@@ -95,6 +95,66 @@ public class TowerAttack : MonoBehaviour
         damageCalculator = calculator;
     }
 
+    /// <summary>
+    /// Множитель урона, не зависящий от конкретного оружия: глобальные бонусы, урон от HP,
+    /// золота, щита и накопленный за время. Тир и тип урона исключены намеренно — они
+    /// показываются отдельным блоком «Урон по типам».
+    ///
+    /// Трюк с несуществующим типом: TierDamageBonus возвращает 0 при ItemTier.None, а
+    /// каждый DamageTypeBonus — при несовпадении типа. Значение вне enum гасит их все,
+    /// оставляя только общие слои.
+    /// </summary>
+    public float GetGlobalDamageMultiplier()
+    {
+        if (damageCalculator == null)
+            return 1f;
+
+        var ctx = new DamageContext
+        {
+            baseDamage = 1f,
+            damageType = (WeaponDamageType)(-1),
+            itemTier = ItemTier.None,
+            isSpikes = false,
+        };
+
+        return damageCalculator.CalculateWithBreakdown(ctx).TotalMultiplierDamage;
+    }
+
+    /// <summary>
+    /// Итоговый коэффициент увеличения урона по всему арсеналу: в отличие от
+    /// <see cref="GetGlobalDamageMultiplier"/> учитывает тир и тип каждого купленного
+    /// оружия. Усредняется по стекам, потому что у разных оружий множитель разный —
+    /// это сводка «во сколько раз в среднем бьёт башня», а не число для конкретной пушки.
+    /// Без оружия возвращает общий множитель: усреднять нечего.
+    /// </summary>
+    public float GetFinalDamageMultiplier()
+    {
+        if (damageCalculator == null)
+            return 1f;
+
+        float sum = 0f;
+        int stacks = 0;
+
+        foreach (var w in weapons)
+        {
+            if (w.def == null)
+                continue;
+
+            var ctx = new DamageContext
+            {
+                baseDamage = 1f,
+                damageType = w.def.damageType,
+                itemTier = w.def.itemTier,
+                isSpikes = false,
+            };
+
+            sum += damageCalculator.CalculateWithBreakdown(ctx).TotalMultiplierDamage * w.stacks;
+            stacks += w.stacks;
+        }
+
+        return stacks > 0 ? sum / stacks : GetGlobalDamageMultiplier();
+    }
+
     private void Update()
     {
         if (weapons.Count == 0) return;

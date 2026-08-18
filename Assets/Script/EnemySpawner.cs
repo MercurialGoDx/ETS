@@ -62,6 +62,9 @@ public class EnemySpawner : MonoBehaviour
     public float CurrentFlatHealthBonus => flatHealthBonus;
     public float CurrentFlatDamageBonus => flatDamageBonus;
 
+    /// <summary>Накопленный прирост числа врагов в волне (0.25 = +25%). Только чтение, для UI.</summary>
+    public float EnemiesPerWavePercentBonus => enemiesPerWavePercentBonus;
+
     // ✅ Итоговое кол-во врагов
     public int CurrentEnemiesPerWave
     {

@@ -1,14 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
-using TMPro;
 using UnityEngine;
 
 /// <summary>
-/// Панель инвентаря (Tab): всё купленное за забег — оружие со стеками, улучшения
-/// со счётчиком покупок и колонка сводных характеристик. Только чтение.
-/// Время НЕ останавливает: как и магазин, панель живёт поверх идущей игры,
-/// иначе появляется стратегия «висеть в инвентаре, пока думаешь».
+/// Панель инвентаря (Tab): всё купленное за забег — оружие, улучшения и колонка
+/// сводных характеристик. Только чтение.
+/// На время открытия ставит игру на паузу и прячет магазин, реролл, разблокировку,
+/// золото и кнопки скорости — список настраивается полем hideWhileOpen.
 /// Данные перечитываются при каждом открытии; живой подписки нет, статы
 /// обновляются корутиной раз в statsRefreshInterval.
 /// </summary>
@@ -30,21 +29,19 @@ public class InventoryUI : MonoBehaviour
     [SerializeField] private InventorySlot weaponSlotPrefab;
     [SerializeField] private InventorySlot upgradeSlotPrefab;
 
-    [Header("Заголовки секций")]
-    [Tooltip("«Оружие · 7 из 8». Необязательно.")]
-    [SerializeField] private TMP_Text weaponsHeader;
-    [Tooltip("«Улучшения · 11». Необязательно.")]
-    [SerializeField] private TMP_Text upgradesHeader;
-    [Tooltip("Источник общего числа доступного оружия для счётчика «N из M». Необязательно.")]
-    [SerializeField] private ShopManager shopSource;
-
     [Header("Статы")]
-    [Tooltip("Контейнер строк характеристик (VerticalLayoutGroup).")]
+    [Tooltip("Контейнер общих строк характеристик (VerticalLayoutGroup).")]
     [SerializeField] private Transform statsContent;
+    [Tooltip("Контейнер строк «урон по типам» — идёт под своим заголовком.")]
+    [SerializeField] private Transform damageTypesContent;
+    [Tooltip("Заголовок блока урона по типам. Обычный объект сцены — текст правится в инспекторе.")]
+    [SerializeField] private GameObject damageTypesHeader;
+    [Tooltip("Контейнер строк «показатели врага» — самый нижний блок.")]
+    [SerializeField] private Transform enemyStatsContent;
+    [Tooltip("Заголовок блока показателей врага. Тоже объект сцены.")]
+    [SerializeField] private GameObject enemyStatsHeader;
     [Tooltip("Префаб строки: подпись слева, значение справа.")]
     [SerializeField] private StatRow statRowPrefab;
-    [Tooltip("Префаб заголовка секции. Пусто — возьмётся обычная строка.")]
-    [SerializeField] private StatRow statHeaderPrefab;
     [Tooltip("Период обновления статов, пока панель открыта.")]
     [SerializeField] private float statsRefreshInterval = 0.25f;
 
@@ -67,13 +64,31 @@ public class InventoryUI : MonoBehaviour
     [SerializeField] private PlayerHealth playerHealth;
     [SerializeField] private PlayerShield playerShield;
     [SerializeField] private PauseManager pauseManager;
+    [Tooltip("Источник показателей врага. Может быть выключен в сцене — значения всё равно считаются.")]
+    [SerializeField] private EnemyStatsProgressionUI enemyStats;
+
+    [Header("Скрывать, пока панель открыта")]
+    [Tooltip("Магазин, реролл, разблокировка, кнопки скорости. Список правится в инспекторе — " +
+             "исходное состояние каждого объекта запоминается и возвращается при закрытии.")]
+    [SerializeField] private GameObject[] hideWhileOpen;
 
     private readonly List<GameObject> spawnedSlots = new List<GameObject>();
 
     // Строки статов переиспользуются между обновлениями: панель перерисовывается
     // 4 раза в секунду, Instantiate/Destroy на каждом тике был бы мусором для GC.
+    // Пулов два — по одному на контейнер, потому что между ними лежит заголовок,
+    // который живёт в сцене и не должен попадать в переиспользование.
     private readonly List<StatRow> statRowPool = new List<StatRow>();
     private int usedRows;
+    private readonly List<StatRow> typeRowPool = new List<StatRow>();
+    private int usedTypeRows;
+    private readonly List<StatRow> enemyRowPool = new List<StatRow>();
+    private int usedEnemyRows;
+
+    // Что было включено до открытия панели — чтобы вернуть ровно это, а не «всё подряд».
+    private bool[] hiddenPrevState;
+
+    private GameState stateBeforeOpen = GameState.Playing;
 
     // Разделитель тысяч — неразрывный пробел: выглядит как пробел, но не даёт
     // разорвать число, даже если где-то включится перенос.
@@ -134,8 +149,18 @@ public class InventoryUI : MonoBehaviour
 
         isOpen = true;
 
+        // Ставим игру на паузу. GameState.Paused сам выставляет Time.timeScale = 0,
+        // а возврат в прежнее состояние восстановит скорость, выбранную кнопками x1/x2/x3.
+        if (GameStateManager.Instance != null)
+        {
+            stateBeforeOpen = GameStateManager.Instance.CurrentState;
+            GameStateManager.Instance.SetState(GameState.Paused);
+        }
+
         if (panelRoot != null)
             panelRoot.SetActive(true);
+
+        HideDistractions();
 
         // История покупок стоит слева по центру и налезала бы на рамку — прячем, как журнал.
         if (PurchaseHistoryManager.Instance != null)
@@ -168,8 +193,14 @@ public class InventoryUI : MonoBehaviour
         if (panelRoot != null)
             panelRoot.SetActive(false);
 
+        RestoreDistractions();
+
         if (PurchaseHistoryManager.Instance != null)
             PurchaseHistoryManager.Instance.SetVisible(true);
+
+        // Снимаем паузу, возвращая ровно то состояние, что было до открытия.
+        if (GameStateManager.Instance != null)
+            GameStateManager.Instance.SetState(stateBeforeOpen);
 
         // Паузу возвращаем через кадр: если PauseManager.Update успеет отработать
         // после нашего в этом же кадре, он увидит тот же Escape и откроет меню паузы.
@@ -181,6 +212,39 @@ public class InventoryUI : MonoBehaviour
         yield return null;
         if (pauseManager != null)
             pauseManager.SetCanPause(true);
+    }
+
+    /// <summary>
+    /// Прячет магазин, реролл, разблокировку и кнопки скорости: пока игра стоит на паузе,
+    /// они всё равно бесполезны, а панель ими перекрывается.
+    /// </summary>
+    private void HideDistractions()
+    {
+        if (hideWhileOpen == null) return;
+
+        if (hiddenPrevState == null || hiddenPrevState.Length != hideWhileOpen.Length)
+            hiddenPrevState = new bool[hideWhileOpen.Length];
+
+        for (int i = 0; i < hideWhileOpen.Length; i++)
+        {
+            if (hideWhileOpen[i] == null) continue;
+
+            // Запоминаем, а не включаем всё подряд при закрытии: часть объектов
+            // может быть законно выключена игрой (например, магазин вне подготовки).
+            hiddenPrevState[i] = hideWhileOpen[i].activeSelf;
+            hideWhileOpen[i].SetActive(false);
+        }
+    }
+
+    private void RestoreDistractions()
+    {
+        if (hideWhileOpen == null || hiddenPrevState == null) return;
+
+        for (int i = 0; i < hideWhileOpen.Length && i < hiddenPrevState.Length; i++)
+        {
+            if (hideWhileOpen[i] != null)
+                hideWhileOpen[i].SetActive(hiddenPrevState[i]);
+        }
     }
 
     private IEnumerator StatsLoop()
@@ -198,7 +262,6 @@ public class InventoryUI : MonoBehaviour
     {
         ClearSlots();
 
-        int weaponKinds = 0;
         if (towerAttack != null && weaponsContent != null && weaponSlotPrefab != null)
         {
             foreach (var owned in towerAttack.GetOwnedWeapons())
@@ -207,13 +270,11 @@ public class InventoryUI : MonoBehaviour
                 slot.SetupWeapon(owned.Def, owned.Stacks);
                 ApplyTierLook(slot, owned.Def.itemTier);
                 spawnedSlots.Add(slot.gameObject);
-                weaponKinds++;
             }
         }
 
         // Счётчики покупок улучшений живут в UpgradesManager.RuntimeData — это НЕ тот же
         // экземпляр, что context.runtime со статами (см. RefreshStats).
-        int upgradeTotal = 0;
         if (UpgradesManager.Instance != null && upgradesContent != null && upgradeSlotPrefab != null)
         {
             foreach (var pair in UpgradesManager.Instance.RuntimeData.UpgradePurchaseCounts)
@@ -224,22 +285,8 @@ public class InventoryUI : MonoBehaviour
                 slot.SetupUpgrade(pair.Key, pair.Value);
                 ApplyTierLook(slot, pair.Key.itemTier);
                 spawnedSlots.Add(slot.gameObject);
-                upgradeTotal += pair.Value;
             }
         }
-
-        if (weaponsHeader != null)
-        {
-            int available = shopSource != null && shopSource.availableWeapons != null
-                ? shopSource.availableWeapons.Count
-                : 0;
-            weaponsHeader.text = available > 0
-                ? $"Оружие · {weaponKinds} из {available}"
-                : $"Оружие · {weaponKinds}";
-        }
-
-        if (upgradesHeader != null)
-            upgradesHeader.text = $"Улучшения · {upgradeTotal}";
     }
 
     private void ApplyTierLook(InventorySlot slot, ItemTier tier)
@@ -268,20 +315,8 @@ public class InventoryUI : MonoBehaviour
             return;
 
         usedRows = 0;
-
-        if (playerHealth != null)
-        {
-            Row("Здоровье", Pair(playerHealth.CurrentHealth, playerHealth.MaxHealth));
-            float regen = playerHealth.GetTotalRegen();
-            Row("Реген", regen > Eps ? Num(regen) + "/с" : "—");
-            Row("Шипы", Num(playerHealth.SpikesDamage));
-        }
-
-        if (playerShield != null)
-            Row("Щит", Pair(playerShield.CurrentShield, playerShield.MaxShield));
-
-        if (towerAttack != null)
-            Row("Скорость атаки", Percent(towerAttack.TotalFireRateMultiplier - 1f));
+        usedTypeRows = 0;
+        usedEnemyRows = 0;
 
         // ВАЖНО: статы пишутся апгрейдами в context.runtime (Apply(context)), а НЕ в
         // UpgradesManager.RuntimeData — GameInstaller создаёт под контекст отдельный
@@ -290,29 +325,58 @@ public class InventoryUI : MonoBehaviour
             ? UpgradesManager.Instance.context.runtime
             : null;
 
-        if (runtime != null)
+        // Порядок осмысленный: сначала выживание (HP и лечение), затем митигация
+        // (щит, блок, снижение урона), затем урон и темп, в конце экономика забега.
+        if (playerHealth != null)
         {
-            // Доли: 0.45 = +45%, как их читает DamageCalculator.
-            Row("Общий урон", Percent(runtime.damagePercent));
-            Row("Урон со временем", Percent(runtime.totalGeneratorDamagePercent));
-
-            float maxHpBonus = playerHealth != null
-                ? (playerHealth.MaxHealth / 100f) * runtime.damagePerValueHpPercent
-                : 0f;
-            Row("Урон от макс. HP", Percent(maxHpBonus));
-            Row("Урон при щите", Percent(runtime.adaptiveDamageWhileShieldPercent));
+            // Только максимум: текущее значение и так видно на полоске HP.
+            Row("Здоровье", Int(playerHealth.MaxHealth));
+            Row("Регенерация здоровья", Rate(playerHealth.GetTotalRegen()));
+            Row("Лечение за убийство", Num(playerHealth.HealOnKillPerEnemy));
+            Row("Лечение при получении урона", Num(playerHealth.HealOnHitFromEnemy));
         }
+
+        if (playerShield != null)
+        {
+            Row("Щит", playerShield.MaxShield > Eps ? Int(playerShield.MaxShield) : "—");
+            Row("Щит за убийство", Num(playerShield.ShieldRestorePerEnemyKill));
+        }
+
+        if (playerHealth != null)
+        {
+            Row("Шанс блока", Percent(playerHealth.BlockChance));
+            Row("Уменьшение урона", Percent(playerHealth.DamageReduction));
+            Row("Урон шипов", Num(playerHealth.SpikesDamage));
+        }
+
+        if (towerAttack != null)
+        {
+            Row("Скорость атаки", Multiplier(towerAttack.TotalFireRateMultiplier));
+            // Итоговый TotalMultiplierDamage по всему арсеналу: со всеми слоями бонусов,
+            // включая тир и тип каждого оружия.
+            Row("Множитель урона", Multiplier(towerAttack.GetFinalDamageMultiplier()));
+        }
+
+        if (runtime != null && runtime.enemySpawner != null)
+            Row("Больше врагов", Percent(runtime.enemySpawner.EnemiesPerWavePercentBonus));
 
         if (GoldManager.Instance != null)
         {
-            Row("Золото", Percent(GoldManager.Instance.GoldGainBonus));
+            // Пассивный доход намеренно не умножается на бонус золота (см. GoldManager.AddGold),
+            // поэтому показываем ровно ту сумму, что капает в секунду.
             Row("Доход", Int(GoldManager.Instance.goldPerTick) + "/с");
         }
 
-        if (runtime != null && towerAttack != null)
-        {
-            Header("Бонус по типам");
+        // Блок урона по типам живёт в отдельном контейнере под своим заголовком.
+        // Заголовок — объект сцены, а не сгенерированная строка: так его текст, шрифт
+        // и размер правятся в инспекторе, без захода в код.
+        bool showTypes = runtime != null && towerAttack != null;
 
+        if (damageTypesHeader != null)
+            damageTypesHeader.SetActive(showTypes);
+
+        if (showTypes)
+        {
             // Итог по типу — как в DamageTypeBonus: плоский бонус + за-каждое-оружие × число оружий.
             foreach (WeaponDamageType type in System.Enum.GetValues(typeof(WeaponDamageType)))
             {
@@ -324,94 +388,73 @@ public class InventoryUI : MonoBehaviour
                     : 0f;
                 float total = flat + towerAttack.GetTotalWeaponsOfType(type) * perWeapon;
 
-                Row(DamageTypeLabels[(int)type], Percent(total));
+                TypeRow(DamageTypeLabels[(int)type], Percent(total));
             }
         }
 
-        bool hasLayerMultipliers =
-            playerHealth != null &&
-            (!Mathf.Approximately(playerHealth.MaxHealthGlobalMultiplier, 1f) ||
-             !Mathf.Approximately(playerHealth.HealthRegenGlobalMultiplier, 1f) ||
-             !Mathf.Approximately(playerHealth.SpikesGlobalMultiplier, 1f));
-        hasLayerMultipliers |= playerShield != null &&
-            !Mathf.Approximately(playerShield.ShieldGlobalMultiplier, 1f);
-        hasLayerMultipliers |= towerAttack != null &&
-            !Mathf.Approximately(towerAttack.GlobalFireRateMultiplier, 1f);
-        hasLayerMultipliers |= runtime != null &&
-            (!Mathf.Approximately(runtime.globalDamagePercent, 0f) ||
-             !Mathf.Approximately(runtime.globalDamagePer100GoldPercent, 0f) ||
-             !Mathf.Approximately(runtime.adaptiveDamageWhileShieldPercent, 0f));
+        // Показатели текущей волны — самый нижний блок, тоже со своим заголовком в сцене.
+        bool showEnemy = enemyStats != null;
 
-        if (hasLayerMultipliers)
+        if (enemyStatsHeader != null)
+            enemyStatsHeader.SetActive(showEnemy);
+
+        if (showEnemy)
         {
-            Header("Global / Adaptive");
-
-            if (playerHealth != null)
-            {
-                Row("Здоровье", Multiplier(playerHealth.MaxHealthGlobalMultiplier));
-                Row("Реген", Multiplier(playerHealth.HealthRegenGlobalMultiplier));
-                Row("Шипы", Multiplier(playerHealth.SpikesGlobalMultiplier));
-            }
-
-            if (playerShield != null)
-                Row("Щит", Multiplier(playerShield.ShieldGlobalMultiplier));
-
-            if (towerAttack != null)
-                Row("Скорость атаки", Multiplier(towerAttack.GlobalFireRateMultiplier));
-
-            if (runtime != null)
-            {
-                int currentGold = GoldManager.Instance != null ? GoldManager.Instance.currentGold : 0;
-                float goldBonus = (currentGold / 100f) * runtime.globalDamagePer100GoldPercent;
-                float globalDamageMultiplier = 1f + runtime.globalDamagePercent + goldBonus;
-                float adaptiveMultiplier = playerShield != null && playerShield.IsShieldActive
-                    ? 1f + runtime.adaptiveDamageWhileShieldPercent
-                    : 1f;
-
-                Row("Урон: global", Multiplier(globalDamageMultiplier));
-                Row("Мидас (текущее золото)", Percent(goldBonus));
-                Row("Урон: adaptive", Multiplier(adaptiveMultiplier));
-            }
+            // Округляем, как это делал прежний текст слева: дробные HP врага только путают.
+            EnemyRow("Здоровье", Int(enemyStats.CurrentEnemyHealth));
+            EnemyRow("Урон", Int(enemyStats.CurrentEnemyDamage));
         }
 
         // Лишние строки с прошлого обновления прячем, а не удаляем — переиспользуем.
         for (int i = usedRows; i < statRowPool.Count; i++)
             statRowPool[i].gameObject.SetActive(false);
+        for (int i = usedTypeRows; i < typeRowPool.Count; i++)
+            typeRowPool[i].gameObject.SetActive(false);
+        for (int i = usedEnemyRows; i < enemyRowPool.Count; i++)
+            enemyRowPool[i].gameObject.SetActive(false);
     }
 
-    /// <summary>Обычная строка: подпись слева, значение справа.</summary>
+    /// <summary>Обычная строка характеристик.</summary>
     private void Row(string label, string value)
     {
-        NextRow(statRowPrefab).Set(label, value);
+        Take(statRowPool, ref usedRows, statsContent).Set(label, value);
     }
 
-    /// <summary>Заголовок секции — отдельным префабом, если он задан.</summary>
-    private void Header(string label)
+    /// <summary>Строка блока «урон по типам» — в своём контейнере, со своим пулом.</summary>
+    private void TypeRow(string label, string value)
     {
-        NextRow(statHeaderPrefab != null ? statHeaderPrefab : statRowPrefab).SetHeader(label);
+        Transform parent = damageTypesContent != null ? damageTypesContent : statsContent;
+        Take(typeRowPool, ref usedTypeRows, parent).Set(label, value);
+    }
+
+    /// <summary>Строка блока «показатели врага».</summary>
+    private void EnemyRow(string label, string value)
+    {
+        Transform parent = enemyStatsContent != null ? enemyStatsContent : statsContent;
+        Take(enemyRowPool, ref usedEnemyRows, parent).Set(label, value);
     }
 
     /// <summary>
-    /// Берёт следующую строку из пула, создавая её при нехватке. Порядок в пуле совпадает
-    /// с порядком вызовов, поэтому строки идут сверху вниз в том же порядке, что и код.
+    /// Берёт следующую строку из указанного пула, создавая её при нехватке. Порядок в пуле
+    /// совпадает с порядком вызовов, поэтому строки идут сверху вниз так же, как в коде.
     /// </summary>
-    private StatRow NextRow(StatRow prefab)
+    private StatRow Take(List<StatRow> pool, ref int used, Transform parent)
     {
         StatRow row;
 
-        if (usedRows < statRowPool.Count)
+        if (used < pool.Count)
         {
-            row = statRowPool[usedRows];
+            row = pool[used];
         }
         else
         {
-            row = Instantiate(prefab, statsContent);
-            statRowPool.Add(row);
+            row = Instantiate(statRowPrefab, parent);
+            pool.Add(row);
         }
 
         row.gameObject.SetActive(true);
-        row.transform.SetSiblingIndex(usedRows);
-        usedRows++;
+        row.transform.SetSiblingIndex(used);
+        used++;
         return row;
     }
 
@@ -425,9 +468,10 @@ public class InventoryUI : MonoBehaviour
         return fraction > Eps ? "+" + Mathf.RoundToInt(fraction * 100f) + "%" : "—";
     }
 
+    /// <summary>Множитель в виде ×1.00 — всегда два знака, чтобы колонка не «дышала».</summary>
     private static string Multiplier(float value)
     {
-        return "x" + value.ToString("0.###", NumFormat);
+        return "×" + value.ToString("0.00", CultureInfo.InvariantCulture);
     }
 
     /// <summary>Целое с разделителем тысяч: 22 190.</summary>
@@ -446,5 +490,11 @@ public class InventoryUI : MonoBehaviour
     private static string Num(float value)
     {
         return value > Eps ? value.ToString("0.#", CultureInfo.InvariantCulture) : "—";
+    }
+
+    /// <summary>Значение в секунду. Ноль — прочерк, а не «0/с».</summary>
+    private static string Rate(float value)
+    {
+        return value > Eps ? Num(value) + "/с" : "—";
     }
 }

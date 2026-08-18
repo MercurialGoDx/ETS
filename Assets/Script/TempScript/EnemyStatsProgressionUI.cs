@@ -25,6 +25,17 @@ public class EnemyStatsProgressionUI : MonoBehaviour
 
     private bool isStarted = false;
 
+    /// <summary>
+    /// Текущие показатели врага той же формулой, что рисует эта панель. Вынесено в
+    /// свойства, чтобы панель инвентаря брала готовое значение, а не повторяла расчёт.
+    /// Считаются напрямую из спавнера, поэтому работают, даже когда сам текст выключен.
+    /// </summary>
+    public float CurrentEnemyHealth =>
+        spawner != null ? (baseHp * spawner.CurrentMultiplier) + spawner.CurrentFlatHealthBonus : 0f;
+
+    public float CurrentEnemyDamage =>
+        spawner != null ? (baseDmg * spawner.CurrentMultiplier) + spawner.CurrentFlatDamageBonus : 0f;
+
     // Аргументы для smart-строк. Хранятся как object, чтобы можно было показать "-" до старта.
     private readonly object[] hpArgs = new object[] { "-" };
     private readonly object[] dmgArgs = new object[] { "-" };

@@ -27,6 +27,12 @@ public class PlayerHealth : MonoBehaviour
     private float damageReduction = 0f; // 0..1 (0.19 = -19% урона)
     public float DamageReduction => damageReduction;
 
+    // Только чтение, для панелей UI. Значения меняются через Add*-методы ниже.
+    public float BlockChance => blockChance;
+    public float BlockCap => blockCap;
+    public float HealOnKillPerEnemy => healOnKillPerEnemy;
+    public float HealOnHitFromEnemy => healOnHitFromEnemyAmount;
+
     [Header("UI")]
     [SerializeField] private Image healthBarFill;
 

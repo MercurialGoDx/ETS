@@ -31,19 +31,6 @@ public class StatRow : MonoBehaviour
         }
     }
 
-    /// <summary>Заголовок секции: только подпись, значение скрыто.</summary>
-    public void SetHeader(string labelText)
-    {
-        ApplyTextModes();
-
-        if (label != null) label.text = labelText;
-        if (value != null)
-        {
-            value.text = "";
-            value.gameObject.SetActive(false);
-        }
-    }
-
     /// <summary>
     /// Ни подпись, ни значение не переносим: длинный текст должен вылезать за пределы
     /// поля, а не увеличивать высоту строки — иначе вернётся та же рассинхронизация.
