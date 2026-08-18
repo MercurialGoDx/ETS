@@ -18,12 +18,12 @@ MonoBehaviour:
     enemyPerWave: 12
     healthDifficultStart: 3
     damageDifficultStart: 3
-    growthStage1MultiplierHealth: 2
-    growthStage1MultiplierDamage: 1.5
-    growthStage2MultiplierHealth: 3
-    growthStage2MultiplierDamage: 2
-    growthStage3MultiplierHealth: 3
-    growthStage3MultiplierDamage: 2
+    growthStage1MultiplierHealth: 1.65
+    growthStage1MultiplierDamage: 1.35
+    growthStage2MultiplierHealth: 2.5
+    growthStage2MultiplierDamage: 1.75
+    growthStage3MultiplierHealth: 2.5
+    growthStage3MultiplierDamage: 1.75
     timeDifficultStage1: 720
     timeDifficultStage2: 1500
     timeDifficultStage3: 2400

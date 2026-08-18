@@ -31,4 +31,4 @@ MonoBehaviour:
       m_TableCollectionName: 
   nameKey: 
   descriptionKey: 
-  goldPerSecond: 10
+  goldPerSecond: 4
