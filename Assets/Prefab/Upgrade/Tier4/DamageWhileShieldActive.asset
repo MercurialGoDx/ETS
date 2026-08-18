@@ -33,4 +33,3 @@ MonoBehaviour:
   descriptionKey: damage_while_shield_active.desc
   upgrades:
   - {fileID: 11400000, guid: e8a62c74c9a6964438ae8f926a597f54, type: 2}
-  - {fileID: 11400000}
