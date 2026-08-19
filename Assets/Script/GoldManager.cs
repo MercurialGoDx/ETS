@@ -15,9 +15,18 @@ public class GoldManager : MonoBehaviour
     [Tooltip("Включить/выключить пассивный доход золота по времени (для дебага)")]
     public bool enablePassiveIncome = true;
 
-    [Tooltip("Сколько золота выдавать за один тик (обычно = золото в секунду). Может быть дробным " +
-             "(напр. 0.5) — сама выдача на баланс всё равно идёт целыми монетами, остаток копится.")]
-    public float goldPerTick = 5f;
+    [Tooltip("Базовый прирост золота за один тик (сумма всех плоских бонусов: +4/с, +1/с и т.д.), " +
+             "БЕЗ учёта множителя. Может быть дробным (напр. 0.5) — сама выдача на баланс всё равно " +
+             "идёт целыми монетами, остаток копится.")]
+    public float basePassiveGoldPerTick = 5f;
+
+    [Tooltip("Множитель на базовый прирост (1 = без бонуса, 1.8 = +80%). Копится независимо от базы: " +
+             "каждый +% бонус прибавляется сюда, а не умножает уже накопленное — поэтому порядок покупок " +
+             "не важен.")]
+    public float passiveGoldMultiplier = 1f;
+
+    /// <summary>Итоговое золото за тик = база * множитель. Так его и показываем в UI.</summary>
+    public float goldPerTick => basePassiveGoldPerTick * passiveGoldMultiplier;
 
     [Tooltip("Интервал между тиками дохода (в секундах)")]
     public float incomeInterval = 1f;
@@ -56,7 +65,7 @@ public class GoldManager : MonoBehaviour
         if (cfg != null)
         {
             startGold = cfg.shop.startGold;
-            goldPerTick = cfg.shop.passiveGoldPerTick;
+            basePassiveGoldPerTick = cfg.shop.passiveGoldPerTick;
             incomeInterval = cfg.shop.passiveIncomeInterval;
         }
 
@@ -85,24 +94,25 @@ public class GoldManager : MonoBehaviour
         // Автоматически включаем пассивный доход, если апгрейд куплен
         enablePassiveIncome = true;
 
-        goldPerTick += amountPerSecond;
-        if (goldPerTick < 0) goldPerTick = 0;
+        basePassiveGoldPerTick += amountPerSecond;
+        if (basePassiveGoldPerTick < 0) basePassiveGoldPerTick = 0;
 
         TryStartPassiveIncome();
     }
 
     /// <summary>
-    /// Умножает текущий пассивный доход (в отличие от AddGoldGainPercent — это именно
-    /// множитель на плоское значение goldPerTick, а не отдельный накопительный бонус).
-    /// Пример: было 15/сек, +100% -> 30/сек. Порядок покупок важен: апгрейд применяется
-    /// к тому, что уже накоплено на момент покупки, а не пересчитывается задним числом.
+    /// Прибавляет к независимому множителю пассивного дохода (в отличие от AddGoldGainPercent —
+    /// это множитель именно на пассив, а не на любое получение золота).
+    /// Каждый +% прибавляется к множителю, а не умножает уже накопленную базу — итог всегда
+    /// равен basePassiveGoldPerTick * passiveGoldMultiplier, независимо от порядка покупок.
+    /// Пример: база 15/сек, куплено 2 бонуса +10% -> множитель 1.2 -> итог 18/сек.
     /// </summary>
     public void MultiplyPassiveIncome(float percent)
     {
         if (percent == 0f) return;
 
-        goldPerTick *= (1f + percent / 100f);
-        if (goldPerTick < 0f) goldPerTick = 0f;
+        passiveGoldMultiplier += percent / 100f;
+        if (passiveGoldMultiplier < 0f) passiveGoldMultiplier = 0f;
 
         TryStartPassiveIncome();
     }

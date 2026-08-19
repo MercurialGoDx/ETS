@@ -148,11 +148,14 @@ public class Bullet : MonoBehaviour, IAttackBehaviour
             enemy.TakeDamage(damage);
             DamageStatsManager.Instance?.RegisterDamage(sourceWeapon, damage);
 
+            // именно этот удар убил врага (а не долетевший позже снаряд по уже мёртвому)
+            bool killedByThisHit = hpBefore > 0f && enemy.CurrentHealth <= 0f;
+
             // хук для спец-пуль (IceBullet, ядовитые и т.п.)
-            OnEnemyHit(enemy);
+            OnEnemyHit(enemy, killedByThisHit);
 
             // бонус к здоровью при убийстве
-            if (increasePlayerMaxHealthOnKill && hpBefore > 0f && enemy.CurrentHealth <= 0f)
+            if (increasePlayerMaxHealthOnKill && killedByThisHit)
             {
                 if (cachedPlayerHealth == null)
                 {
@@ -181,7 +184,8 @@ public class Bullet : MonoBehaviour, IAttackBehaviour
     /// Базовая реализация — ничего не делает.
     /// </summary>
     /// <param name="enemy">Враг, по которому попали.</param>
-    protected virtual void OnEnemyHit(Enemy enemy)
+    /// <param name="killedByThisHit">Именно этот удар убил врага (переход жив -> мёртв).</param>
+    protected virtual void OnEnemyHit(Enemy enemy, bool killedByThisHit)
     {
         // по умолчанию — ничего
     }

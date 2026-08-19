@@ -7,10 +7,10 @@ public class IceBullet : Bullet
     public float slowMultiplier = 0.5f;   // 0.5 = в 2 раза медленнее
     public float slowDuration = 2f;       // длительность замедления в секундах
 
-    protected override void OnEnemyHit(Enemy enemy)
+    protected override void OnEnemyHit(Enemy enemy, bool killedByThisHit)
     {
         // сначала стандартная логика пули (урон, уничтожение и т.д.)
-        base.OnEnemyHit(enemy);
+        base.OnEnemyHit(enemy, killedByThisHit);
 
         // потом — наш эффект замедления
         if (enemy != null)

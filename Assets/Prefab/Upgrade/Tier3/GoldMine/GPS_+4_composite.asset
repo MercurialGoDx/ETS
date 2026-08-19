@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: aebd3401ebf0bfb42b7f8e699cd66e15, type: 3}
-  m_Name: GPS_+5_composite
+  m_Name: GPS_+4_composite
   m_EditorClassIdentifier: 
   icon: {fileID: 0}
   price: 0

@@ -24,7 +24,7 @@ MonoBehaviour:
     growthStage2MultiplierDamage: 1.75
     growthStage3MultiplierHealth: 2.5
     growthStage3MultiplierDamage: 1.75
-    timeDifficultStage1: 720
+    timeDifficultStage1: 900
     timeDifficultStage2: 1500
     timeDifficultStage3: 2400
     hpAddPerWave: 1.2
@@ -33,7 +33,7 @@ MonoBehaviour:
     spawnInterval: 300
     hpMultiplier: 1.5
     damageMultiplier: 1
-    additionalDamage: 20
+    additionalDamage: 25
   shop:
     rerollBaseCost: 10
     rerollCostIncrease: 10
@@ -46,7 +46,7 @@ MonoBehaviour:
     playerShield: 0
     blockCap: 0.8
     shieldRechargeTime: 10
-    shieldFullRestoreAfterNoDamage: 30
+    shieldFullRestoreAfterNoDamage: 15
     towerRange: 20
     volleyWindowPercent: 0.5
     gameSpeed1: 1

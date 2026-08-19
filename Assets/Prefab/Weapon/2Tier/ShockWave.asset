@@ -36,4 +36,4 @@ MonoBehaviour:
   weightDecreaseWeaponPercent: 0
   weightIncreaseWeapons: []
   weightIncreaseWeaponPercent: 0
-  targetingMode: 0
+  targetingMode: 1

@@ -41,9 +41,9 @@ public class CoinBullet : Bullet
         return stacks * damagePerStack;
     }
 
-    protected override void OnEnemyHit(Enemy enemy)
+    protected override void OnEnemyHit(Enemy enemy, bool killedByThisHit)
     {
-        if (enemy == null || !enemy.isDead)
+        if (enemy == null || !killedByThisHit)
             return;
 
         if (goldPerKill > 0 && GoldManager.Instance != null)

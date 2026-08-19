@@ -19,4 +19,16 @@ public class WeaponKillStackSlot : ItemSlotBase
         if (stacksText != null)
             stacksText.text = stacks.ToString();
     }
+
+    /// <summary>Индикатор заряженного дубликатора — иконка апгрейда, без числа стаков.</summary>
+    public void SetDuplicator(UpgradeBaseSO duplicatorUpgrade)
+    {
+        currentWeapon = null;
+        currentUpgrade = duplicatorUpgrade;
+
+        SetIcon(duplicatorUpgrade != null ? duplicatorUpgrade.icon : null);
+
+        if (stacksText != null)
+            stacksText.text = string.Empty;
+    }
 }

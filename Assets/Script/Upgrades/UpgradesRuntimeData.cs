@@ -59,6 +59,9 @@ public class UpgradesRuntimeData
     public float GoldenEnemyDamageMultiplier => goldenEnemyDamageMultiplier;
     public float GoldenEnemyGoldMultiplier => goldenEnemyGoldMultiplier;
     public bool IsDuplicatorArmed => isDuplicatorArmed;
+
+    /// <summary>Дублятор встал на заряд или сработал/сгорел — для HUD-индикатора.</summary>
+    public event System.Action OnDuplicatorStateChanged;
     public ItemTier DuplicatorTier1 => duplicatorTier1;
     public int DuplicatorCopies1 => duplicatorCopies1;
     public ItemTier DuplicatorTier2 => duplicatorTier2;
@@ -147,6 +150,7 @@ public class UpgradesRuntimeData
         duplicatorCopies1 = copies1;
         duplicatorTier2 = tier2;
         duplicatorCopies2 = copies2;
+        OnDuplicatorStateChanged?.Invoke();
         return true;
     }
 
@@ -173,6 +177,7 @@ public class UpgradesRuntimeData
         duplicatorCopies1 = 0;
         duplicatorTier2 = ItemTier.None;
         duplicatorCopies2 = 0;
+        OnDuplicatorStateChanged?.Invoke();
         return copies > 0;
     }
 

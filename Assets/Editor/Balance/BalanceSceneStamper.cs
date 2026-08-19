@@ -119,7 +119,7 @@ namespace ETS.BalanceImport
 
             var so = new SerializedObject(comp);
             so.FindProperty("startGold").intValue = config.shop.startGold;
-            so.FindProperty("goldPerTick").floatValue = config.shop.passiveGoldPerTick;
+            so.FindProperty("basePassiveGoldPerTick").floatValue = config.shop.passiveGoldPerTick;
             so.FindProperty("incomeInterval").floatValue = config.shop.passiveIncomeInterval;
             so.ApplyModifiedPropertiesWithoutUndo();
             return true;

@@ -18,6 +18,9 @@ public class DamageTypeBonus : IDamageBonusProvider, IDamageBonusDebugProvider
 
     public float GetDamageBonus(DamageContext ctx)
     {
+        if (ctx.isSpikes)
+            return 0f;
+
         if (ctx.damageType != type)
             return 0f;
 

@@ -158,8 +158,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 0.9
-  maxHealth: 215
-  damageToPlayer: 6
+  maxHealth: 275
+  damageToPlayer: 4
   baseGold: 50
   canBeSlowed: 0
   canBeKnocked: 0

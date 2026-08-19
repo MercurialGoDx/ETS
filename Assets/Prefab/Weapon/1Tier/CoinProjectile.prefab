@@ -54,9 +54,9 @@ MonoBehaviour:
   increasePlayerMaxHealthOnKill: 0
   maxHealthIncreaseAmount: 10
   goldPerKill: 1
-  goldPerDamageStack: 250
+  goldPerDamageStack: 300
   damagePerStack: 1
-  maxGoldDamageStacks: 10
+  maxGoldDamageStacks: 7
 --- !u!114 &11400001
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -50,14 +50,24 @@ public class RegenAuraDamage : MonoBehaviour
         if (totalRegen <= 0f)
             return;
 
-        // 2) Урон ауры = реген * множитель ауры, усиленный только adaptive-бонусом
-        // (урон при активном щите). Остальные бонусы урона (тип, генератор, глобальные)
-        // на эту ауру намеренно не действуют.
+        // 2) Урон ауры = реген * множитель ауры, усиленный только global- и adaptive-слоями
+        // (как у шипов). Normal-слой (тип оружия, генератор, HP/золото-Normal, тир)
+        // на эту ауру намеренно не действует.
         float baseDamagePerEnemy = totalRegen * regenAuraMultiplier;
+
+        float globalBonus = 0f;
+        if (runtime != null)
+        {
+            globalBonus = runtime.globalDamagePercent;
+            if (GoldManager.Instance != null)
+                globalBonus += (GoldManager.Instance.currentGold / 100f) * runtime.globalDamagePer100GoldPercent;
+        }
+
         float adaptiveBonus = runtime != null && playerShield != null && playerShield.IsShieldActive
             ? runtime.adaptiveDamageWhileShieldPercent
             : 0f;
-        float damagePerEnemy = baseDamagePerEnemy * (1f + adaptiveBonus);
+
+        float damagePerEnemy = baseDamagePerEnemy * (1f + globalBonus) * (1f + adaptiveBonus);
 
         // 3) Наносим урон всем врагам на сцене
         // Хранить всех доступных врагов в одном листе
@@ -74,7 +84,7 @@ public class RegenAuraDamage : MonoBehaviour
 
         Debug.Log(
             $"[RegenAura] Tick: regen={totalRegen:F1}, mult={regenAuraMultiplier:F2}, " +
-            $"base={baseDamagePerEnemy:F1}, adaptive=x{1f + adaptiveBonus:F3}, " +
+            $"base={baseDamagePerEnemy:F1}, global=x{1f + globalBonus:F3}, adaptive=x{1f + adaptiveBonus:F3}, " +
             $"final={damagePerEnemy:F1}, enemies={enemies.Length}");
     }
 }

@@ -35,7 +35,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 74576184474370051
-    m_Localized: <color=#ffd700>Repairs</color>
+    m_Localized: <color=#ffd700>Repair</color>
     m_Metadata:
       m_Items: []
   - m_Id: 74576184474370052
@@ -65,7 +65,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 74576184478564355
-    m_Localized: 'Damage: <color=#ffd700>+{0}%</color>\n\n<color=#ffd700>Cost: {1}</color>'
+    m_Localized: 'Damage Dealt: <color=#ffd700>+{0}%</color>\n\n<color=#ffd700>Cost:
+      {1}</color>'
     m_Metadata:
       m_Items: []
   - m_Id: 74576184478564356
@@ -96,7 +97,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 74576184478564362
-    m_Localized: <color=#ffd700>Golden Coin</color>
+    m_Localized: <color=#ffd700>Gold Coin</color>
     m_Metadata:
       m_Items: []
   - m_Id: 74576184478564363
@@ -144,7 +145,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 74576184478564373
-    m_Localized: 'Spikes <color=#ffd700>+5</color>\nHeal for <color=#ffd700>3</color>
+    m_Localized: 'Spikes <color=#ffd700>+5</color>\nHeal <color=#ffd700>3</color>
       when taking damage\n\n<color=#ffd700>Cost: {0}</color>'
     m_Metadata:
       m_Items: []
@@ -153,20 +154,21 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 74576184478564375
-    m_Localized: 'Damage dealt by weapons: <color=#ffd700>+1%</color> every <color=#ffd700>20</color>
+    m_Localized: 'Damage Dealt by Weapons: <color=#ffd700>+1%</color> every <color=#ffd700>20</color>
       seconds\n\n<color=#ffd700>Cost: {2}</color>'
     m_Metadata:
       m_Items: []
   - m_Id: 74576184478564376
-    m_Localized: 
+    m_Localized: <color=#ffd700>Gold Mine</color>
     m_Metadata:
       m_Items: []
   - m_Id: 74576184478564377
-    m_Localized: 
+    m_Localized: 'Gold Gain: <color=#ffd700>+4</color>\nGold Gain: <color=#ffd700>+10%</color>\n\n<color=#ffd700>Cost:
+      {0}</color>'
     m_Metadata:
       m_Items: []
   - m_Id: 74576184478564378
-    m_Localized: <color=#ffd700>Monster Fang</color>
+    m_Localized: <color=#ffd700>Beast Fang</color>
     m_Metadata:
       m_Items: []
   - m_Id: 74576184478564379
@@ -179,7 +181,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 74576184478564381
-    m_Localized: 'Maximum Health: <color=#ffd700>+{0}</color> every <color=#ffd700>{1}</color>
+    m_Localized: 'Maximum Health: <color=#ffd700>+5</color> every <color=#ffd700>10</color>
       seconds\n\n<color=#ffd700>Cost: {2}</color>'
     m_Metadata:
       m_Items: []
@@ -193,7 +195,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 74576184478564384
-    m_Localized: <color=#ffd700>Restoration Works</color>
+    m_Localized: <color=#ffd700>Restoration Work</color>
     m_Metadata:
       m_Items: []
   - m_Id: 74576184478564385
@@ -202,7 +204,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 74576184478564386
-    m_Localized: <color=#ffd700>Rate of Fire</color>
+    m_Localized: <color=#ffd700>Fire Rate</color>
     m_Metadata:
       m_Items: []
   - m_Id: 74576184478564387
@@ -220,7 +222,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 74576184478564390
-    m_Localized: <color=#ffd700>Overhaul</color>
+    m_Localized: <color=#ffd700>Major Repairs</color>
     m_Metadata:
       m_Items: []
   - m_Id: 74576184478564391
@@ -268,8 +270,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 74576184478564403
-    m_Localized: 'Damage: <color=#ffd700>+{1}%</color> for all Tier <color=#ffd700>1</color>
-      weapons\n\n<color=#ffd700>Cost: {2}</color>'
+    m_Localized: 'Damage: <color=#ffd700>+{1}%</color> for all <color=#ffd700>Tier
+      1</color> weapons\n\n<color=#ffd700>Cost: {2}</color>'
     m_Metadata:
       m_Items: []
   - m_Id: 74576184478564404
@@ -297,7 +299,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 74576184482758658
-    m_Localized: 'Deals damage equal to Health Regeneration to all enemies every
+    m_Localized: 'Deals damage equal to your Health Regeneration to all enemies every
       second\n\n<color=#ffd700>Cost: {1}</color>'
     m_Metadata:
       m_Items: []
@@ -374,7 +376,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 74576184482758674
-    m_Localized: Increases global damage by <color=#BA0606>{0}%</color>
+    m_Localized: Increases Global Damage by <color=#BA0606>{0}%</color>
     m_Metadata:
       m_Items: []
   - m_Id: 74576184482758675
@@ -382,15 +384,15 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 74576184482758676
-    m_Localized: Increases gold gain per second by <color=#BA0606>{0}</color>
+    m_Localized: Increases Gold Gain per second by <color=#BA0606>{0}</color>
     m_Metadata:
       m_Items: []
   - m_Id: 74576184482758677
-    m_Localized: <color=#BA0606>Midas' Glove</color>
+    m_Localized: <color=#BA0606>Midas Glove</color>
     m_Metadata:
       m_Items: []
   - m_Id: 74576184482758678
-    m_Localized: "Increases global damage by <color=#BA0606>0.5%</color>\n for every
+    m_Localized: "Increases Global Damage by <color=#BA0606>0.5%</color>\n for every
       <color=#BA0606>100</color> unspent gold"
     m_Metadata:
       m_Items: []
@@ -399,15 +401,15 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 74576184482758680
-    m_Localized: Increases global maximum health by <color=#BA0606>{0}%</color>
+    m_Localized: Increases Global Maximum Health by <color=#BA0606>{0}%</color>
     m_Metadata:
       m_Items: []
   - m_Id: 74576184482758681
-    m_Localized: <color=#BA0606>Recovery</color>
+    m_Localized: <color=#BA0606>Restoration</color>
     m_Metadata:
       m_Items: []
   - m_Id: 74576184482758682
-    m_Localized: Increases global health regeneration by <color=#BA0606>{0}%</color>
+    m_Localized: Increases Global Health Regeneration by <color=#BA0606>{0}%</color>
     m_Metadata:
       m_Items: []
   - m_Id: 74576184482758683
@@ -415,7 +417,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 74576184482758684
-    m_Localized: Increases global maximum shield by <color=#BA0606>{0}%</color>
+    m_Localized: Increases Global Maximum Shield by <color=#BA0606>{0}%</color>
     m_Metadata:
       m_Items: []
   - m_Id: 74576184482758685
@@ -423,15 +425,15 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 74576184482758686
-    m_Localized: Increases global spike damage by <color=#BA0606>{0}%</color>
+    m_Localized: Increases Global Spike Damage by <color=#BA0606>{0}%</color>
     m_Metadata:
       m_Items: []
   - m_Id: 74576184482758687
-    m_Localized: <color=#BA0606>Rate of Fire</color>
+    m_Localized: <color=#BA0606>Fire Rate</color>
     m_Metadata:
       m_Items: []
   - m_Id: 74576184482758688
-    m_Localized: Increases attack speed by <color=#BA0606>{0}%</color>
+    m_Localized: Increases Attack Speed by <color=#BA0606>{0}%</color>
     m_Metadata:
       m_Items: []
   - m_Id: 74576184482758689
@@ -439,8 +441,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 74576184482758690
-    m_Localized: 'Damage from Maximum Health: <color=#ffd700>+5%</color>\nGlobal
-      Maximum Health: <color=#ffd700>+25%</color>'
+    m_Localized: 'Damage from Maximum Health: <color=#BA0606>+5%</color>\nGlobal
+      Maximum Health: <color=#BA0606>+25%</color>'
     m_Metadata:
       m_Items: []
   - m_Id: 74738678660628480
@@ -448,9 +450,9 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 74738678685794304
-    m_Localized: 'A <color=#ffd700>3%</color> chance for a gilded empowered enemy
-      to spawn. The reward for killing such an enemy is increased <color=#ffd700>15</color>
-      times\n\n<color=#ffd700>Cost: 1500</color>'
+    m_Localized: 'There is a <color=#ffd700>3%</color> chance for a gilded empowered
+      enemy to spawn. The reward for killing such an enemy is multiplied by <color=#ffd700>10</color>\n\n<color=#ffd700>Cost:
+      1500</color>'
     m_Metadata:
       m_Items: []
   - m_Id: 74738678694182913
@@ -459,9 +461,9 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 74738678694182914
     m_Localized: 'The next boss will be empowered: its health will be increased by
-      <color=#ffd700>500%</color> and its damage by <color=#ffd700>100%</color>.
-      After killing this boss, you will be able to claim <color=#ffd700>2</color>
-      monster bounty rewards\n\n<color=#ffd700>Cost: 0</color>'
+      <color=#ffd700>500%</color>, and its damage by <color=#ffd700>100%</color>.
+      After killing this boss, you can claim <color=#ffd700>2</color> rewards for
+      the monster''s head\n\n<color=#ffd700>Cost: 0</color>'
     m_Metadata:
       m_Items: []
   - m_Id: 74739327594954752
@@ -469,8 +471,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 74739327603343360
-    m_Localized: 'The next purchased Tier <color=#ffd700>2</color> weapon or upgrade
-      is applied to you an additional <color=#ffd700>3</color> times\nMultiple Duplicators
+    m_Localized: 'The next purchased <color=#ffd700>Tier 2/1 item</color> is applied
+      to you an additional <color=#ffd700>2/5</color> times.\nMultiple Duplicators
       do not stack\n\n<color=#ffd700>Cost: 1500</color>'
     m_Metadata:
       m_Items: []
@@ -484,20 +486,47 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 75409454487560192
-    m_Localized: <color=#ffd700>Gold Mine</color>
+    m_Localized: <color=#ffd700>Golden Skull</color>
     m_Metadata:
       m_Items: []
   - m_Id: 75409454537891840
-    m_Localized: 'Gold from enemy: <color=#ffd700>+{0}%</color>\n\n<color=#ffd700>Cost:
+    m_Localized: 'Gold from Enemies: <color=#ffd700>+{0}%</color>\n\n<color=#ffd700>Cost:
       {1}</color>'
     m_Metadata:
       m_Items: []
   - m_Id: 75409454542086144
-    m_Localized: <color=#ffd700>More Enemies</color>
+    m_Localized: <color=#ffd700>Big Game</color>
     m_Metadata:
       m_Items: []
   - m_Id: 75409454542086145
-    m_Localized: Enemies per Wave <color=#ffd700>+15%</color>
+    m_Localized: Enemies per Wave <color=#ffd700>+{0}%</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 75989083889631232
+    m_Localized: <color=#ffd700>Upgrade Shop</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 75989083956740096
+    m_Localized: 'Unlocks <color=#ffd700>1</color> weapon and upgrade slot, and grants
+      access to <color=#ffd700>Tier 3 equipment</color>\n\n<color=#ffd700>Cost: {0}</color>'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 75989083956740097
+    m_Localized: <color=#ffd700>Upgrade Shop</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 75989083956740098
+    m_Localized: 'Unlocks <color=#ffd700>1</color> weapon and upgrade slot, and grants
+      access to <color=#ffd700>Tier 4 equipment</color>\n\n<color=#ffd700>Cost: {0}</color>'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 75409454537891841
+    m_Localized: <color=#ffd700>Healing Amplification</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 75409454537891842
+    m_Localized: 'Increases all healing sources by <color=#ffd700>{0}%</color>\n\n<color=#ffd700>Cost:
+      {1}</color>'
     m_Metadata:
       m_Items: []
   references:

@@ -18,6 +18,9 @@ public class GoldDamageBonus : IDamageBonusProvider, IDamageBonusDebugProvider
 
     public float GetDamageBonus(DamageContext ctx)
     {
+        if (ctx.isSpikes)
+            return 0f;
+
         return (goldGetter() / 100f) * runtime.damagePerValueGoldPercent;
     }
 

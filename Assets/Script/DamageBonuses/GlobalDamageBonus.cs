@@ -36,7 +36,8 @@ public class GlobalDamageMultiplierBonus : IDamageBonusProvider, IDamageBonusDeb
 
     public float GetDamageBonus(DamageContext ctx)
     {
-        return ctx.isSpikes ? 0f : runtime.globalDamagePercent;
+        // Global-слой намеренно действует и на шипы — в отличие от Normal-слоя выше.
+        return runtime.globalDamagePercent;
     }
 
     public string GetDebugLabel(DamageContext ctx, float bonusValue)
