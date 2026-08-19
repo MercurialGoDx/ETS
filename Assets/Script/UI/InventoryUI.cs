@@ -90,6 +90,10 @@ public class InventoryUI : MonoBehaviour
 
     private GameState stateBeforeOpen = GameState.Playing;
 
+    // Ставила ли паузу именно панель. На экране смерти игра уже остановлена сама,
+    // и трогать состояние с разрешением на паузу там нельзя.
+    private bool pausedByPanel;
+
     // Разделитель тысяч — неразрывный пробел: выглядит как пробел, но не даёт
     // разорвать число, даже если где-то включится перенос.
     private static readonly NumberFormatInfo NumFormat = new NumberFormatInfo
@@ -139,19 +143,25 @@ public class InventoryUI : MonoBehaviour
 
     private void TryOpen()
     {
-        // Вне забега (меню, пауза, game over) инвентарь не открывается.
+        // Открывается во время забега и на экране смерти — посмотреть, с чем закончил.
+        // В меню и в обычной паузе не нужен.
         if (GameStateManager.Instance != null)
         {
             var state = GameStateManager.Instance.CurrentState;
-            if (state != GameState.Playing && state != GameState.Preparing)
+            if (state != GameState.Playing && state != GameState.Preparing && state != GameState.GameOver)
                 return;
+
+            // На GameOver время уже стоит, а лишняя смена состояния дёрнула бы
+            // OnStateChanged у подписчиков и сбила PreviousState, на который смотрит
+            // PauseManager при выходе из паузы. Поэтому там состояние не трогаем.
+            pausedByPanel = state != GameState.GameOver;
         }
 
         isOpen = true;
 
         // Ставим игру на паузу. GameState.Paused сам выставляет Time.timeScale = 0,
         // а возврат в прежнее состояние восстановит скорость, выбранную кнопками x1/x2/x3.
-        if (GameStateManager.Instance != null)
+        if (pausedByPanel && GameStateManager.Instance != null)
         {
             stateBeforeOpen = GameStateManager.Instance.CurrentState;
             GameStateManager.Instance.SetState(GameState.Paused);
@@ -166,7 +176,8 @@ public class InventoryUI : MonoBehaviour
         if (PurchaseHistoryManager.Instance != null)
             PurchaseHistoryManager.Instance.SetVisible(false);
 
-        if (pauseManager != null)
+        // После смерти паузу и так нельзя открыть — не выдаём разрешение, которого не было.
+        if (pausedByPanel && pauseManager != null)
             pauseManager.SetCanPause(false);
 
         RebuildGrids();
@@ -199,12 +210,15 @@ public class InventoryUI : MonoBehaviour
             PurchaseHistoryManager.Instance.SetVisible(true);
 
         // Снимаем паузу, возвращая ровно то состояние, что было до открытия.
-        if (GameStateManager.Instance != null)
+        if (pausedByPanel && GameStateManager.Instance != null)
             GameStateManager.Instance.SetState(stateBeforeOpen);
 
         // Паузу возвращаем через кадр: если PauseManager.Update успеет отработать
         // после нашего в этом же кадре, он увидит тот же Escape и откроет меню паузы.
-        StartCoroutine(EnablePauseNextFrame());
+        if (pausedByPanel)
+            StartCoroutine(EnablePauseNextFrame());
+
+        pausedByPanel = false;
     }
 
     private IEnumerator EnablePauseNextFrame()
