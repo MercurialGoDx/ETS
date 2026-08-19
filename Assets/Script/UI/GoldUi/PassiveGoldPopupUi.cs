@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
@@ -22,10 +23,28 @@ public class PassiveGoldPopupUI : MonoBehaviour
             goldManager.OnGoldGained += OnGoldGained;
     }
 
+    // Попапы, которые сейчас летят. Нужны только для того, чтобы вернуть их в пул,
+    // если объект выключат посреди анимации.
+    private readonly List<PooledObject> inFlight = new List<PooledObject>();
+
     private void OnDisable()
     {
         if (goldManager != null)
             goldManager.OnGoldGained -= OnGoldGained;
+
+        // Этот компонент живёт внутри GoldFrame, а панель инвентаря прячет её целиком.
+        // Деактивация объекта убивает корутины Animate, и Release() в их конце уже не
+        // выполнится: попап навсегда завис бы на экране полупрозрачным и утёк из пула.
+        // Возвращаем всё, что было в полёте, руками.
+        StopAllCoroutines();
+
+        for (int i = 0; i < inFlight.Count; i++)
+        {
+            if (inFlight[i] != null)
+                inFlight[i].Release();
+        }
+
+        inFlight.Clear();
     }
 
     private void OnGoldGained(int amount, GoldSource source, Vector3? worldPos)
@@ -43,6 +62,7 @@ public class PassiveGoldPopupUI : MonoBehaviour
         RectTransform rt = t.rectTransform;
         rt.anchoredPosition = anchor.anchoredPosition;
 
+        inFlight.Add(pooledObject);
         StartCoroutine(Animate(rt, t, pooledObject));
     }
 
@@ -66,6 +86,7 @@ public class PassiveGoldPopupUI : MonoBehaviour
             yield return null;
         }
 
+        inFlight.Remove(pooledObject);
         pooledObject.Release();
     }
 }
