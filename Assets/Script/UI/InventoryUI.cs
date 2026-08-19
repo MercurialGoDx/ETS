@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using UnityEngine;
+using UnityEngine.Localization.Settings;
 
 /// <summary>
 /// Панель инвентаря (Tab): всё купленное за забег — оружие, улучшения и колонка
@@ -107,12 +108,21 @@ public class InventoryUI : MonoBehaviour
 
     private bool isOpen;
 
-    // Русские подписи типов урона в порядке enum WeaponDamageType
-    // (Magic, Piercing, Normal, Projectile, Heavy, Chaos).
-    private static readonly string[] DamageTypeLabels =
+    // Ключи локализации типов урона в порядке enum WeaponDamageType
+    // (Magic, Piercing, Normal, Projectile, Heavy, Chaos). Таблица "Game Labels".
+    private static readonly string[] DamageTypeKeys =
     {
-        "Магия", "Колющий", "Обычный", "Снаряды", "Тяжёлый", "Хаос"
+        "inv.dmg_magic", "inv.dmg_piercing", "inv.dmg_normal",
+        "inv.dmg_projectile", "inv.dmg_heavy", "inv.dmg_chaos"
     };
+
+    private const string LocTable = "Game Labels";
+
+    /// <summary>Синхронный лукап локализованной строки — панель обновляется 4 р/с, кешировать не требуется.</summary>
+    private static string L(string key)
+    {
+        return LocalizationSettings.StringDatabase.GetLocalizedString(LocTable, key);
+    }
 
     private void Awake()
     {
@@ -140,6 +150,13 @@ public class InventoryUI : MonoBehaviour
     }
 
     // ===================== ОТКРЫТИЕ / ЗАКРЫТИЕ =====================
+
+    /// <summary>Публичный вход для кнопок (напр. Journal_Sel_Stat) — та же логика, что и по toggleKey.</summary>
+    public void Open()
+    {
+        if (!isOpen)
+            TryOpen();
+    }
 
     private void TryOpen()
     {
@@ -345,53 +362,53 @@ public class InventoryUI : MonoBehaviour
         if (playerHealth != null)
         {
             // Только максимум: текущее значение и так видно на полоске HP.
-            Row("Здоровье", Int(playerHealth.MaxHealth));
-            Row("Регенерация здоровья", Rate(playerHealth.GetTotalRegen()));
-            Row("Лечение за убийство", Num(playerHealth.HealOnKillPerEnemy));
-            Row("Лечение при получении урона", Num(playerHealth.HealOnHitFromEnemy));
-            Row("Усиление лечения", Percent(playerHealth.HealAmplificationPercent));
+            Row(L("inv.health"), Int(playerHealth.MaxHealth));
+            Row(L("inv.health_regen"), Rate(playerHealth.GetTotalRegen()));
+            Row(L("inv.heal_on_kill"), Num(playerHealth.HealOnKillPerEnemy));
+            Row(L("inv.heal_on_hit"), Num(playerHealth.HealOnHitFromEnemy));
+            Row(L("inv.heal_amp"), Percent(playerHealth.HealAmplificationPercent));
         }
 
         if (playerShield != null)
         {
-            Row("Щит", playerShield.MaxShield > Eps ? Int(playerShield.MaxShield) : "—");
-            Row("Щит за убийство", Num(playerShield.ShieldRestorePerEnemyKill));
+            Row(L("inv.shield"), playerShield.MaxShield > Eps ? Int(playerShield.MaxShield) : "—");
+            Row(L("inv.shield_on_kill"), Num(playerShield.ShieldRestorePerEnemyKill));
         }
 
         if (playerHealth != null)
         {
-            Row("Шанс блока", Percent(playerHealth.BlockChance));
-            Row("Уменьшение урона", Percent(playerHealth.DamageReduction));
-            Row("Урон шипов", Num(playerHealth.SpikesDamage));
+            Row(L("inv.block_chance"), Percent(playerHealth.BlockChance));
+            Row(L("inv.damage_reduction"), Percent(playerHealth.DamageReduction));
+            Row(L("inv.spikes_damage"), Num(playerHealth.SpikesDamage));
         }
 
         if (towerAttack != null)
         {
-            Row("Скорость атаки", Multiplier(towerAttack.TotalFireRateMultiplier));
+            Row(L("inv.attack_speed"), Multiplier(towerAttack.TotalFireRateMultiplier));
             // Итоговый TotalMultiplierDamage по всему арсеналу: со всеми слоями бонусов,
             // включая тир и тип каждого оружия.
-            Row("Множитель урона", Multiplier(towerAttack.GetFinalDamageMultiplier()));
+            Row(L("inv.damage_multiplier"), Multiplier(towerAttack.GetFinalDamageMultiplier()));
         }
 
         if (runtime != null && runtime.enemySpawner != null)
-            Row("Больше врагов", Percent(runtime.enemySpawner.EnemiesPerWavePercentBonus));
+            Row(L("inv.more_enemies"), Percent(runtime.enemySpawner.EnemiesPerWavePercentBonus));
 
         if (GoldManager.Instance != null)
         {
             // Пассивный доход намеренно не умножается на бонус золота (см. GoldManager.AddGold),
             // поэтому показываем ровно ту сумму, что капает в секунду.
-            Row("Доход", Int(GoldManager.Instance.goldPerTick) + "/с");
+            Row(L("inv.income"), Int(GoldManager.Instance.goldPerTick) + L("inv.per_second"));
         }
 
         // Процентный бонус к получаемому золоту (GoldenSkull и подобные). Пассивный доход
         // он не трогает — только убийства, награды и прочие разовые начисления.
         // Не путать с UpgradesManager.goldBonusPerKill: в то поле никто не пишет.
         if (GoldManager.Instance != null)
-            Row("Бонус золота", Percent(GoldManager.Instance.GoldGainBonus));
+            Row(L("inv.gold_bonus"), Percent(GoldManager.Instance.GoldGainBonus));
 
         // Охота: шанс, что заспавнится золотой враг (EnemySpawner сверяется с этим значением).
         if (runtime != null)
-            Row("Шанс охоты", Percent(runtime.GoldenEnemyChance));
+            Row(L("inv.hunt_chance"), Percent(runtime.GoldenEnemyChance));
 
         // Блок урона по типам живёт в отдельном контейнере под своим заголовком.
         // Заголовок — объект сцены, а не сгенерированная строка: так его текст, шрифт
@@ -414,7 +431,7 @@ public class InventoryUI : MonoBehaviour
                     : 0f;
                 float total = flat + towerAttack.GetTotalWeaponsOfType(type) * perWeapon;
 
-                TypeRow(DamageTypeLabels[(int)type], Percent(total));
+                TypeRow(L(DamageTypeKeys[(int)type]), Percent(total));
             }
         }
 
@@ -427,8 +444,8 @@ public class InventoryUI : MonoBehaviour
         if (showEnemy)
         {
             // Округляем, как это делал прежний текст слева: дробные HP врага только путают.
-            EnemyRow("Здоровье", Int(enemyStats.CurrentEnemyHealth));
-            EnemyRow("Урон", Int(enemyStats.CurrentEnemyDamage));
+            EnemyRow(L("inv.enemy_health"), Int(enemyStats.CurrentEnemyHealth));
+            EnemyRow(L("inv.enemy_damage"), Int(enemyStats.CurrentEnemyDamage));
         }
 
         // Лишние строки с прошлого обновления прячем, а не удаляем — переиспользуем.
@@ -521,6 +538,6 @@ public class InventoryUI : MonoBehaviour
     /// <summary>Значение в секунду. Ноль — прочерк, а не «0/с».</summary>
     private static string Rate(float value)
     {
-        return value > Eps ? Num(value) + "/с" : "—";
+        return value > Eps ? Num(value) + L("inv.per_second") : "—";
     }
 }

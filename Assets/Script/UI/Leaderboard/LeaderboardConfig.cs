@@ -9,7 +9,7 @@ using UnityEngine;
 public class LeaderboardConfig : MonoBehaviour
 {
     [Tooltip("Имя лидерборда в Steamworks. Должно точно совпадать с именем на partner-сайте.")]
-    [SerializeField] private string leaderboardName = "SurvivalTime";
+    [SerializeField] private string leaderboardName = "SurvivalTime_v2";
 
     [Tooltip("ВКЛ — FindOrCreateLeaderboard (создаёт лидерборд, если его нет; удобно в разработке).\n" +
              "ВЫКЛ — FindLeaderboard (только ищет существующий; для релиза, чтобы клиент не плодил лидерборды).")]

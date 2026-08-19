@@ -17,7 +17,523 @@ MonoBehaviour:
   m_SharedData: {fileID: 11400000, guid: 164770c6fc8794c4ba4db6f8c7e72db3, type: 2}
   m_Metadata:
     m_Items: []
-  m_TableData: []
+  m_TableData:
+  - m_Id: 75989083889631232
+    m_Localized: <color=#ffd700>Melhorar Loja</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 75989083956740096
+    m_Localized: "Desbloqueia <color=#ffd700>1</color> espa\xE7o de arma e melhoria
+      e concede acesso a equipamentos de <color=#ffd700>n\xEDvel 3</color>\\n\\n<color=#ffd700>Custo:
+      {0}</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 75989083956740097
+    m_Localized: <color=#ffd700>Melhorar Loja</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 75989083956740098
+    m_Localized: "Desbloqueia <color=#ffd700>1</color> espa\xE7o de arma e melhoria
+      e concede acesso a equipamentos de <color=#ffd700>n\xEDvel 4</color>\\n\\n<color=#ffd700>Custo:
+      {0}</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184419844096
+    m_Localized: <color=#ffd700>Escudo de Energia</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184474370048
+    m_Localized: 'Escudo: <color=#ffd700>+{0}</color>\n\n<color=#ffd700>Custo: {1}</color>'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184474370049
+    m_Localized: "<color=#ffd700>Fortifica\xE7\xE3o</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184474370050
+    m_Localized: 'Vida: <color=#ffd700>+{0}</color>\n\n<color=#ffd700>Custo: {1}</color>'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184474370051
+    m_Localized: <color=#ffd700>Reparo</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184474370052
+    m_Localized: "Regenera\xE7\xE3o de vida <color=#ffd700>+{0}</color>\\n\\n<color=#ffd700>Custo:
+      {1}</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184474370053
+    m_Localized: <color=#ffd700>Defesa Espinhosa</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184474370054
+    m_Localized: 'Espinhos: <color=#ffd700>+{0}</color>\n\n<color=#ffd700>Custo:
+      {1}</color>'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184478564352
+    m_Localized: <color=#ffd700>Dano de Caos</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184478564353
+    m_Localized: '<color=#B790FF>Dano de caos:</color> <color=#ffd700>+{1}%</color>\n\n<color=#ffd700>Custo:
+      {2}</color>'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184478564354
+    m_Localized: "<color=#ffd700>Ataque B\xE1sico</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184478564355
+    m_Localized: 'Dano das armas: <color=#ffd700>+{0}%</color>\n\n<color=#ffd700>Custo:
+      {1}</color>'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184478564356
+    m_Localized: <color=#ffd700>Dano Pesado</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184478564357
+    m_Localized: '<color=#ADACAC>Dano pesado:</color> <color=#ffd700>+{1}%</color>\n\n<color=#ffd700>Custo:
+      {2}</color>'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184478564358
+    m_Localized: "<color=#ffd700>Dano M\xE1gico</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184478564359
+    m_Localized: "<color=#58CBF8>Dano m\xE1gico:</color> <color=#ffd700>+{1}%</color>\\n\\n<color=#ffd700>Custo:
+      {2}</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184478564360
+    m_Localized: <color=#ffd700>Dano Normal</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184478564361
+    m_Localized: '<color=#EED976>Dano normal:</color> <color=#ffd700>+{1}%</color>\n\n<color=#ffd700>Custo:
+      {2}</color>'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184478564362
+    m_Localized: <color=#ffd700>Moeda de Ouro</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184478564363
+    m_Localized: 'Ganho de ouro: <color=#ffd700>+{0}</color>\n\n<color=#ffd700>Custo:
+      {1}</color>'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184478564364
+    m_Localized: <color=#ffd700>Dano Perfurante</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184478564365
+    m_Localized: '<color=#70D160>Dano perfurante:</color> <color=#ffd700>+{1}%</color>\n\n<color=#ffd700>Custo:
+      {2}</color>'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184478564366
+    m_Localized: "<color=#ffd700>Dano de Proj\xE9teis</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184478564367
+    m_Localized: "<color=#FF949A>Dano de proj\xE9teis:</color> <color=#ffd700>+{1}%</color>\\n\\n<color=#ffd700>Custo:
+      {2}</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184478564368
+    m_Localized: "<color=#ffd700>Gan\xE2ncia</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184478564369
+    m_Localized: "Ouro: <color=#ffd700>+200</color>\\nVida m\xE1xima: <color=#ffd700>-{0}</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184478564370
+    m_Localized: "<color=#ffd700>Defesa B\xE1sica</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184478564371
+    m_Localized: 'Dano recebido: <color=#ffd700>-{0}%</color>\n\n<color=#ffd700>Custo:
+      {1}</color>'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184478564372
+    m_Localized: "<color=#ffd700>M\xE1scara da Morte</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184478564373
+    m_Localized: 'Espinhos <color=#ffd700>+5</color>\nCura <color=#ffd700>3</color>
+      ao receber dano\n\n<color=#ffd700>Custo: {0}</color>'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184478564374
+    m_Localized: <color=#ffd700>Gerador</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184478564375
+    m_Localized: 'Dano causado pelas armas: <color=#ffd700>+1%</color> a cada <color=#ffd700>20</color>
+      segundos\n\n<color=#ffd700>Custo: {2}</color>'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 75409454487560192
+    m_Localized: <color=#ffd700>Caveira Dourada</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 75409454537891840
+    m_Localized: 'Ouro dos inimigos: <color=#ffd700>+{0}%</color>\n\n<color=#ffd700>Custo:
+      {1}</color>'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 75409454537891841
+    m_Localized: "<color=#ffd700>Amplifica\xE7\xE3o de Cura</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 75409454537891842
+    m_Localized: 'Aumenta todas as fontes de cura em <color=#ffd700>{0}%</color>\n\n<color=#ffd700>Custo:
+      {1}</color>'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184478564378
+    m_Localized: <color=#ffd700>Presa de Fera</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184478564379
+    m_Localized: 'Cura ao matar: <color=#ffd700>+{0}</color>\n\n<color=#ffd700>Custo:
+      {1}</color>'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184478564380
+    m_Localized: "<color=#ffd700>\xC2mbar</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184478564381
+    m_Localized: "Vida m\xE1xima: <color=#ffd700>+5</color> a cada <color=#ffd700>10</color>
+      segundos\\n\\n<color=#ffd700>Custo: {2}</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184478564382
+    m_Localized: <color=#ffd700>Safira</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184478564383
+    m_Localized: 'Escudo <color=#ffd700>+5</color> a cada <color=#ffd700>10</color>
+      segundos\n\n<color=#ffd700>Custo: {2}</color>'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184478564384
+    m_Localized: "<color=#ffd700>Trabalhos de Restaura\xE7\xE3o</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184478564385
+    m_Localized: "Restaura\xE7\xE3o de escudo <color=#ffd700>+{0}</color> ao matar
+      um inimigo\\n\\n<color=#ffd700>Custo: {1}</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184478564386
+    m_Localized: "<color=#ffd700>Cad\xEAncia de Tiro</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184478564387
+    m_Localized: 'Velocidade de ataque: <color=#ffd700>+{0}</color>\n\n<color=#ffd700>Custo:
+      {1}</color>'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184478564388
+    m_Localized: <color=#ffd700>Bloqueio</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184478564389
+    m_Localized: 'Chance de bloqueio: <color=#ffd700>+10%</color>\n\n<color=#ffd700>Custo:
+      {1}</color>'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184478564390
+    m_Localized: <color=#ffd700>Reparos Gerais</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184478564391
+    m_Localized: "Regenera\xE7\xE3o de vida <color=#ffd700>+{0}%</color>\\n\\n<color=#ffd700>Custo:
+      {1}</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184478564394
+    m_Localized: "<color=#ffd700>B\xEAn\xE7\xE3o da Natureza</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184478564395
+    m_Localized: "Vida: <color=#ffd700>+250</color>\\nRegenera\xE7\xE3o de vida perdida:
+      <color=#ffd700>+2%</color>\\n\\n<color=#ffd700>Custo: {0}</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184478564396
+    m_Localized: <color=#ffd700>Esmeralda</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184478564397
+    m_Localized: "Regenera\xE7\xE3o de vida: <color=#ffd700>+{0}</color> a cada <color=#ffd700>{1}</color>
+      segundos\\n\\n<color=#ffd700>Custo: {2}</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184478564398
+    m_Localized: "<color=#ffd700>Defesa M\xE1gica</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184478564399
+    m_Localized: 'Escudo <color=#ffd700>+{0}%</color>\n\n<color=#ffd700>Custo: {1}</color>'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184478564400
+    m_Localized: "<color=#ffd700>Espinhos Refor\xE7ados</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184478564401
+    m_Localized: 'Espinhos <color=#ffd700>+20</color>\nEspinhos: <color=#ffd700>+0.5</color>
+      quando um inimigo morre por dano de espinhos\n\n<color=#ffd700>Custo: {0}</color>'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184478564402
+    m_Localized: <color=#ffd700>Arma Secreta</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184478564403
+    m_Localized: "Dano: <color=#ffd700>+{1}%</color> para todas as armas de <color=#ffd700>n\xEDvel
+      1</color>\\n\\n<color=#ffd700>Custo: {2}</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74738678660628480
+    m_Localized: "<color=#ffd700>Ca\xE7ada</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74738678685794304
+    m_Localized: "H\xE1 <color=#ffd700>3%</color> de chance de surgir um inimigo
+      dourado fortalecido. A recompensa por mat\xE1-lo \xE9 multiplicada por <color=#ffd700>10</color>\\n\\n<color=#ffd700>Custo:
+      1500</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74739327594954752
+    m_Localized: <color=#ffd700>Duplicador</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74739327603343360
+    m_Localized: "O pr\xF3ximo item de <color=#ffd700>n\xEDvel 1/2</color> comprado
+      \xE9 aplicado mais <color=#ffd700>5/2</color> vezes.\\nV\xE1rios Duplicadores
+      n\xE3o se acumulam\\n\\n<color=#ffd700>Custo: 1500</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184478564404
+    m_Localized: <color=#ffd700>Dano de Caos Supremo</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184478564405
+    m_Localized: '<color=#B790FF>Dano de caos:</color> <color=#ffd700>+50%</color>\n<color=#B790FF>Dano
+      de caos:</color> <color=#ffd700>+3%</color> para cada outra arma de caos\n\n<color=#ffd700>Custo:
+      {0}</color>'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184478564406
+    m_Localized: <color=#ffd700>Singularidade</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184482758656
+    m_Localized: 'Aumenta todo o dano causado em <color=#ffd700>20%</color> enquanto
+      o Escudo de Energia estiver ativo\nEscudo: <color=#ffd700>+1000</color>\n\n<color=#ffd700>Custo:
+      3000</color>'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184482758657
+    m_Localized: "<color=#ffd700>Aura de Decomposi\xE7\xE3o</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184482758658
+    m_Localized: "Causa a todos os inimigos, a cada segundo, dano igual \xE0 sua
+      Regenera\xE7\xE3o de vida\\n\\n<color=#ffd700>Custo: {1}</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184482758659
+    m_Localized: <color=#ffd700>Dano Pesado Supremo</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184482758660
+    m_Localized: '<color=#ADACAC>Dano pesado:</color> <color=#ffd700>+50%</color>\n<color=#ADACAC>Dano
+      pesado:</color> <color=#ffd700>+3%</color> para cada outra arma pesada\n\n<color=#ffd700>Custo:
+      {0}</color>'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184482758661
+    m_Localized: "<color=#ffd700>Dano M\xE1gico Supremo</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184482758662
+    m_Localized: "<color=#58CBF8>Dano m\xE1gico:</color> <color=#ffd700>+50%</color>\\n<color=#58CBF8>Dano
+      m\xE1gico:</color> <color=#ffd700>+3%</color> para cada outra arma m\xE1gica\\n\\n<color=#ffd700>Custo:
+      {0}</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184482758663
+    m_Localized: <color=#ffd700>Dano Normal Supremo</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184482758664
+    m_Localized: '<color=#EED976>Dano normal:</color> <color=#ffd700>+50%</color>\n<color=#EED976>Dano
+      normal:</color> <color=#ffd700>+3%</color> para cada outra arma normal\n\n<color=#ffd700>Custo:
+      {0}</color>'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184482758665
+    m_Localized: <color=#ffd700>Dano Perfurante Supremo</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184482758666
+    m_Localized: '<color=#70D160>Dano perfurante:</color> <color=#ffd700>+50%</color>\n<color=#70D160>Dano
+      perfurante:</color> <color=#ffd700>+3%</color> para cada outra arma perfurante\n\n<color=#ffd700>Custo:
+      {0}</color>'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184482758667
+    m_Localized: "<color=#ffd700>Dano de Proj\xE9teis Supremo</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184482758668
+    m_Localized: "<color=#FF949A>Dano de proj\xE9teis:</color> <color=#ffd700>+50%</color>\\n<color=#FF949A>Dano
+      de proj\xE9teis:</color> <color=#ffd700>+3%</color> para cada outra arma deste
+      tipo\\n\\n<color=#ffd700>Custo: {0}</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184482758669
+    m_Localized: "<color=#ffd700>Carapa\xE7a Espinhosa</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184482758670
+    m_Localized: 'Espinhos <color=#ffd700>+{0}%</color>\n\n<color=#ffd700>Custo:
+      {1}</color>'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74738678694182913
+    m_Localized: <color=#ffd700>Contrato</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74738678694182914
+    m_Localized: "O pr\xF3ximo chefe ser\xE1 fortalecido: sua vida aumentar\xE1 em
+      <color=#ffd700>500%</color> e seu dano em <color=#ffd700>100%</color>. Ap\xF3s
+      mat\xE1-lo, voc\xEA poder\xE1 receber <color=#ffd700>2</color> recompensas
+      pela cabe\xE7a do monstro\\n\\n<color=#ffd700>Custo: 0</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74849647629991936
+    m_Localized: "<color=#ffd700>\xC9gide</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74849647671934976
+    m_Localized: "Vida m\xE1xima <color=#ffd700>+400</color>\\nVida m\xE1xima: <color=#ffd700>+20%</color>\\nDano
+      recebido: <color=#ffd700>-7.5%</color>\\n\\n<color=#ffd700>Custo: 3000</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184478564376
+    m_Localized: <color=#ffd700>Mina de Ouro</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184478564377
+    m_Localized: 'Ganho de ouro: <color=#ffd700>+4</color>\nGanho de ouro: <color=#ffd700>+5%</color>\n\n<color=#ffd700>Custo:
+      {0}</color>'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184482758671
+    m_Localized: <color=#BA0606>Aprimoramento</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184482758672
+    m_Localized: "Dano global: <color=#BA0606>+10%</color>\\nVelocidade de ataque:
+      <color=#BA0606>+5%</color>\\nVida m\xE1xima global: <color=#BA0606>+15%</color>\\nEscudo
+      global: <color=#BA0606>+15%</color>\\nCura ao matar: <color=#BA0606>+25</color>\\nGanho
+      de ouro: <color=#BA0606>+1</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184482758673
+    m_Localized: "<color=#BA0606>Proj\xE9teis de Tit\xE2nio</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184482758674
+    m_Localized: Aumenta o dano global em <color=#BA0606>{0}%</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184482758675
+    m_Localized: <color=#BA0606>Corrida do Ouro</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184482758676
+    m_Localized: Aumenta o ganho de ouro por segundo em <color=#BA0606>{0}</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184482758677
+    m_Localized: <color=#BA0606>Luva de Midas</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184482758678
+    m_Localized: "Aumenta o dano global em <color=#BA0606>0.5%</color>\n para cada
+      <color=#BA0606>100</color> de ouro n\xE3o gasto"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184482758679
+    m_Localized: <color=#BA0606>Fortaleza</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184482758680
+    m_Localized: "Aumenta a vida m\xE1xima global em <color=#BA0606>{0}%</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184482758681
+    m_Localized: "<color=#BA0606>Restaura\xE7\xE3o</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184482758682
+    m_Localized: "Aumenta a regenera\xE7\xE3o de vida global em <color=#BA0606>{0}%</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184482758683
+    m_Localized: "<color=#BA0606>Defesa M\xE1gica</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184482758684
+    m_Localized: "Aumenta o escudo m\xE1ximo global em <color=#BA0606>{0}%</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184482758685
+    m_Localized: <color=#BA0606>Arame Farpado</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184482758686
+    m_Localized: Aumenta o dano global dos espinhos em <color=#BA0606>{0}%</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184482758687
+    m_Localized: "<color=#BA0606>Cad\xEAncia de Tiro</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184482758688
+    m_Localized: Aumenta a velocidade de ataque em <color=#BA0606>{0}%</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184482758689
+    m_Localized: <color=#BA0606>Paredes de Mithril</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184482758690
+    m_Localized: "Dano das armas com base na Vida m\xE1xima: <color=#BA0606>+5%</color>\\nVida
+      m\xE1xima global: <color=#BA0606>+25%</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 75409454542086144
+    m_Localized: "<color=#BA0606>Ca\xE7a Grande</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 75409454542086145
+    m_Localized: Inimigos por onda <color=#BA0606>+{0}%</color>
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

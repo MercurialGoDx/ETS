@@ -31,7 +31,7 @@ public class SteamLeaderboardService : ILeaderboardService
 
     public SteamLeaderboardService(string leaderboardName, bool createIfMissing)
     {
-        this.leaderboardName = string.IsNullOrEmpty(leaderboardName) ? "SurvivalTime" : leaderboardName;
+        this.leaderboardName = string.IsNullOrEmpty(leaderboardName) ? "SurvivalTime_v2" : leaderboardName;
         this.createIfMissing = createIfMissing;
     }
 

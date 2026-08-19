@@ -12,7 +12,7 @@ using UnityEngine;
 public static class Leaderboards
 {
     private static ILeaderboardService s_service;
-    private static string s_steamLeaderboardName = "SurvivalTime";
+    private static string s_steamLeaderboardName = "SurvivalTime_v2";
     private static bool s_createIfMissing = true;
 
     /// <summary>
@@ -54,7 +54,7 @@ public static class Leaderboards
     private static void ResetStatics()
     {
         s_service = null;
-        s_steamLeaderboardName = "SurvivalTime";
+        s_steamLeaderboardName = "SurvivalTime_v2";
         s_createIfMissing = true;
     }
 }

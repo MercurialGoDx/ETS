@@ -170,10 +170,11 @@ public void AddGold(int amount, GoldSource source, Vector3? worldPos = null)
 
     int finalAmount = amount;
 
-    // Бонус только на получение (не на траты) и НЕ на пассивный доход:
-    // пассив всегда равен сумме номиналов апгрейдов/наград ("+4/с" значит ровно +4/с),
-    // иначе тултипы врут, а экономика уходит в снежный ком.
-    if (amount > 0 && goldGainBonus > 0f && source != GoldSource.PassiveTick)
+    // Бонус только на получение (не на траты) и НЕ на пассивный доход или фиксированные
+    // выдачи (Fixed): пассив всегда равен сумме номиналов апгрейдов/наград ("+4/с" значит
+    // ровно +4/с), а Fixed — это ровно заявленное число (напр. Sacrifice: ровно 200 золота),
+    // иначе тултипы/описания врут, а экономика уходит в снежный ком.
+    if (amount > 0 && goldGainBonus > 0f && source != GoldSource.PassiveTick && source != GoldSource.Fixed)
     {
         finalAmount = Mathf.RoundToInt(amount * (1f + goldGainBonus));
         if (finalAmount < 1) finalAmount = 1;

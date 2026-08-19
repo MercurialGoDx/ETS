@@ -51,7 +51,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 21319635969236993
-    m_Localized: Armes
+    m_Localized: "Param\xE8tres"
     m_Metadata:
       m_Items: []
   - m_Id: 21319635969236994
@@ -108,6 +108,143 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 22560234059849728
     m_Localized: Classement
+    m_Metadata:
+      m_Items: []
+  - m_Id: 70178168891710351
+    m_Localized: Statistiques du joueur
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78526631054553307
+    m_Localized: "Armes, am\xE9liorations et statistiques de cette partie. Tu peux
+      l'ouvrir depuis le jeu avec la touche <color=#ffd700>TAB</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 65569384996975990
+    m_Localized: Armes
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3725147903832116
+    m_Localized: "Vie"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10619995571142592
+    m_Localized: "Régénération de vie"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11775346651500202
+    m_Localized: "Soin par élimination"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11802210082058881
+    m_Localized: "Soin en cas de coup reçu"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 12316824186931610
+    m_Localized: "Amplification des soins"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 14094762313145913
+    m_Localized: "Bouclier"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 16504742105405043
+    m_Localized: "Bouclier par élimination"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 19756295254615842
+    m_Localized: "Chance de blocage"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 20168385402233059
+    m_Localized: "Réduction des dégâts"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21017627269246335
+    m_Localized: "Dégâts des pointes"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 24776102786198743
+    m_Localized: "Vitesse d'attaque"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 25920090900021417
+    m_Localized: "Multiplicateur de dégâts"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 37759157349650158
+    m_Localized: "Plus d'ennemis"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 39296767015963371
+    m_Localized: "Revenu"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 39988450964490444
+    m_Localized: "Bonus d'or"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 45653633024113607
+    m_Localized: "Chance de chasse"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 53711503832900015
+    m_Localized: "Vie"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57936401869429999
+    m_Localized: "Dégâts"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 60949397238782180
+    m_Localized: "/s"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 64853685396243997
+    m_Localized: "Magie"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 69543210346914670
+    m_Localized: "Perforant"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 72060171061295335
+    m_Localized: "Normal"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74523639012016940
+    m_Localized: "Projectile"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74878436638269156
+    m_Localized: "Lourd"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 75368449556766513
+    m_Localized: "Chaos"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 77519296610540157
+    m_Localized: "Armes"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79010366862897113
+    m_Localized: "Améliorations"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 80283965692857455
+    m_Localized: "Statistiques"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 81100507942926118
+    m_Localized: "Dégâts par type"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 81166865619476457
+    m_Localized: "Statistiques de l'ennemi"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 99345958463422879
+    m_Localized: "Tab : fermer"
     m_Metadata:
       m_Items: []
   references:

@@ -17,7 +17,525 @@ MonoBehaviour:
   m_SharedData: {fileID: 11400000, guid: 164770c6fc8794c4ba4db6f8c7e72db3, type: 2}
   m_Metadata:
     m_Items: []
-  m_TableData: []
+  m_TableData:
+  - m_Id: 75989083889631232
+    m_Localized: <color=#ffd700>Shop verbessern</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 75989083956740096
+    m_Localized: "Schaltet <color=#ffd700>1</color> Waffen- und Verbesserungsslot
+      frei und gew\xE4hrt Zugriff auf <color=#ffd700>Stufe 3 Ausr\xFCstung</color>\\n\\n<color=#ffd700>Kosten:
+      {0}</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 75989083956740097
+    m_Localized: <color=#ffd700>Shop verbessern</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 75989083956740098
+    m_Localized: "Schaltet <color=#ffd700>1</color> Waffen- und Verbesserungsslot
+      frei und gew\xE4hrt Zugriff auf <color=#ffd700>Stufe 4 Ausr\xFCstung</color>\\n\\n<color=#ffd700>Kosten:
+      {0}</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184419844096
+    m_Localized: <color=#ffd700>Energieschild</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184474370048
+    m_Localized: 'Schild: <color=#ffd700>+{0}</color>\n\n<color=#ffd700>Kosten: {1}</color>'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184474370049
+    m_Localized: "<color=#ffd700>Verst\xE4rkung</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184474370050
+    m_Localized: 'Gesundheit: <color=#ffd700>+{0}</color>\n\n<color=#ffd700>Kosten:
+      {1}</color>'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184474370051
+    m_Localized: <color=#ffd700>Reparatur</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184474370052
+    m_Localized: 'Gesundheitsregeneration <color=#ffd700>+{0}</color>\n\n<color=#ffd700>Kosten:
+      {1}</color>'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184474370053
+    m_Localized: <color=#ffd700>Stachelverteidigung</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184474370054
+    m_Localized: 'Stacheln: <color=#ffd700>+{0}</color>\n\n<color=#ffd700>Kosten:
+      {1}</color>'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184478564352
+    m_Localized: <color=#ffd700>Chaosschaden</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184478564353
+    m_Localized: '<color=#B790FF>Chaosschaden:</color> <color=#ffd700>+{1}%</color>\n\n<color=#ffd700>Kosten:
+      {2}</color>'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184478564354
+    m_Localized: <color=#ffd700>Basisangriff</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184478564355
+    m_Localized: 'Waffenschaden: <color=#ffd700>+{0}%</color>\n\n<color=#ffd700>Kosten:
+      {1}</color>'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184478564356
+    m_Localized: <color=#ffd700>Schwerer Schaden</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184478564357
+    m_Localized: '<color=#ADACAC>Schwerer Schaden:</color> <color=#ffd700>+{1}%</color>\n\n<color=#ffd700>Kosten:
+      {2}</color>'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184478564358
+    m_Localized: <color=#ffd700>Magieschaden</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184478564359
+    m_Localized: '<color=#58CBF8>Magieschaden:</color> <color=#ffd700>+{1}%</color>\n\n<color=#ffd700>Kosten:
+      {2}</color>'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184478564360
+    m_Localized: <color=#ffd700>Normaler Schaden</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184478564361
+    m_Localized: '<color=#EED976>Normaler Schaden:</color> <color=#ffd700>+{1}%</color>\n\n<color=#ffd700>Kosten:
+      {2}</color>'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184478564362
+    m_Localized: "<color=#ffd700>Goldm\xFCnze</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184478564363
+    m_Localized: 'Goldzuwachs: <color=#ffd700>+{0}</color>\n\n<color=#ffd700>Kosten:
+      {1}</color>'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184478564364
+    m_Localized: <color=#ffd700>Durchschlagschaden</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184478564365
+    m_Localized: '<color=#70D160>Durchschlagschaden:</color> <color=#ffd700>+{1}%</color>\n\n<color=#ffd700>Kosten:
+      {2}</color>'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184478564366
+    m_Localized: <color=#ffd700>Projektilschaden</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184478564367
+    m_Localized: '<color=#FF949A>Projektilschaden:</color> <color=#ffd700>+{1}%</color>\n\n<color=#ffd700>Kosten:
+      {2}</color>'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184478564368
+    m_Localized: <color=#ffd700>Gier</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184478564369
+    m_Localized: 'Gold: <color=#ffd700>+200</color>\nMaximale Gesundheit: <color=#ffd700>-{0}</color>'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184478564370
+    m_Localized: <color=#ffd700>Basisverteidigung</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184478564371
+    m_Localized: 'Eingehender Schaden: <color=#ffd700>-{0}%</color>\n\n<color=#ffd700>Kosten:
+      {1}</color>'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184478564372
+    m_Localized: <color=#ffd700>Totenmaske</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184478564373
+    m_Localized: 'Stacheln <color=#ffd700>+5</color>\nHeilt bei erlittenem Schaden
+      um <color=#ffd700>3</color>\n\n<color=#ffd700>Kosten: {0}</color>'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184478564374
+    m_Localized: <color=#ffd700>Generator</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184478564375
+    m_Localized: 'Von Waffen verursachter Schaden: <color=#ffd700>+1%</color> alle
+      <color=#ffd700>20</color> Sekunden\n\n<color=#ffd700>Kosten: {2}</color>'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 75409454487560192
+    m_Localized: "<color=#ffd700>Goldener Sch\xE4del</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 75409454537891840
+    m_Localized: 'Gold von Gegnern: <color=#ffd700>+{0}%</color>\n\n<color=#ffd700>Kosten:
+      {1}</color>'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 75409454537891841
+    m_Localized: "<color=#ffd700>Heilverst\xE4rkung</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 75409454537891842
+    m_Localized: "Erh\xF6ht alle Heilquellen um <color=#ffd700>{0}%</color>\\n\\n<color=#ffd700>Kosten:
+      {1}</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184478564378
+    m_Localized: <color=#ffd700>Bestienfang</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184478564379
+    m_Localized: "Heilung bei T\xF6tung: <color=#ffd700>+{0}</color>\\n\\n<color=#ffd700>Kosten:
+      {1}</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184478564380
+    m_Localized: <color=#ffd700>Bernstein</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184478564381
+    m_Localized: 'Maximale Gesundheit: <color=#ffd700>+5</color> alle <color=#ffd700>10</color>
+      Sekunden\n\n<color=#ffd700>Kosten: {2}</color>'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184478564382
+    m_Localized: <color=#ffd700>Saphir</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184478564383
+    m_Localized: 'Schild <color=#ffd700>+5</color> alle <color=#ffd700>10</color>
+      Sekunden\n\n<color=#ffd700>Kosten: {2}</color>'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184478564384
+    m_Localized: <color=#ffd700>Wiederherstellungsarbeiten</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184478564385
+    m_Localized: "Schildwiederherstellung <color=#ffd700>+{0}</color> beim T\xF6ten
+      eines Gegners\\n\\n<color=#ffd700>Kosten: {1}</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184478564386
+    m_Localized: <color=#ffd700>Feuerrate</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184478564387
+    m_Localized: 'Angriffsgeschwindigkeit: <color=#ffd700>+{0}</color>\n\n<color=#ffd700>Kosten:
+      {1}</color>'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184478564388
+    m_Localized: <color=#ffd700>Blocken</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184478564389
+    m_Localized: 'Blockchance: <color=#ffd700>+10%</color>\n\n<color=#ffd700>Kosten:
+      {1}</color>'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184478564390
+    m_Localized: "<color=#ffd700>General\xFCberholung</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184478564391
+    m_Localized: 'Gesundheitsregeneration <color=#ffd700>+{0}%</color>\n\n<color=#ffd700>Kosten:
+      {1}</color>'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184478564394
+    m_Localized: <color=#ffd700>Segen der Natur</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184478564395
+    m_Localized: 'Gesundheit: <color=#ffd700>+250</color>\nRegeneration fehlender
+      Gesundheit: <color=#ffd700>+2%</color>\n\n<color=#ffd700>Kosten: {0}</color>'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184478564396
+    m_Localized: <color=#ffd700>Smaragd</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184478564397
+    m_Localized: 'Gesundheitsregeneration: <color=#ffd700>+{0}</color> alle <color=#ffd700>{1}</color>
+      Sekunden\n\n<color=#ffd700>Kosten: {2}</color>'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184478564398
+    m_Localized: <color=#ffd700>Magische Verteidigung</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184478564399
+    m_Localized: 'Schild <color=#ffd700>+{0}%</color>\n\n<color=#ffd700>Kosten: {1}</color>'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184478564400
+    m_Localized: "<color=#ffd700>Verst\xE4rkte Stacheln</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184478564401
+    m_Localized: 'Stacheln <color=#ffd700>+20</color>\nStacheln: <color=#ffd700>+0.5</color>,
+      wenn ein Gegner durch Stachelschaden stirbt\n\n<color=#ffd700>Kosten: {0}</color>'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184478564402
+    m_Localized: <color=#ffd700>Geheimwaffe</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184478564403
+    m_Localized: "Schaden: <color=#ffd700>+{1}%</color> f\xFCr alle Waffen der <color=#ffd700>Stufe
+      1</color>\\n\\n<color=#ffd700>Kosten: {2}</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74738678660628480
+    m_Localized: <color=#ffd700>Jagd</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74738678685794304
+    m_Localized: "Mit einer Wahrscheinlichkeit von <color=#ffd700>3%</color> erscheint
+      ein vergoldeter verst\xE4rkter Gegner. Die Belohnung f\xFCr seine T\xF6tung
+      ist <color=#ffd700>10</color>-mal h\xF6her\\n\\n<color=#ffd700>Kosten: 1500</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74739327594954752
+    m_Localized: <color=#ffd700>Duplikator</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74739327603343360
+    m_Localized: "Der n\xE4chste gekaufte Gegenstand der <color=#ffd700>Stufe 1/2</color>
+      wird zus\xE4tzlich <color=#ffd700>5/2</color>-mal angewendet.\\nMehrere Duplikatoren
+      stapeln sich nicht\\n\\n<color=#ffd700>Kosten: 1500</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184478564404
+    m_Localized: <color=#ffd700>Ultimativer Chaosschaden</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184478564405
+    m_Localized: "<color=#B790FF>Chaosschaden:</color> <color=#ffd700>+50%</color>\\n<color=#B790FF>Chaosschaden:</color>
+      <color=#ffd700>+3%</color> f\xFCr jede andere Chaoswaffe\\n\\n<color=#ffd700>Kosten:
+      {0}</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184478564406
+    m_Localized: "<color=#ffd700>Singularit\xE4t</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184482758656
+    m_Localized: "Erh\xF6ht allen verursachten Schaden um <color=#ffd700>20%</color>,
+      solange der Energieschild aktiv ist\\nSchild: <color=#ffd700>+1000</color>\\n\\n<color=#ffd700>Kosten:
+      3000</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184482758657
+    m_Localized: <color=#ffd700>Zerfallsaura</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184482758658
+    m_Localized: "F\xFCgt allen Gegnern jede Sekunde Schaden in H\xF6he deiner Gesundheitsregeneration
+      zu\\n\\n<color=#ffd700>Kosten: {1}</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184482758659
+    m_Localized: <color=#ffd700>Ultimativer schwerer Schaden</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184482758660
+    m_Localized: "<color=#ADACAC>Schwerer Schaden:</color> <color=#ffd700>+50%</color>\\n<color=#ADACAC>Schwerer
+      Schaden:</color> <color=#ffd700>+3%</color> f\xFCr jede andere schwere Waffe\\n\\n<color=#ffd700>Kosten:
+      {0}</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184482758661
+    m_Localized: <color=#ffd700>Ultimativer Magieschaden</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184482758662
+    m_Localized: "<color=#58CBF8>Magieschaden:</color> <color=#ffd700>+50%</color>\\n<color=#58CBF8>Magieschaden:</color>
+      <color=#ffd700>+3%</color> f\xFCr jede andere Magiewaffe\\n\\n<color=#ffd700>Kosten:
+      {0}</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184482758663
+    m_Localized: <color=#ffd700>Ultimativer normaler Schaden</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184482758664
+    m_Localized: "<color=#EED976>Normaler Schaden:</color> <color=#ffd700>+50%</color>\\n<color=#EED976>Normaler
+      Schaden:</color> <color=#ffd700>+3%</color> f\xFCr jede andere normale Waffe\\n\\n<color=#ffd700>Kosten:
+      {0}</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184482758665
+    m_Localized: <color=#ffd700>Ultimativer Durchschlagschaden</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184482758666
+    m_Localized: "<color=#70D160>Durchschlagschaden:</color> <color=#ffd700>+50%</color>\\n<color=#70D160>Durchschlagschaden:</color>
+      <color=#ffd700>+3%</color> f\xFCr jede andere Durchschlagswaffe\\n\\n<color=#ffd700>Kosten:
+      {0}</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184482758667
+    m_Localized: <color=#ffd700>Ultimativer Projektilschaden</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184482758668
+    m_Localized: "<color=#FF949A>Projektilschaden:</color> <color=#ffd700>+50%</color>\\n<color=#FF949A>Projektilschaden:</color>
+      <color=#ffd700>+3%</color> f\xFCr jede andere Waffe dieses Typs\\n\\n<color=#ffd700>Kosten:
+      {0}</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184482758669
+    m_Localized: <color=#ffd700>Stachelpanzer</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184482758670
+    m_Localized: 'Stacheln <color=#ffd700>+{0}%</color>\n\n<color=#ffd700>Kosten:
+      {1}</color>'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74738678694182913
+    m_Localized: <color=#ffd700>Vertrag</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74738678694182914
+    m_Localized: "Der n\xE4chste Boss wird verst\xE4rkt: Seine Gesundheit erh\xF6ht
+      sich um <color=#ffd700>500%</color> und sein Schaden um <color=#ffd700>100%</color>.
+      Nach dem T\xF6ten dieses Bosses kannst du <color=#ffd700>2</color> Belohnungen
+      f\xFCr den Kopf des Monsters erhalten\\n\\n<color=#ffd700>Kosten: 0</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74849647629991936
+    m_Localized: "<color=#ffd700>\xC4gide</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74849647671934976
+    m_Localized: 'Maximale Gesundheit <color=#ffd700>+400</color>\nMaximale Gesundheit:
+      <color=#ffd700>+20%</color>\nEingehender Schaden: <color=#ffd700>-7.5%</color>\n\n<color=#ffd700>Kosten:
+      3000</color>'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184478564376
+    m_Localized: <color=#ffd700>Goldmine</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184478564377
+    m_Localized: 'Goldzuwachs: <color=#ffd700>+4</color>\nGoldzuwachs: <color=#ffd700>+5%</color>\n\n<color=#ffd700>Kosten:
+      {0}</color>'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184482758671
+    m_Localized: "<color=#BA0606>Verst\xE4rkung</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184482758672
+    m_Localized: "Globaler Schaden: <color=#BA0606>+10%</color>\\nAngriffsgeschwindigkeit:
+      <color=#BA0606>+5%</color>\\nGlobale maximale Gesundheit: <color=#BA0606>+15%</color>\\nGlobaler
+      Schild: <color=#BA0606>+15%</color>\\nHeilung bei T\xF6tung: <color=#BA0606>+25</color>\\nGoldzuwachs:
+      <color=#BA0606>+1</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184482758673
+    m_Localized: <color=#BA0606>Titanprojektile</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184482758674
+    m_Localized: "Erh\xF6ht den globalen Schaden um <color=#BA0606>{0}%</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184482758675
+    m_Localized: <color=#BA0606>Goldrausch</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184482758676
+    m_Localized: "Erh\xF6ht den Goldzuwachs pro Sekunde um <color=#BA0606>{0}</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184482758677
+    m_Localized: <color=#BA0606>Midas-Handschuh</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184482758678
+    m_Localized: "Erh\xF6ht den globalen Schaden um <color=#BA0606>0.5%</color>\n
+      f\xFCr jeweils <color=#BA0606>100</color> nicht ausgegebenes Gold"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184482758679
+    m_Localized: <color=#BA0606>Festung</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184482758680
+    m_Localized: "Erh\xF6ht die globale maximale Gesundheit um <color=#BA0606>{0}%</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184482758681
+    m_Localized: <color=#BA0606>Wiederherstellung</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184482758682
+    m_Localized: "Erh\xF6ht die globale Gesundheitsregeneration um <color=#BA0606>{0}%</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184482758683
+    m_Localized: <color=#BA0606>Magische Verteidigung</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184482758684
+    m_Localized: "Erh\xF6ht den globalen maximalen Schild um <color=#BA0606>{0}%</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184482758685
+    m_Localized: <color=#BA0606>Stacheldraht</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184482758686
+    m_Localized: "Erh\xF6ht den globalen Stachelschaden um <color=#BA0606>{0}%</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184482758687
+    m_Localized: <color=#BA0606>Feuerrate</color>
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184482758688
+    m_Localized: "Erh\xF6ht die Angriffsgeschwindigkeit um <color=#BA0606>{0}%</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184482758689
+    m_Localized: "<color=#BA0606>Mithrilw\xE4nde</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74576184482758690
+    m_Localized: 'Waffenschaden durch maximale Gesundheit: <color=#BA0606>+5%</color>\nGlobale
+      maximale Gesundheit: <color=#BA0606>+25%</color>'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 75409454542086144
+    m_Localized: "<color=#BA0606>Gro\xDFwild</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 75409454542086145
+    m_Localized: Gegner pro Welle <color=#BA0606>+{0}%</color>
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

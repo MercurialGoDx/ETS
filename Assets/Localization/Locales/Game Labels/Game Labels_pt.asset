@@ -46,7 +46,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 21319635969236993
-    m_Localized: Armas
+    m_Localized: "Par\xE2metros"
     m_Metadata:
       m_Items: []
   - m_Id: 21319635969236994
@@ -107,6 +107,143 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 22560234059849728
     m_Localized: "Classifica\xE7\xE3o"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 70178168891710351
+    m_Localized: "Par\xE2metros"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78526631054553307
+    m_Localized: "Armas, melhorias e estat\xEDsticas desta partida. Voc\xEA pode
+      abri-lo no jogo com a tecla <color=#ffd700>TAB</color>"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 65569384996975990
+    m_Localized: Armas
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3725147903832116
+    m_Localized: "Vida"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10619995571142592
+    m_Localized: "Regeneração de vida"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11775346651500202
+    m_Localized: "Cura por abate"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11802210082058881
+    m_Localized: "Cura ao receber dano"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 12316824186931610
+    m_Localized: "Amplificação de cura"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 14094762313145913
+    m_Localized: "Escudo"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 16504742105405043
+    m_Localized: "Escudo por abate"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 19756295254615842
+    m_Localized: "Chance de bloqueio"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 20168385402233059
+    m_Localized: "Redução de dano"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 21017627269246335
+    m_Localized: "Dano de espinhos"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 24776102786198743
+    m_Localized: "Velocidade de ataque"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 25920090900021417
+    m_Localized: "Multiplicador de dano"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 37759157349650158
+    m_Localized: "Mais inimigos"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 39296767015963371
+    m_Localized: "Renda"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 39988450964490444
+    m_Localized: "Bônus de ouro"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 45653633024113607
+    m_Localized: "Chance de caça"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 53711503832900015
+    m_Localized: "Vida"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57936401869429999
+    m_Localized: "Dano"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 60949397238782180
+    m_Localized: "/s"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 64853685396243997
+    m_Localized: "Magia"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 69543210346914670
+    m_Localized: "Perfurante"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 72060171061295335
+    m_Localized: "Normal"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74523639012016940
+    m_Localized: "Projétil"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74878436638269156
+    m_Localized: "Pesado"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 75368449556766513
+    m_Localized: "Caos"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 77519296610540157
+    m_Localized: "Armas"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79010366862897113
+    m_Localized: "Melhorias"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 80283965692857455
+    m_Localized: "Estatísticas"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 81100507942926118
+    m_Localized: "Dano por tipo"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 81166865619476457
+    m_Localized: "Estatísticas do inimigo"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 99345958463422879
+    m_Localized: "Tab — fechar"
     m_Metadata:
       m_Items: []
   references:

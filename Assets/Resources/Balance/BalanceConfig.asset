@@ -22,11 +22,11 @@ MonoBehaviour:
     growthStage1MultiplierDamage: 1.35
     growthStage2MultiplierHealth: 2.5
     growthStage2MultiplierDamage: 1.75
-    growthStage3MultiplierHealth: 2.5
-    growthStage3MultiplierDamage: 1.75
+    growthStage3MultiplierHealth: 3.25
+    growthStage3MultiplierDamage: 2
     timeDifficultStage1: 900
     timeDifficultStage2: 1500
-    timeDifficultStage3: 2400
+    timeDifficultStage3: 1920
     hpAddPerWave: 1.2
     damageAddPerWave: 0.05
   boss:

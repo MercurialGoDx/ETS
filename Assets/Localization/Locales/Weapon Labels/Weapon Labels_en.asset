@@ -303,7 +303,7 @@ MonoBehaviour:
   - m_Id: 75581446511648768
     m_Localized: On enemy kill, grants additional gold <color=#ffd700>+1</color>\nGains
       <color=#ffd700>+1</color> base damage for every <color=#ffd700>300</color>
-      unspent gold, up to <color=#ffd700>+10</color>\n<color=#ffd700>Damage:</color>
+      unspent gold, up to <color=#ffd700>+7</color>\n<color=#ffd700>Damage:</color>
       {0}\n<color=#ffd700>Damage Type:</color> {1}\n<color=#ffd700>Attack Speed:</color>
       {2}\n\n<color=#ffd700>Cost:</color>  {3}
     m_Metadata:

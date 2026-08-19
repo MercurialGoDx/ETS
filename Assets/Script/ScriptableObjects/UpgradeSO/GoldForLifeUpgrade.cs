@@ -34,7 +34,11 @@ public class GoldForLifeUpgrade : UpgradeBaseSO
         context.playerHealth.AddFlatMaxHealth(-lifeLoseValue);
 
         context.runtime.goldUpgradeCount++;
-        GoldManager.Instance.AddGold(basicGold + multGold * context.runtime.goldUpgradeCount);
+
+        // GoldSource.Fixed: эта выдача — ровно объявленное число (напр. Sacrifice: 200
+        // золота), бонусы % к получаемому золоту на неё намеренно не действуют.
+        int amount = basicGold + multGold * context.runtime.goldUpgradeCount;
+        GoldManager.Instance.AddGold(amount, GoldSource.Fixed);
     }
 
     protected override object[] GetSpecificDescriptionArgs()

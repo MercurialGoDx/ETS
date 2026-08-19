@@ -23,7 +23,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 289104179200
-    m_Localized: Sair
+    m_Localized: Nosso Discord
     m_Metadata:
       m_Items: []
   - m_Id: 335564484608
@@ -32,6 +32,10 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 38515211617812480
     m_Localized: "Configura\xE7\xF5es"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 75486351726939529
+    m_Localized: Sair
     m_Metadata:
       m_Items: []
   references:

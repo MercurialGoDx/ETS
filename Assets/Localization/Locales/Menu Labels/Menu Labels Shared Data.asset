@@ -20,7 +20,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 289104179200
-    m_Key: main_menu.exit
+    m_Key: main_menu.discord
     m_Metadata:
       m_Items: []
   - m_Id: 335564484608
@@ -29,6 +29,10 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 38515211617812480
     m_Key: main_menu.setting
+    m_Metadata:
+      m_Items: []
+  - m_Id: 75486351726939529
+    m_Key: main_menu.exit
     m_Metadata:
       m_Items: []
   m_Metadata:
