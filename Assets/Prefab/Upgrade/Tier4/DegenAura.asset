@@ -32,3 +32,6 @@ MonoBehaviour:
   nameKey: degen_aura.name
   descriptionKey: degen_aura.desc
   valueFlat: 1
+  enemyVisualPrefab: {fileID: 2197785610963464347, guid: 383298a556b75504eb3040b0e20d8706, type: 3}
+  enemyVisualScaleMultiplier: 2.7
+  enemyVisualHeightOffset: 0.1

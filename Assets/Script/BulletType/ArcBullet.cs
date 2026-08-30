@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class ArcBullet : MonoBehaviour, IAttackBehaviour
@@ -38,6 +39,7 @@ public class ArcBullet : MonoBehaviour, IAttackBehaviour
     private WeaponDefinition sourceWeapon;
 
     private PooledObject pooledObject;
+    private readonly HashSet<Enemy> damagedEnemies = new();
 
     public void Awake()
     {
@@ -136,7 +138,7 @@ public class ArcBullet : MonoBehaviour, IAttackBehaviour
                 Enemy e = target.GetComponent<Enemy>();
                 if (e != null)
                 {
-                    e.TakeDamage(damage);
+                    e.TakeWeaponDamage(damage, sourceWeapon);
                     DamageStatsManager.Instance?.RegisterDamage(sourceWeapon, damage);
                 }
             }
@@ -150,13 +152,14 @@ public class ArcBullet : MonoBehaviour, IAttackBehaviour
         Vector3 explosionPos = transform.position;
 
         Collider[] hits = Physics.OverlapSphere(explosionPos, aoeRadius);
+        damagedEnemies.Clear();
         foreach (var col in hits)
         {
             Enemy enemy = col.GetComponent<Enemy>();
-            if (enemy == null)
+            if (enemy == null || !damagedEnemies.Add(enemy))
                 continue;
 
-            enemy.TakeDamage(damage);
+            enemy.TakeWeaponDamage(damage, sourceWeapon);
             DamageStatsManager.Instance?.RegisterDamage(sourceWeapon, damage);
         }
     }

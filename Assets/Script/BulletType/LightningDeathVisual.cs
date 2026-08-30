@@ -96,7 +96,7 @@ public sealed class LightningDeathVisual : MonoBehaviour, IAttackBehaviour
         activeDuration = strikeDuration;
         BeginStrike();
 
-        enemy.TakeDamage(context.damage);
+        enemy.TakeWeaponDamage(context.damage, context.weapon);
         DamageStatsManager.Instance?.RegisterDamage(context.weapon, context.damage);
 
         if (enemy.isDead && context.ownerTower != null)

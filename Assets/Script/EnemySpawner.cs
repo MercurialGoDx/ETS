@@ -91,6 +91,84 @@ public class EnemySpawner : MonoBehaviour
     public float CurrentFlatHealthBonus => flatHealthBonus;
     public float CurrentFlatDamageBonus => flatDamageBonus;
 
+    /// <summary>
+    /// Возвращает итоговые статы выбранного обычного врага на текущем снимке сложности.
+    /// Для босса источник задаётся колонкой reference_enemy в boss.csv.
+    /// </summary>
+    public bool TryGetCurrentReferenceEnemyStats(string referenceEnemy, out float health, out float damage)
+    {
+        health = 0f;
+        damage = 0f;
+
+        if (enemyPrefabs == null)
+            return false;
+
+        EnemyAttackType referenceAttackType;
+        switch (referenceEnemy?.Trim().ToLowerInvariant())
+        {
+            case "melee":
+                referenceAttackType = EnemyAttackType.Melee;
+                break;
+            case "mid":
+                referenceAttackType = EnemyAttackType.MidRange;
+                break;
+            case "range":
+                referenceAttackType = EnemyAttackType.LongRange;
+                break;
+            default:
+                return false;
+        }
+
+        foreach (GameObject prefab in enemyPrefabs)
+        {
+            if (prefab == null)
+                continue;
+
+            Enemy prefabEnemy = prefab.GetComponent<Enemy>();
+            if (prefabEnemy == null || prefabEnemy.attackType != referenceAttackType)
+                continue;
+
+            health = CalculateCurrentHealth(prefabEnemy.maxHealth);
+            damage = CalculateCurrentDamage(prefabEnemy.damageToPlayer);
+            return true;
+        }
+
+        return false;
+    }
+
+    /// <summary>
+    /// Инициализирует босса по формулам:
+    /// HP = базовое HP босса + HP ближнего врага × множитель босса;
+    /// урон = базовая плоская прибавка босса + урон ближнего врага × множитель босса.
+    /// Базовые прибавки босса не участвуют в волновом масштабировании.
+    /// </summary>
+    public bool InitializeSpawnedBoss(
+        Enemy boss,
+        string referenceEnemy,
+        float baseBossHealth,
+        float baseBossDamage,
+        float healthMultiplier,
+        float damageMultiplier,
+        out float referenceEnemyHealth,
+        out float referenceEnemyDamage)
+    {
+        referenceEnemyHealth = 0f;
+        referenceEnemyDamage = 0f;
+
+        if (boss == null || !TryGetCurrentReferenceEnemyStats(
+                referenceEnemy,
+                out referenceEnemyHealth,
+                out referenceEnemyDamage))
+            return false;
+
+        float health = baseBossHealth + (referenceEnemyHealth * healthMultiplier);
+        float damage = baseBossDamage + (referenceEnemyDamage * damageMultiplier);
+
+        boss.InitStats(health, damage);
+        ApplySpawnRuntimeData(boss);
+        return true;
+    }
+
     /// <summary>Накопленный прирост числа врагов в волне (0.25 = +25%). Только чтение, для UI.</summary>
     public float EnemiesPerWavePercentBonus => enemiesPerWavePercentBonus;
 
@@ -119,10 +197,26 @@ public class EnemySpawner : MonoBehaviour
         float health = (baseHealth * baseHealthMultiplier * healthDifficultyMultiplier) + flatHealthBonus;
         // additionalDamage — плоская прибавка (у босса — additional_damage_boss из конфига),
         // не участвует в умножении на baseDamageMultiplier/damageDifficultyMultiplier.
-        float damage = additionalDamage + flatDamageBonus + (baseDamage * baseDamageMultiplier * damageDifficultyMultiplier);
+        float damage = additionalDamage + flatDamageBonus
+            + (baseDamage * baseDamageMultiplier * damageDifficultyMultiplier);
 
         enemy.InitStats(health, damage);
 
+        ApplySpawnRuntimeData(enemy);
+    }
+
+    private float CalculateCurrentHealth(float baseHealth)
+    {
+        return (baseHealth * healthDifficultyMultiplier) + flatHealthBonus;
+    }
+
+    private float CalculateCurrentDamage(float baseDamage)
+    {
+        return (baseDamage * damageDifficultyMultiplier) + flatDamageBonus;
+    }
+
+    private void ApplySpawnRuntimeData(Enemy enemy)
+    {
         // Every spawned enemy receives the same wave rewards and runtime effects.
         enemy.bonusGold = goldBonusWavePeriod > 0
             ? (currentWaveIndex / goldBonusWavePeriod) * goldBonusPerPeriod

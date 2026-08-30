@@ -11,9 +11,6 @@ public class MaxHpDamageBonus : IDamageBonusProvider, IDamageBonusDebugProvider
 
     public float GetDamageBonus(DamageContext ctx)
     {
-        if (ctx.isSpikes)
-            return 0f;
-
         return (health.MaxHealth / 100f) * runtime.damagePerValueHpPercent;
     }
 

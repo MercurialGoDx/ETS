@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Catapult : MonoBehaviour, IAttackBehaviour 
@@ -42,6 +43,7 @@ public class Catapult : MonoBehaviour, IAttackBehaviour
     private float weaponBaseDamage;
 
     private PooledObject pooledObject;
+    private readonly HashSet<Enemy> damagedEnemies = new();
 
     private void Awake()
     {
@@ -160,6 +162,7 @@ public class Catapult : MonoBehaviour, IAttackBehaviour
             {
                 Vector3 center = transform.position;
                 Collider[] hits = Physics.OverlapSphere(center, aoeRadius);
+                damagedEnemies.Clear();
 
                 if (debugDamage)
                 {
@@ -179,10 +182,10 @@ public class Catapult : MonoBehaviour, IAttackBehaviour
                 foreach (var col in hits)
                 {
                     Enemy enemy = col.GetComponent<Enemy>();
-                    if (enemy == null)
+                    if (enemy == null || !damagedEnemies.Add(enemy))
                         continue;
 
-                    enemy.TakeDamage(aoeDamage);
+                    enemy.TakeWeaponDamage(aoeDamage, sourceWeapon);
                     DamageStatsManager.Instance?.RegisterDamage(sourceWeapon, aoeDamage);
                 }
             }

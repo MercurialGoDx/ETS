@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class AudioManager : MonoBehaviour
 {
@@ -21,7 +22,11 @@ public class AudioManager : MonoBehaviour
     public float lateGameStartSeconds = 20f * 60f; // 20 minutes
 
     [Header("Volume Settings")]
-    [Range(0f, 1f)] public float masterVolume = 1f;
+    [FormerlySerializedAs("masterVolume")]
+    [Range(0f, 1f)] public float musicVolume = 1f;
+    [Range(0f, 1f)] public float soundVolume = 1f;
+    [Tooltip("Global music balance applied after the user volume setting.")]
+    [Range(0f, 1f)] public float musicOutputMultiplier = 0.2f;
     [Range(0f, 1f)] public float pauseMultiplier = 0.5f;
 
     [Header("LowPass Settings")]
@@ -114,10 +119,10 @@ public class AudioManager : MonoBehaviour
     }
 
     // ========= ГРОМКОСТЬ =========
-    public void SetMasterVolume(float value)
+    public void SetMusicVolume(float value)
     {
-        masterVolume = Mathf.Clamp01(value);
-        _currentBaseVolume = masterVolume;
+        musicVolume = Mathf.Clamp01(value);
+        _currentBaseVolume = GetMusicOutputVolume();
 
         if (musicSource != null)
         {
@@ -125,7 +130,19 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-    public float GetMasterVolume() => masterVolume;
+    public float GetMusicVolume() => musicVolume;
+
+    private float GetMusicOutputVolume()
+    {
+        return Mathf.Clamp01(musicVolume * musicOutputMultiplier);
+    }
+
+    public void SetSoundVolume(float value)
+    {
+        soundVolume = Mathf.Clamp01(value);
+    }
+
+    public float GetSoundVolume() => soundVolume;
     // =============================
 
     // ====== Публичные методы для меню/игры ======
@@ -189,7 +206,7 @@ public class AudioManager : MonoBehaviour
         }
 
         _isPausedFx = false;
-        _currentBaseVolume = masterVolume;
+        _currentBaseVolume = GetMusicOutputVolume();
 
         // Выбор случайного трека, стараемся не повторять тот же самый подряд
         AudioClip chosen = ChooseRandomAvoidRepeat(pool, _lastPlayedClip);

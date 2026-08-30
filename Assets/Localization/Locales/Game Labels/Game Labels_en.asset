@@ -222,6 +222,10 @@ MonoBehaviour:
     m_Localized: "Chaos"
     m_Metadata:
       m_Items: []
+  - m_Id: 76468449556766514
+    m_Localized: "Holy"
+    m_Metadata:
+      m_Items: []
   - m_Id: 77519296610540157
     m_Localized: "Weapons"
     m_Metadata:

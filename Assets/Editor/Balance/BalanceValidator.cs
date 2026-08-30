@@ -27,12 +27,13 @@ namespace ETS.BalanceImport
             "growth_stage3_multiplier_health", "growth_stage3_multiplier_damage",
             "time_difficult_stage1", "time_difficult_stage2", "time_difficult_stage3",
             "speed_melee", "speed_mid", "speed_range", "attack_interval",
-            "hp_add_per_wave", "damage_add_per_wave" };
+            "hp_add_per_wave", "damage_add_per_wave",
+            "damage_growth_start_after_attacks", "damage_growth_percent_per_attack" };
 
         private static readonly string[] BossCols = {
-            "damage_boss", "hp_boss", "gold_for_boss", "speed_boss",
-            "attack_interval", "attack_range", "spawn_interval", "hp_multiplier", "damage_multiplier",
-            "additional_damage_boss" };
+            "additional_damage_boss", "damage_boss", "hp_boss", "hp_multiplier",
+            "gold_for_boss", "speed_boss", "attack_interval", "attack_range",
+            "spawn_interval", "reference_enemy" };
 
         private static readonly string[] ShopCols = {
             "first_upgrade_cost", "second_upgrade_cost", "reroll_base_cost", "reroll_cost_increase",
@@ -266,6 +267,14 @@ namespace ETS.BalanceImport
             if (Cell.Int(row, "enemy_per_wave", w, issues) <= 0)
                 issues.Add(Issue.Error(w, "enemy_per_wave должно быть > 0"));
 
+            int damageGrowthStart = Cell.Int(row, "damage_growth_start_after_attacks", w, issues);
+            if (damageGrowthStart < 0)
+                issues.Add(Issue.Error(w, "damage_growth_start_after_attacks должно быть >= 0"));
+
+            float damageGrowthPerAttack = Cell.Float(row, "damage_growth_percent_per_attack", w, issues);
+            if (damageGrowthPerAttack < 0f)
+                issues.Add(Issue.Error(w, "damage_growth_percent_per_attack должно быть >= 0"));
+
             float healthStart = Cell.Float(row, "health_difficult_start", w, issues);
             float damageStart = Cell.Float(row, "damage_difficult_start", w, issues);
             if (healthStart <= 0f) issues.Add(Issue.Error(w, "health_difficult_start должно быть > 0"));
@@ -301,11 +310,15 @@ namespace ETS.BalanceImport
             string w = t.Name;
 
             if (Cell.Float(row, "hp_boss", w, issues) <= 0f) issues.Add(Issue.Error(w, "hp_boss должно быть > 0"));
-            if (Cell.Float(row, "damage_boss", w, issues) < 0f) issues.Add(Issue.Error(w, "damage_boss должно быть >= 0"));
+            if (Cell.Float(row, "damage_boss", w, issues) <= 0f) issues.Add(Issue.Error(w, "damage_boss должно быть > 0"));
             if (Cell.Float(row, "gold_for_boss", w, issues) < 0f) issues.Add(Issue.Error(w, "gold_for_boss должно быть >= 0"));
             if (Cell.Float(row, "additional_damage_boss", w, issues) < 0f) issues.Add(Issue.Error(w, "additional_damage_boss должно быть >= 0"));
 
-            foreach (var col in new[] { "speed_boss", "attack_interval", "attack_range", "spawn_interval", "hp_multiplier", "damage_multiplier" })
+            string referenceEnemy = Cell.Text(row, "reference_enemy").ToLowerInvariant();
+            if (referenceEnemy != "melee" && referenceEnemy != "mid" && referenceEnemy != "range")
+                issues.Add(Issue.Error(w, "reference_enemy должно быть melee, mid или range"));
+
+            foreach (var col in new[] { "speed_boss", "attack_interval", "attack_range", "spawn_interval", "hp_multiplier" })
                 if (Cell.Float(row, col, w, issues) <= 0f)
                     issues.Add(Issue.Error(w, $"{col} должно быть > 0"));
         }

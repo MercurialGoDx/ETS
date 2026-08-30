@@ -284,6 +284,8 @@ namespace ETS.BalanceImport
             row["time_difficult_stage3"] = Num(config.waves.timeDifficultStage3);
             row["hp_add_per_wave"] = Num(config.waves.hpAddPerWave);
             row["damage_add_per_wave"] = Num(config.waves.damageAddPerWave);
+            row["damage_growth_start_after_attacks"] = Num(config.waves.damageGrowthStartAfterAttacks);
+            row["damage_growth_percent_per_attack"] = Num(config.waves.damageGrowthPercentPerAttack);
 
             table.Rows.Add(row);
             return table;
@@ -299,16 +301,17 @@ namespace ETS.BalanceImport
             var boss = LoadEnemy(BalanceAssetWriter.BossPrefabPath, "boss", issues);
             if (boss == null) return null;
 
-            row["damage_boss"] = Num(boss.damageToPlayer);
+            row["additional_damage_boss"] = Num(config.boss.additionalDamage);
+            row["damage_boss"] = Num(config.boss.damageMultiplier);
             row["hp_boss"] = Num(boss.maxHealth);
+            row["hp_multiplier"] = Num(config.boss.hpMultiplier);
             row["gold_for_boss"] = Num(boss.baseGold);
             row["speed_boss"] = Num(boss.speed);
             row["attack_interval"] = Num(boss.attackInterval);
             row["attack_range"] = Num(boss.attackRange);
 
             row["spawn_interval"] = Num(config.boss.spawnInterval);
-            row["hp_multiplier"] = Num(config.boss.hpMultiplier);
-            row["damage_multiplier"] = Num(config.boss.damageMultiplier);
+            row["reference_enemy"] = config.boss.referenceEnemy;
 
             table.Rows.Add(row);
             return table;

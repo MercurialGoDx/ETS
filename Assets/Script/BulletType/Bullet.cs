@@ -145,7 +145,7 @@ public class Bullet : MonoBehaviour, IAttackBehaviour
             float hpBefore = enemy.CurrentHealth;
 
             // наносим урон
-            enemy.TakeDamage(damage);
+            enemy.TakeWeaponDamage(damage, sourceWeapon);
             DamageStatsManager.Instance?.RegisterDamage(sourceWeapon, damage);
 
             // именно этот удар убил врага (а не долетевший позже снаряд по уже мёртвому)

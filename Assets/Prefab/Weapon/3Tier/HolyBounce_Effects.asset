@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 577555f02fe57e647887729ad14b7e4a, type: 3}
+  m_Name: HolyBounce_Effects
+  m_EditorClassIdentifier: 
+  effects:
+  - {fileID: 1197835626431340381}
+--- !u!114 &1197835626431340381
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a6667a7ad23966a4f964301c48b4c688, type: 3}
+  m_Name: Weakness
+  m_EditorClassIdentifier: 
+  chancePercent: 100
+  damageReductionPercent: 25
+  duration: 3
+  visualPrefab: {fileID: 4878261017863814315, guid: d2aedcd1861b4f56859fec221d7a205c, type: 3}

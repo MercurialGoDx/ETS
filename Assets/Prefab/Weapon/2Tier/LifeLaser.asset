@@ -24,7 +24,8 @@ MonoBehaviour:
   projectileSpeed: 10
   itemTier: 2
   damageType: 5
-  bulletPrefab: {fileID: 4676400579412150040, guid: 47aaaa3fd11d0014eb4cf4972f750c36, type: 3}
+  bulletPrefab: {fileID: 5336949821306646805, guid: de1c6b86c6405c04bb12d67976ab42d9, type: 3}
+  effectProfile: {fileID: 0}
   weight: 8
   weightIncreasePerPurchase: 0
   maxWeightIncreasePurchases: 0

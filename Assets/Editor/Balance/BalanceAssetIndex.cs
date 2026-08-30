@@ -161,7 +161,7 @@ namespace ETS.BalanceImport
 
             // ---- Tier 3 ----
             ["AttackSpeed"] = new[] { ValueBinding.Self("value_1", "valuePercent") },
-            ["Block"] = new[] { ValueBinding.Self("value_1", "valueFlat") },
+            ["Block"] = new[] { ValueBinding.Self("value_1", "valuePercent") },
             ["IncreaceHpRegPercent"] = new[] { ValueBinding.Self("value_1", "valuePercent") },
             ["RegenPerTick"] = new[]
             {
@@ -192,7 +192,7 @@ namespace ETS.BalanceImport
             // valuePercentPerWeapon хранится долей: 0.02 в ассете = +2% за оружие → scale 0.01
             ["NormalDamageUltimate"] = Ultimate(),
             ["PiercingDamageUltimate"] = Ultimate(),
-            ["ProjectileDamageUltimate 1"] = Ultimate(),
+            ["ProjectileDamageUltimate"] = Ultimate(),
             ["MagicDamageUltimate"] = Ultimate(),
             ["HeavyDamageUltimate"] = Ultimate(),
             ["ChaosDamageUltimate"] = Ultimate(),

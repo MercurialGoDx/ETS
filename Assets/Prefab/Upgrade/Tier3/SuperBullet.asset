@@ -32,4 +32,4 @@ MonoBehaviour:
   nameKey: super_bullet.name
   descriptionKey: super_bullet.desc
   tier: 1
-  valuePercent: 50
+  valuePercent: 100

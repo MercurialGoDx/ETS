@@ -24,8 +24,19 @@ public class WorldGoldPopupSpawner : MonoBehaviour
         if (amount <= 0) return;
         if (worldPos == null) return;
 
-        GameObject obj = PoolManager.Instance.Spawn(popupPrefab.gameObject, worldPos.Value + offset, Quaternion.identity);
-        WorldGoldPopup p = obj.GetComponent<WorldGoldPopup>();
-        p.Init(amount);
+        WorldGoldPopup popup = SpawnPopup(worldPos.Value + offset);
+        popup?.Init(amount);
+    }
+
+    private WorldGoldPopup SpawnPopup(Vector3 worldPosition)
+    {
+        if (popupPrefab == null || PoolManager.Instance == null)
+            return null;
+
+        GameObject obj = PoolManager.Instance.Spawn(
+            popupPrefab.gameObject,
+            worldPosition,
+            Quaternion.identity);
+        return obj != null ? obj.GetComponent<WorldGoldPopup>() : null;
     }
 }

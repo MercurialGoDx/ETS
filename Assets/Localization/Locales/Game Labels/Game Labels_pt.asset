@@ -222,6 +222,10 @@ MonoBehaviour:
     m_Localized: "Caos"
     m_Metadata:
       m_Items: []
+  - m_Id: 76468449556766514
+    m_Localized: "Sagrado"
+    m_Metadata:
+      m_Items: []
   - m_Id: 77519296610540157
     m_Localized: "Armas"
     m_Metadata:

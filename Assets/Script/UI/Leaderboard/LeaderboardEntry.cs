@@ -19,11 +19,19 @@ public struct LeaderboardEntry
     /// <summary>Продолжительность забега в секундах. Форматируется в mm:ss / hh:mm:ss при отображении.</summary>
     public float timeSeconds;
 
-    public LeaderboardEntry(int rank, string playerName, Sprite avatar, float timeSeconds)
+    /// <summary>
+    /// "Детали" записи лидерборда (Steam: до 64 int32) — закодированный снимок билда
+    /// (см. BuildSnapshot.Encode/Decode). Может быть null — запись без данных билда
+    /// (старая, до появления этой фичи, либо заглушка вне Steam).
+    /// </summary>
+    public int[] details;
+
+    public LeaderboardEntry(int rank, string playerName, Sprite avatar, float timeSeconds, int[] details = null)
     {
         this.rank = rank;
         this.playerName = playerName;
         this.avatar = avatar;
         this.timeSeconds = timeSeconds;
+        this.details = details;
     }
 }

@@ -52,14 +52,21 @@ namespace ETS.BalanceImport
             public EnemyStatJson mid = new EnemyStatJson();
             public EnemyStatJson range = new EnemyStatJson();
             public float attack_interval;
+            public int damage_growth_start_after_attacks;
+            public float damage_growth_percent_per_attack;
         }
 
         [Serializable] public class BossJson
         {
-            public float damage; public float hp; public int gold; public float speed;
-            public float attack_interval; public float attack_range;
-            public float spawn_interval; public float hp_multiplier; public float damage_multiplier;
             public float additional_damage_boss;
+            public float damage_boss;
+            public float hp_boss;
+            public float hp_multiplier;
+            public int gold;
+            public float speed;
+            public float attack_interval; public float attack_range;
+            public float spawn_interval;
+            public string reference_enemy;
         }
 
         [Serializable] public class WavesJson
@@ -129,18 +136,20 @@ namespace ETS.BalanceImport
             root.enemies.mid = Stat(e, "damage_mid", "hp_mid", "speed_mid", "gold_for_enemy");
             root.enemies.range = Stat(e, "damage_range", "hp_range", "speed_range", "gold_for_enemy");
             root.enemies.attack_interval = F(e["attack_interval"]);
+            root.enemies.damage_growth_start_after_attacks = I(e["damage_growth_start_after_attacks"]);
+            root.enemies.damage_growth_percent_per_attack = F(e["damage_growth_percent_per_attack"]);
 
             var b = sheets.Boss.Rows[0];
-            root.boss.damage = F(b["damage_boss"]);
-            root.boss.hp = F(b["hp_boss"]);
+            root.boss.additional_damage_boss = F(b["additional_damage_boss"]);
+            root.boss.damage_boss = F(b["damage_boss"]);
+            root.boss.hp_boss = F(b["hp_boss"]);
+            root.boss.hp_multiplier = F(b["hp_multiplier"]);
             root.boss.gold = I(b["gold_for_boss"]);
             root.boss.speed = F(b["speed_boss"]);
             root.boss.attack_interval = F(b["attack_interval"]);
             root.boss.attack_range = F(b["attack_range"]);
             root.boss.spawn_interval = F(b["spawn_interval"]);
-            root.boss.hp_multiplier = F(b["hp_multiplier"]);
-            root.boss.damage_multiplier = F(b["damage_multiplier"]);
-            root.boss.additional_damage_boss = F(b["additional_damage_boss"]);
+            root.boss.reference_enemy = b["reference_enemy"];
 
             root.waves.delay_per_wave = F(e["delay_per_wave"]);
             root.waves.enemy_per_wave = I(e["enemy_per_wave"]);

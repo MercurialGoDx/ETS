@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 67fb684f7d6fef945bca04da78b690f4, type: 3}
+  m_Script: {fileID: 11500000, guid: c27422c313552df40af37641a13e294d, type: 3}
   m_Name: SpikeUltimate
   m_EditorClassIdentifier: 
   icon: {fileID: 21300000, guid: b893eecc1744d0b46b761b949ffbac5a, type: 3}
@@ -31,4 +31,6 @@ MonoBehaviour:
       m_TableCollectionName: GUID:164770c6fc8794c4ba4db6f8c7e72db3
   nameKey: spike_ultimate.name
   descriptionKey: spike_ultimate.desc
-  valuePercent: 50
+  upgrades:
+  - {fileID: 11400000, guid: c7511bdb93fb4b04d8700af670f00c1a, type: 2}
+  - {fileID: 11400000, guid: 350cfbe9ec057a544a45d2b28598cc4b, type: 2}

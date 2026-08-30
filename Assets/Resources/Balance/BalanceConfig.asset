@@ -32,7 +32,8 @@ MonoBehaviour:
   boss:
     spawnInterval: 300
     hpMultiplier: 1.5
-    damageMultiplier: 1
+    damageMultiplier: 4
+    referenceEnemy: melee
     additionalDamage: 25
   shop:
     rerollBaseCost: 10
@@ -44,7 +45,7 @@ MonoBehaviour:
   player:
     playerHp: 200
     playerShield: 0
-    blockCap: 0.8
+    blockCap: 0.9
     shieldRechargeTime: 10
     shieldFullRestoreAfterNoDamage: 15
     towerRange: 20

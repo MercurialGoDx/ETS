@@ -50,6 +50,7 @@ MonoBehaviour:
   speed: 15
   damage: 5
   homing: 1
+  rotationOffsetEuler: {x: 0, y: 0, z: 0}
   maxLifeTime: 10
   increasePlayerMaxHealthOnKill: 0
   maxHealthIncreaseAmount: 10
@@ -108,15 +109,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3923952683678712364, guid: 86e6c7d81766295418601bcd9d9ae6b9, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.5
+      value: 0.35
       objectReference: {fileID: 0}
     - target: {fileID: 3923952683678712364, guid: 86e6c7d81766295418601bcd9d9ae6b9, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.5
+      value: 0.35
       objectReference: {fileID: 0}
     - target: {fileID: 3923952683678712364, guid: 86e6c7d81766295418601bcd9d9ae6b9, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.5
+      value: 0.35
       objectReference: {fileID: 0}
     - target: {fileID: 3923952683678712364, guid: 86e6c7d81766295418601bcd9d9ae6b9, type: 3}
       propertyPath: m_LocalPosition.x

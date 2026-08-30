@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PortalBullet : MonoBehaviour, IAttackBehaviour
@@ -34,6 +35,7 @@ public class PortalBullet : MonoBehaviour, IAttackBehaviour
     private WeaponDefinition sourceWeapon;
 
     private PooledObject pooledObject;
+    private readonly HashSet<Enemy> damagedEnemies = new();
 
     public void Awake()
     {
@@ -111,12 +113,13 @@ public class PortalBullet : MonoBehaviour, IAttackBehaviour
 
         // Находим всех врагов в радиусе
         Collider[] hits = Physics.OverlapSphere(strikePosition, radius);
+        damagedEnemies.Clear();
         foreach (var col in hits)
         {
             Enemy enemy = col.GetComponent<Enemy>();
-            if (enemy != null)
+            if (enemy != null && damagedEnemies.Add(enemy))
             {
-                enemy.TakeDamage(damage);
+                enemy.TakeWeaponDamage(damage, sourceWeapon);
                 DamageStatsManager.Instance?.RegisterDamage(sourceWeapon, damage);
             }
         }

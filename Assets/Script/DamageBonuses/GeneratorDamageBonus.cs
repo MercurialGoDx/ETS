@@ -9,9 +9,6 @@ public class GeneratorDamageBonus : IDamageBonusProvider, IDamageBonusDebugProvi
 
     public float GetDamageBonus(DamageContext ctx)
     {
-        if (ctx.isSpikes)
-            return 0f;
-
         return runtime.totalGeneratorDamagePercent;
     }
 

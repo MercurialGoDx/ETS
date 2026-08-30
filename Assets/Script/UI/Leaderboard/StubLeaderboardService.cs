@@ -51,7 +51,7 @@ public class StubLeaderboardService : ILeaderboardService
             onDone(result);
     }
 
-    public void SubmitTime(float timeSeconds, Action onDone = null)
+    public void SubmitTime(float timeSeconds, int[] buildDetails = null, Action onDone = null)
     {
         // Заглушка ничего не сохраняет. Реальную отправку сделает SteamLeaderboardService.
         Debug.Log("[StubLeaderboardService] SubmitTime(" + timeSeconds + ") — заглушка, ничего не сохраняет.");
@@ -65,9 +65,23 @@ public class StubLeaderboardService : ILeaderboardService
         for (int i = 0; i < Data.Length; i++)
         {
             Sprite avatar = MakeSolidSprite(Palette[i % Palette.Length]);
-            list.Add(new LeaderboardEntry(i + 1, Data[i].name, avatar, Data[i].time));
+            // Половине строк даём фейковый снимок билда — чтобы BuildViewerUI можно было
+            // проверить в редакторе без Steam. Значения не осмысленные, чисто для теста рендера.
+            int[] details = i % 2 == 0 ? MakeFakeSnapshot(i) : null;
+            list.Add(new LeaderboardEntry(i + 1, Data[i].name, avatar, Data[i].time, details));
         }
         return list;
+    }
+
+    private static int[] MakeFakeSnapshot(int seed)
+    {
+        var snapshot = new BuildSnapshot();
+        snapshot.items.Add(new BuildSnapshot.Item(0, 1 + seed));
+        snapshot.items.Add(new BuildSnapshot.Item(1, 2));
+        snapshot.SetStat(BuildStat.Health, 500f + seed * 50f);
+        snapshot.SetStat(BuildStat.AttackSpeed, 1.2f);
+        snapshot.SetStat(BuildStat.DamageMultiplier, 1.5f + seed * 0.1f);
+        return snapshot.Encode();
     }
 
     // Маленькая одноцветная текстура-аватар (плейсхолдер вместо картинки из Steam).

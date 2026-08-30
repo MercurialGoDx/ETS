@@ -48,6 +48,7 @@ public class SteamLeaderboardService : ILeaderboardService
     private int pendingTopCount;
     private Action<List<LeaderboardEntry>> pendingTopCallback;
     private float pendingSubmitSeconds;
+    private int[] pendingSubmitDetails;
     private bool hasPendingSubmit;
     private Action pendingSubmitCallback;
 
@@ -68,7 +69,7 @@ public class SteamLeaderboardService : ILeaderboardService
             ResolveBoard();
     }
 
-    public void SubmitTime(float timeSeconds, Action onDone = null)
+    public void SubmitTime(float timeSeconds, int[] buildDetails = null, Action onDone = null)
     {
         if (!SteamManager.Initialized)
         {
@@ -77,6 +78,7 @@ public class SteamLeaderboardService : ILeaderboardService
         }
 
         pendingSubmitSeconds = timeSeconds;
+        pendingSubmitDetails = buildDetails;
         pendingSubmitCallback = onDone;
         hasPendingSubmit = true;
 
@@ -151,10 +153,11 @@ public class SteamLeaderboardService : ILeaderboardService
         }
 
         int n = result.m_cEntryCount;
+        var rawDetails = new int[BuildSnapshot.MaxDetails];
         for (int i = 0; i < n; i++)
         {
             LeaderboardEntry_t e;
-            if (!SteamUserStats.GetDownloadedLeaderboardEntry(result.m_hSteamLeaderboardEntries, i, out e, null, 0))
+            if (!SteamUserStats.GetDownloadedLeaderboardEntry(result.m_hSteamLeaderboardEntries, i, out e, rawDetails, BuildSnapshot.MaxDetails))
                 continue;
 
             CSteamID user = e.m_steamIDUser;
@@ -166,9 +169,25 @@ public class SteamLeaderboardService : ILeaderboardService
             if (string.IsNullOrEmpty(personaName) || personaName == "[unknown]")
                 personaName = "Player";
 
+            // SteamID64 в лог — единственный способ узнать точный id читера, чтобы занести
+            // его в LeaderboardConfig.blockedSteamIds (Steam не даёт удалить чужую запись через API).
+            Debug.Log($"[SteamLeaderboard] #{e.m_nGlobalRank} {personaName} ({user.m_SteamID}): {e.m_nScore}s");
+
+            if (Leaderboards.IsBlocked(user.m_SteamID))
+                continue;
+
             Sprite avatar = LoadAvatar(user);
 
-            list.Add(new LeaderboardEntry(e.m_nGlobalRank, personaName, avatar, e.m_nScore));
+            // m_cDetails == 0 → запись без снимка билда (старая или загружена без Steam) — details остаётся null,
+            // чтобы BuildSnapshot.Decode(null) честно отдал "нет данных", а не нулевой снимок.
+            int[] details = null;
+            if (e.m_cDetails > 0)
+            {
+                details = new int[e.m_cDetails];
+                Array.Copy(rawDetails, details, e.m_cDetails);
+            }
+
+            list.Add(new LeaderboardEntry(e.m_nGlobalRank, personaName, avatar, e.m_nScore, details));
         }
 
         if (pendingTopCallback != null) { pendingTopCallback(list); pendingTopCallback = null; }
@@ -182,12 +201,14 @@ public class SteamLeaderboardService : ILeaderboardService
             uploadCall = CallResult<LeaderboardScoreUploaded_t>.Create(OnScoreUploaded);
 
         int score = Mathf.RoundToInt(pendingSubmitSeconds);
+        int[] details = pendingSubmitDetails ?? Array.Empty<int>();
         SteamAPICall_t call = SteamUserStats.UploadLeaderboardScore(
             boardHandle,
             ELeaderboardUploadScoreMethod.k_ELeaderboardUploadScoreMethodKeepBest,
-            score, null, 0);
+            score, details, details.Length);
         uploadCall.Set(call);
         hasPendingSubmit = false;
+        pendingSubmitDetails = null;
     }
 
     private void OnScoreUploaded(LeaderboardScoreUploaded_t result, bool ioFailure)
@@ -234,7 +255,7 @@ public class SteamLeaderboardService : ILeaderboardService
         if (onDone != null) onDone(new List<LeaderboardEntry>());
     }
 
-    public void SubmitTime(float timeSeconds, Action onDone = null)
+    public void SubmitTime(float timeSeconds, int[] buildDetails = null, Action onDone = null)
     {
         if (onDone != null) onDone();
     }

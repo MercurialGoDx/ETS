@@ -141,7 +141,9 @@ namespace ETS.BalanceImport
         public static bool StampBoss(SheetTable t, List<Issue> issues)
         {
             var row = t.Rows[0];
-            return StampEnemyPrefab(BossPrefabPath, ParseFloat(row["damage_boss"]), ParseFloat(row["hp_boss"]),
+            // damage_boss теперь является множителем урона обычного врага. В Enemy-префаб
+            // стампим плоский базовый урон, чтобы инспектор и резервное значение были осмысленными.
+            return StampEnemyPrefab(BossPrefabPath, ParseFloat(row["additional_damage_boss"]), ParseFloat(row["hp_boss"]),
                 ParseInt(row["gold_for_boss"]), ParseFloat(row["speed_boss"]),
                 ParseFloat(row["attack_interval"]), ParseFloat(row["attack_range"]), issues);
         }
@@ -269,11 +271,14 @@ namespace ETS.BalanceImport
             config.waves.timeDifficultStage3 = ParseFloat(enemy["time_difficult_stage3"]);
             config.waves.hpAddPerWave = ParseFloat(enemy["hp_add_per_wave"]);
             config.waves.damageAddPerWave = ParseFloat(enemy["damage_add_per_wave"]);
+            config.waves.damageGrowthStartAfterAttacks = ParseInt(enemy["damage_growth_start_after_attacks"]);
+            config.waves.damageGrowthPercentPerAttack = ParseFloat(enemy["damage_growth_percent_per_attack"]);
 
             config.boss.spawnInterval = ParseFloat(boss["spawn_interval"]);
             config.boss.hpMultiplier = ParseFloat(boss["hp_multiplier"]);
             config.boss.additionalDamage = ParseFloat(boss["additional_damage_boss"]);
-            config.boss.damageMultiplier = ParseFloat(boss["damage_multiplier"]);
+            config.boss.damageMultiplier = ParseFloat(boss["damage_boss"]);
+            config.boss.referenceEnemy = boss["reference_enemy"].Trim().ToLowerInvariant();
 
             config.shop.rerollBaseCost = ParseInt(shop["reroll_base_cost"]);
             config.shop.rerollCostIncrease = ParseInt(shop["reroll_cost_increase"]);

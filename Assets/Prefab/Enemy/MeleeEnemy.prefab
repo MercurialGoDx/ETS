@@ -91,6 +91,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1571042049591659991, guid: 61b3e3801d56a3f429556c96ea2f07d6, type: 3}
       insertIndex: -1
       addedObject: {fileID: 3260281386095131627}
+    - targetCorrespondingSourceObject: {fileID: 1571042049591659991, guid: 61b3e3801d56a3f429556c96ea2f07d6, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 28762507439660271}
   m_SourcePrefab: {fileID: 100100000, guid: 61b3e3801d56a3f429556c96ea2f07d6, type: 3}
 --- !u!1 &2604920207847695257 stripped
 GameObject:
@@ -169,6 +172,8 @@ MonoBehaviour:
   attackRange: 3.5
   attackInterval: 1
   overrideAttackRange: 0
+  deathSound: {fileID: 8300000, guid: 341baf943954ee641af656decfd83984, type: 3}
+  deathSoundVolume: 1
   isDead: 0
   bonusGold: 0
   returnToPoolInsteadOfDestroy: 0
@@ -196,3 +201,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b4844192c633ae04db2afff3a93c1936, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &28762507439660271
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2604920207847695257}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba0737ee258c6564b891f2816d5ffa49, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isBoss: 0
+  defaultStunVisualPrefab: {fileID: 4878261017863814315, guid: 202237ad5ba3f8540ab7272c2c45d544, type: 3}
+  defaultFreezeVisualPrefab: {fileID: 4574536459950186963, guid: c9678826f05e7b14c986be18f0a4b789, type: 3}
+  defaultWeaknessVisualPrefab: {fileID: 4878261017863814315, guid: d2aedcd1861b4f56859fec221d7a205c, type: 3}
+  defaultBurningVisualPrefab: {fileID: 0}
+  burningTickInterval: 0.5

@@ -25,6 +25,9 @@ public class LeaderboardUI : MonoBehaviour
     [Header("Кнопки меню, которые прячутся на время показа таблицы")]
     [SerializeField] private GameObject[] menuButtonsToHide;
 
+    [Header("Просмотр билда по клику на строку")]
+    [SerializeField] private BuildViewerUI buildViewer;
+
     private readonly List<GameObject> spawned = new List<GameObject>();
 
     // Окно авторится выключенным в сцене (как StatisticWindow) и включается только из Open().
@@ -66,8 +69,19 @@ public class LeaderboardUI : MonoBehaviour
         {
             LeaderboardEntryUI row = Instantiate(rowPrefab, content);
             row.Setup(entry);
+            row.Clicked += OnRowClicked;
             spawned.Add(row.gameObject);
         }
+    }
+
+    /// <summary>Клик по строке — показать билд этого игрока (или "нет данных", если запись без деталей).</summary>
+    private void OnRowClicked(LeaderboardEntry entry)
+    {
+        if (buildViewer == null)
+            return;
+
+        BuildSnapshot snapshot = BuildSnapshot.Decode(entry.details);
+        buildViewer.Show(snapshot, entry.playerName);
     }
 
     private void Clear()

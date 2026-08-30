@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class FallingBullet : MonoBehaviour, IAttackBehaviour
@@ -29,6 +30,7 @@ public class FallingBullet : MonoBehaviour, IAttackBehaviour
     private WeaponDefinition sourceWeapon;
 
     private PooledObject pooledObject;
+    private readonly HashSet<Enemy> damagedEnemies = new();
 
     public void Awake()
     {
@@ -108,12 +110,13 @@ public class FallingBullet : MonoBehaviour, IAttackBehaviour
         {
             // AOE урон — ОДИН РАЗ по области
             Collider[] hits = Physics.OverlapSphere(hitPos, aoeRadius);
+            damagedEnemies.Clear();
             foreach (var col in hits)
             {
                 Enemy enemy = col.GetComponent<Enemy>();
-                if (enemy != null)
+                if (enemy != null && damagedEnemies.Add(enemy))
                 {
-                    enemy.TakeDamage(damage);
+                    enemy.TakeWeaponDamage(damage, sourceWeapon);
                     DamageStatsManager.Instance?.RegisterDamage(sourceWeapon, damage);
                 }
             }
@@ -126,7 +129,7 @@ public class FallingBullet : MonoBehaviour, IAttackBehaviour
                 Enemy enemy = target.GetComponent<Enemy>();
                 if (enemy != null)
                 {
-                    enemy.TakeDamage(damage);
+                    enemy.TakeWeaponDamage(damage, sourceWeapon);
                     DamageStatsManager.Instance?.RegisterDamage(sourceWeapon, damage);
                 }
             }

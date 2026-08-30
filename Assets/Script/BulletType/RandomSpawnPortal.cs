@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class RandomSpawnPortal : MonoBehaviour, IAttackBehaviour
@@ -22,6 +23,7 @@ public class RandomSpawnPortal : MonoBehaviour, IAttackBehaviour
     private WeaponDefinition sourceWeapon;
 
     private PooledObject pooledObject;
+    private readonly HashSet<Enemy> damagedEnemies = new();
 
     public void Awake()
     {
@@ -77,13 +79,14 @@ public class RandomSpawnPortal : MonoBehaviour, IAttackBehaviour
     private void DoDamage()
     {
         Collider[] hits = Physics.OverlapSphere(transform.position, damageRadius);
+        damagedEnemies.Clear();
 
         foreach (Collider col in hits)
         {
             Enemy enemy = col.GetComponent<Enemy>();
-            if (enemy != null)
+            if (enemy != null && damagedEnemies.Add(enemy))
             {
-                enemy.TakeDamage(damage);
+                enemy.TakeWeaponDamage(damage, sourceWeapon);
                 DamageStatsManager.Instance?.RegisterDamage(sourceWeapon, damage);
             }
         }

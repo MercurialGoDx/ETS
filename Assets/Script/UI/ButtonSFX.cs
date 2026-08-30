@@ -58,6 +58,10 @@ public class ButtonSFX : MonoBehaviour, IPointerEnterHandler, IPointerClickHandl
     private void PlayOneShotSafe(AudioClip clip, float volume)
     {
         if (clip == null) return;
-        audioSource.PlayOneShot(clip, Mathf.Clamp01(volume));
+
+        float soundVolume = AudioManager.Instance != null
+            ? AudioManager.Instance.GetSoundVolume()
+            : 1f;
+        audioSource.PlayOneShot(clip, Mathf.Clamp01(volume * soundVolume));
     }
 }

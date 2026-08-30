@@ -1,13 +1,16 @@
+using System;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using TMPro;
 
 /// <summary>
 /// Строка таблицы лидеров: позиция + аватар игрока + ник + время забега. Стилистика повторяет
 /// строку статистики урона (<see cref="WeaponStatItemUI"/>): плашка-подложка, картинка слева,
-/// текст по центру, значение справа.
+/// текст по центру, значение справа. Кликабельна (фон — raycastable Image) — открывает билд
+/// этого игрока (<see cref="BuildViewerUI"/>) через <see cref="LeaderboardUI"/>.
 /// </summary>
-public class LeaderboardEntryUI : MonoBehaviour
+public class LeaderboardEntryUI : MonoBehaviour, IPointerClickHandler
 {
     [Header("UI")]
     [SerializeField] private TMP_Text rankText;
@@ -15,8 +18,15 @@ public class LeaderboardEntryUI : MonoBehaviour
     [SerializeField] private TMP_Text nameText;
     [SerializeField] private TMP_Text timeText;
 
+    /// <summary>Клик по строке — наружу отдаём свою запись целиком (там же лежат детали билда).</summary>
+    public event Action<LeaderboardEntry> Clicked;
+
+    private LeaderboardEntry entry;
+
     public void Setup(LeaderboardEntry entry)
     {
+        this.entry = entry;
+
         if (rankText != null)
             rankText.text = entry.rank.ToString();
 
@@ -31,6 +41,11 @@ public class LeaderboardEntryUI : MonoBehaviour
 
         if (timeText != null)
             timeText.text = FormatTime(entry.timeSeconds);
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        Clicked?.Invoke(entry);
     }
 
     /// <summary>Время забега в формате 00:00 (или 01:23:45, если есть часы) — как в <see cref="GameTimeUI"/>.</summary>

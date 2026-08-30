@@ -22,6 +22,7 @@ namespace ETS.BalanceImport
             bool anyChanged = false;
 
             anyChanged |= StampEnemySpawner(config, issues);
+            anyChanged |= StampEnemyManager(config, issues);
             anyChanged |= StampBossManager(config, issues);
             anyChanged |= StampShopManager(config, issues);
             anyChanged |= StampGoldManager(config, issues);
@@ -73,6 +74,22 @@ namespace ETS.BalanceImport
             return true;
         }
 
+        private static bool StampEnemyManager(BalanceConfig config, List<Issue> issues)
+        {
+            var comp = Find<EnemyManager>();
+            if (comp == null)
+            {
+                issues.Add(Issue.Warning("scene", "EnemyManager не найден на открытой сцене — открой сцену с игрой, чтобы значения роста урона попали в инспектор."));
+                return false;
+            }
+
+            var so = new SerializedObject(comp);
+            so.FindProperty("damageGrowthStartAfterAttacks").intValue = config.waves.damageGrowthStartAfterAttacks;
+            so.FindProperty("damageGrowthPercentPerAttack").floatValue = config.waves.damageGrowthPercentPerAttack;
+            so.ApplyModifiedPropertiesWithoutUndo();
+            return true;
+        }
+
         private static bool StampBossManager(BalanceConfig config, List<Issue> issues)
         {
             var comp = Find<BossManager>();
@@ -87,6 +104,7 @@ namespace ETS.BalanceImport
             so.FindProperty("bossHpMultiplier").floatValue = config.boss.hpMultiplier;
             so.FindProperty("bossDamageMultiplier").floatValue = config.boss.damageMultiplier;
             so.FindProperty("bossAdditionalDamage").floatValue = config.boss.additionalDamage;
+            so.FindProperty("bossReferenceEnemy").stringValue = config.boss.referenceEnemy;
             so.ApplyModifiedPropertiesWithoutUndo();
             return true;
         }

@@ -1,2 +1,2 @@
-"damage_boss","hp_boss","gold_for_boss","speed_boss","attack_interval","attack_range","spawn_interval","hp_multiplier","damage_multiplier","additional_damage_boss"
-"4","275","50","0,9","1","4,5","300","1,5","1","25"
+"additional_damage_boss","damage_boss","hp_boss","hp_multiplier","gold_for_boss","speed_boss","attack_interval","attack_range","spawn_interval","reference_enemy"
+"25","4","500","15","50","0,9","1","4,5","300","melee"

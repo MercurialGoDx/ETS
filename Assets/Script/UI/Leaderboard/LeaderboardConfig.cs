@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
@@ -15,8 +16,13 @@ public class LeaderboardConfig : MonoBehaviour
              "ВЫКЛ — FindLeaderboard (только ищет существующий; для релиза, чтобы клиент не плодил лидерборды).")]
     [SerializeField] private bool createIfMissing = true;
 
+    [Tooltip("SteamID64 читеров/нарушителей — эти записи просто не показываются в таблице лидеров " +
+             "(сама запись у Steam остаётся, удалить чужую запись через API нельзя). SteamID64 можно " +
+             "увидеть в логе игры (Player.log) — при каждой загрузке таблицы в лог пишется ник + SteamID64.")]
+    [SerializeField] private List<string> blockedSteamIds = new List<string>();
+
     private void Awake()
     {
-        Leaderboards.Configure(leaderboardName, createIfMissing);
+        Leaderboards.Configure(leaderboardName, createIfMissing, blockedSteamIds);
     }
 }

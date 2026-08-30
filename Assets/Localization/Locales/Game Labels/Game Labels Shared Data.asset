@@ -215,6 +215,10 @@ MonoBehaviour:
     m_Key: inv.dmg_chaos
     m_Metadata:
       m_Items: []
+  - m_Id: 76468449556766514
+    m_Key: inv.dmg_holy
+    m_Metadata:
+      m_Items: []
   - m_Id: 77519296610540157
     m_Key: inv.header_weapons
     m_Metadata:

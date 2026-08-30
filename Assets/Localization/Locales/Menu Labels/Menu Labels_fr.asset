@@ -30,6 +30,10 @@ MonoBehaviour:
     m_Localized: Volume de la musique
     m_Metadata:
       m_Items: []
+  - m_Id: 84000000000000000
+    m_Localized: Volume des effets
+    m_Metadata:
+      m_Items: []
   - m_Id: 38515211617812480
     m_Localized: "Param\xE8tres"
     m_Metadata:

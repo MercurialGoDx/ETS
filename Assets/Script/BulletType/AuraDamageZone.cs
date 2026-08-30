@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class AuraDamageZone : MonoBehaviour
@@ -21,6 +22,7 @@ public class AuraDamageZone : MonoBehaviour
     private DamageCalculator damageCalculator;
     private WeaponDamageType damageType;
     private ItemTier itemTier;
+    private WeaponDefinition sourceWeapon;
 
     private bool isInitialized = false;
 
@@ -29,6 +31,7 @@ public class AuraDamageZone : MonoBehaviour
 
     // Переиспользуемый буфер для OverlapSphereNonAlloc — без аллокаций каждый тик.
     private static readonly Collider[] overlapBuffer = new Collider[64];
+    private readonly HashSet<Enemy> damagedEnemies = new();
 
     /// <summary>
     /// Инициализация при первом спавне
@@ -36,16 +39,16 @@ public class AuraDamageZone : MonoBehaviour
     public void Init(
         float damagePerStackFromWeapon,
         int initialStacks,
-        WeaponDamageType type,
-        ItemTier tier,
+        WeaponDefinition weapon,
         DamageCalculator calculator
     )
     {
         damagePerStack = damagePerStackFromWeapon;
         stacks = initialStacks;
 
-        damageType = type;
-        itemTier = tier;
+        sourceWeapon = weapon;
+        damageType = weapon != null ? weapon.damageType : WeaponDamageType.Normal;
+        itemTier = weapon != null ? weapon.itemTier : ItemTier.None;
         damageCalculator = calculator;
 
         isInitialized = true;
@@ -85,6 +88,7 @@ public class AuraDamageZone : MonoBehaviour
         float finalDamage = breakdown.FinalDamage;
 
         int hitCount = Physics.OverlapSphereNonAlloc(transform.position, radius, overlapBuffer);
+        damagedEnemies.Clear();
 
         if (debugDamage)
             Debug.Log($"[DamageDebug] Aura {name}: {breakdown.ToDebugString()}, stacks={stacks}, enemies={hitCount}");
@@ -92,9 +96,17 @@ public class AuraDamageZone : MonoBehaviour
         for (int i = 0; i < hitCount; i++)
         {
             Enemy enemy = overlapBuffer[i].GetComponent<Enemy>();
-            if (enemy != null)
+            if (enemy != null && damagedEnemies.Add(enemy))
             {
-                enemy.TakeDamage(finalDamage);
+                if (sourceWeapon != null)
+                {
+                    enemy.TakeWeaponDamage(finalDamage, sourceWeapon);
+                    DamageStatsManager.Instance?.RegisterDamage(sourceWeapon, finalDamage);
+                }
+                else
+                {
+                    enemy.TakeWeaponDamage(finalDamage, damageType);
+                }
             }
         }
 

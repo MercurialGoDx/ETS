@@ -148,7 +148,7 @@ public class MissileBullet : MonoBehaviour, IAttackBehaviour
     {
         if (enemy != null)
         {
-            enemy.TakeDamage(damage);
+            enemy.TakeWeaponDamage(damage, sourceWeapon);
             DamageStatsManager.Instance?.RegisterDamage(sourceWeapon, damage);
 
             // VFX при попадании (если есть)

@@ -27,6 +27,10 @@ MonoBehaviour:
     m_Key: main_menu.music_volume
     m_Metadata:
       m_Items: []
+  - m_Id: 84000000000000000
+    m_Key: main_menu.sound_volume
+    m_Metadata:
+      m_Items: []
   - m_Id: 38515211617812480
     m_Key: main_menu.setting
     m_Metadata:

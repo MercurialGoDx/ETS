@@ -36,6 +36,10 @@ public class WeaponDefinition : ScriptableObject
     // Префаб снаряда, который использует TowerAttack (bulletPrefab)
     public GameObject bulletPrefab;
 
+    [Header("Эффекты при попадании")]
+    [Tooltip("Модульный набор эффектов оружия. Оставьте пустым, если у оружия нет эффектов.")]
+    public WeaponEffectProfile effectProfile;
+
     [Header("Шанс появления в магазине")]
     public int weight = 1;       // используется в рандомизации слотов
 

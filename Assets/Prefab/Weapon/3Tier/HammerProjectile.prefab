@@ -31,7 +31,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -104,6 +104,7 @@ MonoBehaviour:
   speed: 15
   damage: 5
   homing: 1
+  rotationOffsetEuler: {x: 0, y: 0, z: 0}
   maxLifeTime: 10
   increasePlayerMaxHealthOnKill: 0
   maxHealthIncreaseAmount: 10

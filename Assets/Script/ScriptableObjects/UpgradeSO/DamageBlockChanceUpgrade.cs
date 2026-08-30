@@ -1,9 +1,12 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [CreateAssetMenu(menuName = "Upgrades/Health/Damage Block Chance")]
 public class DamageBlockChanceUpgrade : UpgradeBaseSO
 {
-    public int valueFlat = 1;
+    [FormerlySerializedAs("valueFlat")]
+    [Range(0f, 100f)]
+    public float valuePercent = 10f;
 
     public override void Apply(UpgradeContextSO context)
     {
@@ -13,11 +16,11 @@ public class DamageBlockChanceUpgrade : UpgradeBaseSO
             return;
         }
 
-        context.playerHealth.AddBlockChanceDiminishing(valueFlat);
+        context.playerHealth.AddBlockChanceDiminishing(valuePercent);
     }
 
     protected override object[] GetSpecificDescriptionArgs()
     {
-        return new object[] { valueFlat };
+        return new object[] { valuePercent };
     }
 }

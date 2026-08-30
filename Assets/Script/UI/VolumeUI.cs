@@ -8,22 +8,30 @@ public class VolumeUI : MonoBehaviour
 
     [Header("Слайдер в паузе")]
     [SerializeField] private Slider pauseSlider;
+    [SerializeField] private Slider pauseSoundSlider;
 
-    private bool _isUpdating = false;
+    private bool _isUpdatingMusic = false;
 
-    private const string VolumeKey = "master_volume";
+    private const string LegacyVolumeKey = "master_volume";
+    private const string MusicVolumeKey = "music_volume";
+    private const string SoundVolumeKey = "sound_volume";
     private const float DefaultVolume = 0.5f;
 
     private void Start()
     {
-        float volume = LoadVolume();
+        float musicVolume = LoadMusicVolume();
+        float soundVolume = PlayerPrefs.GetFloat(SoundVolumeKey, DefaultVolume);
 
         // применяем в аудио сразу
         if (AudioManager.Instance != null)
-            AudioManager.Instance.SetMasterVolume(volume);
+        {
+            AudioManager.Instance.SetMusicVolume(musicVolume);
+            AudioManager.Instance.SetSoundVolume(soundVolume);
+        }
 
-        SetupSlider(menuSlider, volume, OnMenuSliderChanged);
-        SetupSlider(pauseSlider, volume, OnPauseSliderChanged);
+        SetupSlider(menuSlider, musicVolume, OnMenuSliderChanged);
+        SetupSlider(pauseSlider, musicVolume, OnPauseSliderChanged);
+        SetupSlider(pauseSoundSlider, soundVolume, OnPauseSoundSliderChanged);
     }
 
     private void SetupSlider(Slider slider, float value, UnityEngine.Events.UnityAction<float> callback)
@@ -46,48 +54,62 @@ public class VolumeUI : MonoBehaviour
 
         if (pauseSlider != null)
             pauseSlider.onValueChanged.RemoveListener(OnPauseSliderChanged);
+
+        if (pauseSoundSlider != null)
+            pauseSoundSlider.onValueChanged.RemoveListener(OnPauseSoundSliderChanged);
     }
 
     private void OnMenuSliderChanged(float value)
     {
-        if (_isUpdating) return;
-        _isUpdating = true;
+        if (_isUpdatingMusic) return;
+        _isUpdatingMusic = true;
 
         // синхронизируем второй без вызова событий
         if (pauseSlider != null)
             pauseSlider.SetValueWithoutNotify(value);
 
-        ApplyAndSave(value);
+        ApplyMusicAndSave(value);
 
-        _isUpdating = false;
+        _isUpdatingMusic = false;
     }
 
     private void OnPauseSliderChanged(float value)
     {
-        if (_isUpdating) return;
-        _isUpdating = true;
+        if (_isUpdatingMusic) return;
+        _isUpdatingMusic = true;
 
         // синхронизируем первый без вызова событий
         if (menuSlider != null)
             menuSlider.SetValueWithoutNotify(value);
 
-        ApplyAndSave(value);
+        ApplyMusicAndSave(value);
 
-        _isUpdating = false;
+        _isUpdatingMusic = false;
     }
 
-    private void ApplyAndSave(float value)
+    private void OnPauseSoundSliderChanged(float value)
     {
         if (AudioManager.Instance != null)
-            AudioManager.Instance.SetMasterVolume(value);
+            AudioManager.Instance.SetSoundVolume(value);
 
-        PlayerPrefs.SetFloat(VolumeKey, value);
+        PlayerPrefs.SetFloat(SoundVolumeKey, value);
         PlayerPrefs.Save();
     }
 
-    private float LoadVolume()
+    private void ApplyMusicAndSave(float value)
     {
-        // Если пользователь никогда не трогал — будет 0.5
-        return PlayerPrefs.GetFloat(VolumeKey, DefaultVolume);
+        if (AudioManager.Instance != null)
+            AudioManager.Instance.SetMusicVolume(value);
+
+        PlayerPrefs.SetFloat(MusicVolumeKey, value);
+        PlayerPrefs.Save();
+    }
+
+    private float LoadMusicVolume()
+    {
+        if (PlayerPrefs.HasKey(MusicVolumeKey))
+            return PlayerPrefs.GetFloat(MusicVolumeKey, DefaultVolume);
+
+        return PlayerPrefs.GetFloat(LegacyVolumeKey, DefaultVolume);
     }
 }

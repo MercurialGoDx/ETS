@@ -6,6 +6,8 @@ public class GameOverController : MonoBehaviour
 {
     [SerializeField] private PlayerHealth playerHealth;
     [SerializeField] private GameObject gameOverPanel;
+    [Tooltip("Источник снимка билда (оружие/улучшения/статы) для лидерборда.")]
+    [SerializeField] private InventoryUI inventoryUI;
 
     [Header("Время забега")]
     [SerializeField] private GameTimeUI gameTimeUI;
@@ -46,17 +48,21 @@ public class GameOverController : MonoBehaviour
                 playTimeTable, playTimeKey, new object[] { formatted });
         }
 
-        // Отправляем результат забега в таблицу лидеров (Steam, либо заглушка вне Steam).
+        // Отправляем результат забега в таблицу лидеров (Steam, либо заглушка вне Steam) —
+        // вместе со снимком билда, чтобы другие игроки могли открыть его со строки лидерборда.
         if (gameTimeUI != null)
-            Leaderboards.Service.SubmitTime(gameTimeUI.ElapsedTime);
+        {
+            int[] buildDetails = inventoryUI != null ? inventoryUI.CaptureSnapshot().Encode() : null;
+            Leaderboards.Service.SubmitTime(gameTimeUI.ElapsedTime, buildDetails);
+        }
 
-        var stats = DamageStatsManager.Instance.GetDamageSorted();
+        var stats = DamageStatsManager.Instance.GetAllDamageSorted();
 
-        Debug.Log("Weapon stats:");
+        Debug.Log("Damage stats:");
 
         foreach (var stat in stats)
         {
-            Debug.Log($"{stat.weapon.GetLocalizedName()} → {stat.damage:F1}");
+            Debug.Log($"{stat.GetLocalizedName()} → {stat.Damage:F1}");
         }
 
         GameStateManager.Instance.SetState(GameState.GameOver);

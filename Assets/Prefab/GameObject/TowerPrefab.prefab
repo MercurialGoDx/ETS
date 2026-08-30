@@ -10528,11 +10528,17 @@ MonoBehaviour:
   maxHealthMultiplier: 1
   healthRegenPerSecond: 0
   regenPer100MissingHealth: 0
-  blockCap: 0.8
+  blockCap: 0.9
   blockChance: 0
   blockUpgradeCount: 0
   damageReduction: 0
   healthBarFill: {fileID: 0}
+  meleeHitSound: {fileID: 8300000, guid: 19fa3093a27b13148b0cb76ffb82b8e9, type: 3}
+  meleeHitVolume: 1
+  meleeHitCooldown: 0.08
+  rangedProjectileHitSound: {fileID: 8300000, guid: 0d3b8eef3f6d3984abb1221344647a8b, type: 3}
+  rangedProjectileHitVolume: 1
+  rangedProjectileHitCooldown: 0.08
   spikesWeapon: {fileID: 11400000, guid: 0a58810e419f0694fa1324d1f5b6823c, type: 2}
   spikesBase: 0
   spikesMultiplier: 1

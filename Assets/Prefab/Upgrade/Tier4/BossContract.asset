@@ -31,7 +31,7 @@ MonoBehaviour:
       m_TableCollectionName: GUID:164770c6fc8794c4ba4db6f8c7e72db3
   nameKey: boss_contract.name
   descriptionKey: boss_contract.desc
-  healthMultiplier: 5
+  healthMultiplier: 3
   damageMultiplier: 2
   outlineMaterial: {fileID: 2100000, guid: 69c9a6157904481790f73bb69521ef6c, type: 2}
   outlineColor: {r: 1, g: 0.02, b: 0, a: 1}

@@ -144,7 +144,7 @@ public class WaveBullet : MonoBehaviour, IAttackBehaviour
         hitEnemies.Add(enemy);
 
         // наносим урон
-        enemy.TakeDamage(damage);
+        enemy.TakeWeaponDamage(damage, sourceWeapon);
         DamageStatsManager.Instance?.RegisterDamage(sourceWeapon, damage);
 
 

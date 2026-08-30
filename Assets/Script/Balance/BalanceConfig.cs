@@ -44,6 +44,12 @@ public class BalanceConfig : ScriptableObject
 
         public float hpAddPerWave = 2f;          // hp_add_per_wave: фикс. прибавка HP врагов за волну
         public float damageAddPerWave = 0.05f;   // damage_add_per_wave
+
+        // Рост урона каждого врага от его собственных атак по башне.
+        // Первые N атак проходят без усиления, затем на каждой атаке
+        // текущий урон умножается на (1 + damageGrowthPercentPerAttack / 100).
+        public int damageGrowthStartAfterAttacks = 3;      // damage_growth_start_after_attacks
+        public float damageGrowthPercentPerAttack = 0f;   // damage_growth_percent_per_attack
     }
 
     [Serializable]
@@ -51,12 +57,15 @@ public class BalanceConfig : ScriptableObject
     {
         // Статы босса (hp/damage/gold/speed) стампятся в BossMonster.prefab импортёром.
         public float spawnInterval = 300f;       // spawn_interval (сек)
+        // Множители применяются к уже рассчитанным статам обычного врага ближнего боя
+        // (включая волновой множитель и плоскую прибавку). Базовые статы босса после
+        // этого прибавляются отдельно и не масштабируются.
         public float hpMultiplier = 1.5f;        // hp_multiplier
-        public float damageMultiplier = 1f;      // damage_multiplier
+        public float damageMultiplier = 4f;      // damage_boss: множитель урона эталонного врага
+        public string referenceEnemy = "melee"; // reference_enemy
 
-        // Плоская прибавка к урону босса, не участвующая в умножении на damageMultiplier
-        // и на волновой множитель сложности — формула: additionalDamage + flatDamageBonus
-        // + (damage_boss * damageMultiplier * damageDifficultyMultiplier).
+        // Базовый урон босса, не участвующий ни в одном умножении. Формула:
+        // additionalDamage + (currentReferenceEnemyDamage * damageMultiplier).
         public float additionalDamage = 0f;      // additional_damage_boss
     }
 
@@ -77,7 +86,7 @@ public class BalanceConfig : ScriptableObject
     {
         public float playerHp = 200f;                        // player_hp
         public float playerShield = 0f;                      // player_shield
-        public float blockCap = 0.8f;                        // block_cap (0..0.95)
+        public float blockCap = 0.9f;                        // block_cap (0..0.95)
         public float shieldRechargeTime = 10f;               // shield_recharge_time (сек)
         public float shieldFullRestoreAfterNoDamage = 30f;   // shield_full_restore_after_no_damage (сек)
         public float towerRange = 20f;                       // tower_range

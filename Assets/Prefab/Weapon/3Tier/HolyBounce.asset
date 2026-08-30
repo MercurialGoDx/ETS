@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3a9287f7cdfa744ebf102da5de8f389, type: 3}
+  m_Name: HolyBounce
+  m_EditorClassIdentifier: 
+  icon: {fileID: 21300000, guid: 60da6a5004344a7d8f1407948125c32e, type: 3}
+  localizedStringTable:
+    m_TableReference:
+      m_TableCollectionName: GUID:32a974e0a609fb740a2db5dde9508098
+  nameKey: holy_bounce.name
+  descriptionKey: holy_bounce.desc
+  price: 1500
+  damagePerProjectile: 5
+  fireRate: 1
+  projectileSpeed: 20
+  itemTier: 3
+  damageType: 6
+  bulletPrefab: {fileID: 5498674275971357609, guid: e4631dda9cd746548ba5af1ab7b4e474, type: 3}
+  effectProfile: {fileID: 11400000, guid: 84a83f5546a4e6a429d6791b42049bdb, type: 2}
+  weight: 1
+  weightIncreasePerPurchase: 0
+  maxWeightIncreasePurchases: 0
+  weightDecreaseUpgrades: []
+  weightDecreaseUpgradePercent: 0
+  weightIncreaseUpgrades: []
+  weightIncreaseUpgradePercent: 0
+  weightDecreaseWeapons: []
+  weightDecreaseWeaponPercent: 0
+  weightIncreaseWeapons: []
+  weightIncreaseWeaponPercent: 0
+  targetingMode: 0

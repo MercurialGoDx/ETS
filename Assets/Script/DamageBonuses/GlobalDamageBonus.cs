@@ -11,9 +11,6 @@ public class GlobalDamageBonus : IDamageBonusProvider, IDamageBonusDebugProvider
 
     public float GetDamageBonus(DamageContext ctx)
     {
-        if (ctx.isSpikes)
-            return 0f;
-
         return runtime.damagePercent;
     }
 
@@ -36,7 +33,6 @@ public class GlobalDamageMultiplierBonus : IDamageBonusProvider, IDamageBonusDeb
 
     public float GetDamageBonus(DamageContext ctx)
     {
-        // Global-слой намеренно действует и на шипы — в отличие от Normal-слоя выше.
         return runtime.globalDamagePercent;
     }
 

@@ -25,6 +25,7 @@ MonoBehaviour:
   itemTier: 4
   damageType: 0
   bulletPrefab: {fileID: 7923825170990938251, guid: 60bfc24b373e2874eba32275c5424d2a, type: 3}
+  effectProfile: {fileID: 11400000, guid: c995d854e07fca94bb720222a31513c5, type: 2}
   weight: 2
   weightIncreasePerPurchase: 0
   maxWeightIncreasePurchases: 0
@@ -36,4 +37,4 @@ MonoBehaviour:
   weightDecreaseWeaponPercent: 0
   weightIncreaseWeapons: []
   weightIncreaseWeaponPercent: 0
-  targetingMode: 0
+  targetingMode: 1

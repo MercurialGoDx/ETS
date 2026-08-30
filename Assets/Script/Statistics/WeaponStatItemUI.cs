@@ -18,19 +18,37 @@ public class WeaponStatItemUI : MonoBehaviour, IPointerEnterHandler, IPointerExi
     [SerializeField] private TMP_Text damageText;
 
     private WeaponDefinition currentWeapon;
+    private UpgradeBaseSO currentUpgrade;
 
     public void Setup(WeaponDefinition weapon, float damage)
     {
         currentWeapon = weapon;
+        currentUpgrade = null;
+
+        SetupContent(
+            weapon != null ? weapon.icon : null,
+            weapon != null ? weapon.GetLocalizedName() : string.Empty,
+            damage);
+    }
+
+    public void Setup(DamageStatEntry stat)
+    {
+        currentWeapon = stat.Weapon;
+        currentUpgrade = stat.Upgrade;
+        SetupContent(stat.Icon, stat.GetLocalizedName(), stat.Damage);
+    }
+
+    private void SetupContent(Sprite icon, string displayName, float damage)
+    {
 
         if (iconImage != null)
         {
-            iconImage.sprite = weapon != null ? weapon.icon : null;
+            iconImage.sprite = icon;
             iconImage.enabled = iconImage.sprite != null;
         }
 
         if (nameText != null)
-            nameText.text = weapon != null ? weapon.GetLocalizedName() : "";
+            nameText.text = displayName;
 
         if (damageText != null)
             damageText.text = Mathf.RoundToInt(damage).ToString("N0", CultureInfo.InvariantCulture);
@@ -38,8 +56,15 @@ public class WeaponStatItemUI : MonoBehaviour, IPointerEnterHandler, IPointerExi
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if (WeaponTooltip.Instance != null && currentWeapon != null)
+        if (WeaponTooltip.Instance == null)
+            return;
+
+        if (currentWeapon != null)
             WeaponTooltip.Instance.Show(currentWeapon);
+        else if (currentUpgrade != null)
+            WeaponTooltip.Instance.Show(
+                currentUpgrade.GetLocalizedName(),
+                currentUpgrade.GetLocalizedDescription());
     }
 
     public void OnPointerExit(PointerEventData eventData)

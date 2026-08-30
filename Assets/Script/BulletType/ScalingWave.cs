@@ -108,7 +108,7 @@ public class ScalingWave : MonoBehaviour
                 continue;
 
             hitEnemies.Add(enemy);
-            enemy.TakeDamage(damage);
+            enemy.TakeWeaponDamage(damage, sourceWeapon);
             DamageStatsManager.Instance?.RegisterDamage(sourceWeapon, damage);
         }
     }

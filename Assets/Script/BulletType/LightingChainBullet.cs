@@ -96,7 +96,7 @@ public class LightningChainBullet : MonoBehaviour, IAttackBehaviour
             if (IsValidEnemy(currentTarget))
             {
                 SpawnImpact(GetEnemyCenterPosition(currentTarget));
-                currentTarget.TakeDamage(currentDamage);
+                currentTarget.TakeWeaponDamage(currentDamage, sourceWeapon);
                 DamageStatsManager.Instance?.RegisterDamage(sourceWeapon, currentDamage);
 
                 if (debugDamage)

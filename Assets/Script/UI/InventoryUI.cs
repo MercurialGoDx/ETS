@@ -1,8 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Globalization;
 using UnityEngine;
-using UnityEngine.Localization.Settings;
 
 /// <summary>
 /// Панель инвентаря (Tab): всё купленное за забег — оружие, улучшения и колонка
@@ -67,6 +65,8 @@ public class InventoryUI : MonoBehaviour
     [SerializeField] private PauseManager pauseManager;
     [Tooltip("Источник показателей врага. Может быть выключен в сцене — значения всё равно считаются.")]
     [SerializeField] private EnemyStatsProgressionUI enemyStats;
+    [Tooltip("Каталог оружия/улучшений — нужен только для CaptureSnapshot (компактные id для лидерборда).")]
+    [SerializeField] private ShopManager shopManager;
 
     [Header("Скрывать, пока панель открыта")]
     [Tooltip("Магазин, реролл, разблокировка, кнопки скорости. Список правится в инспекторе — " +
@@ -95,34 +95,19 @@ public class InventoryUI : MonoBehaviour
     // и трогать состояние с разрешением на паузу там нельзя.
     private bool pausedByPanel;
 
-    // Разделитель тысяч — неразрывный пробел: выглядит как пробел, но не даёт
-    // разорвать число, даже если где-то включится перенос.
-    private static readonly NumberFormatInfo NumFormat = new NumberFormatInfo
-    {
-        NumberGroupSeparator = " ",
-        NumberDecimalSeparator = ".",
-    };
-
     private Coroutine statsRoutine;
     private WaitForSecondsRealtime statsWait;
 
     private bool isOpen;
 
-    // Ключи локализации типов урона в порядке enum WeaponDamageType
-    // (Magic, Piercing, Normal, Projectile, Heavy, Chaos). Таблица "Game Labels".
+    // Ключи локализации типов урона в порядке enum WeaponDamageType.
     private static readonly string[] DamageTypeKeys =
     {
         "inv.dmg_magic", "inv.dmg_piercing", "inv.dmg_normal",
-        "inv.dmg_projectile", "inv.dmg_heavy", "inv.dmg_chaos"
+        "inv.dmg_projectile", "inv.dmg_heavy", "inv.dmg_chaos", "inv.dmg_holy"
     };
 
-    private const string LocTable = "Game Labels";
-
-    /// <summary>Синхронный лукап локализованной строки — панель обновляется 4 р/с, кешировать не требуется.</summary>
-    private static string L(string key)
-    {
-        return LocalizationSettings.StringDatabase.GetLocalizedString(LocTable, key);
-    }
+    private static string L(string key) => StatFormat.L(key);
 
     private void Awake()
     {
@@ -379,7 +364,7 @@ public class InventoryUI : MonoBehaviour
         {
             Row(L("inv.block_chance"), Percent(playerHealth.BlockChance));
             Row(L("inv.damage_reduction"), Percent(playerHealth.DamageReduction));
-            Row(L("inv.spikes_damage"), Num(playerHealth.SpikesDamage));
+            Row(L("inv.spikes_damage"), Num(playerHealth.SpikesCount));
         }
 
         if (towerAttack != null)
@@ -501,43 +486,115 @@ public class InventoryUI : MonoBehaviour
         return row;
     }
 
-    // ===================== ФОРМАТИРОВАНИЕ =====================
+    // ===================== ФОРМАТИРОВАНИЕ (StatFormat — общий с BuildViewerUI) =====================
 
     private const float Eps = 0.0001f;
 
-    /// <summary>Прочерк вместо +0%: видно, куда ещё можно вложиться.</summary>
-    private static string Percent(float fraction)
-    {
-        return fraction > Eps ? "+" + Mathf.RoundToInt(fraction * 100f) + "%" : "—";
-    }
+    private static string Percent(float fraction) => StatFormat.Percent(fraction);
+    private static string Multiplier(float value) => StatFormat.Multiplier(value);
+    private static string Int(float value) => StatFormat.Int(value);
+    private static string Num(float value) => StatFormat.Num(value);
+    private static string Rate(float value) => StatFormat.Rate(value);
 
-    /// <summary>Множитель в виде ×1.00 — всегда два знака, чтобы колонка не «дышала».</summary>
-    private static string Multiplier(float value)
-    {
-        return "×" + value.ToString("0.00", CultureInfo.InvariantCulture);
-    }
+    // ===================== СНИМОК БИЛДА (для лидерборда) =====================
 
-    /// <summary>Целое с разделителем тысяч: 22 190.</summary>
-    private static string Int(float value)
+    /// <summary>
+    /// Снимок билда на момент вызова (обычно — смерть игрока): те же данные, что видно
+    /// в этой панели — купленное оружие/улучшения (в виде компактных id из BuildCatalog)
+    /// и посчитанные статы. Кодируется в int[] и уходит в Steam вместе с результатом
+    /// забега (см. GameOverController, ILeaderboardService.SubmitTime).
+    /// </summary>
+    public BuildSnapshot CaptureSnapshot()
     {
-        return Mathf.RoundToInt(value).ToString("#,0", NumFormat);
-    }
+        var snapshot = new BuildSnapshot();
 
-    /// <summary>Пара «текущее/максимум» без пробелов вокруг слэша. Нулевой максимум — прочерк.</summary>
-    private static string Pair(float current, float max)
-    {
-        return max > Eps ? Int(current) + "/" + Int(max) : "—";
-    }
+        if (shopManager != null)
+        {
+            if (towerAttack != null)
+            {
+                foreach (var owned in towerAttack.GetOwnedWeapons())
+                {
+                    int id = BuildCatalog.WeaponId(shopManager, owned.Def);
+                    if (id >= 0)
+                        snapshot.items.Add(new BuildSnapshot.Item(id, owned.Stacks));
+                }
+            }
 
-    // Инвариантная культура: на русской локали ОС "0.#" дал бы запятую.
-    private static string Num(float value)
-    {
-        return value > Eps ? value.ToString("0.#", CultureInfo.InvariantCulture) : "—";
-    }
+            if (UpgradesManager.Instance != null)
+            {
+                foreach (var pair in UpgradesManager.Instance.RuntimeData.UpgradePurchaseCounts)
+                {
+                    if (pair.Key == null) continue;
 
-    /// <summary>Значение в секунду. Ноль — прочерк, а не «0/с».</summary>
-    private static string Rate(float value)
-    {
-        return value > Eps ? Num(value) + L("inv.per_second") : "—";
+                    int id = BuildCatalog.UpgradeId(shopManager, pair.Key);
+                    if (id >= 0)
+                        snapshot.items.Add(new BuildSnapshot.Item(id, pair.Value));
+                }
+            }
+        }
+
+        var runtime = UpgradesManager.Instance != null
+            ? UpgradesManager.Instance.GameplayRuntimeData
+            : null;
+
+        if (playerHealth != null)
+        {
+            snapshot.SetStat(BuildStat.Health, playerHealth.MaxHealth);
+            snapshot.SetStat(BuildStat.HealthRegen, playerHealth.GetTotalRegen());
+            snapshot.SetStat(BuildStat.HealOnKill, playerHealth.HealOnKillPerEnemy);
+            snapshot.SetStat(BuildStat.HealOnHit, playerHealth.HealOnHitFromEnemy);
+            snapshot.SetStat(BuildStat.HealAmp, playerHealth.HealAmplificationPercent);
+            snapshot.SetStat(BuildStat.BlockChance, playerHealth.BlockChance);
+            snapshot.SetStat(BuildStat.DamageReduction, playerHealth.DamageReduction);
+            snapshot.SetStat(BuildStat.SpikesDamage, playerHealth.SpikesCount);
+        }
+
+        if (playerShield != null)
+        {
+            snapshot.SetStat(BuildStat.Shield, playerShield.MaxShield);
+            snapshot.SetStat(BuildStat.ShieldOnKill, playerShield.ShieldRestorePerEnemyKill);
+        }
+
+        if (towerAttack != null)
+        {
+            snapshot.SetStat(BuildStat.AttackSpeed, towerAttack.TotalFireRateMultiplier);
+            snapshot.SetStat(BuildStat.DamageMultiplier, towerAttack.GetFinalDamageMultiplier());
+        }
+
+        if (runtime != null && runtime.enemySpawner != null)
+            snapshot.SetStat(BuildStat.MoreEnemies, runtime.enemySpawner.EnemiesPerWavePercentBonus);
+
+        if (GoldManager.Instance != null)
+        {
+            snapshot.SetStat(BuildStat.Income, GoldManager.Instance.goldPerTick);
+            snapshot.SetStat(BuildStat.GoldBonus, GoldManager.Instance.GoldGainBonus);
+        }
+
+        if (runtime != null)
+            snapshot.SetStat(BuildStat.HuntChance, runtime.GoldenEnemyChance);
+
+        if (runtime != null && towerAttack != null)
+        {
+            foreach (WeaponDamageType type in System.Enum.GetValues(typeof(WeaponDamageType)))
+            {
+                float flat = runtime.damageTypeFlatPercent.TryGetValue(type, out float flatValue)
+                    ? flatValue
+                    : 0f;
+                float perWeapon = runtime.damageTypePerWeaponPercent.TryGetValue(type, out float perWeaponValue)
+                    ? perWeaponValue
+                    : 0f;
+                float total = flat + towerAttack.GetTotalWeaponsOfType(type) * perWeapon;
+
+                snapshot.SetStat(BuildSnapshot.GetDamageTypeStat(type), total);
+            }
+        }
+
+        if (enemyStats != null)
+        {
+            snapshot.SetStat(BuildStat.EnemyHealth, enemyStats.CurrentEnemyHealth);
+            snapshot.SetStat(BuildStat.EnemyDamage, enemyStats.CurrentEnemyDamage);
+        }
+
+        return snapshot;
     }
 }

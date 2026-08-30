@@ -616,7 +616,7 @@
             "weight": 15.0,
             "cost": 400,
             "effect_1": "щит за убийство, +",
-            "value_1": 10.0,
+            "value_1": 25.0,
             "effect_2": "",
             "value_2": 0.0,
             "effect_3": "",
@@ -675,8 +675,8 @@
             "tier": 3,
             "weight": 8.0,
             "cost": 1500,
-            "effect_1": "стак шанса блока, +",
-            "value_1": 1.0,
+            "effect_1": "шанс блока, +%",
+            "value_1": 10.0,
             "effect_2": "",
             "value_2": 0.0,
             "effect_3": "",
@@ -736,7 +736,7 @@
             "weight": 8.0,
             "cost": 1500,
             "effect_1": "урон оружий тира 1, +%",
-            "value_1": 50.0,
+            "value_1": 100.0,
             "effect_2": "",
             "value_2": 0.0,
             "effect_3": "",
@@ -862,7 +862,7 @@
             "effect_3": "",
             "value_3": 0.0,
             "interval": 0.0,
-            "asset": "ProjectileDamageUltimate 1"
+            "asset": "ProjectileDamageUltimate"
         },
         {
             "name": "Ультимативный магический урон",
@@ -1007,16 +1007,16 @@
         "attack_interval": 1.0
     },
     "boss": {
-        "damage": 4.0,
-        "hp": 275.0,
+        "additional_damage_boss": 25.0,
+        "damage_boss": 4.0,
+        "hp_boss": 275.0,
+        "hp_multiplier": 1.5,
         "gold": 50,
         "speed": 0.8999999761581421,
         "attack_interval": 1.0,
         "attack_range": 4.5,
         "spawn_interval": 300.0,
-        "hp_multiplier": 1.5,
-        "damage_multiplier": 1.0,
-        "additional_damage_boss": 25.0
+        "reference_enemy": "melee"
     },
     "waves": {
         "delay_per_wave": 10.0,
@@ -1048,7 +1048,7 @@
     "player": {
         "hp": 200.0,
         "shield": 0.0,
-        "block_cap": 0.800000011920929,
+        "block_cap": 0.8999999761581421,
         "shield_recharge_time": 10.0,
         "shield_full_restore_after_no_damage": 15.0,
         "tower_range": 20.0,

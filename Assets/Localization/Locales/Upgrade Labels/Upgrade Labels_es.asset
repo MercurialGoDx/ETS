@@ -246,7 +246,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 74576184478564389
-    m_Localized: 'Probabilidad de bloqueo: <color=#ffd700>+10%</color>\n\n<color=#ffd700>Coste:
+    m_Localized: 'Probabilidad de bloqueo: <color=#ffd700>+{0}%</color>\n\n<color=#ffd700>Coste:
       {1}</color>'
     m_Metadata:
       m_Items: []

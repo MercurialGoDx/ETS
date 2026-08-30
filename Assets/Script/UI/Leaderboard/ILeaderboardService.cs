@@ -24,8 +24,9 @@ public interface ILeaderboardService
     void GetTop(int count, Action<List<LeaderboardEntry>> onDone);
 
     /// <summary>
-    /// Отправляет результат текущего игрока (время забега в секундах). <paramref name="onDone"/>
-    /// вызывается по завершении (может быть null).
+    /// Отправляет результат текущего игрока (время забега в секундах), опционально вместе
+    /// со снимком билда (см. BuildSnapshot.Encode — не длиннее BuildSnapshot.MaxDetails).
+    /// <paramref name="onDone"/> вызывается по завершении (может быть null).
     /// </summary>
-    void SubmitTime(float timeSeconds, Action onDone = null);
+    void SubmitTime(float timeSeconds, int[] buildDetails = null, Action onDone = null);
 }

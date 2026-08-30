@@ -20,13 +20,16 @@ public class BossManager : MonoBehaviour
     [Header("Difficulty scaling")]
     public EnemySpawner enemySpawner;
 
-    [Tooltip("Множитель базового HP босса до применения общей сложности.")]
+    [Tooltip("Тип обычного врага, чьи итоговые статы служат основой босса: melee, mid или range.")]
+    public string bossReferenceEnemy = "melee";
+
+    [Tooltip("Множитель итогового HP обычного врага из bossReferenceEnemy. Базовое HP босса прибавляется после и не масштабируется.")]
     public float bossHpMultiplier = 1.5f;
 
-    [Tooltip("Множитель базового урона босса до применения общей сложности.")]
-    public float bossDamageMultiplier = 1f;
+    [Tooltip("Множитель итогового урона обычного врага из bossReferenceEnemy.")]
+    public float bossDamageMultiplier = 4f;
 
-    [Tooltip("Плоская прибавка к урону босса, не участвующая в умножении (не растёт вместе с damageMultiplier/сложностью).")]
+    [Tooltip("Базовый урон босса, который прибавляется после умножения урона обычного врага и ни на что не умножается.")]
     public float bossAdditionalDamage = 0f;
 
     private Transform player;
@@ -40,7 +43,6 @@ public class BossManager : MonoBehaviour
         public GameObject instance;
         public Enemy enemy;
         public float baseHealth;
-        public float baseDamage;
     }
 
     private readonly List<BossEntry> bosses = new List<BossEntry>();
@@ -58,6 +60,7 @@ public class BossManager : MonoBehaviour
             bossHpMultiplier = cfg.boss.hpMultiplier;
             bossDamageMultiplier = cfg.boss.damageMultiplier;
             bossAdditionalDamage = cfg.boss.additionalDamage;
+            bossReferenceEnemy = cfg.boss.referenceEnemy;
         }
 
         FindPlayer();
@@ -102,8 +105,6 @@ public class BossManager : MonoBehaviour
             enemy.returnToPoolInsteadOfDestroy = true;
 
             float baseHp = enemy.maxHealth;
-            float baseDmg = enemy.damageToPlayer;
-
             enemy.OnDeath -= HandleBossDeath;
             enemy.OnDeath += HandleBossDeath;
 
@@ -111,8 +112,7 @@ public class BossManager : MonoBehaviour
             {
                 instance = inst,
                 enemy = enemy,
-                baseHealth = baseHp,
-                baseDamage = baseDmg
+                baseHealth = baseHp
             });
         }
 
@@ -159,31 +159,31 @@ public class BossManager : MonoBehaviour
         activeBossEnemy = chosen.enemy;
         activeBossEnemy.isDead = false;
 
-        float healthDifficultyMult = 1f;
-        float damageDifficultyMult = 1f;
-        float flatHealth = 0f;
-        float flatDamage = 0f;
+        float referenceEnemyHealth = 0f;
+        float referenceEnemyDamage = 0f;
 
         if (enemySpawner != null)
         {
-            enemySpawner.InitializeSpawnedEnemy(
+            if (!enemySpawner.InitializeSpawnedBoss(
                 chosen.enemy,
+                bossReferenceEnemy,
                 chosen.baseHealth,
-                chosen.baseDamage,
+                bossAdditionalDamage,
                 bossHpMultiplier,
                 bossDamageMultiplier,
-                bossAdditionalDamage);
-
-            healthDifficultyMult = enemySpawner.CurrentHealthMultiplier;
-            damageDifficultyMult = enemySpawner.CurrentDamageMultiplier;
-            flatHealth = enemySpawner.CurrentFlatHealthBonus;
-            flatDamage = enemySpawner.CurrentFlatDamageBonus;
+                out referenceEnemyHealth,
+                out referenceEnemyDamage))
+            {
+                chosen.enemy.InitStats(chosen.baseHealth, bossAdditionalDamage);
+                EnemyEffectManager.Instance?.ApplyEffectsToEnemy(chosen.enemy);
+                Debug.LogWarning($"[BossManager] Enemy reference '{bossReferenceEnemy}' is unavailable; boss spawned with base stats only");
+            }
         }
         else
         {
             chosen.enemy.InitStats(
-                chosen.baseHealth * bossHpMultiplier,
-                chosen.baseDamage * bossDamageMultiplier + bossAdditionalDamage);
+                chosen.baseHealth,
+                bossAdditionalDamage);
 
             EnemyEffectManager.Instance?.ApplyEffectsToEnemy(chosen.enemy);
             Debug.LogWarning("[BossManager] EnemySpawner is not assigned; boss spawned without wave scaling");
@@ -224,10 +224,9 @@ public class BossManager : MonoBehaviour
 
         Debug.Log(
             $"[BossManager] Boss spawned ({chosen.instance.name}) | " +
-            $"baseHp={chosen.baseHealth:F1}, baseDmg={chosen.baseDamage:F1}, " +
-            $"difficultyHp=x{healthDifficultyMult:F3}, difficultyDmg=x{damageDifficultyMult:F3}, " +
-            $"flatHp={flatHealth:F1}, flatDmg={flatDamage:F1}, " +
-            $"bossHp=x{bossHpMultiplier:F2}, bossDmg=x{bossDamageMultiplier:F2}, additionalDmg={bossAdditionalDamage:F1}, " +
+            $"referenceEnemy={bossReferenceEnemy}, referenceHp={referenceEnemyHealth:F1}, referenceDmg={referenceEnemyDamage:F1}, " +
+            $"baseBossHp={chosen.baseHealth:F1}, baseBossDmg={bossAdditionalDamage:F1}, " +
+            $"bossHp=x{bossHpMultiplier:F2}, bossDmg=x{bossDamageMultiplier:F2}, " +
             $"finalHp={chosen.enemy.maxHealth:F1}, finalDmg={chosen.enemy.damageToPlayer:F1}");
     }
 

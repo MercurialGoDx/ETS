@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class PlayerHealth : MonoBehaviour
 {
+    public static PlayerHealth Instance { get; private set; }
+
     [Header("Здоровье")]
     public float baseMaxHealth = 100f;
     public float maxHealthMultiplier = 1f;
@@ -17,15 +19,35 @@ public class PlayerHealth : MonoBehaviour
 
     [Header("Health - Damage Block (diminishing)")]
     [SerializeField, Range(0f, 0.95f)]
-    private float blockCap = 0.80f;      // максимум 80%
+    private float blockCap = 0.90f;      // максимум 90%
     [SerializeField, Range(0f, 1f)]
-    private float blockChance = 0f;      // текущий шанс блока (0..0.8)
+    private float blockChance = 0f;      // текущий шанс блока (0..0.9)
     [SerializeField]
     private int blockUpgradeCount = 0;   // сколько раз купили апгрейд
+    [SerializeField, HideInInspector]
+    private float blockInitialChance = 0f;
+
+    private const float BlockGrowthBase = 0.90f;
+    private const float BlockGrowthMultiplier = 0.85f;
     [Header("Health - Damage Reduction (diminishing)")]
 
-    [SerializeField, Range(0f, 0.99f)]
-    private float damageReduction = 0f; // 0..1 (0.19 = -19% урона)
+    [SerializeField, Range(0f, 0.98f)]
+    private float damageReduction = 0f; // Итоговое уменьшение урона (0.19 = -19% урона)
+    [SerializeField, HideInInspector]
+    private float damageReductionScore = 0f;
+    [SerializeField, HideInInspector]
+    private float damageReductionScorePerEnemyHit = 0f;
+
+    [Header("Health - Exhaustible Damage Reduction")]
+    [SerializeField, HideInInspector]
+    private float exhaustibleDamageReductionScore = 0f;
+    [SerializeField, HideInInspector]
+    private float exhaustibleDamageReductionScoreLossPerHit = 0f;
+
+    private const float DamageReductionSoftThreshold = 0.50f;
+    private const float DamageReductionPostThresholdMultiplier = 0.50f;
+    private const float DamageReductionCap = 0.98f;
+    private const float ExhaustibleDamageReductionRestoreDelay = 30f;
     public float DamageReduction => damageReduction;
 
     // Только чтение, для панелей UI. Значения меняются через Add*-методы ниже.
@@ -33,9 +55,19 @@ public class PlayerHealth : MonoBehaviour
     public float BlockCap => blockCap;
     public float HealOnKillPerEnemy => healOnKillPerEnemy;
     public float HealOnHitFromEnemy => healOnHitFromEnemyAmount;
+    public float ExhaustibleDamageReductionScore => exhaustibleDamageReductionScore;
 
     [Header("UI")]
     [SerializeField] private Image healthBarFill;
+
+    [Header("Attack Hit Audio")]
+    [SerializeField] private AudioClip meleeHitSound;
+    [SerializeField, Range(0f, 1f)] private float meleeHitVolume = 1f;
+    [SerializeField, Min(0f)] private float meleeHitCooldown = 0.08f;
+    [SerializeField] private AudioClip rangedProjectileHitSound;
+    [SerializeField, Range(0f, 1f)] private float rangedProjectileHitVolume = 1f;
+    [Tooltip("Prevents many simultaneous projectiles from stacking the same sound.")]
+    [SerializeField, Min(0f)] private float rangedProjectileHitCooldown = 0.08f;
 
     [Header("Шипы")]
     [Tooltip("WeaponDefinition шипов — для отображения урона шипов в статистике (имя «Шипы» + иконка).")]
@@ -43,6 +75,8 @@ public class PlayerHealth : MonoBehaviour
     [SerializeField] private float spikesBase = 0f;         // базовый урон шипов
     [SerializeField] private float spikesMultiplier = 1f;   // множитель шипов
     [SerializeField] private float spikesGlobalMultiplier = 1f;
+    [SerializeField] private float spikesBossDamageMultiplier = 1f;
+    [SerializeField] private float spikesEnemyAttackStackPercentPerHit = 0f;
     [SerializeField] private float spikesOnKillBonus = 0f;  // доп. урон за убийство врага
     [SerializeField] private float spikesDamageScalePerEnemyHit = 0f;   // доп. урон за каждое получение урона от врага
     [Header("Эффекты при получении урона")]
@@ -56,6 +90,22 @@ public class PlayerHealth : MonoBehaviour
     private bool isDead = false;
 
     private DamageCalculator damageCalculator;
+    private float _nextMeleeHitSoundTime;
+    private float _nextRangedProjectileHitSoundTime;
+
+    private struct ExhaustibleDamageReductionLoss
+    {
+        public float score;
+        public float restoreAt;
+
+        public ExhaustibleDamageReductionLoss(float score, float restoreAt)
+        {
+            this.score = score;
+            this.restoreAt = restoreAt;
+        }
+    }
+
+    private readonly List<ExhaustibleDamageReductionLoss> exhaustibleDamageReductionLosses = new();
 
     // === Публичные свойства (для других скриптов) ===
 
@@ -67,8 +117,16 @@ public class PlayerHealth : MonoBehaviour
 
     public float CurrentHealth => currentHealth;
 
+    // Количество шипов для инвентаря: только накопленное плоское значение,
+    // без собственных и общих множителей урона.
+    public float SpikesCount => spikesBase;
+
+    // Базовый боевой урон шипов с их собственными множителями. Универсальные
+    // оружейные бонусы добавляются через DamageCalculator только при нанесении урона.
     public float SpikesDamage => spikesBase * spikesMultiplier * spikesGlobalMultiplier;
     public float SpikesGlobalMultiplier => spikesGlobalMultiplier;
+    public float SpikesBossDamageMultiplier => spikesBossDamageMultiplier;
+    public float SpikesEnemyAttackStackPercentPerHit => spikesEnemyAttackStackPercentPerHit;
 
     /// <summary>
     /// Итоговый реген в секунду: базовый плюс бонус за недостающее здоровье.
@@ -97,6 +155,8 @@ public class PlayerHealth : MonoBehaviour
 
     private void Awake()
     {
+        Instance = this;
+
         // Баланс из таблицы (если импортирован) перекрывает инспектор.
         var cfg = BalanceService.Config;
         if (cfg != null)
@@ -106,11 +166,18 @@ public class PlayerHealth : MonoBehaviour
         }
 
         currentHealth = MaxHealth;
+        RecalculateDamageReduction();
 
         UpdateHealthUI();
 
         GetComponents(modifiers);
         modifiers.Sort((a, b) => a.Priority.CompareTo(b.Priority));
+    }
+
+    private void OnDestroy()
+    {
+        if (Instance == this)
+            Instance = null;
     }
 
     public void Init(DamageCalculator calculator)
@@ -121,6 +188,8 @@ public class PlayerHealth : MonoBehaviour
     private void Update()
     {
         if (isDead || GameStateManager.Instance.CurrentState != GameState.Playing) return;
+
+        RestoreExhaustibleDamageReduction();
 
         // === РЕГЕН ЗДОРОВЬЯ ===
         if (currentHealth < MaxHealth)
@@ -140,30 +209,132 @@ public class PlayerHealth : MonoBehaviour
 
     public void AddDamageReductionDiminishing(float add)
     {
-        add = Mathf.Clamp01(add);
+        add = Mathf.Clamp(add, 0f, 0.999999f);
+        if (add <= 0f) return;
 
-        float remaining = 1f - damageReduction;
-        if (remaining <= 0f) return;
-
-        damageReduction += remaining * add;
-        damageReduction = Mathf.Clamp01(damageReduction);
+        AddDamageReductionScore(-Mathf.Log(1f - add));
     }
 
-    public void AddBlockChanceDiminishing(int stacks = 1)
+    public void AddDamageReductionPerEnemyHit(float addPerHit)
     {
-        if (stacks <= 0) return;
+        addPerHit = Mathf.Clamp(addPerHit, 0f, 0.999999f);
+        if (addPerHit <= 0f) return;
 
-        blockUpgradeCount += stacks;
+        // Храним вклад каждой покупки в score, чтобы несколько экземпляров
+        // улучшения складывались по тем же правилам diminishing returns.
+        damageReductionScorePerEnemyHit += -Mathf.Log(1f - addPerHit);
+    }
 
-        const int N = 12;               // целевая точка к которой нормируем
-        const float m = 0.975f;         // 78% от cap (0.78 / 0.8)
-        const float a = 0.1238619f;     // подобрано: n=1 ~10%, n=12 ~78%
+    /// <summary>
+    /// Добавляет одну покупку истощаемого DR. Значения передаются как доли score:
+    /// 0.75 = +75% score в стартовый запас, 0.10 = -10% score за удар.
+    /// </summary>
+    public void AddExhaustibleDamageReduction(float startScore, float lossScorePerHit)
+    {
+        startScore = Mathf.Max(0f, startScore);
+        lossScorePerHit = Mathf.Max(0f, lossScorePerHit);
 
-        float n = blockUpgradeCount;
+        if (startScore <= 0f && lossScorePerHit <= 0f)
+            return;
 
-        float denom = Mathf.Log(1f + a * N);
-        blockChance = blockCap * m * (Mathf.Log(1f + a * n) / denom);
+        exhaustibleDamageReductionScore += startScore;
+        exhaustibleDamageReductionScoreLossPerHit += lossScorePerHit;
+        RecalculateDamageReduction();
+    }
 
+    private void AddDamageReductionScore(float score)
+    {
+        if (score <= 0f) return;
+
+        damageReductionScore += score;
+        RecalculateDamageReduction();
+    }
+
+    private void RecalculateDamageReduction()
+    {
+        damageReduction = CalculateDamageReduction(
+            damageReductionScore + exhaustibleDamageReductionScore);
+    }
+
+    private void ConsumeExhaustibleDamageReductionForHit()
+    {
+        if (exhaustibleDamageReductionScore <= 0f ||
+            exhaustibleDamageReductionScoreLossPerHit <= 0f)
+            return;
+
+        float lostScore = Mathf.Min(
+            exhaustibleDamageReductionScore,
+            exhaustibleDamageReductionScoreLossPerHit);
+
+        exhaustibleDamageReductionScore -= lostScore;
+        exhaustibleDamageReductionLosses.Add(
+            new ExhaustibleDamageReductionLoss(
+                lostScore,
+                Time.time + ExhaustibleDamageReductionRestoreDelay));
+
+        RecalculateDamageReduction();
+    }
+
+    private void RestoreExhaustibleDamageReduction()
+    {
+        if (exhaustibleDamageReductionLosses.Count == 0)
+            return;
+
+        float now = Time.time;
+        bool restored = false;
+
+        for (int i = exhaustibleDamageReductionLosses.Count - 1; i >= 0; i--)
+        {
+            var loss = exhaustibleDamageReductionLosses[i];
+            if (now < loss.restoreAt)
+                continue;
+
+            exhaustibleDamageReductionScore += loss.score;
+            exhaustibleDamageReductionLosses.RemoveAt(i);
+            restored = true;
+        }
+
+        if (restored)
+            RecalculateDamageReduction();
+    }
+
+    private static float CalculateDamageReduction(float score)
+    {
+        score = Mathf.Max(0f, score);
+
+        float thresholdScore = -Mathf.Log(1f - DamageReductionSoftThreshold);
+        if (score <= thresholdScore)
+            return 1f - Mathf.Exp(-score);
+
+        float scoreAfterThreshold = score - thresholdScore;
+        float slowedProgress = 1f - Mathf.Exp(
+            -DamageReductionPostThresholdMultiplier * scoreAfterThreshold);
+
+        float result = DamageReductionSoftThreshold
+            + (DamageReductionCap - DamageReductionSoftThreshold) * slowedProgress;
+
+        return Mathf.Min(result, DamageReductionCap);
+    }
+
+    public void AddBlockChanceDiminishing(float firstUpgradePercent)
+    {
+        firstUpgradePercent = Mathf.Clamp(firstUpgradePercent, 0f, 100f);
+        if (firstUpgradePercent <= 0f) return;
+
+        // Первая покупка всегда даёт ровно значение из DamageBlockChanceUpgrade.
+        // Например, valuePercent = 15 означает стартовый шанс блока 15%.
+        if (blockUpgradeCount == 0 || blockInitialChance <= 0f)
+            blockInitialChance = Mathf.Min(firstUpgradePercent / 100f, blockCap);
+
+        blockUpgradeCount++;
+
+        int diminishingPurchaseCount = blockUpgradeCount - 1;
+        float additionalChanceRange = Mathf.Max(0f, blockCap - blockInitialChance);
+        float diminishingProgress = 1f - Mathf.Pow(
+            BlockGrowthBase,
+            BlockGrowthMultiplier * diminishingPurchaseCount);
+
+        blockChance = blockInitialChance + additionalChanceRange * diminishingProgress;
         blockChance = Mathf.Min(blockChance, blockCap);
     }
 
@@ -191,8 +362,18 @@ public class PlayerHealth : MonoBehaviour
 
     public void TakeDamage(Enemy enemy)
     {
-        if (enemy.damageToPlayer <= 0f) return;
+        if (enemy == null) return;
         if (isDead) return;
+
+        // Обрабатываем восстановление и перед ударом, чтобы точный момент
+        // восстановления не зависел от частоты кадров/порядка Update.
+        RestoreExhaustibleDamageReduction();
+
+        // Счётчик урона врага увеличивается до проверки блока: заблокированная
+        // атака всё равно была совершена и должна продвинуть его прогрессию.
+        enemy.RegisterTowerAttack();
+
+        if (enemy.CurrentDamageToPlayer <= 0f) return;
 
         // 1) Block: урон полностью игнорируем
         if (blockChance > 0f && UnityEngine.Random.value < blockChance)
@@ -200,7 +381,7 @@ public class PlayerHealth : MonoBehaviour
             return;
         }
 
-        float remaining = enemy.damageToPlayer;
+        float remaining = enemy.CurrentDamageToPlayer;
 
         // 2) Damage Reduction: уменьшение входящего урона (работает и для щита)
         if (damageReduction > 0f)
@@ -208,6 +389,8 @@ public class PlayerHealth : MonoBehaviour
             remaining *= (1f - damageReduction);
             if (remaining <= 0f) return;
         }
+
+        PlayAttackHitSound(enemy);
 
         // 2) Сначала щит
         foreach (var mod in modifiers)
@@ -245,6 +428,60 @@ public class PlayerHealth : MonoBehaviour
         {
             AddSpikesDamage(spikesDamageScalePerEnemyHit);
         }
+
+        // Заблокированная атака возвращается выше и сюда не попадает.
+        // Реальный удар сначала использует текущий DR, затем усиливает следующие удары.
+        AddDamageReductionScore(damageReductionScorePerEnemyHit);
+        ConsumeExhaustibleDamageReductionForHit();
+    }
+
+    private void PlayAttackHitSound(Enemy enemy)
+    {
+        if (enemy.StatusEffects != null && enemy.StatusEffects.IsBoss)
+            return;
+
+        switch (enemy.attackType)
+        {
+            case EnemyAttackType.Melee:
+                PlayHitSound(
+                    meleeHitSound,
+                    meleeHitVolume,
+                    meleeHitCooldown,
+                    ref _nextMeleeHitSoundTime);
+                break;
+
+            case EnemyAttackType.MidRange:
+            case EnemyAttackType.LongRange:
+                PlayHitSound(
+                    rangedProjectileHitSound,
+                    rangedProjectileHitVolume,
+                    rangedProjectileHitCooldown,
+                    ref _nextRangedProjectileHitSoundTime);
+                break;
+        }
+    }
+
+    private void PlayHitSound(
+        AudioClip clip,
+        float baseVolume,
+        float cooldown,
+        ref float nextAllowedTime)
+    {
+        if (clip == null || Time.unscaledTime < nextAllowedTime)
+        {
+            return;
+        }
+
+        float volume = baseVolume;
+        if (AudioManager.Instance != null)
+            volume *= AudioManager.Instance.GetSoundVolume();
+
+        volume = Mathf.Clamp01(volume);
+        if (volume <= 0f)
+            return;
+
+        nextAllowedTime = Time.unscaledTime + cooldown;
+        AudioSource.PlayClipAtPoint(clip, transform.position, volume);
     }
 
 
@@ -345,6 +582,16 @@ public class PlayerHealth : MonoBehaviour
         spikesGlobalMultiplier += percent;
     }
 
+    public void AddSpikesBossDamagePercent(float percent)
+    {
+        spikesBossDamageMultiplier += percent;
+    }
+
+    public void AddSpikesEnemyAttackStackPercent(float percentPerHit)
+    {
+        spikesEnemyAttackStackPercentPerHit += percentPerHit;
+    }
+
     public void AddSpikesDamagePerKill(float amount)
     {
         spikesOnKillBonus += amount;
@@ -399,13 +646,32 @@ public class PlayerHealth : MonoBehaviour
         float damage = damageCalculator.Calculate(new DamageContext
         {
             baseDamage = SpikesDamage,
+            damageType = default,
             itemTier = ItemTier.None,
             isSpikes = true
         });
 
+        float bossDamageMultiplier = enemy.StatusEffects != null && enemy.StatusEffects.IsBoss
+            ? spikesBossDamageMultiplier
+            : 1f;
+
+        int enemyAttackStackCount = RegisterSpikeAttackStack(enemy);
+        float enemyAttackStackMultiplier = 1f
+            + spikesEnemyAttackStackPercentPerHit * enemyAttackStackCount;
+
+        damage *= bossDamageMultiplier * enemyAttackStackMultiplier;
+
         DamageStatsManager.Instance?.RegisterDamage(spikesWeapon, damage);
 
-        enemy.TakeDamage(damage, true);
+        enemy.TakeWeaponDamage(damage, spikesWeapon, true);
+    }
+
+    private int RegisterSpikeAttackStack(Enemy enemy)
+    {
+        if (spikesEnemyAttackStackPercentPerHit <= 0f)
+            return 0;
+
+        return enemy.IncrementSpikesAttackStack();
     }
 
     // === UI ===

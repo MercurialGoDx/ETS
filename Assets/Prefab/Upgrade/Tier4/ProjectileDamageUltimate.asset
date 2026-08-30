@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c27422c313552df40af37641a13e294d, type: 3}
+  m_Name: ProjectileDamageUltimate
+  m_EditorClassIdentifier: 
+  icon: {fileID: 21300000, guid: 5c7ee7d3d3aa64a4bb2b4759123562ec, type: 3}
+  price: 3000
+  weight: 1
+  itemTier: 4
+  weightIncreasePerPurchase: 1
+  maxWeightIncreasePurchases: 2
+  weightDecreaseUpgrades: []
+  weightDecreasePercent: 0
+  weightIncreaseUpgrades: []
+  weightIncreasePercent: 0
+  weightDecreaseWeapons: []
+  weightDecreaseWeaponPercent: 0
+  weightIncreaseWeapons: []
+  weightIncreaseWeaponPercent: 0
+  localizedStringTable:
+    m_TableReference:
+      m_TableCollectionName: GUID:164770c6fc8794c4ba4db6f8c7e72db3
+  nameKey: projectile_ultimate.name
+  descriptionKey: projectile_ultimate.desc
+  upgrades:
+  - {fileID: 11400000, guid: 57839daef1eb9404596736ecc1827826, type: 2}
+  - {fileID: 11400000, guid: 94038ef43dd2b8d4c83b4fcdcf6b87bd, type: 2}

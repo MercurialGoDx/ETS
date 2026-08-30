@@ -105,6 +105,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1500939411536426, guid: 274c4c35ed05ea14c87492064b3cadfd, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4643476202960436003}
+    - targetCorrespondingSourceObject: {fileID: 1500939411536426, guid: 274c4c35ed05ea14c87492064b3cadfd, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4786911400216323628}
   m_SourcePrefab: {fileID: 100100000, guid: 274c4c35ed05ea14c87492064b3cadfd, type: 3}
 --- !u!1 &2804493979921038529 stripped
 GameObject:
@@ -171,8 +174,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8a78270391e03e844be420d0c3992e13, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Name:
+  m_EditorClassIdentifier:
   speed: 1.15
   maxHealth: 8
   damageToPlayer: 1
@@ -183,6 +186,8 @@ MonoBehaviour:
   attackRange: 2.5
   attackInterval: 1
   overrideAttackRange: 0
+  deathSound: {fileID: 8300000, guid: a2994c22b0a5b694881c185c37ddbc6e, type: 3}
+  deathSoundVolume: 1
   isDead: 0
   bonusGold: 0
   returnToPoolInsteadOfDestroy: 0
@@ -212,6 +217,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b4844192c633ae04db2afff3a93c1936, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &4786911400216323628
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2804493979921038529}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba0737ee258c6564b891f2816d5ffa49, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+  isBoss: 0
+  defaultStunVisualPrefab: {fileID: 4878261017863814315, guid: 202237ad5ba3f8540ab7272c2c45d544, type: 3}
+  defaultFreezeVisualPrefab: {fileID: 4574536459950186963, guid: c9678826f05e7b14c986be18f0a4b789, type: 3}
+  defaultWeaknessVisualPrefab: {fileID: 4878261017863814315, guid: d2aedcd1861b4f56859fec221d7a205c, type: 3}
+  defaultBurningVisualPrefab: {fileID: 0}
+  burningTickInterval: 0.5
 --- !u!4 &2809779515494166329 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4665124114459090, guid: 274c4c35ed05ea14c87492064b3cadfd, type: 3}

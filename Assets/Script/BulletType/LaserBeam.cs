@@ -52,6 +52,7 @@ public class LaserBeam : MonoBehaviour, IAttackBehaviour
     private PlayerHealth cachedPlayerHealth;
     private float lifeTimer;
     private float targetLockStartTime;
+    private uint targetActivationVersion;
     private WeaponDefinition sourceWeapon;
     private int weaponStackIndex;
     private PooledObject pooledObject;
@@ -69,7 +70,22 @@ public class LaserBeam : MonoBehaviour, IAttackBehaviour
         if (enemy == null || weapon == null)
             return null;
 
-        ActiveBeams.TryGetValue(new BeamKey(enemy, weapon, stackIndex), out var beam);
+        BeamKey key = new BeamKey(enemy, weapon, stackIndex);
+        if (!ActiveBeams.TryGetValue(key, out var beam))
+            return null;
+
+        // A pooled Enemy keeps the same object reference after reuse. Its activation
+        // version tells us whether this beam belongs to the previous incarnation.
+        if (beam == null ||
+            beam.targetEnemy != enemy ||
+            beam.targetActivationVersion != enemy.ActivationVersion ||
+            !beam.IsTargetValid())
+        {
+            ActiveBeams.Remove(key);
+            beam?.ReleaseBeam();
+            return null;
+        }
+
         return beam;
     }
 
@@ -125,6 +141,7 @@ public class LaserBeam : MonoBehaviour, IAttackBehaviour
         sourceWeapon = null;
         weaponStackIndex = 0;
         targetLockStartTime = 0f;
+        targetActivationVersion = 0;
         hasActiveBeamKey = false;
     }
 
@@ -163,6 +180,7 @@ public class LaserBeam : MonoBehaviour, IAttackBehaviour
         firePoint = context.firePoint;
         targetEnemy = enemy;
         targetTransform = enemy.transform;
+        targetActivationVersion = enemy.ActivationVersion;
         ownerTower = context.ownerTower;
         damageCalculator = context.damageCalculator;
         baseDamagePerTick = context.baseDamage;
@@ -233,7 +251,7 @@ public class LaserBeam : MonoBehaviour, IAttackBehaviour
                     $"stack={weaponStackIndex}.");
             }
 
-            attackedEnemy.TakeDamage(currentDamage);
+            attackedEnemy.TakeWeaponDamage(currentDamage, attackingWeapon);
             DamageStatsManager.Instance?.RegisterDamage(attackingWeapon, currentDamage);
 
             if (increasePlayerMaxHealthOnKill &&
@@ -280,6 +298,7 @@ public class LaserBeam : MonoBehaviour, IAttackBehaviour
         return firePoint != null &&
             targetEnemy != null &&
             targetTransform != null &&
+            targetEnemy.ActivationVersion == targetActivationVersion &&
             !targetEnemy.isDead &&
             targetEnemy.gameObject.activeInHierarchy;
     }

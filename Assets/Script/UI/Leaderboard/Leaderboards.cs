@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
@@ -15,6 +16,11 @@ public static class Leaderboards
     private static string s_steamLeaderboardName = "SurvivalTime_v2";
     private static bool s_createIfMissing = true;
 
+    // SteamID64 читеров/нарушителей, скрываемых из выдачи GetTop без обращения к Valve —
+    // запись у Steam остаётся, просто эта игра сама не показывает её в таблице.
+    // Заполняется через LeaderboardConfig (список строк в инспекторе).
+    private static readonly HashSet<ulong> s_blockedSteamIds = new HashSet<ulong>();
+
     /// <summary>
     /// Задать параметры Steam-лидерборда до первого обращения к <see cref="Service"/>. После создания
     /// сервиса вызов игнорируется (параметры уже зафиксированы). Обычно вызывается из
@@ -24,8 +30,20 @@ public static class Leaderboards
     /// true — FindOrCreateLeaderboard (создать, если нет; для разработки);
     /// false — FindLeaderboard (только искать; для релиза).
     /// </param>
-    public static void Configure(string steamLeaderboardName, bool createIfMissing)
+    /// <param name="blockedSteamIds">SteamID64 (в виде строк), которые нужно скрыть из таблицы.</param>
+    public static void Configure(string steamLeaderboardName, bool createIfMissing, IEnumerable<string> blockedSteamIds = null)
     {
+        if (blockedSteamIds != null)
+        {
+            foreach (string raw in blockedSteamIds)
+            {
+                if (ulong.TryParse(raw, out ulong id))
+                    s_blockedSteamIds.Add(id);
+                else if (!string.IsNullOrWhiteSpace(raw))
+                    Debug.LogWarning($"[Leaderboards] Не удалось разобрать SteamID64 в чёрном списке: '{raw}'.");
+            }
+        }
+
         if (s_service != null)
             return;
 
@@ -33,6 +51,9 @@ public static class Leaderboards
             s_steamLeaderboardName = steamLeaderboardName;
         s_createIfMissing = createIfMissing;
     }
+
+    /// <summary>Скрыт ли этот SteamID64 из таблицы лидеров (см. Configure/LeaderboardConfig.blockedSteamIds).</summary>
+    public static bool IsBlocked(ulong steamId64) => s_blockedSteamIds.Contains(steamId64);
 
     public static ILeaderboardService Service
     {
@@ -56,5 +77,6 @@ public static class Leaderboards
         s_service = null;
         s_steamLeaderboardName = "SurvivalTime_v2";
         s_createIfMissing = true;
+        s_blockedSteamIds.Clear();
     }
 }

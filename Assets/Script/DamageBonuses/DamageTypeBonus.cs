@@ -18,6 +18,8 @@ public class DamageTypeBonus : IDamageBonusProvider, IDamageBonusDebugProvider
 
     public float GetDamageBonus(DamageContext ctx)
     {
+        // Шипы используют все универсальные усилители урона, но собственного
+        // WeaponDamageType у них нет — типовые бонусы к ним не применяются.
         if (ctx.isSpikes)
             return 0f;
 

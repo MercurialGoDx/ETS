@@ -105,7 +105,7 @@ public class ChainBullet : MonoBehaviour, IAttackBehaviour
             if (!hitEnemies.Contains(enemy))
             {
                 hitEnemies.Add(enemy);
-                enemy.TakeDamage(damage);
+                enemy.TakeWeaponDamage(damage, sourceWeapon);
                 DamageStatsManager.Instance?.RegisterDamage(sourceWeapon, damage);
             }
         }

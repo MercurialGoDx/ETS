@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c27422c313552df40af37641a13e294d, type: 3}
+  m_Name: Spike_t4
+  m_EditorClassIdentifier: 
+  icon: {fileID: 0}
+  price: 3000
+  weight: 3
+  itemTier: 4
+  weightIncreasePerPurchase: 0
+  maxWeightIncreasePurchases: 0
+  weightDecreaseUpgrades: []
+  weightDecreasePercent: 0
+  weightIncreaseUpgrades: []
+  weightIncreasePercent: 0
+  weightDecreaseWeapons: []
+  weightDecreaseWeaponPercent: 0
+  weightIncreaseWeapons: []
+  weightIncreaseWeaponPercent: 0
+  localizedStringTable:
+    m_TableReference:
+      m_TableCollectionName: GUID:164770c6fc8794c4ba4db6f8c7e72db3
+  nameKey: spike_t4.name
+  descriptionKey: spike_t4.desc
+  upgrades:
+  - {fileID: 11400000, guid: 70a69b9f984255448b0fdf4bb8927e62, type: 2}
+  - {fileID: 11400000, guid: b2b4cf1d9e61fa04786df1c0934d1526, type: 2}

@@ -38,13 +38,10 @@ public class DamageStatisticsUI : MonoBehaviour
         if (DamageStatsManager.Instance == null || content == null || itemPrefab == null)
             return;
 
-        foreach (var stat in DamageStatsManager.Instance.GetDamageSorted())
+        foreach (DamageStatEntry stat in DamageStatsManager.Instance.GetAllDamageSorted())
         {
-            if (stat.weapon == null)
-                continue;
-
             WeaponStatItemUI item = Instantiate(itemPrefab, content);
-            item.Setup(stat.weapon, stat.damage);
+            item.Setup(stat);
             spawned.Add(item.gameObject);
         }
     }

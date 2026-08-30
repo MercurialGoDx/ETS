@@ -454,8 +454,7 @@ public class TowerAttack : MonoBehaviour
                     auraInstance.Init(
                         def.damagePerProjectile,
                         1,
-                        def.damageType,
-                        def.itemTier,
+                        def,
                         damageCalculator   //  ключевой момент
                     );
                     auraInstance.debugDamage = auraInstance.debugDamage || debugDamage;

@@ -9,6 +9,7 @@ public class WorldGoldPopup : MonoBehaviour
 
     private float timer;
     private Color startColor;
+    private Color defaultColor;
 
     private Camera cam;
 
@@ -20,7 +21,8 @@ public class WorldGoldPopup : MonoBehaviour
             text = GetComponent<TMP_Text>();
 
         cam = Camera.main;
-        startColor = text.color;
+        defaultColor = text.color;
+        startColor = defaultColor;
 
         pooledObject = GetComponent<PooledObject>();
     }
@@ -36,9 +38,13 @@ public class WorldGoldPopup : MonoBehaviour
 
     public void Init(int amount)
     {
-        text.text = $"+{amount}";
-        // Обновляем startColor после установки текста
-        startColor = text.color;
+        InitText($"+{amount}", defaultColor);
+    }
+
+    private void InitText(string value, Color color)
+    {
+        text.text = value;
+        startColor = color;
         startColor.a = 1f;
         text.color = startColor;
     }
