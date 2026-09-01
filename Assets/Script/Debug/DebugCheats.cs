@@ -32,6 +32,8 @@ public class DebugCheats : MonoBehaviour
     private Vector2 upgradesScroll;
     private string filter = "";
     private bool godMode;
+    private string lobbyCodeInput = "";
+    private string lobbyStatus = "";
 
     // Кэш, чтобы не искать объекты каждый кадр отрисовки GUI.
     private PlayerHealth health;
@@ -96,6 +98,27 @@ public class DebugCheats : MonoBehaviour
         if (GUILayout.Button("+500 щита") && shield != null) shield.AddMaxShield(500f);
         GUILayout.EndHorizontal();
         godMode = GUILayout.Toggle(godMode, "Бессмертие (хил до полного каждый кадр)");
+
+        // ---------- Лобби ----------
+        GUILayout.Space(4f);
+        GUILayout.Label(LobbyLine());
+
+        GUILayout.BeginHorizontal();
+        if (GUILayout.Button("Создать")) CreateLobby();
+        if (GUILayout.Button("Пригласить")) Lobbies.Service.InviteFriend();
+        if (GUILayout.Button("Выйти")) LeaveLobby();
+        GUILayout.EndHorizontal();
+
+        GUILayout.BeginHorizontal();
+        lobbyCodeInput = GUILayout.TextField(lobbyCodeInput, GUILayout.Width(110f));
+        if (GUILayout.Button("Войти по коду")) JoinLobby();
+        GUILayout.EndHorizontal();
+
+        if (!string.IsNullOrEmpty(lobbyStatus))
+            GUILayout.Label(lobbyStatus);
+
+        foreach (var member in Lobbies.Service.Members)
+            GUILayout.Label($"  • {member.Name}{(member.IsHost ? " (хост)" : "")}");
 
         // ---------- Темп забега ----------
         GUILayout.Space(4f);
@@ -188,6 +211,53 @@ public class DebugCheats : MonoBehaviour
     }
 
     // ===================== ДЕЙСТВИЯ =====================
+
+    // ---------- Лобби ----------
+
+    private static string LobbyLine()
+    {
+        string backend = Lobbies.IsSteamBacked ? "Steam" : "ЗАГЛУШКА (Steam не поднялся)";
+        var service = Lobbies.Service;
+
+        return service.IsInLobby
+            ? $"Лобби [{backend}]: код {service.Code}, участников {service.Members.Count}"
+            : $"Лобби [{backend}]: не в лобби";
+    }
+
+    private void CreateLobby()
+    {
+        lobbyStatus = "Создаём…";
+        Lobbies.Service.Create(result =>
+        {
+            lobbyStatus = Describe(result);
+            if (result == LobbyResult.Ok)
+                lobbyCodeInput = Lobbies.Service.Code;
+        });
+    }
+
+    private void JoinLobby()
+    {
+        lobbyStatus = "Ищем лобби…";
+        Lobbies.Service.JoinByCode(lobbyCodeInput, result => lobbyStatus = Describe(result));
+    }
+
+    private void LeaveLobby()
+    {
+        Lobbies.Service.Leave();
+        lobbyStatus = "Вышли из лобби.";
+    }
+
+    private static string Describe(LobbyResult result)
+    {
+        switch (result)
+        {
+            case LobbyResult.Ok: return "Готово.";
+            case LobbyResult.NoSteam: return "Steam недоступен — работает заглушка.";
+            case LobbyResult.InvalidCode: return "Код неверного формата: нужно 6 символов из алфавита.";
+            case LobbyResult.NotFound: return "Лобби с таким кодом нет (или версия сборки другая).";
+            default: return "Не удалось: лобби закрыто, заполнено или отказал Steam.";
+        }
+    }
 
     private void AddGold(int amount)
     {
