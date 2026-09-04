@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class BossRewardUI : MonoBehaviour
 {
@@ -16,6 +18,13 @@ public class BossRewardUI : MonoBehaviour
     public BossRewardCardUI card1;
     public BossRewardCardUI card2;
     public BossRewardCardUI card3;
+
+    [Header("Boss Reward Rerolls")]
+    [SerializeField] private Button rerollButton;
+    [SerializeField] private TMP_Text rerollButtonText;
+    [SerializeField] private TMP_Text remainingRerollsText;
+    [SerializeField] private string rerollButtonLabel = "Обновить";
+    [SerializeField] private string remainingRerollsFormat = "Осталось обновлений: {0}";
 
     [Header("Multiple Selections")]
     [SerializeField, Min(0f)] private float selectionTransitionDelay = 0.08f;
@@ -34,6 +43,20 @@ public class BossRewardUI : MonoBehaviour
     private void Awake()
     {
         if (panelRoot != null) panelRoot.SetActive(false);
+
+        if (rerollButton != null)
+        {
+            rerollButton.onClick.RemoveListener(RerollRewards);
+            rerollButton.onClick.AddListener(RerollRewards);
+        }
+
+        UpdateRerollUI();
+    }
+
+    private void OnDestroy()
+    {
+        if (rerollButton != null)
+            rerollButton.onClick.RemoveListener(RerollRewards);
     }
 
     private void OnDisable()
@@ -57,6 +80,7 @@ public class BossRewardUI : MonoBehaviour
         SetPanelVisible(true);
 
         ShowRewards();
+        UpdateRerollUI();
     }
 
     private void ShowRewards()
@@ -98,6 +122,44 @@ public class BossRewardUI : MonoBehaviour
         Close();
     }
 
+    /// <summary>
+    /// Тратит заряд и разыгрывает новую уникальную тройку. Прошлая тройка не
+    /// исключается, поэтому отдельная награда может снова выпасть после реролла.
+    /// </summary>
+    public void RerollRewards()
+    {
+        if (!IsSelectionOpen || isResolvingSelection)
+            return;
+
+        UpgradesRuntimeData runtime = UpgradesManager.Instance?.GameplayRuntimeData;
+        if (runtime == null || !runtime.TryConsumeBossRewardReroll())
+        {
+            UpdateRerollUI();
+            return;
+        }
+
+        isResolvingSelection = true;
+        UpdateRerollUI();
+        StartCoroutine(ShowRerolledRewards());
+    }
+
+    private IEnumerator ShowRerolledRewards()
+    {
+        SetPanelVisible(false);
+
+        if (selectionTransitionDelay > 0f)
+            yield return new WaitForSecondsRealtime(selectionTransitionDelay);
+        else
+            yield return null;
+
+        ShowRewards();
+        SetPanelVisible(true);
+        isResolvingSelection = false;
+        UpdateRerollUI();
+
+        Debug.Log($"[BossRewardUI] Rewards rerolled; remaining={GetRemainingRerolls()}.");
+    }
+
     private IEnumerator ShowNextSelection()
     {
         SetPanelVisible(false);
@@ -110,6 +172,7 @@ public class BossRewardUI : MonoBehaviour
         ShowRewards();
         SetPanelVisible(true);
         isResolvingSelection = false;
+        UpdateRerollUI();
 
         Debug.Log($"[BossRewardUI] Next selection opened; remaining={remainingSelections}.");
     }
@@ -124,6 +187,26 @@ public class BossRewardUI : MonoBehaviour
         if (panelRoot != null) panelRoot.SetActive(false);
         Time.timeScale = prevTimeScale;
         if (gameSpeedPanel != null) gameSpeedPanel.SetActive(true);
+    }
+
+    private int GetRemainingRerolls()
+    {
+        UpgradesRuntimeData runtime = UpgradesManager.Instance?.GameplayRuntimeData;
+        return runtime != null ? runtime.BossRewardRerolls : 0;
+    }
+
+    private void UpdateRerollUI()
+    {
+        int remaining = GetRemainingRerolls();
+
+        if (rerollButtonText != null)
+            rerollButtonText.text = rerollButtonLabel;
+
+        if (remainingRerollsText != null)
+            remainingRerollsText.text = string.Format(remainingRerollsFormat, remaining);
+
+        if (rerollButton != null)
+            rerollButton.interactable = IsSelectionOpen && !isResolvingSelection && remaining > 0;
     }
 
     private void SetPanelVisible(bool visible)

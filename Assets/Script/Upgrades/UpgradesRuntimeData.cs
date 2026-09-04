@@ -37,6 +37,10 @@ public class UpgradesRuntimeData
     private Color goldenEnemyTint = new Color(1f, 0.72f, 0.2f, 1f);
     private float goldenEnemyTintStrength = 0.35f;
 
+    private int slowAuraStacks;
+    private float slowAuraReductionPercent;
+    private float slowAuraRadius;
+
     private bool isDuplicatorArmed;
     private ItemTier duplicatorTier1 = ItemTier.None;
     private int duplicatorCopies1;
@@ -58,6 +62,10 @@ public class UpgradesRuntimeData
     public float GoldenEnemyHealthMultiplier => goldenEnemyHealthMultiplier;
     public float GoldenEnemyDamageMultiplier => goldenEnemyDamageMultiplier;
     public float GoldenEnemyGoldMultiplier => goldenEnemyGoldMultiplier;
+    public int SlowAuraStacks => slowAuraStacks;
+    public float SlowAuraReductionPercent => slowAuraReductionPercent;
+    public float SlowAuraRadius => slowAuraRadius;
+    public float SlowAuraMultiplier => Mathf.Max(0f, 1f - slowAuraReductionPercent / 100f);
     public bool IsDuplicatorArmed => isDuplicatorArmed;
 
     /// <summary>Дублятор встал на заряд или сработал/сгорел — для HUD-индикатора.</summary>
@@ -82,6 +90,29 @@ public class UpgradesRuntimeData
 
         foreach (ItemTier t in System.Enum.GetValues(typeof(ItemTier)))
             damageTierPercent[t] = 0f;
+    }
+
+    public float GetSlowAuraReductionAfterNextStack(
+        float firstStackReductionPercent,
+        float repeatedStackMultiplier)
+    {
+        float stackReduction = Mathf.Max(0f, firstStackReductionPercent);
+        if (slowAuraStacks > 0)
+            stackReduction *= Mathf.Max(0f, repeatedStackMultiplier);
+
+        return slowAuraReductionPercent + stackReduction;
+    }
+
+    public void AddSlowAura(
+        float firstStackReductionPercent,
+        float repeatedStackMultiplier,
+        float radius)
+    {
+        slowAuraReductionPercent = GetSlowAuraReductionAfterNextStack(
+            firstStackReductionPercent,
+            repeatedStackMultiplier);
+        slowAuraRadius = Mathf.Max(0f, radius);
+        slowAuraStacks++;
     }
 
     public void AddHunt(
@@ -238,6 +269,7 @@ public class UpgradesRuntimeData
     private Dictionary<UpgradeBaseSO, int> upgradePurchaseCounts = new();
     private Dictionary<UpgradeBaseSO, int> bossRewardCounts = new();
     private Dictionary<WeaponDefinition, int> weaponPurchaseCounts = new();
+    private int bossRewardRerolls;
 
     /// <summary>
     /// Купленные улучшения и сколько раз каждое бралось. Наполняется в
@@ -246,6 +278,35 @@ public class UpgradesRuntimeData
     /// </summary>
     public IReadOnlyDictionary<UpgradeBaseSO, int> UpgradePurchaseCounts => upgradePurchaseCounts;
     public IReadOnlyDictionary<UpgradeBaseSO, int> BossRewardCounts => bossRewardCounts;
+    public int BossRewardRerolls => Mathf.Max(0, bossRewardRerolls);
+
+    public int GetUpgradePurchaseCount(UpgradeBaseSO upgrade)
+    {
+        if (upgrade == null)
+            return 0;
+
+        return upgradePurchaseCounts.TryGetValue(upgrade, out int count)
+            ? Mathf.Max(0, count)
+            : 0;
+    }
+
+    public void AddBossRewardRerolls(int amount)
+    {
+        if (amount <= 0)
+            return;
+
+        long total = (long)bossRewardRerolls + amount;
+        bossRewardRerolls = total >= int.MaxValue ? int.MaxValue : (int)total;
+    }
+
+    public bool TryConsumeBossRewardReroll()
+    {
+        if (bossRewardRerolls <= 0)
+            return false;
+
+        bossRewardRerolls--;
+        return true;
+    }
 
     // Отслеживание модификаторов веса от купленных апгрейдов/оружий
     // Ключ: целевой апгрейд/оружие, Значение: список (источник модификатора, процент, количество применений)

@@ -164,4 +164,19 @@ public class UpgradesManager : MonoBehaviour
     {
         RuntimeData.RegisterWeaponPurchase(weapon);
     }
+
+    public float GetEnemySlowAuraMultiplier(Vector3 enemyPosition)
+    {
+        UpgradesRuntimeData runtime = GameplayRuntimeData;
+        if (runtime == null || runtime.SlowAuraStacks <= 0 || context.towerAttack == null)
+            return 1f;
+
+        Vector3 offset = enemyPosition - context.towerAttack.transform.position;
+        offset.y = 0f;
+
+        float radius = runtime.SlowAuraRadius;
+        return offset.sqrMagnitude <= radius * radius
+            ? runtime.SlowAuraMultiplier
+            : 1f;
+    }
 }

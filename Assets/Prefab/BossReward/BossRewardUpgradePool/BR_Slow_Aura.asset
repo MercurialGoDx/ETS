@@ -9,13 +9,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b1037b7292bcd8c449991a37600b6a33, type: 3}
-  m_Name: Block
+  m_Script: {fileID: 11500000, guid: d0c58987a5334c42b67b0796b6cd7187, type: 3}
+  m_Name: BR_Slow_Aura
   m_EditorClassIdentifier: 
-  icon: {fileID: 21300000, guid: b7b63f9edbf3f334f80b943a5af62993, type: 3}
-  price: 1500
-  weight: 8
-  itemTier: 3
+  icon: {fileID: 0}
+  price: 0
+  weight: 1
+  itemTier: 0
   weightIncreasePerPurchase: 0
   maxWeightIncreasePurchases: 0
   weightDecreaseUpgrades: []
@@ -29,6 +29,10 @@ MonoBehaviour:
   localizedStringTable:
     m_TableReference:
       m_TableCollectionName: GUID:164770c6fc8794c4ba4db6f8c7e72db3
-  nameKey: block.name
-  descriptionKey: block.desc
-  valuePercent: 1
+  nameKey: br_slow_aura.name
+  descriptionKey: br_slow_aura.desc
+  reductionPercent: 25
+  repeatedStackMultiplier: 0.5
+  effectRadius: 25
+  auraVisualPrefab: {fileID: 3744133877081091469, guid: 403866aefb89a544e8adc367d22b270b, type: 3}
+  visualHeightOffset: 0.75

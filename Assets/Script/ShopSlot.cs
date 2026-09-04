@@ -127,8 +127,24 @@ public class ShopSlot : ItemSlotBase
 
         SetIcon(upgrade != null ? upgrade.icon : null);
 
-        if (priceText != null)
-            priceText.text = upgrade != null ? upgrade.price.ToString() : "";
+        RefreshPrice();
+    }
+
+    /// <summary>Обновляет цену, не меняя выпавший в слоте предмет.</summary>
+    public void RefreshPrice()
+    {
+        if (priceText == null)
+            return;
+
+        if (currentWeapon != null)
+        {
+            priceText.text = currentWeapon.price.ToString();
+            return;
+        }
+
+        priceText.text = currentUpgrade != null && shopManager != null
+            ? shopManager.GetUpgradePrice(currentUpgrade).ToString()
+            : "";
     }
 
     // ==== ОЧИСТКА ====

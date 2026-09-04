@@ -158,10 +158,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8a78270391e03e844be420d0c3992e13, type: 3}
-  m_Name:
-  m_EditorClassIdentifier:
+  m_Name: 
+  m_EditorClassIdentifier: 
   speed: 0.9
-  maxHealth: 275
+  maxHealth: 500
   damageToPlayer: 25
   baseGold: 50
   canBeSlowed: 0
@@ -170,6 +170,8 @@ MonoBehaviour:
   attackRange: 4.5
   attackInterval: 1
   overrideAttackRange: 1
+  deathSound: {fileID: 0}
+  deathSoundVolume: 0.8
   isDead: 0
   bonusGold: 0
   returnToPoolInsteadOfDestroy: 0
@@ -207,8 +209,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ba0737ee258c6564b891f2816d5ffa49, type: 3}
-  m_Name:
-  m_EditorClassIdentifier:
+  m_Name: 
+  m_EditorClassIdentifier: 
   isBoss: 1
   defaultStunVisualPrefab: {fileID: 4878261017863814315, guid: 202237ad5ba3f8540ab7272c2c45d544, type: 3}
   defaultFreezeVisualPrefab: {fileID: 4574536459950186963, guid: c9678826f05e7b14c986be18f0a4b789, type: 3}

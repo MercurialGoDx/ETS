@@ -126,6 +126,7 @@ namespace ETS.BalanceImport
             ["ProjectileDamage"] = new[] { ValueBinding.Self("value_1", "valuePercent") },
             ["HeavyDamage"] = new[] { ValueBinding.Self("value_1", "valuePercent") },
             ["ChaosDamage"] = new[] { ValueBinding.Self("value_1", "valuePercent") },
+            ["HolyDamage"] = new[] { ValueBinding.Self("value_1", "valuePercent") },
             ["Sacrifice"] = new[]
             {
                 ValueBinding.Self("value_1", "lifeLoseValue"),
@@ -158,8 +159,19 @@ namespace ETS.BalanceImport
             },
             ["GoldenSkull"] = new[] { ValueBinding.Self("value_1", "valuePercent") },
             ["Heal_ampl"] = new[] { ValueBinding.Self("value_1", "valuePercent") },
+            ["SpikeT2"] = new[]
+            {
+                ValueBinding.Child("value_1", "SpikesBaseUpgrade", "valueFlat"),
+                ValueBinding.Child("value_2", "SpikesPercentUpgrade", "valuePercent"),
+            },
 
             // ---- Tier 3 ----
+            ["BlessedArmor"] = new[]
+            {
+                ValueBinding.Self("value_1", "startScorePercent"),
+                ValueBinding.Self("value_2", "lossScorePerHitPercent"),
+            },
+            ["CursedArmor"] = new[] { ValueBinding.Self("value_1", "valuePercent") },
             ["AttackSpeed"] = new[] { ValueBinding.Self("value_1", "valuePercent") },
             ["Block"] = new[] { ValueBinding.Self("value_1", "valuePercent") },
             ["IncreaceHpRegPercent"] = new[] { ValueBinding.Self("value_1", "valuePercent") },
@@ -187,6 +199,11 @@ namespace ETS.BalanceImport
             },
             ["Hunt"] = new ValueBinding[0],
             ["Duplicator"] = new ValueBinding[0],
+            ["Boss Reward Reroll"] = new[]
+            {
+                ValueBinding.Self("value_1", "rerollsPerPurchase"),
+                ValueBinding.Self("value_2", "priceIncreasePerPurchase"),
+            },
 
             // ---- Tier 4 ----
             // valuePercentPerWeapon хранится долей: 0.02 в ассете = +2% за оружие → scale 0.01
@@ -196,6 +213,8 @@ namespace ETS.BalanceImport
             ["MagicDamageUltimate"] = Ultimate(),
             ["HeavyDamageUltimate"] = Ultimate(),
             ["ChaosDamageUltimate"] = Ultimate(),
+            ["HolyDamageUltimate"] = Ultimate(),
+            ["Complex"] = new[] { ValueBinding.Self("value_1", "valuePercent") },
             ["DamageWhileShieldActive"] = new[]
             {
                 ValueBinding.Child("value_1", "MaxShieldFlatUpgrade", "valueFlat"),
@@ -206,9 +225,18 @@ namespace ETS.BalanceImport
             {
                 ValueBinding.Child("value_1", "MaxHealthFlatUpgrade", "valueFlat"),
                 ValueBinding.Child("value_2", "MaxHealthPercentUpgrade", "percentValue"),
-                ValueBinding.Child("value_3", "DamageReductiondUpgrade", "valuePercent"),
+                ValueBinding.Child("value_3", "DamageReductionUpgrade", "valuePercent"),
             },
-            ["SpikeUltimate"] = new[] { ValueBinding.Self("value_1", "valuePercent") },
+            ["Spike_t4"] = new[]
+            {
+                ValueBinding.Child("value_1", "SpikesBaseUpgrade", "valueFlat"),
+                ValueBinding.Child("value_2", "SpikeEnemyAttackStacking", "valuePercent"),
+            },
+            ["SpikeUltimate"] = new[]
+            {
+                ValueBinding.Child("value_1", "SpikesPercentUpgrade", "valuePercent"),
+                ValueBinding.Child("value_2", "BossDamageMultiply", "valuePercent"),
+            },
             ["BossContract"] = new ValueBinding[0],
             ["MytrhillMaterial"] = new[]
             {

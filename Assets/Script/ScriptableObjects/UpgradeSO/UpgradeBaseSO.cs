@@ -56,6 +56,12 @@ public abstract class UpgradeBaseSO : ScriptableObject
     /// </summary>
     public virtual bool CanApply(UpgradeContextSO context) => true;
 
+    /// <summary>
+    /// Цена следующей покупки. По умолчанию постоянная; отдельные улучшения
+    /// могут переопределить расчёт, не дублируя логику магазина и тултипа.
+    /// </summary>
+    public virtual int GetCurrentPrice(UpgradeContextSO context) => Mathf.Max(0, price);
+
     public virtual string GetLocalizedName()
     {
         var stringTable = localizedStringTable.GetTable();
@@ -90,7 +96,10 @@ public abstract class UpgradeBaseSO : ScriptableObject
 
         object[] allArgs = new object[specificArgs.Length + 1];
         System.Array.Copy(specificArgs, 0, allArgs, 0, specificArgs.Length);
-        allArgs[specificArgs.Length] = price;
+        UpgradeContextSO context = UpgradesManager.Instance != null
+            ? UpgradesManager.Instance.context
+            : null;
+        allArgs[specificArgs.Length] = GetCurrentPrice(context);
 
         return allArgs;
     }

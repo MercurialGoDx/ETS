@@ -29,9 +29,11 @@ MonoBehaviour:
     timeDifficultStage3: 1920
     hpAddPerWave: 1.2
     damageAddPerWave: 0.05
+    damageGrowthStartAfterAttacks: 5
+    damageGrowthPercentPerAttack: 10
   boss:
     spawnInterval: 300
-    hpMultiplier: 1.5
+    hpMultiplier: 15
     damageMultiplier: 4
     referenceEnemy: melee
     additionalDamage: 25
@@ -45,7 +47,7 @@ MonoBehaviour:
   player:
     playerHp: 200
     playerShield: 0
-    blockCap: 0.9
+    blockCap: 0.8
     shieldRechargeTime: 10
     shieldFullRestoreAfterNoDamage: 15
     towerRange: 20

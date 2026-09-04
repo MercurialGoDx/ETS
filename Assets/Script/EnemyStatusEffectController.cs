@@ -15,7 +15,7 @@ public sealed class EnemyStatusEffectController : MonoBehaviour
     }
 
     [Header("Иммунитет")]
-    [Tooltip("У босса Stun и Freeze полностью игнорируются. Weakness и Burning продолжают работать.")]
+    [Tooltip("Босс игнорирует обычные Stun и Freeze. Специальные эффекты, например Shield Stun, могут обойти иммунитет. Weakness и Burning работают.")]
     [SerializeField] private bool isBoss;
 
     [Header("Стандартные визуальные префабы")]
@@ -96,9 +96,12 @@ public sealed class EnemyStatusEffectController : MonoBehaviour
         UpdateBurning(now);
     }
 
-    public bool ApplyStun(float duration, GameObject visualPrefabOverride = null)
+    public bool ApplyStun(
+        float duration,
+        GameObject visualPrefabOverride = null,
+        bool ignoreBossImmunity = false)
     {
-        if (isBoss || enemy == null || enemy.isDead || duration <= 0f)
+        if ((isBoss && !ignoreBossImmunity) || enemy == null || enemy.isDead || duration <= 0f)
             return false;
 
         float requestedEndTime = Time.time + duration;

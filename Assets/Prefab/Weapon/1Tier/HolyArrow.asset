@@ -26,7 +26,7 @@ MonoBehaviour:
   damageType: 6
   bulletPrefab: {fileID: 7039478964307738784, guid: d04c9a6ccffab744d916f246f0d7b8cd, type: 3}
   effectProfile: {fileID: 0}
-  weight: 99999
+  weight: 20
   weightIncreasePerPurchase: 0
   maxWeightIncreasePurchases: 0
   weightDecreaseUpgrades: []

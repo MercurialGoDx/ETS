@@ -3,6 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>Управляет ассортиментом, покупками и текущими ценами магазина.</summary>
 public class ShopManager : MonoBehaviour
 {
     [Header("Ссылки")]
@@ -407,6 +408,18 @@ public class ShopManager : MonoBehaviour
         return null;
     }
 
+    /// <summary>Текущая цена следующей покупки улучшения.</summary>
+    public int GetUpgradePrice(UpgradeBaseSO upgrade)
+    {
+        if (upgrade == null)
+            return 0;
+
+        UpgradeContextSO context = UpgradesManager.Instance != null
+            ? UpgradesManager.Instance.context
+            : null;
+        return upgrade.GetCurrentPrice(context);
+    }
+
     public void BuyUpgrade(UpgradeBaseSO upgrade, ShopSlot slot)
     {
         if (upgrade == null)
@@ -423,7 +436,7 @@ public class ShopManager : MonoBehaviour
 
         if (GoldManager.Instance != null)
         {
-            int price = upgrade.price;
+            int price = GetUpgradePrice(upgrade);
 
             if (!GoldManager.Instance.HasEnoughGold(price))
                 return;
@@ -444,10 +457,21 @@ public class ShopManager : MonoBehaviour
         if (AchievementManager.Instance != null)
             AchievementManager.Instance.NotifyUpgradePurchased(upgrade);
 
+        RefreshUpgradePrices();
+
         Debug.Log($"weight Upgrade: {UpgradesManager.Instance.RuntimeData.GetUpgradeWeight(upgrade)}");
 
         if (slot != null)
             slot.Clear();
+    }
+
+    private void RefreshUpgradePrices()
+    {
+        if (upgradeSlots == null)
+            return;
+
+        foreach (ShopSlot upgradeSlot in upgradeSlots)
+            upgradeSlot?.RefreshPrice();
     }
 
     private void DuplicateWeaponIfArmed(WeaponDefinition weapon)

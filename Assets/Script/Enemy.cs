@@ -83,7 +83,8 @@ public class Enemy : MonoBehaviour
     public bool IsStunned => statusEffects != null && statusEffects.IsStunned;
     private float towerAttackDamageMultiplier = 1f;
     public float CurrentDamageToPlayer => damageToPlayer * towerAttackDamageMultiplier *
-        (statusEffects != null ? statusEffects.OutgoingDamageMultiplier : 1f);
+        (statusEffects != null ? statusEffects.OutgoingDamageMultiplier : 1f) *
+        GetSlowAuraMultiplier();
 
     private IEnemyAttack attackLogic;
 
@@ -221,6 +222,11 @@ public class Enemy : MonoBehaviour
     // Запускаем состояние аниматора только при смене (для непрерывных состояний вроде Run).
     private void PlayAnim(int stateHash)
     {
+        if (animator == null) return;
+
+        // Slow Aura affects only attack animation. Run/Idle/Death keep their authored speed.
+        animator.speed = stateHash == AttackHash ? GetSlowAuraMultiplier() : 1f;
+
         if (currentAnimHash == stateHash) return;
         currentAnimHash = stateHash;
         animator.Play(stateHash);
@@ -233,7 +239,7 @@ public class Enemy : MonoBehaviour
         dir.y = 0f;
         dir = dir.normalized;
 
-        transform.position += dir * currentSpeed * Time.deltaTime;
+        transform.position += dir * currentSpeed * GetSlowAuraMultiplier() * Time.deltaTime;
 
         if (dir != Vector3.zero)
         {
@@ -258,7 +264,16 @@ public class Enemy : MonoBehaviour
 
     private void HandleAttack()
     {
-        attackTimer -= Time.deltaTime;
+        float attackSpeedMultiplier = GetSlowAuraMultiplier();
+        if (animator != null)
+            animator.speed = attackSpeedMultiplier;
+
+        // Замедляем таймер тем же множителем, что и клип атаки. Иначе следующий
+        // запуск Attack мог бы оборвать клип до animation event с уроном.
+        attackTimer -= Time.deltaTime * attackSpeedMultiplier;
+
+        if (attackSpeedMultiplier <= 0f)
+            return;
 
         if (attackTimer <= 0f)
         {
@@ -486,6 +501,7 @@ public class Enemy : MonoBehaviour
 
         if (animator != null)
         {
+            animator.speed = 1f;
             animator.Play(DeathHash);
             currentAnimHash = DeathHash;
         }
@@ -568,6 +584,7 @@ public class Enemy : MonoBehaviour
         // Сбрасываем animator в "Run" на случай, если объект ушёл в пул в середине другой анимации.
         if (animator != null)
         {
+            animator.speed = 1f;
             animator.Rebind();
             animator.Play("Run", 0, 0f);
             animator.Update(0f);
@@ -712,6 +729,13 @@ public class Enemy : MonoBehaviour
         if (animator.HasState(0, Idle01Hash)) return Idle01Hash;
         if (animator.HasState(0, Idle01LowerHash)) return Idle01LowerHash;
         return 0;
+    }
+
+    private float GetSlowAuraMultiplier()
+    {
+        return UpgradesManager.Instance != null
+            ? UpgradesManager.Instance.GetEnemySlowAuraMultiplier(transform.position)
+            : 1f;
     }
 
     public void PauseAnimationForFreeze()

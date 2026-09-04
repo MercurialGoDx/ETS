@@ -48,6 +48,16 @@ public class PlayerShield : MonoBehaviour, ITakeDamageModifier
     private LineRenderer[] cachedLines;
     private Renderer[] cachedRenderers;
 
+    private int shieldStunStacks;
+    private float shieldStunDuration;
+    private float shieldStunDamageMultiplier;
+    private float shieldStunDamageWaveSpeed;
+    private UpgradeBaseSO shieldStunDamageSource;
+    private GameObject shieldStunTowerVisualPrefab;
+    private float shieldStunVisualLifetime = 5f;
+    private float shieldStunVisualHeightOffset;
+    private readonly List<Enemy> shieldStunTargets = new();
+
     // исходные emission значения
     private readonly Dictionary<ParticleSystem, float> baseEmissionRates = new();
 
@@ -63,6 +73,9 @@ public class PlayerShield : MonoBehaviour, ITakeDamageModifier
     public float ShieldRechargeDelay => shieldRechargeDelay;
 
     public bool IsShieldActive => shieldActive;
+    public int ShieldStunStacks => shieldStunStacks;
+    public float ShieldStunDuration => shieldStunDuration;
+    public float ShieldStunDamageMultiplier => shieldStunDamageMultiplier;
     public int Priority => 100;
 
     private void Awake()
@@ -535,10 +548,14 @@ public class PlayerShield : MonoBehaviour, ITakeDamageModifier
 
             if (currentShield <= 0f)
             {
+                // Снимаем слепок всех общих множителей до выключения щита.
+                // Так усиление «пока щит активен» тоже участвует в импульсе разрушения.
+                float shieldBreakDamageMultiplier = GetShieldStunGlobalDamageMultiplier();
                 currentShield = 0f;
                 shieldActive = false;   // уходим в перезарядку
                 shieldRegenTimer = 0f;
                 noShieldDamageTimer = 0f;
+                TriggerShieldStun(shieldBreakDamageMultiplier);
             }
 
             UpdateShieldUI();
@@ -584,5 +601,199 @@ public class PlayerShield : MonoBehaviour, ITakeDamageModifier
         // это не "урон", поэтому таймер не сбрасываем
         UpdateShieldUI();
         UpdateShieldVisual();
+    }
+
+    public float GetShieldStunDurationAfterNextStack(
+        float firstStunDuration,
+        float additionalDurationPerStack)
+    {
+        float durationIncrease = shieldStunStacks == 0
+            ? Mathf.Max(0f, firstStunDuration)
+            : Mathf.Max(0f, additionalDurationPerStack);
+
+        return shieldStunDuration + durationIncrease;
+    }
+
+    public float GetShieldStunDamageMultiplierAfterNextStack(
+        float damageMultiplierPerStack)
+    {
+        return shieldStunDamageMultiplier + Mathf.Max(0f, damageMultiplierPerStack);
+    }
+
+    public void AddShieldStun(
+        float firstStunDuration,
+        float additionalDurationPerStack,
+        float damageMultiplierPerStack,
+        float damageWaveSpeed,
+        UpgradeBaseSO damageSource,
+        GameObject towerVisualPrefab,
+        float visualLifetime,
+        float visualHeightOffset)
+    {
+        shieldStunDuration = GetShieldStunDurationAfterNextStack(
+            firstStunDuration,
+            additionalDurationPerStack);
+        shieldStunDamageMultiplier = GetShieldStunDamageMultiplierAfterNextStack(
+            damageMultiplierPerStack);
+        shieldStunStacks++;
+
+        shieldStunDamageWaveSpeed = Mathf.Max(0f, damageWaveSpeed);
+        shieldStunDamageSource = damageSource;
+        shieldStunTowerVisualPrefab = towerVisualPrefab;
+        shieldStunVisualLifetime = Mathf.Max(0.01f, visualLifetime);
+        shieldStunVisualHeightOffset = visualHeightOffset;
+    }
+
+    private float GetShieldStunGlobalDamageMultiplier()
+    {
+        TowerAttack towerAttack = UpgradesManager.Instance?.towerAttack;
+        return towerAttack != null ? towerAttack.GetGlobalDamageMultiplier() : 1f;
+    }
+
+    private void TriggerShieldStun(float globalDamageMultiplier)
+    {
+        if (shieldStunStacks <= 0 || shieldStunDuration <= 0f)
+            return;
+
+        SpawnShieldStunTowerVisual();
+
+        EnemyManager enemyManager = EnemyManager.Instance;
+        if (enemyManager == null)
+            return;
+
+        enemyManager.GetActiveEnemies(shieldStunTargets);
+        foreach (Enemy enemy in shieldStunTargets)
+        {
+            if (enemy == null || enemy.isDead)
+                continue;
+
+            enemy.StatusEffects?.ApplyStun(
+                shieldStunDuration,
+                visualPrefabOverride: null,
+                ignoreBossImmunity: true);
+        }
+
+        shieldStunTargets.Clear();
+
+        StartShieldStunDamageWave(globalDamageMultiplier);
+    }
+
+    private void StartShieldStunDamageWave(float globalDamageMultiplier)
+    {
+        float baseDamage = MaxShield * shieldStunDamageMultiplier;
+        if (baseDamage <= 0f || shieldStunDamageWaveSpeed <= 0f)
+            return;
+
+        float finalDamage = baseDamage * globalDamageMultiplier;
+
+        StartCoroutine(DealShieldStunDamageWave(
+            transform.position,
+            finalDamage,
+            shieldStunDamageWaveSpeed,
+            shieldStunVisualLifetime,
+            shieldStunDamageSource));
+
+        Debug.Log(
+            $"[ShieldStun] Damage wave: MaxShield={MaxShield:0.###}, " +
+            $"base multiplier=x{shieldStunDamageMultiplier:0.###}, " +
+            $"base damage={baseDamage:0.###}, global=x{globalDamageMultiplier:0.###}, " +
+            $"final damage={finalDamage:0.###}.");
+    }
+
+    private IEnumerator DealShieldStunDamageWave(
+        Vector3 center,
+        float damage,
+        float waveSpeed,
+        float duration,
+        UpgradeBaseSO damageSource)
+    {
+        var pendingEnemies = new Dictionary<Enemy, uint>();
+        var damagedEnemies = new Dictionary<Enemy, uint>();
+        var activeEnemies = new List<Enemy>();
+        float elapsed = 0f;
+
+        while (true)
+        {
+            float radius = waveSpeed * elapsed;
+            float radiusSqr = radius * radius;
+            EnemyManager enemyManager = EnemyManager.Instance;
+
+            if (enemyManager != null)
+            {
+                enemyManager.GetActiveEnemies(activeEnemies);
+                foreach (Enemy enemy in activeEnemies)
+                {
+                    if (enemy == null || enemy.isDead)
+                        continue;
+
+                    uint activationVersion = enemy.ActivationVersion;
+                    if (damagedEnemies.TryGetValue(enemy, out uint damagedVersion))
+                    {
+                        if (damagedVersion == activationVersion)
+                            continue;
+
+                        damagedEnemies.Remove(enemy);
+                    }
+
+                    if (pendingEnemies.TryGetValue(enemy, out uint pendingVersion) &&
+                        pendingVersion != activationVersion)
+                    {
+                        pendingEnemies.Remove(enemy);
+                    }
+
+                    Vector3 offset = enemy.transform.position - center;
+                    offset.y = 0f;
+                    float distanceSqr = offset.sqrMagnitude;
+
+                    if (pendingEnemies.ContainsKey(enemy))
+                    {
+                        if (distanceSqr <= radiusSqr)
+                        {
+                            pendingEnemies.Remove(enemy);
+                            damagedEnemies[enemy] = activationVersion;
+                            enemy.TakeWeaponDamage(
+                                damage,
+                                (WeaponDamageType)(-1));
+                            DamageStatsManager.Instance?.RegisterDamage(damageSource, damage);
+                        }
+                    }
+                    else if (distanceSqr >= radiusSqr)
+                    {
+                        // Враг появился перед фронтом волны. Если он появился уже
+                        // позади прошедшего фронта, урон от этой волны не получит.
+                        pendingEnemies[enemy] = activationVersion;
+                    }
+                }
+            }
+
+            if (elapsed >= duration)
+                yield break;
+
+            yield return null;
+            elapsed = Mathf.Min(duration, elapsed + Time.deltaTime);
+        }
+    }
+
+    private void SpawnShieldStunTowerVisual()
+    {
+        if (shieldStunTowerVisualPrefab == null)
+            return;
+
+        Vector3 localSpawnPosition =
+            shieldStunTowerVisualPrefab.transform.localPosition +
+            Vector3.up * shieldStunVisualHeightOffset;
+        Vector3 worldSpawnPosition = transform.TransformPoint(localSpawnPosition);
+        Quaternion worldSpawnRotation =
+            transform.rotation * shieldStunTowerVisualPrefab.transform.localRotation;
+
+        GameObject vfxContainer = GameObject.Find("/Managers/VFXContainer");
+        Transform visualParent = vfxContainer != null ? vfxContainer.transform : null;
+        GameObject visual = Instantiate(
+            shieldStunTowerVisualPrefab,
+            worldSpawnPosition,
+            worldSpawnRotation,
+            visualParent);
+        visual.name = shieldStunTowerVisualPrefab.name;
+        Destroy(visual, shieldStunVisualLifetime);
     }
 }

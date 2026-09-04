@@ -15,7 +15,7 @@ MonoBehaviour:
   icon: {fileID: 0}
   price: 1500
   weight: 8
-  itemTier: 0
+  itemTier: 3
   weightIncreasePerPurchase: 0
   maxWeightIncreasePurchases: 0
   weightDecreaseUpgrades: []
