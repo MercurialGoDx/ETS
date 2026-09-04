@@ -32,7 +32,25 @@ public class DuelSession : MonoBehaviour
 
     private const float LossBannerSeconds = 8f;
 
-    public static DuelSession Instance { get; private set; }
+    private static DuelSession s_instance;
+
+    /// <summary>
+    /// Ищет живой объект, если статик пуст. Присваивания при бутстрапе недостаточно:
+    /// перезагрузка домена (а она случается при каждой перекомпиляции в редакторе)
+    /// обнуляет статику, объект DontDestroyOnLoad при этом выживает, а
+    /// RuntimeInitializeOnLoadMethod повторно не вызывается — ссылка терялась насовсем.
+    /// </summary>
+    public static DuelSession Instance
+    {
+        get
+        {
+            if (s_instance == null)
+                s_instance = FindFirstObjectByType<DuelSession>(FindObjectsInactive.Include);
+
+            return s_instance;
+        }
+        private set => s_instance = value;
+    }
 
     /// <summary>Снимок состояния соперника, разобранный из его member data.</summary>
     public readonly struct OpponentStat
@@ -74,6 +92,7 @@ public class DuelSession : MonoBehaviour
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
     private static void Bootstrap()
     {
+        // Обращение к Instance заодно подберёт объект, переживший перезагрузку домена.
         if (Instance != null)
             return;
 
@@ -85,8 +104,8 @@ public class DuelSession : MonoBehaviour
     private void OnDestroy()
     {
         Untrack();
-        if (Instance == this)
-            Instance = null;
+        if (s_instance == this)
+            s_instance = null;
     }
 
     // ---------- Готовность ----------
