@@ -1,14 +1,15 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 /// <summary>
 /// Ход дуэли поверх лобби: готовность, синхронный старт, сообщение о поражении соперника
 /// и его статистика по F3.
 ///
 /// Объект создаёт себя сам и переживает перезагрузку сцены — правки MainScene не требуется,
-/// а перезагрузка тут неизбежна: старт забега в проекте сделан именно через неё
-/// (<see cref="UIFlowManager.StartButtonClicked"/>).
+/// а перезагрузка нужна, когда матч запускают повторно: сбросить состояние прошлого забега
+/// в проекте можно только ею.
 ///
 /// Вся статистика уезжает в ОДНО поле member data одной строкой. Steam ограничивает частоту
 /// обновления данных лобби, и шесть отдельных ключей вместо одного упёрлись бы в лимит на
@@ -82,6 +83,10 @@ public class DuelSession : MonoBehaviour
     private bool showStats;
     private bool opponentWasAlive = true;
 
+    // Ждём кадр после перезагрузки сцены: Start() у StartMenu должен успеть отработать,
+    // иначе он выставит timeScale = 0 и вернёт меню поверх уже запущенного забега.
+    private int startDelayFrames = -1;
+
     private PlayerHealth trackedHealth;
     private GameTimeUI timeUi;
     private EnemySpawner spawner;
@@ -151,6 +156,13 @@ public class DuelSession : MonoBehaviour
         if (lossBannerLeft > 0f)
             lossBannerLeft -= Time.unscaledDeltaTime;
 
+        if (startDelayFrames >= 0)
+        {
+            startDelayFrames--;
+            if (startDelayFrames < 0)
+                OpenRun();
+        }
+
         var service = Lobbies.Service;
         if (!service.IsInLobby)
         {
@@ -201,16 +213,39 @@ public class DuelSession : MonoBehaviour
 
         opponentWasAlive = true;
 
-        var flow = FindFirstObjectByType<UIFlowManager>();
-        if (flow != null)
+        // Из меню открываем забег на месте. Если предыдущий матч уже шёл или закончился,
+        // состояние надо сбросить, а сделать это в проекте можно только перезагрузкой сцены.
+        bool inMenu = GameStateManager.Instance != null
+            && GameStateManager.Instance.Is(GameState.Menu);
+
+        if (inMenu)
         {
-            flow.StartButtonClicked();
+            OpenRun();
+            return;
         }
-        else
+
+        startDelayFrames = 2;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    /// <summary>
+    /// Ведёт забег штатным путём: <see cref="StartMenu.StartGame"/> переводит состояние в
+    /// Preparing, открывает игровой канвас и магазин. Мимо него ходить нельзя — GameState
+    /// остался бы Menu, а из-за этого timeScale держится нулевым, StateRestrictedButton
+    /// гасит кнопки, и ShopSlot отказывается продавать.
+    /// </summary>
+    private void OpenRun()
+    {
+        var menu = FindFirstObjectByType<StartMenu>(FindObjectsInactive.Include);
+        if (menu == null)
         {
-            Debug.LogWarning("[Duel] UIFlowManager не найден — забег не запустился.");
+            Debug.LogWarning("[Duel] StartMenu не найден — забег не открылся.");
             runStarted = false;
+            return;
         }
+
+        menu.StartGame();
+        Debug.Log("[Duel] Забег открыт, идёт закупка. Жми «Готов» в игре, чтобы пошли волны.");
     }
 
     // ---------- Публикация своего состояния ----------
