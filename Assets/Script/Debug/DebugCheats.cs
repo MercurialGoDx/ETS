@@ -117,6 +117,15 @@ public class DebugCheats : MonoBehaviour
         if (!string.IsNullOrEmpty(lobbyStatus))
             GUILayout.Label(lobbyStatus);
 
+        if (Lobbies.Service.IsInLobby && DuelSession.Instance != null)
+        {
+            GUILayout.BeginHorizontal();
+            if (GUILayout.Button(DuelSession.Instance.IsReady ? "Не готов" : "Готов (F2)"))
+                DuelSession.Instance.ToggleReady();
+            GUILayout.Label(DuelSession.Instance.RunStarted ? "матч идёт" : "ждём готовности");
+            GUILayout.EndHorizontal();
+        }
+
         foreach (var member in Lobbies.Service.Members)
             GUILayout.Label($"  • {member.Name}{(member.IsHost ? " (хост)" : "")}");
 
