@@ -39,6 +39,7 @@ public class LobbyPanelUI : MonoBehaviour
     public static LobbyPanelUI Instance { get; private set; }
 
     private Canvas canvas;
+    private GameObject root;
     private GameObject panel;
     private TMP_FontAsset font;
 
@@ -54,6 +55,10 @@ public class LobbyPanelUI : MonoBehaviour
 
     private GameObject menuButton;
     private bool built;
+
+    /// <summary>Открыл ли игрок окно. Отдельный флаг, а не activeSelf: состояние объекта
+    /// меняет и автозакрытие, и по нему уже нельзя понять намерение игрока.</summary>
+    private bool wantOpen;
 
     /// <summary>Шаг между кнопками меню в его собственных координатах.</summary>
     private const float MenuStep = 100f;
@@ -79,19 +84,26 @@ public class LobbyPanelUI : MonoBehaviour
     {
         EnsureMenuButton();
 
+        // Перезагрузка домена может оставить объект живым, а ссылки на построенный UI —
+        // пустыми. Тогда собираем заново, а не падаем каждый кадр.
+        if (built && root == null)
+            built = false;
+
         if (!built)
             return;
 
-        bool inLobby = Lobbies.Service.IsInLobby;
-        bool inMenu = GameStateManager.Instance != null
-            && GameStateManager.Instance.Is(GameState.Menu);
+        // Закрываем только когда забег реально пошёл. Привязка к состоянию Menu была
+        // слишком жёсткой: игра выходит из него ещё на закупке, и окно захлопывалось само.
+        bool running = GameStateManager.Instance != null
+            && GameStateManager.Instance.Is(GameState.Playing);
 
-        // Панель нужна только в меню и только пока матч не начался.
-        bool show = panel.activeSelf && (inMenu || inLobby);
-        if (panel.activeSelf != show)
-            panel.SetActive(show);
+        if (running)
+            wantOpen = false;
 
-        if (panel.activeSelf)
+        if (root.activeSelf != wantOpen)
+            root.SetActive(wantOpen);
+
+        if (wantOpen)
             Refresh();
     }
 
@@ -150,6 +162,14 @@ public class LobbyPanelUI : MonoBehaviour
         if (restricted != null)
             Destroy(restricted);
 
+        // Ряд кнопок лежит не в корне канваса, и соседи ряда рисуются поверх него —
+        // в меню это, например, подпись громкости, которая перехватывала клик.
+        // Переносим кнопку в конец канваса, сохранив положение на экране: так она
+        // оказывается выше всех по порядку отрисовки, а чужие элементы не тронуты.
+        Transform canvasRoot = menu.startMenuCanvas.transform;
+        menuButton.transform.SetParent(canvasRoot, true);
+        menuButton.transform.SetAsLastSibling();
+
         if (!built)
             Build();
     }
@@ -198,7 +218,8 @@ public class LobbyPanelUI : MonoBehaviour
         if (!built)
             Build();
 
-        panel.SetActive(true);
+        wantOpen = true;
+        root.SetActive(true);
         Refresh();
     }
 
@@ -218,11 +239,15 @@ public class LobbyPanelUI : MonoBehaviour
         scaler.referenceResolution = new Vector2(1920f, 1080f);
         scaler.matchWidthOrHeight = 0.5f;
 
-        // Затемнение позади панели, чтобы окно читалось поверх меню.
-        GameObject shade = Rect("Shade", canvasGo.transform, Vector2.zero, Vector2.one, Vector2.zero, Vector2.zero);
+        // Затемнение и окно живут в общем контейнере: гасить надо оба разом. Иначе
+        // затемнение остаётся включённым, перекрывает экран своим raycastTarget и
+        // молча съедает клики по главному меню.
+        root = Rect("LobbyRoot", canvasGo.transform, Vector2.zero, Vector2.one, Vector2.zero, Vector2.zero);
+
+        GameObject shade = Rect("Shade", root.transform, Vector2.zero, Vector2.one, Vector2.zero, Vector2.zero);
         Fill(shade, new Color(0f, 0f, 0f, 0.55f));
 
-        panel = Rect("LobbyPanel", canvasGo.transform,
+        panel = Rect("LobbyPanel", root.transform,
             new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(1120f, 620f), Vector2.zero);
         Fill(panel, Brick).sprite = null;
         Outline(panel, BrickEdge, 4f);
@@ -236,7 +261,7 @@ public class LobbyPanelUI : MonoBehaviour
         BuildBody(well.transform);
         BuildStatus(well.transform);
 
-        panel.SetActive(false);
+        root.SetActive(false);
         built = true;
     }
 
@@ -403,7 +428,8 @@ public class LobbyPanelUI : MonoBehaviour
             return;
         }
 
-        panel.SetActive(false);
+        wantOpen = false;
+        root.SetActive(false);
     }
 
     // ---------- Обновление ----------
