@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 /// <summary>
@@ -17,13 +18,32 @@ public static class Lobbies
         get
         {
             if (s_service == null)
-            {
-                if (SteamManager.Initialized)
-                    s_service = new SteamLobbyService();
-                else
-                    s_service = new StubLobbyService();
-            }
+                s_service = Create();
+
             return s_service;
+        }
+    }
+
+    /// <summary>
+    /// Результат кэшируется в любом случае, даже неудачный. Steamworks бросает
+    /// «Callback dispatcher is not initialized», если регистрировать колбэки, пока диспетчер
+    /// не поднят или уже снят (например, на переходе в Play Mode и обратно). Без кэша
+    /// конструктор падал бы каждый кадр, а вызывающий код зовёт Service из Update.
+    /// </summary>
+    private static ILobbyService Create()
+    {
+        if (!SteamManager.Initialized)
+            return new StubLobbyService();
+
+        try
+        {
+            return new SteamLobbyService();
+        }
+        catch (Exception e)
+        {
+            Debug.LogWarning("[Lobbies] Steam не отдал колбэки (" + e.Message
+                + ") — сессия работает на заглушке, игроки не соединятся.");
+            return new StubLobbyService();
         }
     }
 
