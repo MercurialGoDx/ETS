@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Макет окна лобби — ETS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Kelly+Slab&display=swap">
+<style>
+:root{
+  --brick:#9096c8; --brick-hi:#b0b5e4; --brick-lo:#6f74a6; --brick-edge:#575c8c;
+  --well:#2c2444; --well-crack:#3a3059;
+  --slot:#17131f; --slot-2:#1e1929;
+  --line:#eceaf6; --line-dim:#4c4666;
+  --green:#63c74d; --green-hi:#8adf74; --green-lo:#3b8c2e; --green-edge:#2a6620;
+  --slate:#4e4a74; --slate-hi:#6a6590; --slate-edge:#2a2745;
+  --gold:#e0a33a; --gold-lo:#8a5f16;
+  --red:#b8412f; --red-hi:#d9705f; --red-edge:#67200f;
+  --bone:#f2f0fa; --dim:#9a93b8;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;padding:30px 20px 60px;background:#1b2418;
+  background-image:radial-gradient(ellipse at 30% 10%,#2f4028 0,transparent 55%),
+                   radial-gradient(ellipse at 75% 80%,#243020 0,transparent 55%);
+  color:var(--bone);font-family:"Kelly Slab",Georgia,serif;
+}
+.sheet{max-width:1180px;margin:0 auto}
+.sheet-head{border-bottom:2px solid #3c4a36;padding-bottom:14px;margin-bottom:26px}
+.sheet-head h1{font-family:Oswald,Impact,sans-serif;font-weight:600;text-transform:uppercase;
+  letter-spacing:.06em;font-size:25px;margin:0 0 6px}
+.sheet-head p{margin:0;color:#a8b39f;font-size:14px;line-height:1.55}
+.caption{font-family:Oswald,sans-serif;text-transform:uppercase;letter-spacing:.14em;
+  font-size:11px;color:#a8b39f;margin:32px 0 12px}
+
+.frame{padding:18px;border-radius:8px;
+  background:repeating-linear-gradient(90deg,var(--brick-hi) 0 3px,var(--brick) 3px 38px,var(--brick-lo) 38px 42px),var(--brick);
+  border:3px solid var(--brick-edge);
+  box-shadow:0 14px 34px rgba(0,0,0,.55),inset 0 2px 0 rgba(255,255,255,.25)}
+.well{background:var(--well);border:3px solid #1b1630;border-radius:4px;padding:14px;
+  position:relative;overflow:hidden;box-shadow:inset 0 0 60px rgba(0,0,0,.6)}
+.well::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.55;
+  background:linear-gradient(103deg,transparent 0 30%,var(--well-crack) 30% 30.3%,transparent 30.3%),
+             linear-gradient(-62deg,transparent 0 61%,var(--well-crack) 61% 61.25%,transparent 61.25%),
+             linear-gradient(18deg,transparent 0 79%,var(--well-crack) 79% 79.25%,transparent 79.25%)}
+.well>*{position:relative;z-index:1}
+
+.bar{background:linear-gradient(180deg,var(--green-hi),var(--green) 42%,var(--green-lo));
+  border:3px solid var(--green-edge);border-radius:3px;padding:7px 16px;margin-bottom:14px;
+  display:flex;align-items:center;box-shadow:inset 0 2px 0 rgba(255,255,255,.35)}
+.bar .title{font-family:Oswald,sans-serif;font-weight:700;text-transform:uppercase;
+  letter-spacing:.1em;font-size:20px;color:#fff;text-shadow:0 2px 0 rgba(0,0,0,.45)}
+.bar .right{margin-left:auto;font-family:Oswald,sans-serif;font-weight:600;font-size:17px;
+  color:#fff;text-shadow:0 2px 0 rgba(0,0,0,.4);letter-spacing:.06em}
+.bar.idle{background:linear-gradient(180deg,var(--slate-hi),var(--slate) 42%,#3a3659);border-color:var(--slate-edge)}
+
+.seats{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
+.seat{display:flex;align-items:center;gap:12px;padding:10px;
+  background:linear-gradient(160deg,var(--slot-2),var(--slot));
+  border:3px solid var(--line);border-radius:4px;box-shadow:inset 0 0 22px rgba(0,0,0,.7)}
+.seat.ready{border-color:var(--green)}
+.seat.empty{border-color:var(--line-dim)}
+.seat .pic{width:56px;height:56px;flex:none;border-radius:3px;
+  background:linear-gradient(150deg,#7c86bd,#454d78);box-shadow:inset 0 3px 0 rgba(255,255,255,.22)}
+.seat.empty .pic{background:#221d2f;display:grid;place-items:center}
+.seat .pic svg{width:60%}
+.seat .info{min-width:0;flex:1}
+.seat .nick{font-size:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:5px}
+.seat.empty .nick{color:var(--dim)}
+.chips{display:flex;gap:5px;flex-wrap:wrap}
+.chip{font-family:Oswald,sans-serif;text-transform:uppercase;letter-spacing:.08em;font-size:10px;
+  padding:2px 7px;border-radius:2px;background:#100d1a;color:var(--dim);border:2px solid var(--line-dim)}
+.chip.host{color:var(--gold);border-color:var(--gold-lo)}
+.chip.ready{background:var(--green);color:#0d2b08;border-color:var(--green-edge);font-weight:600}
+
+/* ── одно окно: две колонки, ничего не пропадает ── */
+.cols{display:grid;grid-template-columns:1fr 300px;gap:14px}
+.label{font-family:Oswald,sans-serif;text-transform:uppercase;letter-spacing:.12em;
+  font-size:11px;color:var(--dim);margin:0 0 8px}
+.block+.block{margin-top:16px}
+
+.code-row{display:grid;grid-template-columns:1fr 150px;gap:10px}
+.code-well{background:var(--slot);border:3px solid var(--line);border-radius:4px;
+  padding:10px;text-align:center;box-shadow:inset 0 0 22px rgba(0,0,0,.75)}
+.code-well.off{border-color:var(--line-dim)}
+.code{font-family:Oswald,monospace;font-weight:700;font-size:34px;letter-spacing:.2em;
+  color:#fff;text-shadow:0 2px 0 rgba(0,0,0,.5);margin-left:.2em}
+.code.off{color:var(--line-dim);text-shadow:none}
+.code-sub{font-size:12px;color:var(--dim);margin-top:1px}
+.field{background:var(--slot);border:3px solid var(--line-dim);border-radius:3px;padding:10px;
+  color:#5b5478;font-family:Oswald,monospace;font-size:17px;letter-spacing:.16em;text-align:center;
+  box-shadow:inset 0 0 20px rgba(0,0,0,.7)}
+.field.on{border-color:var(--line);color:var(--bone)}
+
+.btn{display:flex;flex-direction:column;justify-content:center;text-align:center;
+  font-family:Oswald,sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:.09em;
+  font-size:14px;color:#fff;padding:11px 10px;border-radius:3px;
+  background:linear-gradient(180deg,var(--slate-hi),var(--slate) 42%,#3a3659);
+  border:3px solid var(--slate-edge);
+  box-shadow:inset 0 2px 0 rgba(255,255,255,.22),0 3px 0 rgba(0,0,0,.4);
+  text-shadow:0 2px 0 rgba(0,0,0,.4)}
+.btn+.btn{margin-top:9px}
+.btn small{display:block;font-family:"Kelly Slab",serif;font-weight:400;text-transform:none;
+  letter-spacing:0;font-size:11px;color:rgba(255,255,255,.62);margin-top:2px;text-shadow:none}
+.btn.go{background:linear-gradient(180deg,var(--green-hi),var(--green) 42%,var(--green-lo));border-color:var(--green-edge)}
+.btn.stop{background:linear-gradient(180deg,var(--red-hi),var(--red) 42%,#8e2e20);border-color:var(--red-edge)}
+.btn.off{background:linear-gradient(180deg,#3a3750,#2e2c42 42%,#26243a);border-color:#1e1c2e;
+  color:#6b6588;box-shadow:inset 0 2px 0 rgba(255,255,255,.06);text-shadow:none}
+.btn.off small{color:#5a5478}
+
+.status{margin-top:14px;padding:7px 12px;border-radius:3px;background:#1b1630;border:3px solid #120e22;
+  display:flex;align-items:center;gap:9px;font-size:12px;color:var(--dim)}
+.dot{width:9px;height:9px;border-radius:50%;background:var(--green);box-shadow:0 0 9px var(--green)}
+.dot.warn{background:var(--gold);box-shadow:0 0 9px var(--gold)}
+.note{font-size:13px;color:#a8b39f;line-height:1.6;margin-top:10px}
+.note b{color:var(--bone)}
+.legend{display:flex;gap:18px;flex-wrap:wrap;margin-top:8px;font-size:13px;color:#a8b39f}
+.legend span{display:flex;align-items:center;gap:7px}
+.sw{width:26px;height:14px;border-radius:2px;border:2px solid var(--slate-edge);
+  background:linear-gradient(180deg,var(--slate-hi),var(--slate))}
+.sw.off{background:linear-gradient(180deg,#3a3750,#2e2c42);border-color:#1e1c2e}
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <div class="sheet-head">
+    <h1>Окно лобби — одно окно</h1>
+    <p>Весь функционал на одном экране: ничего не появляется и не исчезает.
+       Неприменимые сейчас кнопки и поля гаснут, но остаются на своих местах —
+       раскладка не прыгает, и игрок сразу видит, что вообще можно сделать.</p>
+    <div class="legend">
+      <span><i class="sw"></i> доступно</span>
+      <span><i class="sw off"></i> погашено, но на месте</span>
+    </div>
+  </div>
+
+  <div class="caption">Состояние 1 · лобби ещё нет</div>
+
+  <div class="frame">
+    <div class="well">
+      <div class="bar idle">
+        <span class="title">Лобби</span>
+        <span class="right">Дуэль на двоих</span>
+      </div>
+
+      <div class="seats">
+        <div class="seat empty">
+          <div class="pic"><svg viewBox="0 0 60 70"><path d="M18 30V20a12 12 0 0 1 24 0v10" fill="none" stroke="#e0a33a" stroke-width="7"/><rect x="8" y="30" width="44" height="34" rx="5" fill="#e0a33a" stroke="#8a5f16" stroke-width="3"/><circle cx="30" cy="45" r="5" fill="#8a5f16"/></svg></div>
+          <div class="info"><div class="nick">Свободно</div>
+            <div class="chips"><span class="chip">место хоста</span></div></div>
+        </div>
+        <div class="seat empty">
+          <div class="pic"><svg viewBox="0 0 60 70"><path d="M18 30V20a12 12 0 0 1 24 0v10" fill="none" stroke="#e0a33a" stroke-width="7"/><rect x="8" y="30" width="44" height="34" rx="5" fill="#e0a33a" stroke="#8a5f16" stroke-width="3"/><circle cx="30" cy="45" r="5" fill="#8a5f16"/></svg></div>
+          <div class="info"><div class="nick">Свободно</div>
+            <div class="chips"><span class="chip">место соперника</span></div></div>
+        </div>
+      </div>
+
+      <div class="cols">
+        <div>
+          <div class="block">
+            <p class="label">Код лобби</p>
+            <div class="code-row">
+              <div class="code-well off"><div class="code off">— — — — — —</div>
+                <div class="code-sub">появится после создания</div></div>
+              <div class="btn off">Скопировать</div>
+            </div>
+          </div>
+
+          <div class="block">
+            <p class="label">Войти по коду</p>
+            <div class="code-row">
+              <div class="field on">ВВЕДИ КОД</div>
+              <div class="btn">Войти</div>
+            </div>
+            <p class="note">Оба игрока должны быть на <b>одной версии сборки</b> — она входит в поиск лобби.</p>
+          </div>
+        </div>
+
+        <div>
+          <p class="label">Действия</p>
+          <div class="btn go">Создать лобби<small>код сгенерируется сам</small></div>
+          <div class="btn off">Готов<small>сначала войдите в лобби</small></div>
+          <div class="btn off">Пригласить друга<small>оверлей Steam</small></div>
+          <div class="btn stop">Закрыть</div>
+        </div>
+      </div>
+
+      <div class="status"><span class="dot"></span> Steam · сборка 0.1.0</div>
+    </div>
+  </div>
+
+  <div class="caption">Состояние 2 · оба в лобби, хост готов · те же элементы, поменялась только доступность</div>
+
+  <div class="frame">
+    <div class="well">
+      <div class="bar">
+        <span class="title">Лобби</span>
+        <span class="right">Готовы 1 / 2</span>
+      </div>
+
+      <div class="seats">
+        <div class="seat ready">
+          <div class="pic"></div>
+          <div class="info"><div class="nick">havocstudioteam</div>
+            <div class="chips"><span class="chip host">Хост</span><span class="chip ready">Готов</span></div></div>
+        </div>
+        <div class="seat">
+          <div class="pic"></div>
+          <div class="info"><div class="nick">Соперник</div>
+            <div class="chips"><span class="chip">Ждём</span></div></div>
+        </div>
+      </div>
+
+      <div class="cols">
+        <div>
+          <div class="block">
+            <p class="label">Код лобби</p>
+            <div class="code-row">
+              <div class="code-well"><div class="code">GFKDGF</div>
+                <div class="code-sub">продиктуй сопернику</div></div>
+              <div class="btn">Скопировать</div>
+            </div>
+          </div>
+
+          <div class="block">
+            <p class="label">Войти по коду</p>
+            <div class="code-row">
+              <div class="field">ВЫ УЖЕ В ЛОББИ</div>
+              <div class="btn off">Войти</div>
+            </div>
+            <p class="note">Матч стартует сам, когда готовы <b>оба</b>. Дальше у каждого откроется магазин
+              со стартовым золотом, а волны пойдут по штатной кнопке «Готов» в игре.</p>
+          </div>
+        </div>
+
+        <div>
+          <p class="label">Действия</p>
+          <div class="btn off">Создать лобби<small>вы уже в лобби</small></div>
+          <div class="btn go">Не готов<small>F2</small></div>
+          <div class="btn">Пригласить друга<small>оверлей Steam</small></div>
+          <div class="btn stop">Покинуть лобби</div>
+        </div>
+      </div>
+
+      <div class="status"><span class="dot"></span> Steam · сборка 0.1.0</div>
+    </div>
+  </div>
+
+  <div class="caption">Что меняется между состояниями</div>
+
+  <div class="frame">
+    <div class="well">
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;font-size:14px">
+        <div>
+          <p class="label">Всегда активно</p>
+          <p class="note" style="margin-top:0">Оба места игроков · строка статуса · «Закрыть» / «Покинуть лобби»</p>
+        </div>
+        <div>
+          <p class="label">Только вне лобби</p>
+          <p class="note" style="margin-top:0">«Создать лобби» · поле ввода кода и «Войти»</p>
+        </div>
+        <div>
+          <p class="label">Только в лобби</p>
+          <p class="note" style="margin-top:0">Код и «Скопировать» · «Готов» · «Пригласить друга» · счётчик готовности в шапке</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
