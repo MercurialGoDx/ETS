@@ -209,10 +209,18 @@ public class LobbyPanelUI : MonoBehaviour
         }
 
         // Шапка: живая только когда есть с кем считать готовность.
+        // Во время отсчёта она перехватывается — это единственное, что сейчас важно.
+        float countdown = DuelSession.Instance != null ? DuelSession.Instance.CountdownLeft : -1f;
+        bool counting = countdown >= 0f;
+
         if (barImage != null)
-            barImage.color = inLobby ? BarLive : BarIdle;
+            barImage.color = (inLobby || counting) ? BarLive : BarIdle;
         if (barRight != null)
-            barRight.text = inLobby ? $"Готовы {readyCount} / 2" : "Дуэль на двоих";
+        {
+            barRight.text = counting
+                ? $"Старт через {Mathf.CeilToInt(countdown)}…"
+                : (inLobby ? $"Готовы {readyCount} / 2" : "Дуэль на двоих");
+        }
 
         // Код: сам блок остаётся на месте, просто гаснет.
         if (codeLabel != null)

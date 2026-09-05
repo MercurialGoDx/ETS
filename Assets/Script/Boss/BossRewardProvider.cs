@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using ETS.Multiplayer;
 using UnityEngine;
 
 public class BossRewardProvider : MonoBehaviour
@@ -6,8 +7,14 @@ public class BossRewardProvider : MonoBehaviour
     [Tooltip("Сюда руками добавляешь все BossRewardDefinition, которые могут выпадать.")]
     public List<UpgradeBaseSO> rewards = new();
 
-    public List<UpgradeBaseSO> PickThreeUnique()
+    /// <summary>
+    /// Три награды за босса. В дуэли бросок адресуется НОМЕРОМ БОССА, а не счётчиком выданных
+    /// наград: если один игрок не добил первого босса, его награда за второго обязана совпасть
+    /// с чужой наградой за второго, а не за первого.
+    /// </summary>
+    public List<UpgradeBaseSO> PickThreeUnique(int bossOrdinal = 0, int selectionIndex = 0)
     {
+        int drawRound = DuelRandom.Compose(bossOrdinal, selectionIndex);
         List<UpgradeBaseSO> candidates = new();
         foreach (var r in rewards)
         {
@@ -20,7 +27,7 @@ public class BossRewardProvider : MonoBehaviour
         // без повторов
         for (int i = 0; i < 3; i++)
         {
-            var pick = PickOneWeighted(candidates);
+            var pick = PickOneWeighted(candidates, DuelRandom.Compose(drawRound, i));
             if (pick == null) break;
             result.Add(pick);
             candidates.Remove(pick);
@@ -29,14 +36,16 @@ public class BossRewardProvider : MonoBehaviour
         return result;
     }
 
-    private UpgradeBaseSO PickOneWeighted(List<UpgradeBaseSO> list)
+    private UpgradeBaseSO PickOneWeighted(List<UpgradeBaseSO> list, int drawIndex)
     {
         if (list == null || list.Count == 0) return null;
 
         int total = 0;
         foreach (var r in list) total += Mathf.Max(1, r.weight);
 
-        int roll = Random.Range(0, total);
+        int roll = DuelSession.IsSeeded
+            ? DuelRandom.Range(DuelSession.Seed, DuelStream.BossReward, drawIndex, 0, total)
+            : Random.Range(0, total);
         int acc = 0;
 
         foreach (var r in list)

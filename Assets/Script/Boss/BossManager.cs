@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using ETS.Multiplayer;
 using UnityEngine;
 
 public class BossManager : MonoBehaviour
@@ -48,6 +49,14 @@ public class BossManager : MonoBehaviour
     private readonly List<BossEntry> bosses = new List<BossEntry>();
     private Enemy activeBossEnemy = null;
     private int activeBossRewardSelections = 1;
+
+    // Порядковый номер спавна и номер босса, который сейчас на поле. В дуэли по ним
+    // адресуются выбор босса и его награда: пропущенный босс не должен сдвигать остальные.
+    private int bossSpawnIndex;
+    private int activeBossOrdinal;
+
+    /// <summary>Номер босса на поле, начиная с нуля. Нужен награде.</summary>
+    public int ActiveBossOrdinal => activeBossOrdinal;
 
     private void Start()
     {
@@ -149,13 +158,19 @@ public class BossManager : MonoBehaviour
             return;
         }
 
-        BossEntry chosen = available[Random.Range(0, available.Count)];
+        int pickIndex = DuelSession.IsSeeded
+            ? DuelRandom.Range(DuelSession.Seed, DuelStream.BossPick,
+                DuelRandom.Compose(bossSpawnIndex, 0), 0, available.Count)
+            : Random.Range(0, available.Count);
+
+        BossEntry chosen = available[pickIndex];
 
         Vector3 spawnPos = GetRandomPointAroundPlayer();
         chosen.instance.transform.position = spawnPos;
         chosen.instance.transform.rotation = Quaternion.identity;
 
         chosen.instance.SetActive(true);
+        activeBossOrdinal = bossSpawnIndex;
         activeBossEnemy = chosen.enemy;
         activeBossEnemy.isDead = false;
 
@@ -228,6 +243,9 @@ public class BossManager : MonoBehaviour
             $"baseBossHp={chosen.baseHealth:F1}, baseBossDmg={bossAdditionalDamage:F1}, " +
             $"bossHp=x{bossHpMultiplier:F2}, bossDmg=x{bossDamageMultiplier:F2}, " +
             $"finalHp={chosen.enemy.maxHealth:F1}, finalDmg={chosen.enemy.damageToPlayer:F1}");
+
+        // Считаем после спавна: и выбор босса, и его награда адресуются текущим номером.
+        bossSpawnIndex++;
     }
 
     private Vector3 GetRandomPointAroundPlayer()
@@ -257,7 +275,7 @@ public class BossManager : MonoBehaviour
         activeBossRewardSelections = 1;
 
         if (bossRewardUI != null)
-            bossRewardUI.Open(rewardSelections);
+            bossRewardUI.Open(rewardSelections, activeBossOrdinal);
         else
             Debug.LogWarning("[BossManager] BossRewardUI not assigned");
 

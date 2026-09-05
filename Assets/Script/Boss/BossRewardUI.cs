@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using ETS.Multiplayer;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -31,6 +32,10 @@ public class BossRewardUI : MonoBehaviour
 
     private float prevTimeScale = 1f;
     private int remainingSelections;
+
+    // Номер босса и порядковый номер выбора — вместе адресуют бросок наград в дуэли.
+    private int currentBossOrdinal;
+    private int currentSelectionIndex;
     private bool isResolvingSelection;
     private CanvasGroup panelCanvasGroup;
 
@@ -65,12 +70,18 @@ public class BossRewardUI : MonoBehaviour
         IsSelectionOpen = false;
     }
 
-    public void Open(int selectionCount = 1)
+    public void Open(int selectionCount = 1, int bossOrdinal = 0)
     {
+        currentBossOrdinal = bossOrdinal;
+        currentSelectionIndex = 0;
         if (gameSpeedPanel != null) gameSpeedPanel.SetActive(false);
 
         prevTimeScale = Time.timeScale;
-        Time.timeScale = 0f;
+
+        // В дуэли время не останавливаем: у игроков боссы умирают в разные моменты,
+        // и пауза на выбор досталась бы им несимметрично.
+        if (!DuelSession.IsSeeded)
+            Time.timeScale = 0f;
 
         remainingSelections = Mathf.Max(1, selectionCount);
         isResolvingSelection = false;
@@ -91,7 +102,7 @@ public class BossRewardUI : MonoBehaviour
             return;
         }
 
-        List<UpgradeBaseSO> picks = provider.PickThreeUnique();
+        List<UpgradeBaseSO> picks = provider.PickThreeUnique(currentBossOrdinal, currentSelectionIndex);
         while (picks.Count < 3) picks.Add(null);
 
         if (card1 != null) card1.Bind(picks[0], OnChosen);
@@ -113,6 +124,7 @@ public class BossRewardUI : MonoBehaviour
         }
 
         remainingSelections--;
+        currentSelectionIndex++;
         if (remainingSelections > 0)
         {
             StartCoroutine(ShowNextSelection());
@@ -185,7 +197,8 @@ public class BossRewardUI : MonoBehaviour
         IsSelectionOpen = false;
 
         if (panelRoot != null) panelRoot.SetActive(false);
-        Time.timeScale = prevTimeScale;
+        if (!DuelSession.IsSeeded)
+            Time.timeScale = prevTimeScale;
         if (gameSpeedPanel != null) gameSpeedPanel.SetActive(true);
     }
 

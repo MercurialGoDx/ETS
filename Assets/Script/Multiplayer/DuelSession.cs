@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using ETS.Multiplayer;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -41,6 +42,18 @@ public class DuelSession : MonoBehaviour
     /// обнуляет статику, объект DontDestroyOnLoad при этом выживает, а
     /// RuntimeInitializeOnLoadMethod повторно не вызывается — ссылка терялась насовсем.
     /// </summary>
+    /// <summary>Идёт ли сейчас матч по сиду. Всё сидированное поведение живёт под этим флагом.</summary>
+    public static bool IsSeeded => Instance != null && Instance.seedActive;
+
+    /// <summary>Сид матча. Осмыслен только при <see cref="IsSeeded"/>.</summary>
+    public static int Seed => Instance != null ? Instance.matchSeed : 0;
+
+    /// <summary>Скорость забега в дуэли фиксирована — иначе игроки идут в разном темпе.</summary>
+    public const float DuelSpeedMultiplier = 2f;
+
+    /// <summary>Сколько секунд идёт отсчёт перед стартом.</summary>
+    public const float CountdownSeconds = 3f;
+
     public static DuelSession Instance
     {
         get
@@ -86,6 +99,12 @@ public class DuelSession : MonoBehaviour
     // Ждём кадр после перезагрузки сцены: Start() у StartMenu должен успеть отработать,
     // иначе он выставит timeScale = 0 и вернёт меню поверх уже запущенного забега.
     private int startDelayFrames = -1;
+    private bool seedActive;
+    private int matchSeed;
+    private float countdownLeft = -1f;
+
+    /// <summary>Сколько осталось до старта. Отрицательное — отсчёта нет.</summary>
+    public float CountdownLeft => countdownLeft;
 
     private PlayerHealth trackedHealth;
     private GameTimeUI timeUi;
@@ -168,6 +187,13 @@ public class DuelSession : MonoBehaviour
         {
             runStarted = false;
             isReady = false;
+            seedActive = false;
+            matchSeed = 0;
+            countdownLeft = -1f;
+
+            if (GameSpeedController.Instance != null)
+                GameSpeedController.Instance.UnlockSpeed();
+
             return;
         }
 
@@ -175,7 +201,7 @@ public class DuelSession : MonoBehaviour
             HostTick();
 
         if (!runStarted && service.GetLobbyValue(KeyState) == StateRunning)
-            StartRun();
+            TickCountdown();
 
         if (runStarted)
             PublishTick();
@@ -199,6 +225,34 @@ public class DuelSession : MonoBehaviour
         service.SetLobbyValue(KeyState, StateRunning);
 
         Debug.Log($"[Duel] Все готовы, матч стартует. Сид {seed} (пока не применяется).");
+    }
+
+    /// <summary>
+    /// Отсчёт перед стартом: обе стороны видят одинаковые три секунды и входят в забег
+    /// практически одновременно. Считаем в нескалированном времени — таймскейл в меню нулевой.
+    /// </summary>
+    private void TickCountdown()
+    {
+        if (countdownLeft < 0f)
+        {
+            countdownLeft = CountdownSeconds;
+            matchSeed = ParseSeed(Lobbies.Service.GetLobbyValue(KeySeed));
+            seedActive = matchSeed != 0;
+            Debug.Log($"[Duel] Старт через {CountdownSeconds:0} с. Сид {matchSeed}.");
+            return;
+        }
+
+        countdownLeft -= Time.unscaledDeltaTime;
+        if (countdownLeft > 0f)
+            return;
+
+        countdownLeft = -1f;
+        StartRun();
+    }
+
+    private static int ParseSeed(string raw)
+    {
+        return int.TryParse(raw, out int value) ? value : 0;
     }
 
     private void StartRun()
@@ -245,7 +299,31 @@ public class DuelSession : MonoBehaviour
         }
 
         menu.StartGame();
-        Debug.Log("[Duel] Забег открыт, идёт закупка. Жми «Готов» в игре, чтобы пошли волны.");
+
+        // В дуэли кнопки «Готов» нет: забег начинается сразу у обоих, иначе один
+        // закупается минуту, другой десять секунд, и старт волн разъезжается.
+        var starter = FindFirstObjectByType<GameStartController>(FindObjectsInactive.Include);
+        if (starter != null)
+            starter.OnReadyClicked();
+        else
+            Debug.LogWarning("[Duel] GameStartController не найден — волны не запущены.");
+
+        ApplyDuelSpeed();
+        Debug.Log("[Duel] Забег начался у обоих.");
+    }
+
+    /// <summary>
+    /// Скорость в дуэли фиксирована и не переключается игроком: разный темп сделал бы
+    /// сравнение бессмысленным. Позже её можно вынести в настройки лобби — тогда обе
+    /// стороны возьмут значение из данных лобби.
+    /// </summary>
+    private static void ApplyDuelSpeed()
+    {
+        var speed = GameSpeedController.Instance;
+        if (speed == null)
+            return;
+
+        speed.LockSpeed(speed.speedX2);
     }
 
     // ---------- Публикация своего состояния ----------

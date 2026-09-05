@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using ETS.Multiplayer;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -29,6 +30,14 @@ public class ShopManager : MonoBehaviour
     [Header("Доступные товары (пул для рандома)")]
     public List<WeaponDefinition> availableWeapons;
     public List<UpgradeBaseSO> availableUpgrades;
+
+    // Номер розыгрыша магазина. Нужен только дуэли: предложение адресуется парой
+    // (номер ролла, номер слота), поэтому лишний реролл у одного игрока не сдвигает другого.
+    private int shopRollIndex;
+
+    // Буферы базовых весов, чтобы не аллоцировать массив на каждый ролл.
+    private float[] duelWeaponWeights;
+    private float[] duelUpgradeWeights;
 
     [Header("Реролл")]
     [Tooltip("Базовая стоимость реролла магазина (золото).")]
@@ -135,13 +144,13 @@ public class ShopManager : MonoBehaviour
 
             if (weapons)
             {
-                var weapon = GetRandomWeaponWeighted();
+                var weapon = DuelSession.IsSeeded ? GetDuelWeapon(i) : GetRandomWeaponWeighted();
                 if (weapon != null) slot.SetupWeapon(weapon, this);
                 else slot.Clear();
             }
             else
             {
-                var upgrade = GetRandomUpgradeWeighted();
+                var upgrade = DuelSession.IsSeeded ? GetDuelUpgrade(i) : GetRandomUpgradeWeighted();
                 if (upgrade != null) slot.SetupUpgrade(upgrade, this);
                 else slot.Clear();
             }
@@ -259,7 +268,7 @@ public class ShopManager : MonoBehaviour
                 continue;
             }
 
-            var weapon = GetRandomWeaponWeighted();
+            var weapon = DuelSession.IsSeeded ? GetDuelWeapon(i) : GetRandomWeaponWeighted();
             if (weapon != null)
             {
                 slot.SetupWeapon(weapon, this);
@@ -269,6 +278,47 @@ public class ShopManager : MonoBehaviour
                 slot.Clear();
             }
         }
+    }
+
+    /// <summary>
+    /// Оффер оружия в дуэли. Вес берётся базовый, из ассета: обычная рулетка добавляет
+    /// надбавку за прошлые покупки и перекрёстные модификаторы, а они у игроков свои —
+    /// магазины разъехались бы после первой покупки. Фильтр по тиру тоже снят: гейт тира
+    /// это состояние игрока, из-за него слот сместился бы у того, кто открыл тир раньше.
+    /// </summary>
+    private WeaponDefinition GetDuelWeapon(int slotIndex)
+    {
+        if (availableWeapons == null || availableWeapons.Count == 0)
+            return null;
+
+        if (duelWeaponWeights == null || duelWeaponWeights.Length != availableWeapons.Count)
+            duelWeaponWeights = new float[availableWeapons.Count];
+
+        for (int i = 0; i < availableWeapons.Count; i++)
+            duelWeaponWeights[i] = availableWeapons[i] != null ? availableWeapons[i].weight : 0f;
+
+        int picked = DuelRandom.WeightedPick(DuelSession.Seed, DuelStream.ShopWeapon,
+            DuelRandom.Compose(shopRollIndex, slotIndex), duelWeaponWeights);
+
+        return picked >= 0 ? availableWeapons[picked] : null;
+    }
+
+    /// <summary>Оффер улучшения в дуэли. Правила те же, что у <see cref="GetDuelWeapon"/>.</summary>
+    private UpgradeBaseSO GetDuelUpgrade(int slotIndex)
+    {
+        if (availableUpgrades == null || availableUpgrades.Count == 0)
+            return null;
+
+        if (duelUpgradeWeights == null || duelUpgradeWeights.Length != availableUpgrades.Count)
+            duelUpgradeWeights = new float[availableUpgrades.Count];
+
+        for (int i = 0; i < availableUpgrades.Count; i++)
+            duelUpgradeWeights[i] = availableUpgrades[i] != null ? availableUpgrades[i].weight : 0f;
+
+        int picked = DuelRandom.WeightedPick(DuelSession.Seed, DuelStream.ShopUpgrade,
+            DuelRandom.Compose(shopRollIndex, slotIndex), duelUpgradeWeights);
+
+        return picked >= 0 ? availableUpgrades[picked] : null;
     }
 
     private WeaponDefinition GetRandomWeaponWeighted()
@@ -361,7 +411,7 @@ public class ShopManager : MonoBehaviour
                 continue;
             }
 
-            var upgrade = GetRandomUpgradeWeighted();
+            var upgrade = DuelSession.IsSeeded ? GetDuelUpgrade(i) : GetRandomUpgradeWeighted();
             if (upgrade != null)
             {
                 slot.SetupUpgrade(upgrade, this);
@@ -516,6 +566,7 @@ public class ShopManager : MonoBehaviour
     {
         SetupWeaponSlotsRandom();
         SetupUpgradeSlotsRandom();
+        shopRollIndex++;
     }
 
     public void RerollShop()
