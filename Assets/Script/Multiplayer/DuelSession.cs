@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using ETS.Multiplayer;
 using UnityEngine;
@@ -21,11 +21,13 @@ public class DuelSession : MonoBehaviour
     // Данные лобби (пишет только хост).
     public const string KeyState = "duel_state";
     public const string KeySeed = "duel_seed";
+    public const string KeySpeed = "duel_speed";
 
     // Данные участника (пишет каждый о себе).
     public const string KeyReady = "duel_ready";
     public const string KeyStat = "duel_stat";
     public const string KeyResult = "duel_result";
+    public const string KeyBuild = "duel_build";
 
     public const string StateRunning = "running";
 
@@ -48,8 +50,13 @@ public class DuelSession : MonoBehaviour
     /// <summary>Сид матча. Осмыслен только при <see cref="IsSeeded"/>.</summary>
     public static int Seed => Instance != null ? Instance.matchSeed : 0;
 
-    /// <summary>Скорость забега в дуэли фиксирована — иначе игроки идут в разном темпе.</summary>
-    public const float DuelSpeedMultiplier = 2f;
+    /// <summary>Темпы, доступные в настройках лобби. После старта выбор блокируется.</summary>
+    public static readonly float[] SpeedOptions = { 1f, 1.5f, 2f, 3f };
+
+    public const float DefaultSpeed = 2f;
+
+    /// <summary>Сколько ждём вернувшегося соперника, прежде чем продолжить без него.</summary>
+    public const float DisconnectWaitSeconds = 60f;
 
     /// <summary>Сколько секунд идёт отсчёт перед стартом.</summary>
     public const float CountdownSeconds = 3f;
@@ -102,9 +109,46 @@ public class DuelSession : MonoBehaviour
     private bool seedActive;
     private int matchSeed;
     private float countdownLeft = -1f;
+    private float waitLeft = -1f;
+    private bool opponentWasPresent;
 
     /// <summary>Сколько осталось до старта. Отрицательное — отсчёта нет.</summary>
     public float CountdownLeft => countdownLeft;
+
+    /// <summary>Сколько осталось ждать соперника. Отрицательное — не ждём.</summary>
+    public float WaitLeft => waitLeft;
+
+    /// <summary>Выбранный темп матча. До старта его меняет хост.</summary>
+    public float SelectedSpeed
+    {
+        get
+        {
+            float value = ParseSpeed(Lobbies.Service.GetLobbyValue(KeySpeed));
+            return value > 0f ? value : DefaultSpeed;
+        }
+    }
+
+    /// <summary>
+    /// Матч уже нельзя настраивать. Считаем от состояния лобби, а не от <see cref="runStarted"/>:
+    /// между «хост нажал старт» и концом отсчёта проходят три секунды, и правка темпа в этот
+    /// зазор развела бы стороны — каждая прочитала бы своё значение в момент своего StartRun.
+    /// </summary>
+    public bool MatchStarted => runStarted || Lobbies.Service.GetLobbyValue(KeyState) == StateRunning;
+
+    /// <summary>Меняет темп до старта. Пишет только хост — данные лобби его.</summary>
+    public void SetSpeed(float value)
+    {
+        if (MatchStarted || !Lobbies.Service.IsHost)
+            return;
+
+        Lobbies.Service.SetLobbyValue(KeySpeed, value.ToString(System.Globalization.CultureInfo.InvariantCulture));
+    }
+
+    private static float ParseSpeed(string raw)
+    {
+        return float.TryParse(raw, System.Globalization.NumberStyles.Float,
+            System.Globalization.CultureInfo.InvariantCulture, out float v) ? v : 0f;
+    }
 
     private PlayerHealth trackedHealth;
     private GameTimeUI timeUi;
@@ -170,7 +214,7 @@ public class DuelSession : MonoBehaviour
             ToggleReady();
 
         if (Input.GetKeyDown(KeyCode.F3))
-            showStats = !showStats;
+            ToggleOpponentBuild();
 
         if (lossBannerLeft > 0f)
             lossBannerLeft -= Time.unscaledDeltaTime;
@@ -190,6 +234,8 @@ public class DuelSession : MonoBehaviour
             seedActive = false;
             matchSeed = 0;
             countdownLeft = -1f;
+            waitLeft = -1f;
+            opponentWasPresent = false;
 
             if (GameSpeedController.Instance != null)
                 GameSpeedController.Instance.UnlockSpeed();
@@ -207,6 +253,7 @@ public class DuelSession : MonoBehaviour
             PublishTick();
 
         WatchOpponent();
+        WatchDisconnect();
     }
 
     /// <summary>Хост решает, когда матч начался: все готовы — пишет сид и состояние.</summary>
@@ -317,13 +364,13 @@ public class DuelSession : MonoBehaviour
     /// сравнение бессмысленным. Позже её можно вынести в настройки лобби — тогда обе
     /// стороны возьмут значение из данных лобби.
     /// </summary>
-    private static void ApplyDuelSpeed()
+    private void ApplyDuelSpeed()
     {
         var speed = GameSpeedController.Instance;
         if (speed == null)
             return;
 
-        speed.LockSpeed(speed.speedX2);
+        speed.LockSpeed(SelectedSpeed);
     }
 
     // ---------- Публикация своего состояния ----------
@@ -338,6 +385,53 @@ public class DuelSession : MonoBehaviour
 
         publishTimer = PublishInterval;
         Lobbies.Service.SetMemberValue(KeyStat, BuildStatLine(isAlive: true));
+        PublishBuild();
+    }
+
+    /// <summary>
+    /// Отправляем полный снимок билда — тот же, что уходит в таблицу лидеров. Формат уже
+    /// написан и умеет декодироваться, а BuildViewerUI умеет его показывать: своего кода
+    /// для просмотра чужого билда писать не нужно.
+    /// </summary>
+    private void PublishBuild()
+    {
+        var inventory = FindFirstObjectByType<InventoryUI>(FindObjectsInactive.Include);
+        if (inventory == null)
+            return;
+
+        BuildSnapshot snapshot = inventory.CaptureSnapshot();
+        if (snapshot == null)
+            return;
+
+        int[] details = snapshot.Encode();
+        var text = new System.Text.StringBuilder(details.Length * 4);
+        for (int i = 0; i < details.Length; i++)
+        {
+            if (i > 0)
+                text.Append(',');
+            text.Append(details[i]);
+        }
+
+        Lobbies.Service.SetMemberValue(KeyBuild, text.ToString());
+    }
+
+    /// <summary>Снимок билда соперника или null, если он ещё ничего не прислал.</summary>
+    public BuildSnapshot GetOpponentBuild()
+    {
+        if (!TryGetOpponent(out LobbyMember opponent))
+            return null;
+
+        string raw = Lobbies.Service.GetMemberValue(opponent.Id, KeyBuild);
+        if (string.IsNullOrEmpty(raw))
+            return null;
+
+        string[] parts = raw.Split(',');
+        var details = new int[parts.Length];
+        for (int i = 0; i < parts.Length; i++)
+            if (!int.TryParse(parts[i], out details[i]))
+                return null;
+
+        return BuildSnapshot.Decode(details);
     }
 
     private string BuildStatLine(bool isAlive)
@@ -461,6 +555,70 @@ public class DuelSession : MonoBehaviour
         return new OpponentStat(wave, time, hp, hpMax, damage, parts[5] == "1");
     }
 
+    /// <summary>
+    /// Соперник вышел — ставим забег на паузу и ждём минуту. Вернулся раньше — продолжаем
+    /// сразу. Не вернулся — забег идёт дальше без него: держать игрока в паузе бесконечно
+    /// из-за чужого разрыва нельзя.
+    /// </summary>
+    private void WatchDisconnect()
+    {
+        if (!runStarted)
+        {
+            waitLeft = -1f;
+            return;
+        }
+
+        bool hasOpponent = Lobbies.Service.Members.Count >= 2;
+
+        if (hasOpponent)
+        {
+            opponentWasPresent = true;
+
+            if (waitLeft >= 0f)
+            {
+                waitLeft = -1f;
+                ResumeAfterWait();
+                Debug.Log("[Duel] Соперник вернулся, продолжаем.");
+            }
+
+            return;
+        }
+
+        if (!opponentWasPresent)
+            return;
+
+        if (waitLeft < 0f)
+        {
+            waitLeft = DisconnectWaitSeconds;
+            PauseForWait();
+            Debug.Log($"[Duel] Соперник отключился. Ждём {DisconnectWaitSeconds:0} с.");
+            return;
+        }
+
+        waitLeft -= Time.unscaledDeltaTime;
+        if (waitLeft > 0f)
+            return;
+
+        waitLeft = -1f;
+        opponentWasPresent = false;
+        ResumeAfterWait();
+        Debug.Log("[Duel] Соперник не вернулся — забег продолжается без него.");
+    }
+
+    private static void PauseForWait()
+    {
+        var gsm = GameStateManager.Instance;
+        if (gsm != null && gsm.Is(GameState.Playing))
+            gsm.SetState(GameState.Paused);
+    }
+
+    private static void ResumeAfterWait()
+    {
+        var gsm = GameStateManager.Instance;
+        if (gsm != null && gsm.Is(GameState.Paused))
+            gsm.SetState(GameState.Playing);
+    }
+
     /// <summary>Ловим момент, когда соперник перестал быть живым, и показываем сообщение один раз.</summary>
     private void WatchOpponent()
     {
@@ -474,6 +632,31 @@ public class DuelSession : MonoBehaviour
         opponentWasAlive = stat.IsAlive;
     }
 
+    /// <summary>
+    /// F3 — тот же экран, каким игрок смотрит чужие билды в таблице лидеров: всё купленное
+    /// оружие, улучшения и полная статистика. Своего вида для этого не заводим.
+    /// </summary>
+    private void ToggleOpponentBuild()
+    {
+        var viewer = FindFirstObjectByType<BuildViewerUI>(FindObjectsInactive.Include);
+        if (viewer == null)
+        {
+            Debug.LogWarning("[Duel] BuildViewerUI не найден в сцене.");
+            return;
+        }
+
+        if (showStats)
+        {
+            viewer.Close();
+            showStats = false;
+            return;
+        }
+
+        string name = TryGetOpponent(out LobbyMember opponent) ? opponent.Name : "Соперник";
+        viewer.Show(GetOpponentBuild(), name);
+        showStats = true;
+    }
+
     // ---------- Экран ----------
 
     private void OnGUI()
@@ -484,11 +667,12 @@ public class DuelSession : MonoBehaviour
         if (!runStarted)
             DrawLobbyStrip();
 
+        if (waitLeft >= 0f)
+            DrawWaitBanner();
+
         if (lossBannerLeft > 0f)
             DrawLossBanner();
 
-        if (showStats)
-            DrawOpponentPanel();
     }
 
     private void DrawLobbyStrip()
@@ -498,6 +682,16 @@ public class DuelSession : MonoBehaviour
             : "F2 — готов к дуэли";
 
         GUI.Label(new Rect(12f, 12f, 420f, 22f), $"[Дуэль] {text}");
+    }
+
+    private void DrawWaitBanner()
+    {
+        var rect = new Rect(Screen.width * 0.5f - 240f, Screen.height * 0.5f - 40f, 480f, 80f);
+        GUI.Box(rect, string.Empty);
+        GUI.Label(new Rect(rect.x + 16f, rect.y + 14f, rect.width - 32f, 24f),
+            "Соперник отключился");
+        GUI.Label(new Rect(rect.x + 16f, rect.y + 42f, rect.width - 32f, 24f),
+            $"Ждём возвращения: {Mathf.CeilToInt(waitLeft)} с");
     }
 
     private void DrawLossBanner()
@@ -512,39 +706,6 @@ public class DuelSession : MonoBehaviour
         GUI.Label(new Rect(rect.x + 12f, rect.y + 8f, rect.width - 24f, 22f), result);
     }
 
-    private void DrawOpponentPanel()
-    {
-        var rect = new Rect(Screen.width - 272f, 12f, 260f, 150f);
-        GUI.Box(rect, "Соперник (F3)");
-
-        GUILayout.BeginArea(new Rect(rect.x + 10f, rect.y + 24f, rect.width - 20f, rect.height - 34f));
-
-        if (!TryGetOpponent(out LobbyMember opponent))
-        {
-            GUILayout.Label("Соперника нет в лобби.");
-            GUILayout.EndArea();
-            return;
-        }
-
-        GUILayout.Label(opponent.Name);
-
-        OpponentStat stat = GetOpponentStat();
-        if (!stat.HasData)
-        {
-            GUILayout.Label("Данных пока нет.");
-            GUILayout.Label("Появятся, когда он начнёт забег.");
-            GUILayout.EndArea();
-            return;
-        }
-
-        GUILayout.Label(stat.IsAlive ? "В забеге" : "Выбыл");
-        GUILayout.Label($"Волна: {stat.Wave}");
-        GUILayout.Label($"Время: {FormatTime(stat.Time)}");
-        GUILayout.Label($"HP: {stat.Hp:0} / {stat.HpMax:0}");
-        GUILayout.Label($"Урон: {stat.Damage:0}");
-
-        GUILayout.EndArea();
-    }
 
     private static string FormatTime(float seconds)
     {

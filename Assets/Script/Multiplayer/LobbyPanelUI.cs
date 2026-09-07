@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -57,6 +57,12 @@ public class LobbyPanelUI : MonoBehaviour
     [SerializeField] private TMP_Text readySub;
     [SerializeField] private TMP_Text leaveMain;
 
+    [Header("Темп матча")]
+    [Tooltip("Кнопки ×1 / ×1.5 / ×2 / ×3 в порядке DuelSession.SpeedOptions.")]
+    [SerializeField] private Button[] speedButtons = new Button[4];
+    [SerializeField] private Image[] speedFrames = new Image[4];
+    [SerializeField] private TMP_Text speedNote;
+
     [Header("Статус")]
     [SerializeField] private TMP_Text statusLabel;
 
@@ -90,6 +96,15 @@ public class LobbyPanelUI : MonoBehaviour
         if (copyButton != null) copyButton.onClick.AddListener(OnCopy);
         if (leaveButton != null) leaveButton.onClick.AddListener(OnLeave);
 
+        for (int i = 0; i < speedButtons.Length; i++)
+        {
+            if (speedButtons[i] == null)
+                continue;
+
+            float value = i < DuelSession.SpeedOptions.Length ? DuelSession.SpeedOptions[i] : 1f;
+            speedButtons[i].onClick.AddListener(() => OnSpeed(value));
+        }
+
         if (root != null)
             root.SetActive(false);
     }
@@ -103,6 +118,11 @@ public class LobbyPanelUI : MonoBehaviour
             && GameStateManager.Instance.Is(GameState.Playing);
 
         if (running)
+            wantOpen = false;
+
+        // Esc закрывает окно в меню. PauseManager в меню слушать Esc не может —
+        // там canPause выключен, так что перехвата не будет.
+        if (wantOpen && Input.GetKeyDown(KeyCode.Escape))
             wantOpen = false;
 
         if (root.activeSelf != wantOpen)
@@ -169,6 +189,44 @@ public class LobbyPanelUI : MonoBehaviour
         }
 
         Close();
+    }
+
+    private void OnSpeed(float value)
+    {
+        if (DuelSession.Instance != null)
+            DuelSession.Instance.SetSpeed(value);
+    }
+
+    /// <summary>
+    /// Темп выбирает хост и только до старта: после начала матча менять его нельзя,
+    /// иначе игроки разойдутся по времени. Гость видит выбор, но не правит.
+    /// </summary>
+    private void RefreshSpeed(bool inLobby)
+    {
+        var duel = DuelSession.Instance;
+        float current = duel != null ? duel.SelectedSpeed : DuelSession.DefaultSpeed;
+        bool started = duel != null && duel.MatchStarted;
+        bool canEdit = inLobby && !started && Lobbies.Service.IsHost;
+
+        for (int i = 0; i < speedButtons.Length; i++)
+        {
+            if (speedButtons[i] != null)
+                speedButtons[i].interactable = canEdit;
+
+            if (speedFrames[i] == null)
+                continue;
+
+            float value = i < DuelSession.SpeedOptions.Length ? DuelSession.SpeedOptions[i] : -1f;
+            speedFrames[i].color = Mathf.Approximately(value, current) ? FrameReady : FrameOff;
+        }
+
+        if (speedNote != null)
+        {
+            speedNote.text = !inLobby ? "выбор темпа доступен в лобби"
+                : started ? "темп зафиксирован на матч"
+                : Lobbies.Service.IsHost ? "темп выбирает хост"
+                : "темп выбирает хост — у тебя только просмотр";
+        }
     }
 
     // ---------- Обновление ----------
@@ -264,6 +322,7 @@ public class LobbyPanelUI : MonoBehaviour
         if (noteLabel != null)
             noteLabel.text = inLobby ? NoteInside : NoteOutside;
 
+        RefreshSpeed(inLobby);
         UpdateStatus();
     }
 

@@ -145,14 +145,16 @@ public class ShopManager : MonoBehaviour
             if (weapons)
             {
                 var weapon = DuelSession.IsSeeded ? GetDuelWeapon(i) : GetRandomWeaponWeighted();
-                if (weapon != null) slot.SetupWeapon(weapon, this);
-                else slot.Clear();
+                if (weapon == null) slot.Clear();
+                else if (DuelSession.IsSeeded && !IsTierUnlocked(weapon.itemTier)) slot.SetLocked();
+                else slot.SetupWeapon(weapon, this);
             }
             else
             {
                 var upgrade = DuelSession.IsSeeded ? GetDuelUpgrade(i) : GetRandomUpgradeWeighted();
-                if (upgrade != null) slot.SetupUpgrade(upgrade, this);
-                else slot.Clear();
+                if (upgrade == null) slot.Clear();
+                else if (DuelSession.IsSeeded && !IsTierUnlocked(upgrade.itemTier)) slot.SetLocked();
+                else slot.SetupUpgrade(upgrade, this);
             }
         }
     }
@@ -269,13 +271,21 @@ public class ShopManager : MonoBehaviour
             }
 
             var weapon = DuelSession.IsSeeded ? GetDuelWeapon(i) : GetRandomWeaponWeighted();
-            if (weapon != null)
+            if (weapon == null)
             {
-                slot.SetupWeapon(weapon, this);
+                slot.Clear();
+            }
+            else if (DuelSession.IsSeeded && !IsTierUnlocked(weapon.itemTier))
+            {
+                // В дуэли пул не фильтруется по тиру — иначе слот сместился бы у того,
+                // кто открыл тир раньше, и магазины игроков разъехались бы. Предмет
+                // закрытого тира выпадает обоим одинаково и показывается закрытым:
+                // видно, что упускаешь, но купить нельзя.
+                slot.SetLocked();
             }
             else
             {
-                slot.Clear();
+                slot.SetupWeapon(weapon, this);
             }
         }
     }
@@ -412,13 +422,17 @@ public class ShopManager : MonoBehaviour
             }
 
             var upgrade = DuelSession.IsSeeded ? GetDuelUpgrade(i) : GetRandomUpgradeWeighted();
-            if (upgrade != null)
+            if (upgrade == null)
             {
-                slot.SetupUpgrade(upgrade, this);
+                slot.Clear();
+            }
+            else if (DuelSession.IsSeeded && !IsTierUnlocked(upgrade.itemTier))
+            {
+                slot.SetLocked();
             }
             else
             {
-                slot.Clear();
+                slot.SetupUpgrade(upgrade, this);
             }
         }
     }
