@@ -32,3 +32,4 @@ MonoBehaviour:
   nameKey: cursed_armor.name
   descriptionKey: cursed_armor.desc
   valuePercent: 0.5
+  stackDuration: 20

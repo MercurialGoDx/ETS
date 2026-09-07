@@ -34,6 +34,7 @@ public enum BuildStat
     EnemyDamage,
     // Добавлен в конец, чтобы не сдвигать индексы статов в старых Steam-снимках.
     DmgHoly,
+    HealingPercentFromMaxHealth,
 
     Count
 }

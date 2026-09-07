@@ -79,6 +79,14 @@ MonoBehaviour:
     m_Key: damage.desc
     m_Metadata:
       m_Items: []
+  - m_Id: 82253752430264320
+    m_Key: holy_damage.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 82253752480595968
+    m_Key: holy_damage.desc
+    m_Metadata:
+      m_Items: []
   - m_Id: 74576184478564356
     m_Key: heavy_damage.name
     m_Metadata:
@@ -215,6 +223,14 @@ MonoBehaviour:
     m_Key: attack_speed.desc
     m_Metadata:
       m_Items: []
+  - m_Id: 82253752480595969
+    m_Key: boss_reward_reroll.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 82253752480595970
+    m_Key: boss_reward_reroll.desc
+    m_Metadata:
+      m_Items: []
   - m_Id: 74576184478564388
     m_Key: block.name
     m_Metadata:
@@ -271,6 +287,30 @@ MonoBehaviour:
     m_Key: super_bullet.desc
     m_Metadata:
       m_Items: []
+  - m_Id: 82253752480595971
+    m_Key: spike_t2.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 82253752480595972
+    m_Key: spike_t2.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 82253752480595973
+    m_Key: blessed_armor.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 82253752480595974
+    m_Key: blessed_armor.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 82253752480595975
+    m_Key: cursed_armor.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 82253752480595976
+    m_Key: cursed_armor.desc
+    m_Metadata:
+      m_Items: []
   - m_Id: 74738678660628480
     m_Key: hunt.name
     m_Metadata:
@@ -309,6 +349,14 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 74576184482758658
     m_Key: degen_aura.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 82253752480595977
+    m_Key: holy_ultimate.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 82253752480595978
+    m_Key: holy_ultimate.desc
     m_Metadata:
       m_Items: []
   - m_Id: 74576184482758659
@@ -351,6 +399,14 @@ MonoBehaviour:
     m_Key: projectile_ultimate.desc
     m_Metadata:
       m_Items: []
+  - m_Id: 82253752480595979
+    m_Key: spike_t4.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 82253752480595980
+    m_Key: spike_t4.desc
+    m_Metadata:
+      m_Items: []
   - m_Id: 74576184482758669
     m_Key: spike_ultimate.name
     m_Metadata:
@@ -373,6 +429,14 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 74849647671934976
     m_Key: ultimate_hp.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 82253752480595981
+    m_Key: complex.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 82253752480595982
+    m_Key: complex.desc
     m_Metadata:
       m_Items: []
   - m_Id: 74576184478564376
@@ -399,12 +463,12 @@ MonoBehaviour:
     m_Key: br_damage.desc
     m_Metadata:
       m_Items: []
-  - m_Id: 74576184482758675
-    m_Key: br_gold.name
+  - m_Id: 82253752480595983
+    m_Key: br_golden.name
     m_Metadata:
       m_Items: []
-  - m_Id: 74576184482758676
-    m_Key: br_gold.desc
+  - m_Id: 82253752480595984
+    m_Key: br_golden.desc
     m_Metadata:
       m_Items: []
   - m_Id: 74576184482758677
@@ -415,12 +479,12 @@ MonoBehaviour:
     m_Key: br_golden_damage.desc
     m_Metadata:
       m_Items: []
-  - m_Id: 74576184482758679
-    m_Key: br_health.name
+  - m_Id: 82253752480595985
+    m_Key: br_tank.name
     m_Metadata:
       m_Items: []
-  - m_Id: 74576184482758680
-    m_Key: br_health.desc
+  - m_Id: 82253752480595986
+    m_Key: br_tank.desc
     m_Metadata:
       m_Items: []
   - m_Id: 74576184482758681
@@ -439,12 +503,12 @@ MonoBehaviour:
     m_Key: br_shield.desc
     m_Metadata:
       m_Items: []
-  - m_Id: 74576184482758685
-    m_Key: br_spike.name
+  - m_Id: 82253752480595987
+    m_Key: br_carapace.name
     m_Metadata:
       m_Items: []
-  - m_Id: 74576184482758686
-    m_Key: br_spike.desc
+  - m_Id: 82253752480595988
+    m_Key: br_carapace.desc
     m_Metadata:
       m_Items: []
   - m_Id: 74576184482758687
@@ -469,6 +533,30 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 75409454542086145
     m_Key: br_more_enemy.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 82253752480595989
+    m_Key: br_slow_aura.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 82253752480595990
+    m_Key: br_slow_aura.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 82253752480595991
+    m_Key: br_shield_stun.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 82253752480595992
+    m_Key: br_shield_stun.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 82996574238310400
+    m_Key: br_instagold.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 82996574255087616
+    m_Key: br_instagold.desc
     m_Metadata:
       m_Items: []
   m_Metadata:

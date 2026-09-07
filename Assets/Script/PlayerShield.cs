@@ -13,6 +13,7 @@ public class PlayerShield : MonoBehaviour, ITakeDamageModifier
     [SerializeField] private float shieldRechargeDelay = 0f; // хранение значения, в логике не используем
     [SerializeField] private float damageWhileShieldActivePercent = 0f; // бонус к урону, когда щит АКТИВЕН
     [SerializeField] private float shieldRestorePerEnemyKill = 0f;
+    [SerializeField] private float shieldRestorePerSecondPercent = 0f;
 
     [Header("Полный фулл щита без урона")]
     [Tooltip("Если щит НЕ терял прочность от атак врага в течение этого времени — мгновенно восстанавливаем до максимума.")]
@@ -69,6 +70,7 @@ public class PlayerShield : MonoBehaviour, ITakeDamageModifier
     public float ShieldGlobalMultiplier => shieldGlobalMultiplier;
 
     public float ShieldRestorePerEnemyKill => shieldRestorePerEnemyKill;
+    public float ShieldRestorePerSecondPercent => shieldRestorePerSecondPercent;
     public float ShieldRechargeTime => shieldRechargeTime;
     public float ShieldRechargeDelay => shieldRechargeDelay;
 
@@ -109,7 +111,30 @@ public class PlayerShield : MonoBehaviour, ITakeDamageModifier
         if (GameStateManager.Instance.CurrentState != GameState.Playing) return;
 
         HandleNoShieldDamageFullRestore();
+        HandleActiveShieldPassiveRestore();
         HandleShieldRegen();
+    }
+
+    /// <summary>
+    /// Пассивно восстанавливает долю MaxShield каждую секунду, пока щит
+    /// активен. После разрушения shieldActive == false, поэтому этот бонус
+    /// не складывается со штатной перезарядкой.
+    /// </summary>
+    private void HandleActiveShieldPassiveRestore()
+    {
+        float maximum = MaxShield;
+        if (!shieldActive || maximum <= 0f || currentShield >= maximum)
+            return;
+
+        float percentPerSecond = Mathf.Max(0f, shieldRestorePerSecondPercent);
+        if (percentPerSecond <= 0f)
+            return;
+
+        float restored = maximum * (percentPerSecond / 100f) * Time.deltaTime;
+        currentShield = Mathf.Min(maximum, currentShield + restored);
+
+        UpdateShieldUI();
+        UpdateShieldVisual();
     }
 
     // === МЕХАНИКА: если щит не терял прочность N секунд -> мгновенно фуллим ===
@@ -590,6 +615,13 @@ public class PlayerShield : MonoBehaviour, ITakeDamageModifier
     public void AddShieldRestorePerEnemyKill(float amount)
     {
         shieldRestorePerEnemyKill += amount;
+    }
+
+    public void AddShieldRestorePerSecondPercent(float amount)
+    {
+        shieldRestorePerSecondPercent = Mathf.Max(
+            0f,
+            shieldRestorePerSecondPercent + amount);
     }
 
     public void RestoreCurrentShield(float amount)

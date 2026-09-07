@@ -49,6 +49,12 @@ public class BossManager : MonoBehaviour
     private Enemy activeBossEnemy = null;
     private int activeBossRewardSelections = 1;
 
+    /// <summary>
+    /// Number of bosses defeated in the current run. The first opened reward screen
+    /// therefore has index 1, the second index 2, and so on.
+    /// </summary>
+    public int DefeatedBossCount { get; private set; }
+
     private void Start()
     {
         // Баланс из таблицы (если импортирован) перекрывает инспектор.
@@ -246,6 +252,7 @@ public class BossManager : MonoBehaviour
             return;
 
         activeBossEnemy = null;
+        DefeatedBossCount++;
 
         if (AchievementManager.Instance != null)
             AchievementManager.Instance.NotifyBossDefeated();
@@ -261,7 +268,9 @@ public class BossManager : MonoBehaviour
         else
             Debug.LogWarning("[BossManager] BossRewardUI not assigned");
 
-        Debug.Log($"[BossManager] Boss defeated -> reward selections opened: {rewardSelections}.");
+        Debug.Log(
+            $"[BossManager] Boss #{DefeatedBossCount} defeated -> " +
+            $"reward selections opened: {rewardSelections}.");
     }
 
 #if UNITY_EDITOR

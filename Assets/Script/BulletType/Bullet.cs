@@ -7,6 +7,11 @@ public class Bullet : MonoBehaviour, IAttackBehaviour
     public float damage = 5f;
     public bool homing = true;   // летит за целью или по прямой
 
+    [Header("Модификаторы цели")]
+    [Min(0f)]
+    [Tooltip("Множитель итогового урона по боссу. 1 = без изменения, 2 = двойной урон.")]
+    public float bossDamageMultiplier = 1f;
+
     [Header("Ориентация модели")]
     [Tooltip("Доп. локальный поворот поверх наведения. По умолчанию остриё должно смотреть вдоль +Y. " +
              "Если у меша остриё вдоль +X (напр. ледяная стрела) — выставить (0, 0, 90).")]
@@ -141,12 +146,16 @@ public class Bullet : MonoBehaviour, IAttackBehaviour
 
         if (enemy != null)
         {
+            float hitDamage = damage;
+            if (enemy.StatusEffects != null && enemy.StatusEffects.IsBoss)
+                hitDamage *= Mathf.Max(0f, bossDamageMultiplier);
+
             // сохраняем HP до удара
             float hpBefore = enemy.CurrentHealth;
 
             // наносим урон
-            enemy.TakeWeaponDamage(damage, sourceWeapon);
-            DamageStatsManager.Instance?.RegisterDamage(sourceWeapon, damage);
+            enemy.TakeWeaponDamage(hitDamage, sourceWeapon);
+            DamageStatsManager.Instance?.RegisterDamage(sourceWeapon, hitDamage);
 
             // именно этот удар убил врага (а не долетевший позже снаряд по уже мёртвому)
             bool killedByThisHit = hpBefore > 0f && enemy.CurrentHealth <= 0f;

@@ -130,6 +130,10 @@ MonoBehaviour:
     m_Localized: "Health regen"
     m_Metadata:
       m_Items: []
+  - m_Id: 10838762048192735
+    m_Localized: "Healing from max health"
+    m_Metadata:
+      m_Items: []
   - m_Id: 11775346651500202
     m_Localized: "Heal per kill"
     m_Metadata:

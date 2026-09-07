@@ -12,10 +12,26 @@ public class PlayerHealth : MonoBehaviour
     public float maxHealthMultiplier = 1f;
     public float healthRegenPerSecond = 0f;
     public float regenPer100MissingHealth = 0f;
+    [SerializeField, HideInInspector]
+    private float regenPercentFromMaxHealth = 0f;
     [SerializeField] private float healthRegenMultiplier = 1f;
     [SerializeField] private float maxHealthGlobalMultiplier = 1f;
     [SerializeField] private float healthRegenGlobalMultiplier = 1f;
     [SerializeField] private float healAmplificationPercent = 0f;
+
+    [Header("Health - Healing From Missing Health")]
+    [SerializeField, HideInInspector]
+    private float healingPercentFromMissingHealth = 0f;
+    [SerializeField, HideInInspector]
+    private int healingPercentFromMissingHealthUpgradeCount = 0;
+    [SerializeField, HideInInspector]
+    private float healingPercentFromMissingHealthTickInterval = 1f;
+    private float healingPercentFromMissingHealthTimer;
+    private GameObject healingPercentFromMissingHealthVfxPrefab;
+    private GameObject healingPercentFromMissingHealthVfxInstance;
+    private float healingPercentFromMissingHealthVfxLifetime = 2.5f;
+    private float healingPercentFromMissingHealthVfxHideAt;
+    private Vector3 healingPercentFromMissingHealthVfxLocalOffset;
 
     [Header("Health - Damage Block (diminishing)")]
     [SerializeField, Range(0f, 0.95f)]
@@ -37,17 +53,22 @@ public class PlayerHealth : MonoBehaviour
     private float damageReductionScore = 0f;
     [SerializeField, HideInInspector]
     private float damageReductionScorePerEnemyHit = 0f;
+    [SerializeField, HideInInspector]
+    private float damageReductionPerEnemyHitStackDuration = 20f;
+    [SerializeField, HideInInspector]
+    private float timedDamageReductionScore = 0f;
 
     [Header("Health - Exhaustible Damage Reduction")]
     [SerializeField, HideInInspector]
     private float exhaustibleDamageReductionScore = 0f;
     [SerializeField, HideInInspector]
     private float exhaustibleDamageReductionScoreLossPerHit = 0f;
+    [SerializeField, HideInInspector]
+    private float exhaustibleDamageReductionRestoreDelay = 20f;
 
     private const float DamageReductionSoftThreshold = 0.50f;
     private const float DamageReductionPostThresholdMultiplier = 0.50f;
     private const float DamageReductionCap = 0.98f;
-    private const float ExhaustibleDamageReductionRestoreDelay = 30f;
     public float DamageReduction => damageReduction;
 
     // Только чтение, для панелей UI. Значения меняются через Add*-методы ниже.
@@ -107,6 +128,20 @@ public class PlayerHealth : MonoBehaviour
 
     private readonly List<ExhaustibleDamageReductionLoss> exhaustibleDamageReductionLosses = new();
 
+    private struct TimedDamageReductionStack
+    {
+        public float score;
+        public float expiresAt;
+
+        public TimedDamageReductionStack(float score, float expiresAt)
+        {
+            this.score = score;
+            this.expiresAt = expiresAt;
+        }
+    }
+
+    private readonly List<TimedDamageReductionStack> timedDamageReductionStacks = new();
+
     // === Публичные свойства (для других скриптов) ===
 
     public float MaxHealth => baseMaxHealth * maxHealthMultiplier * maxHealthGlobalMultiplier;
@@ -114,6 +149,7 @@ public class PlayerHealth : MonoBehaviour
     public float MaxHealthGlobalMultiplier => maxHealthGlobalMultiplier;
     public float HealthRegenGlobalMultiplier => healthRegenGlobalMultiplier;
     public float HealAmplificationPercent => healAmplificationPercent;
+    public float HealingPercentFromMissingHealth => healingPercentFromMissingHealth;
 
     public float CurrentHealth => currentHealth;
 
@@ -129,12 +165,18 @@ public class PlayerHealth : MonoBehaviour
     public float SpikesEnemyAttackStackPercentPerHit => spikesEnemyAttackStackPercentPerHit;
 
     /// <summary>
-    /// Итоговый реген в секунду: базовый плюс бонус за недостающее здоровье.
+    /// Итоговый реген в секунду: базовый, процент от максимального HP
+    /// и бонус за недостающее здоровье.
     /// Единственное место с этой формулой — её же использует Update и панели UI.
     /// </summary>
     public float GetTotalRegen()
     {
         float regen = healthRegenPerSecond * healthRegenMultiplier;
+
+        // Постоянный реген от максимального здоровья. Пересчитывается при каждом
+        // запросе, поэтому рост MaxHealth сразу усиливает этот источник регена.
+        if (regenPercentFromMaxHealth > 0f)
+            regen += MaxHealth * regenPercentFromMaxHealth / 100f;
 
         // Бонусный реген за недостающее здоровье
         if (UpgradesManager.Instance != null &&
@@ -189,7 +231,10 @@ public class PlayerHealth : MonoBehaviour
     {
         if (isDead || GameStateManager.Instance.CurrentState != GameState.Playing) return;
 
+        ExpireDamageReductionPerEnemyHitStacks();
         RestoreExhaustibleDamageReduction();
+        UpdateHealingPercentFromMissingHealth();
+        UpdateHealingPercentFromMissingHealthVfx();
 
         // === РЕГЕН ЗДОРОВЬЯ ===
         if (currentHealth < MaxHealth)
@@ -215,7 +260,7 @@ public class PlayerHealth : MonoBehaviour
         AddDamageReductionScore(-Mathf.Log(1f - add));
     }
 
-    public void AddDamageReductionPerEnemyHit(float addPerHit)
+    public void AddDamageReductionPerEnemyHit(float addPerHit, float stackDuration)
     {
         addPerHit = Mathf.Clamp(addPerHit, 0f, 0.999999f);
         if (addPerHit <= 0f) return;
@@ -223,13 +268,55 @@ public class PlayerHealth : MonoBehaviour
         // Храним вклад каждой покупки в score, чтобы несколько экземпляров
         // улучшения складывались по тем же правилам diminishing returns.
         damageReductionScorePerEnemyHit += -Mathf.Log(1f - addPerHit);
+        damageReductionPerEnemyHitStackDuration = Mathf.Max(0.01f, stackDuration);
+    }
+
+    private void AddDamageReductionPerEnemyHitStack()
+    {
+        if (damageReductionScorePerEnemyHit <= 0f)
+            return;
+
+        float stackScore = damageReductionScorePerEnemyHit;
+        timedDamageReductionScore += stackScore;
+        timedDamageReductionStacks.Add(new TimedDamageReductionStack(
+            stackScore,
+            Time.time + damageReductionPerEnemyHitStackDuration));
+        RecalculateDamageReduction();
+    }
+
+    private void ExpireDamageReductionPerEnemyHitStacks()
+    {
+        if (timedDamageReductionStacks.Count == 0)
+            return;
+
+        float now = Time.time;
+        float expiredScore = 0f;
+
+        for (int i = timedDamageReductionStacks.Count - 1; i >= 0; i--)
+        {
+            TimedDamageReductionStack stack = timedDamageReductionStacks[i];
+            if (now < stack.expiresAt)
+                continue;
+
+            expiredScore += stack.score;
+            timedDamageReductionStacks.RemoveAt(i);
+        }
+
+        if (expiredScore <= 0f)
+            return;
+
+        timedDamageReductionScore = Mathf.Max(0f, timedDamageReductionScore - expiredScore);
+        RecalculateDamageReduction();
     }
 
     /// <summary>
     /// Добавляет одну покупку истощаемого DR. Значения передаются как доли score:
     /// 0.75 = +75% score в стартовый запас, 0.10 = -10% score за удар.
     /// </summary>
-    public void AddExhaustibleDamageReduction(float startScore, float lossScorePerHit)
+    public void AddExhaustibleDamageReduction(
+        float startScore,
+        float lossScorePerHit,
+        float restoreDelay)
     {
         startScore = Mathf.Max(0f, startScore);
         lossScorePerHit = Mathf.Max(0f, lossScorePerHit);
@@ -239,6 +326,7 @@ public class PlayerHealth : MonoBehaviour
 
         exhaustibleDamageReductionScore += startScore;
         exhaustibleDamageReductionScoreLossPerHit += lossScorePerHit;
+        exhaustibleDamageReductionRestoreDelay = Mathf.Max(0.01f, restoreDelay);
         RecalculateDamageReduction();
     }
 
@@ -253,7 +341,9 @@ public class PlayerHealth : MonoBehaviour
     private void RecalculateDamageReduction()
     {
         damageReduction = CalculateDamageReduction(
-            damageReductionScore + exhaustibleDamageReductionScore);
+            damageReductionScore
+            + timedDamageReductionScore
+            + exhaustibleDamageReductionScore);
     }
 
     private void ConsumeExhaustibleDamageReductionForHit()
@@ -270,7 +360,7 @@ public class PlayerHealth : MonoBehaviour
         exhaustibleDamageReductionLosses.Add(
             new ExhaustibleDamageReductionLoss(
                 lostScore,
-                Time.time + ExhaustibleDamageReductionRestoreDelay));
+                Time.time + exhaustibleDamageReductionRestoreDelay));
 
         RecalculateDamageReduction();
     }
@@ -358,6 +448,124 @@ public class PlayerHealth : MonoBehaviour
         healAmplificationPercent += percent;
     }
 
+    public void AddHealingPercentFromMissingHealth(
+        float valuePercent,
+        float repeatedPurchaseMultiplier,
+        float tickInterval,
+        GameObject vfxPrefab,
+        float vfxLifetime,
+        Vector3 vfxLocalOffset)
+    {
+        if (valuePercent <= 0f)
+            return;
+
+        // Первая покупка даёт полное значение. Вклад каждой следующей покупки
+        // геометрически уменьшается: base * multiplier^число_предыдущих_покупок.
+        float multiplier = Mathf.Clamp01(repeatedPurchaseMultiplier);
+        float purchaseContribution = valuePercent * Mathf.Pow(
+            multiplier,
+            healingPercentFromMissingHealthUpgradeCount);
+
+        healingPercentFromMissingHealth += purchaseContribution;
+        healingPercentFromMissingHealthUpgradeCount++;
+        healingPercentFromMissingHealthTickInterval = Mathf.Max(0.05f, tickInterval);
+        healingPercentFromMissingHealthVfxLifetime = Mathf.Max(0.05f, vfxLifetime);
+        healingPercentFromMissingHealthVfxLocalOffset = vfxLocalOffset;
+
+        if (healingPercentFromMissingHealthVfxPrefab == vfxPrefab)
+        {
+            if (healingPercentFromMissingHealthVfxInstance != null)
+                healingPercentFromMissingHealthVfxInstance.transform.localPosition = vfxLocalOffset;
+            return;
+        }
+
+        healingPercentFromMissingHealthVfxPrefab = vfxPrefab;
+        if (healingPercentFromMissingHealthVfxInstance != null)
+        {
+            Destroy(healingPercentFromMissingHealthVfxInstance);
+            healingPercentFromMissingHealthVfxInstance = null;
+        }
+    }
+
+    private void UpdateHealingPercentFromMissingHealth()
+    {
+        if (healingPercentFromMissingHealth <= 0f || currentHealth >= MaxHealth)
+        {
+            healingPercentFromMissingHealthTimer = 0f;
+            return;
+        }
+
+        healingPercentFromMissingHealthTimer += Time.deltaTime;
+        float interval = Mathf.Max(0.05f, healingPercentFromMissingHealthTickInterval);
+
+        while (healingPercentFromMissingHealthTimer >= interval && currentHealth < MaxHealth)
+        {
+            healingPercentFromMissingHealthTimer -= interval;
+
+            float missingHealth = Mathf.Max(0f, MaxHealth - currentHealth);
+            float healAmount = missingHealth * healingPercentFromMissingHealth / 100f;
+            if (healAmount > 0f && healAmount < 0.01f)
+                healAmount = missingHealth;
+            if (healAmount <= 0f)
+                continue;
+
+            float healthBefore = currentHealth;
+            Heal(healAmount);
+            if (currentHealth > healthBefore)
+                PlayHealingPercentFromMissingHealthVfx();
+        }
+    }
+
+    private void PlayHealingPercentFromMissingHealthVfx()
+    {
+        if (healingPercentFromMissingHealthVfxPrefab == null)
+            return;
+
+        if (healingPercentFromMissingHealthVfxInstance == null)
+        {
+            healingPercentFromMissingHealthVfxInstance = Instantiate(
+                healingPercentFromMissingHealthVfxPrefab,
+                transform,
+                false);
+            healingPercentFromMissingHealthVfxInstance.name =
+                healingPercentFromMissingHealthVfxPrefab.name;
+        }
+
+        Transform visualTransform = healingPercentFromMissingHealthVfxInstance.transform;
+        visualTransform.localPosition = healingPercentFromMissingHealthVfxLocalOffset;
+
+        if (!healingPercentFromMissingHealthVfxInstance.activeSelf)
+            healingPercentFromMissingHealthVfxInstance.SetActive(true);
+
+        foreach (ParticleSystem particleSystem in
+                 healingPercentFromMissingHealthVfxInstance.GetComponentsInChildren<ParticleSystem>(true))
+        {
+            ParticleSystem.MainModule main = particleSystem.main;
+            main.stopAction = ParticleSystemStopAction.None;
+            particleSystem.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+            particleSystem.Play(true);
+        }
+
+        foreach (TrailRenderer trail in
+                 healingPercentFromMissingHealthVfxInstance.GetComponentsInChildren<TrailRenderer>(true))
+        {
+            trail.Clear();
+        }
+
+        healingPercentFromMissingHealthVfxHideAt =
+            Time.time + healingPercentFromMissingHealthVfxLifetime;
+    }
+
+    private void UpdateHealingPercentFromMissingHealthVfx()
+    {
+        if (healingPercentFromMissingHealthVfxInstance == null ||
+            !healingPercentFromMissingHealthVfxInstance.activeSelf ||
+            Time.time < healingPercentFromMissingHealthVfxHideAt)
+            return;
+
+        healingPercentFromMissingHealthVfxInstance.SetActive(false);
+    }
+
     // === УРОН ===
 
     public void TakeDamage(Enemy enemy)
@@ -367,6 +575,7 @@ public class PlayerHealth : MonoBehaviour
 
         // Обрабатываем восстановление и перед ударом, чтобы точный момент
         // восстановления не зависел от частоты кадров/порядка Update.
+        ExpireDamageReductionPerEnemyHitStacks();
         RestoreExhaustibleDamageReduction();
 
         // Счётчик урона врага увеличивается до проверки блока: заблокированная
@@ -431,7 +640,7 @@ public class PlayerHealth : MonoBehaviour
 
         // Заблокированная атака возвращается выше и сюда не попадает.
         // Реальный удар сначала использует текущий DR, затем усиливает следующие удары.
-        AddDamageReductionScore(damageReductionScorePerEnemyHit);
+        AddDamageReductionPerEnemyHitStack();
         ConsumeExhaustibleDamageReductionForHit();
     }
 
@@ -619,6 +828,14 @@ public class PlayerHealth : MonoBehaviour
     public void AddRegenPer100MissingHealth(float amount)
     {
         regenPer100MissingHealth += amount;
+    }
+
+    public void AddRegenPercentFromMaxHealth(float percent)
+    {
+        if (percent <= 0f)
+            return;
+
+        regenPercentFromMaxHealth += percent;
     }
 
     public void OnEnemyKilled(bool killedBySpikes)

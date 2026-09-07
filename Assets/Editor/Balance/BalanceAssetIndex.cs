@@ -170,8 +170,13 @@ namespace ETS.BalanceImport
             {
                 ValueBinding.Self("value_1", "startScorePercent"),
                 ValueBinding.Self("value_2", "lossScorePerHitPercent"),
+                ValueBinding.Self("value_3", "restoreDelay"),
             },
-            ["CursedArmor"] = new[] { ValueBinding.Self("value_1", "valuePercent") },
+            ["CursedArmor"] = new[]
+            {
+                ValueBinding.Self("value_1", "valuePercent"),
+                ValueBinding.Self("value_2", "stackDuration"),
+            },
             ["AttackSpeed"] = new[] { ValueBinding.Self("value_1", "valuePercent") },
             ["Block"] = new[] { ValueBinding.Self("value_1", "valuePercent") },
             ["IncreaceHpRegPercent"] = new[] { ValueBinding.Self("value_1", "valuePercent") },
@@ -185,7 +190,8 @@ namespace ETS.BalanceImport
             ["NatureBlessing"] = new[]
             {
                 ValueBinding.Child("value_1", "MaxHealthFlatUpgrade", "valueFlat"),
-                ValueBinding.Child("value_2", "RegenPerMissingHealthUpgrade", "valuePercent"),
+                ValueBinding.Child("value_2", "HealingPercentFromMaxHealthUpgrade", "valuePercent"),
+                ValueBinding.Child("value_3", "HealingPercentFromMaxHealthUpgrade", "repeatedPurchaseMultiplier"),
             },
             ["SpikeScaling"] = new[]
             {
@@ -203,6 +209,10 @@ namespace ETS.BalanceImport
             {
                 ValueBinding.Self("value_1", "rerollsPerPurchase"),
                 ValueBinding.Self("value_2", "priceIncreasePerPurchase"),
+            },
+            ["Shield Restore Per Second"] = new[]
+            {
+                ValueBinding.Self("value_1", "valuePercent"),
             },
 
             // ---- Tier 4 ----

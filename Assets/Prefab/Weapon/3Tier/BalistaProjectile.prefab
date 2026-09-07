@@ -71,6 +71,7 @@ MonoBehaviour:
   speed: 15
   damage: 5
   homing: 1
+  bossDamageMultiplier: 2
   rotationOffsetEuler: {x: 0, y: 0, z: 0}
   maxLifeTime: 10
   increasePlayerMaxHealthOnKill: 0
