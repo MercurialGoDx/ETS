@@ -19,293 +19,219 @@ MonoBehaviour:
     m_Items: []
   m_TableData:
   - m_Id: 1385907683844096
-    m_Localized: <color=#ffd700>Axe</color>
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1385907725787136
-    m_Localized: <color=#ffd700>Damage:</color> {0}\n<color=#ffd700>Damage Type:</color>
-      {1}\n<color=#ffd700>Attack Speed:</color> {2}\n\n<color=#ffd700>Cost:</color> 
-      {3}
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1385907725787137
-    m_Localized: <color=#ffd700>Crossbow</color>
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1385907725787138
-    m_Localized: <color=#ffd700>Damage:</color> {0}\n<color=#ffd700>Damage Type:</color>
-      {1}\n<color=#ffd700>Attack Speed:</color> {2}\n\n<color=#ffd700>Cost:</color> 
-      {3}
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1385907725787139
-    m_Localized: <color=#ffd700>Chaos Orb</color>
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1385907725787140
-    m_Localized: <color=#ffd700>Damage:</color> {0}\n<color=#ffd700>Damage Type:</color>
-      {1}\n<color=#ffd700>Attack Speed:</color> {2}\n\n<color=#ffd700>Cost:</color> 
-      {3}
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1385907725787141
-    m_Localized: <color=#ffd700>Magic Orb</color>
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1385907725787142
-    m_Localized: <color=#ffd700>Damage:</color> {0}\n<color=#ffd700>Damage Type:</color>
-      {1}\n<color=#ffd700>Attack Speed:</color> {2}\n\n<color=#ffd700>Cost:</color> 
-      {3}
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1385907725787143
-    m_Localized: <color=#ffd700>Spear</color>
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1385907725787144
-    m_Localized: <color=#ffd700>Damage:</color> {0}\n<color=#ffd700>Damage Type:</color>
-      {1}\n<color=#ffd700>Attack Speed:</color> {2}\n\n<color=#ffd700>Cost:</color> 
-      {3}
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1385907725787145
-    m_Localized: <color=#ffd700>Boulder</color>
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1385907725787146
-    m_Localized: <color=#ffd700>Damage:</color> {0}\n<color=#ffd700>Damage Type:</color>
-      {1}\n<color=#ffd700>Attack Speed:</color> {2}\n\n<color=#ffd700>Cost:</color> 
-      {3}
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1385907725787147
-    m_Localized: <color=#ffd700>Chakram</color>
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1385907725787148
-    m_Localized: On hit, bounces to the nearest enemy if they are within range. <color=#ffd700>Repeats
-      3 times</color>\n<color=#ffd700>Damage:</color> {0}\n<color=#ffd700>Damage
-      Type:</color> {1}\n<color=#ffd700>Attack Speed:</color> {2}\n\n<color=#ffd700>Cost:</color> 
-      {3}
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1385907725787151
-    m_Localized: <color=#ffd700>Ice Arrow</color>
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1385907725787152
-    m_Localized: Slows the enemy by 30% for 2 seconds\n<color=#ffd700>Damage:</color>
-      {0}\n<color=#ffd700>Damage Type:</color> {1}\n<color=#ffd700>Attack Speed:</color>
-      {2}\n\n<color=#ffd700>Cost:</color>  {3}
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1385907725787153
-    m_Localized: <color=#ffd700>Life Drainer</color>
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1385907725787154
-    m_Localized: Increases Maximum Health by 2 when it kills an enemy\n<color=#ffd700>Damage:</color>
-      {0}\n<color=#ffd700>Damage Type:</color> {1}\n<color=#ffd700>Attack Speed:</color>
-      {2}\n\n<color=#ffd700>Cost:</color>  {3}
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1385907725787155
-    m_Localized: <color=#ffd700>Homing Missile</color>
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1385907725787156
-    m_Localized: <color=#ffd700>Damage:</color> {0}\n<color=#ffd700>Damage Type:</color>
-      {1}\n<color=#ffd700>Attack Speed:</color> {2}\n\n<color=#ffd700>Cost:</color> 
-      {3}
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1385907725787157
-    m_Localized: <color=#ffd700>Mortar</color>
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1385907725787158
-    m_Localized: <color=#ffd700>Damage:</color> {0}\n<color=#ffd700>Damage Type:</color>
-      {1}\n<color=#ffd700>Attack Speed:</color> {2}\n\n<color=#ffd700>Cost:</color> 
-      {3}
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1385907725787159
-    m_Localized: <color=#ffd700>Shock Wave</color>
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1385907725787160
-    m_Localized: Sends a wave toward the enemy, damaging everyone in its path\n<color=#ffd700>Damage:</color>
-      {0}\n<color=#ffd700>Damage Type:</color> {1}\n<color=#ffd700>Attack Speed:</color>
-      {2}\n\n<color=#ffd700>Cost:</color>  {3}
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1385907725787161
-    m_Localized: <color=#ffd700>Ballista</color>
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1385907725787162
-    m_Localized: <color=#ffd700>Damage:</color> {0}\n<color=#ffd700>Damage Type:</color>
-      {1}\n<color=#ffd700>Attack Speed:</color> {2}\n\n<color=#ffd700>Cost:</color> 
-      {3}
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1385907725787163
-    m_Localized: <color=#ffd700>Catapult</color>
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1385907725787164
-    m_Localized: Deals area damage equal to <color=#ffd700>50 + 2%</color> of the
-      tower's Maximum Health\n<color=#ffd700>Damage:</color> {0}\n<color=#ffd700>Damage
-      Type:</color> {1}\n<color=#ffd700>Attack Speed:</color> {2}\n<color=#ffd700>Area
-      Damage:</color> Yes\n\n<color=#ffd700>Cost:</color>  {3}
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1385907725787165
-    m_Localized: <color=#ffd700>Intimidation</color>
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1385907725787166
-    m_Localized: Sends a wave toward the enemy, damaging everyone in its path. Heals
-      the tower for <color=#ffd700>10</color> health for each enemy hit\n<color=#ffd700>Damage:</color>
-      {0}\n<color=#ffd700>Damage Type:</color> {1}\n<color=#ffd700>Attack Speed:</color>
-      {2}\n\n<color=#ffd700>Cost:</color>  {3}
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1385907725787167
-    m_Localized: <color=#ffd700>Storm Hammer</color>
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1385907725787168
-    m_Localized: <color=#ffd700>Damage:</color> {0}\n<color=#ffd700>Damage Type:</color>
-      {1}\n<color=#ffd700>Attack Speed:</color> {2}\n\n<color=#ffd700>Cost:</color> 
-      {3}
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1385907725787169
-    m_Localized: <color=#ffd700>Magic Focus</color>
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1385907725787170
-    m_Localized: <color=#ffd700>Damage:</color> {0}\n<color=#ffd700>Damage Type:</color>
-      {1}\n<color=#ffd700>Attack Speed:</color> {2}\n\n<color=#ffd700>Cost:</color> 
-      {3}
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1385907725787171
-    m_Localized: <color=#ffd700>Log</color>
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1385907725787172
-    m_Localized: Sends a log toward the enemy, damaging everyone in its path\n<color=#ffd700>Damage:</color>
-      {0}\n<color=#ffd700>Damage Type:</color> {1}\n<color=#ffd700>Attack Speed:</color>
-      {2}\n\n<color=#ffd700>Cost:</color>  {3}
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1385907725787173
-    m_Localized: <color=#ffd700>Tornado</color>
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1385907725787174
-    m_Localized: On hit, knocks the enemy away from the tower. Damages all enemies
-      in its path. Changes target after each shot\n<color=#ffd700>Damage:</color>
-      {0}\n<color=#ffd700>Damage Type:</color> {1}\n<color=#ffd700>Attack Speed:</color>
-      {2}\n\n<color=#ffd700>Cost:</color>  {3}
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1385907725787175
-    m_Localized: <color=#ffd700>Ice Storm</color>
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1385907725787176
-    m_Localized: An ice storm falls from the sky, dealing area damage\n<color=#ffd700>Damage:</color>
-      {0}\n<color=#ffd700>Damage Type:</color> {1}\n<color=#ffd700>Attack Speed:</color>
-      {2}\n<color=#ffd700>Area Damage:</color> Yes\n\n<color=#ffd700>Cost:</color> 
-      {3}
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1385907725787177
-    m_Localized: <color=#ffd700>Doomfire</color>
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1385907725787178
-    m_Localized: Creates a fiery aura around the tower that gradually damages enemies\n<color=#ffd700>Damage:</color>
-      {0}\n<color=#ffd700>Damage Type:</color> {1}\n<color=#ffd700>Attack Speed:</color>
-      {2}\n\n<color=#ffd700>Cost:</color>  {3}
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1385907725787179
-    m_Localized: <color=#ffd700>Cycle</color>
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1385907725787180
-    m_Localized: Creates a magical force around the tower that damages all enemies
-      on the map\n<color=#ffd700>Damage:</color> {0}\n<color=#ffd700>Damage Type:</color>
-      {1}\n<color=#ffd700>Attack Speed:</color> {2}\n\n<color=#ffd700>Cost:</color> 
-      {3}
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1385907725787181
-    m_Localized: <color=#ffd700>Asteroid</color>
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1385907725787182
-    m_Localized: An asteroid falls from the sky, dealing heavy area damage\n<color=#ffd700>Damage:</color>
-      {0}\n<color=#ffd700>Damage Type:</color> {1}\n<color=#ffd700>Attack Speed:</color>
-      {2}\n<color=#ffd700>Area Damage:</color> Yes\n\n<color=#ffd700>Cost:</color> 
-      {3}
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1385907725787183
-    m_Localized: <color=#ffd700>Spinning Blades</color>
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1385907725787184
-    m_Localized: Creates blades at a random location for 15 seconds, damaging enemies
-      around them\n<color=#ffd700>Damage:</color> {0}\n<color=#ffd700>Damage Type:</color>
-      {1}\n<color=#ffd700>Attack Speed:</color> {2}\n<color=#ffd700>Area Damage:</color>
-      Yes\n\n<color=#ffd700>Cost:</color>  {3}
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1385907725787149
     m_Localized: 
     m_Metadata:
       m_Items: []
-  - m_Id: 1385907725787150
+  - m_Id: 1385907725787136
+    m_Localized: 
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1385907725787137
+    m_Localized: 
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1385907725787138
+    m_Localized: 
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1385907725787139
+    m_Localized: 
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1385907725787140
+    m_Localized: 
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1385907725787141
+    m_Localized: 
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1385907725787142
+    m_Localized: 
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1385907725787143
+    m_Localized: 
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1385907725787144
+    m_Localized: 
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1385907725787145
+    m_Localized: 
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1385907725787146
+    m_Localized: 
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1385907725787147
+    m_Localized: 
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1385907725787148
+    m_Localized: 
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1385907725787151
+    m_Localized: 
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1385907725787152
+    m_Localized: 
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1385907725787153
+    m_Localized: 
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1385907725787154
+    m_Localized: 
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1385907725787155
+    m_Localized: 
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1385907725787156
+    m_Localized: 
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1385907725787157
+    m_Localized: 
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1385907725787158
+    m_Localized: 
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1385907725787159
+    m_Localized: 
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1385907725787160
+    m_Localized: 
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1385907725787161
+    m_Localized: 
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1385907725787162
+    m_Localized: 
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1385907725787163
+    m_Localized: 
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1385907725787164
+    m_Localized: 
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1385907725787165
+    m_Localized: 
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1385907725787166
+    m_Localized: 
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1385907725787167
+    m_Localized: 
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1385907725787168
+    m_Localized: 
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1385907725787169
+    m_Localized: 
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1385907725787170
+    m_Localized: 
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1385907725787171
+    m_Localized: 
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1385907725787172
+    m_Localized: 
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1385907725787173
+    m_Localized: 
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1385907725787174
+    m_Localized: 
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1385907725787175
+    m_Localized: 
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1385907725787176
+    m_Localized: 
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1385907725787177
+    m_Localized: 
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1385907725787178
+    m_Localized: 
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1385907725787179
+    m_Localized: 
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1385907725787180
+    m_Localized: 
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1385907725787181
+    m_Localized: 
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1385907725787182
+    m_Localized: 
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1385907725787183
+    m_Localized: 
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1385907725787184
     m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 74621472677330944
-    m_Localized: <color=#ffd700>Power Focus</color>
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 74621472828325888
-    m_Localized: Every second while the weapon remains on the same target, its base
-      damage increases by <color=#ffd700>100%</color>, up to <color=#ffd700>500%</color>\n<color=#ffd700>Damage:</color>
-      {0}\n<color=#ffd700>Damage Type:</color> {1}\n<color=#ffd700>Attack Speed:</color>
-      {2}\n\n<color=#ffd700>Cost:</color>  {3}
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 74605534590566400
-    m_Localized: <color=#ffd700>Temptation</color>
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 74605534649286656
-    m_Localized: Each time this weapon kills an enemy, all copies of <color=#ffd700>"Temptation"</color>
-      gain <color=#ffd700>+0.2</color> base damage\n<color=#ffd700>Damage:</color>
-      {0}\n<color=#ffd700>Damage Type:</color> {1}\n<color=#ffd700>Attack Speed:</color>
-      {2}\n\n<color=#ffd700>Cost:</color>  {3}
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 75581446427762688
-    m_Localized: <color=#ffd700>Shiny</color>
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 75581446511648768
-    m_Localized: On enemy kill, grants additional gold <color=#ffd700>+1</color>\nGains
-      <color=#ffd700>+1</color> base damage for every <color=#ffd700>300</color>
-      unspent gold, up to <color=#ffd700>+7</color>\n<color=#ffd700>Damage:</color>
-      {0}\n<color=#ffd700>Damage Type:</color> {1}\n<color=#ffd700>Attack Speed:</color>
-      {2}\n\n<color=#ffd700>Cost:</color>  {3}
+    m_Localized: 
     m_Metadata:
       m_Items: []
   references:

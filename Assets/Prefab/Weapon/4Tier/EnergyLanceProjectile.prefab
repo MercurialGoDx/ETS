@@ -1,0 +1,87 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &100000
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 400000}
+  - component: {fileID: 11400000}
+  - component: {fileID: 11400001}
+  m_Layer: 0
+  m_Name: EnergyLanceProjectile
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &400000
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100000}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4844192c633ae04db2afff3a93c1936, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &11400001
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31e2a17dab7b4b55a64b73ea0e85e321, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  projectileLength: 10
+  tailCatchUpSpeedMultiplier: 1.15
+  maxLifeTime: 10
+  homing: 1
+  bossDamageMultiplier: 1
+  regularEnemyInstantKillChance: 5
+  bossInstantKillChance: 0.5
+  lineMaterial: {fileID: 2100000, guid: 045f0b2c6fba4bc5adfb219c54ac8d32, type: 2}
+  lineSegments: 24
+  glowWidth: 0.62
+  bodyWidth: 0.28
+  coreWidth: 0.085
+  ribbonWidth: 0.045
+  spiralRadius: 0.22
+  spiralTurnsPerUnit: 0.42
+  spiralDegreesPerSecond: 520
+  pulseSpeed: 11
+  glowColor: {r: 2.8, g: 0.12, b: 1.15, a: 0.28}
+  bodyColor: {r: 4.5, g: 0.55, b: 1.35, a: 0.92}
+  coreColor: {r: 6, g: 5.5, b: 6, a: 1}
+  ribbonColor: {r: 0.45, g: 3.4, b: 5.2, a: 0.82}
+  impactDuration: 0.72
+  impactRadius: 1.65
+  impactScaleMultiplier: 1
+  scaleImpactToTargetCollider: 1
+  sparkCount: 12
+  impactColor: {r: 5.5, g: 0.35, b: 1.5, a: 1}
+  impactAccentColor: {r: 0.7, g: 4.2, b: 6, a: 1}

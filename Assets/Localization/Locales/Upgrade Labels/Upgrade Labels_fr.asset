@@ -19,527 +19,435 @@ MonoBehaviour:
     m_Items: []
   m_TableData:
   - m_Id: 75989083889631232
-    m_Localized: "<color=#ffd700>Am\xE9liorer la boutique</color>"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 75989083956740096
-    m_Localized: "D\xE9bloque <color=#ffd700>1</color> emplacement d'arme et d'am\xE9lioration
-      et donne acc\xE8s \xE0 l'\xE9quipement de <color=#ffd700>palier 3</color>\\n\\n<color=#ffd700>Co\xFBt:
-      {0}</color>"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 75989083956740097
-    m_Localized: "<color=#ffd700>Am\xE9liorer la boutique</color>"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 75989083956740098
-    m_Localized: "D\xE9bloque <color=#ffd700>1</color> emplacement d'arme et d'am\xE9lioration
-      et donne acc\xE8s \xE0 l'\xE9quipement de <color=#ffd700>palier 4</color>\\n\\n<color=#ffd700>Co\xFBt:
-      {0}</color>"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 74576184419844096
-    m_Localized: "<color=#ffd700>Bouclier \xE9nerg\xE9tique</color>"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 74576184474370048
-    m_Localized: "Bouclier: <color=#ffd700>+{0}</color>\\n\\n<color=#ffd700>Co\xFBt:
-      {1}</color>"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 74576184474370049
-    m_Localized: <color=#ffd700>Fortification</color>
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 74576184474370050
-    m_Localized: "Sant\xE9: <color=#ffd700>+{0}</color>\\n\\n<color=#ffd700>Co\xFBt:
-      {1}</color>"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 74576184474370051
-    m_Localized: "<color=#ffd700>R\xE9paration</color>"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 74576184474370052
-    m_Localized: "R\xE9g\xE9n\xE9ration de sant\xE9 <color=#ffd700>+{0}</color>\\n\\n<color=#ffd700>Co\xFBt:
-      {1}</color>"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 74576184474370053
-    m_Localized: "<color=#ffd700>D\xE9fense \xE9pineuse</color>"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 74576184474370054
-    m_Localized: "\xC9pines: <color=#ffd700>+{0}</color>\\n\\n<color=#ffd700>Co\xFBt:
-      {1}</color>"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 74576184478564352
-    m_Localized: "<color=#ffd700>D\xE9g\xE2ts du chaos</color>"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 74576184478564353
-    m_Localized: "<color=#B790FF>D\xE9g\xE2ts du chaos:</color> <color=#ffd700>+{1}%</color>\\n\\n<color=#ffd700>Co\xFBt:
-      {2}</color>"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 74576184478564354
-    m_Localized: <color=#ffd700>Attaque de base</color>
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 74576184478564355
-    m_Localized: "D\xE9g\xE2ts des armes: <color=#ffd700>+{0}%</color>\\n\\n<color=#ffd700>Co\xFBt:
-      {1}</color>"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 74576184478564356
-    m_Localized: "<color=#ffd700>D\xE9g\xE2ts lourds</color>"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 74576184478564357
-    m_Localized: "<color=#ADACAC>D\xE9g\xE2ts lourds:</color> <color=#ffd700>+{1}%</color>\\n\\n<color=#ffd700>Co\xFBt:
-      {2}</color>"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 74576184478564358
-    m_Localized: "<color=#ffd700>D\xE9g\xE2ts magiques</color>"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 74576184478564359
-    m_Localized: "<color=#58CBF8>D\xE9g\xE2ts magiques:</color> <color=#ffd700>+{1}%</color>\\n\\n<color=#ffd700>Co\xFBt:
-      {2}</color>"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 74576184478564360
-    m_Localized: "<color=#ffd700>D\xE9g\xE2ts normaux</color>"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 74576184478564361
-    m_Localized: "<color=#EED976>D\xE9g\xE2ts normaux:</color> <color=#ffd700>+{1}%</color>\\n\\n<color=#ffd700>Co\xFBt:
-      {2}</color>"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 74576184478564362
-    m_Localized: "<color=#ffd700>Pi\xE8ce d'or</color>"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 74576184478564363
-    m_Localized: "Gain d'or: <color=#ffd700>+{0}</color>\\n\\n<color=#ffd700>Co\xFBt:
-      {1}</color>"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 74576184478564364
-    m_Localized: "<color=#ffd700>D\xE9g\xE2ts perforants</color>"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 74576184478564365
-    m_Localized: "<color=#70D160>D\xE9g\xE2ts perforants:</color> <color=#ffd700>+{1}%</color>\\n\\n<color=#ffd700>Co\xFBt:
-      {2}</color>"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 74576184478564366
-    m_Localized: "<color=#ffd700>D\xE9g\xE2ts des projectiles</color>"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 74576184478564367
-    m_Localized: "<color=#FF949A>D\xE9g\xE2ts des projectiles:</color> <color=#ffd700>+{1}%</color>\\n\\n<color=#ffd700>Co\xFBt:
-      {2}</color>"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 74576184478564368
-    m_Localized: "<color=#ffd700>Avidit\xE9</color>"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 74576184478564369
-    m_Localized: "Or: <color=#ffd700>+200</color>\\nSant\xE9 maximale: <color=#ffd700>-{0}</color>"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 74576184478564370
-    m_Localized: "<color=#ffd700>D\xE9fense de base</color>"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 74576184478564371
-    m_Localized: "D\xE9g\xE2ts subis: <color=#ffd700>-{0}%</color>\\n\\n<color=#ffd700>Co\xFBt:
-      {1}</color>"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 74576184478564372
-    m_Localized: <color=#ffd700>Masque de mort</color>
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 74576184478564373
-    m_Localized: "\xC9pines <color=#ffd700>+5</color>\\nSoigne de <color=#ffd700>3</color>
-      lorsque vous subissez des d\xE9g\xE2ts\\n\\n<color=#ffd700>Co\xFBt: {0}</color>"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 74576184478564374
-    m_Localized: "<color=#ffd700>G\xE9n\xE9rateur</color>"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 74576184478564375
-    m_Localized: "D\xE9g\xE2ts inflig\xE9s par les armes : <color=#ffd700>+1%</color>
-      toutes les <color=#ffd700>20</color> secondes\\n\\n<color=#ffd700>Co\xFBt:
-      {2}</color>"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 75409454487560192
-    m_Localized: "<color=#ffd700>Cr\xE2ne dor\xE9</color>"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 75409454537891840
-    m_Localized: "Or des ennemis: <color=#ffd700>+{0}%</color>\\n\\n<color=#ffd700>Co\xFBt:
-      {1}</color>"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 75409454537891841
-    m_Localized: <color=#ffd700>Amplification des soins</color>
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 75409454537891842
-    m_Localized: "Augmente toutes les sources de soin de <color=#ffd700>{0}%</color>\\n\\n<color=#ffd700>Co\xFBt:
-      {1}</color>"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 74576184478564378
-    m_Localized: "<color=#ffd700>Croc de b\xEAte</color>"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 74576184478564379
-    m_Localized: "Soin \xE0 l'\xE9limination: <color=#ffd700>+{0}</color>\\n\\n<color=#ffd700>Co\xFBt:
-      {1}</color>"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 74576184478564380
-    m_Localized: <color=#ffd700>Ambre</color>
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 74576184478564381
-    m_Localized: "Sant\xE9 maximale : <color=#ffd700>+5</color> toutes les <color=#ffd700>10</color>
-      secondes\\n\\n<color=#ffd700>Co\xFBt: {2}</color>"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 74576184478564382
-    m_Localized: <color=#ffd700>Saphir</color>
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 74576184478564383
-    m_Localized: "Bouclier <color=#ffd700>+5</color> toutes les <color=#ffd700>10</color>
-      secondes\\n\\n<color=#ffd700>Co\xFBt: {2}</color>"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 74576184478564384
-    m_Localized: <color=#ffd700>Travaux de restauration</color>
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 74576184478564385
-    m_Localized: "Restauration du bouclier <color=#ffd700>+{0}</color> lorsqu'un
-      ennemi est tu\xE9\\n\\n<color=#ffd700>Co\xFBt: {1}</color>"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 74576184478564386
-    m_Localized: <color=#ffd700>Cadence de tir</color>
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 74576184478564387
-    m_Localized: "Vitesse d'attaque: <color=#ffd700>+{0}</color>\\n\\n<color=#ffd700>Co\xFBt:
-      {1}</color>"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 74576184478564388
-    m_Localized: <color=#ffd700>Blocage</color>
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 74576184478564389
-    m_Localized: "Chance de blocage: <color=#ffd700>+{0}%</color>\\n\\n<color=#ffd700>Co\xFBt:
-      {1}</color>"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 74576184478564390
-    m_Localized: "<color=#ffd700>R\xE9parations majeures</color>"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 74576184478564391
-    m_Localized: "R\xE9g\xE9n\xE9ration de sant\xE9 <color=#ffd700>+{0}%</color>\\n\\n<color=#ffd700>Co\xFBt:
-      {1}</color>"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 74576184478564394
-    m_Localized: "<color=#ffd700>B\xE9n\xE9diction de la nature</color>"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 74576184478564395
-    m_Localized: "Sant\xE9: <color=#ffd700>+250</color>\\nR\xE9g\xE9n\xE9ration de
-      sant\xE9 manquante: <color=#ffd700>+2%</color>\\n\\n<color=#ffd700>Co\xFBt:
-      {0}</color>"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 74576184478564396
-    m_Localized: "<color=#ffd700>\xC9meraude</color>"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 74576184478564397
-    m_Localized: "R\xE9g\xE9n\xE9ration de sant\xE9 : <color=#ffd700>+{0}</color>
-      toutes les <color=#ffd700>{1}</color> secondes\\n\\n<color=#ffd700>Co\xFBt:
-      {2}</color>"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 74576184478564398
-    m_Localized: "<color=#ffd700>D\xE9fense magique</color>"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 74576184478564399
-    m_Localized: "Bouclier <color=#ffd700>+{0}%</color>\\n\\n<color=#ffd700>Co\xFBt:
-      {1}</color>"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 74576184478564400
-    m_Localized: "<color=#ffd700>\xC9pines renforc\xE9es</color>"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 74576184478564401
-    m_Localized: "\xC9pines <color=#ffd700>+20</color>\\n\xC9pines : <color=#ffd700>+0.5</color>
-      lorsqu'un ennemi meurt des d\xE9g\xE2ts des \xE9pines\\n\\n<color=#ffd700>Co\xFBt:
-      {0}</color>"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 74576184478564402
-    m_Localized: "<color=#ffd700>Arme secr\xE8te</color>"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 74576184478564403
-    m_Localized: "D\xE9g\xE2ts : <color=#ffd700>+{1}%</color> pour toutes les armes
-      de <color=#ffd700>palier 1</color>\\n\\n<color=#ffd700>Co\xFBt: {2}</color>"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 74738678660628480
-    m_Localized: <color=#ffd700>Chasse</color>
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 74738678685794304
-    m_Localized: "Il y a <color=#ffd700>3%</color> de chances qu'un ennemi renforc\xE9
-      et dor\xE9 apparaisse. La r\xE9compense pour l'\xE9liminer est multipli\xE9e
-      par <color=#ffd700>10</color>\\n\\n<color=#ffd700>Co\xFBt: 1500</color>"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 74739327594954752
-    m_Localized: <color=#ffd700>Duplicateur</color>
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 74739327603343360
-    m_Localized: "Le prochain objet de <color=#ffd700>palier 1/2</color> achet\xE9
-      s'applique en plus <color=#ffd700>5/2</color> fois.\\nLes Duplicateurs multiples
-      ne se cumulent pas\\n\\n<color=#ffd700>Co\xFBt: 1500</color>"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 74576184478564404
-    m_Localized: "<color=#ffd700>D\xE9g\xE2ts du chaos ultimes</color>"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 74576184478564405
-    m_Localized: "<color=#B790FF>D\xE9g\xE2ts du chaos:</color> <color=#ffd700>+50%</color>\\n<color=#B790FF>D\xE9g\xE2ts
-      du chaos:</color> <color=#ffd700>+3%</color> pour chaque autre arme du chaos\\n\\n<color=#ffd700>Co\xFBt:
-      {0}</color>"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 74576184478564406
-    m_Localized: "<color=#ffd700>Singularit\xE9</color>"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 74576184482758656
-    m_Localized: "Augmente tous les d\xE9g\xE2ts inflig\xE9s de <color=#ffd700>20%</color>
-      tant que le Bouclier \xE9nerg\xE9tique est actif\\nBouclier: <color=#ffd700>+1000</color>\\n\\n<color=#ffd700>Co\xFBt:
-      3000</color>"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 74576184482758657
-    m_Localized: "<color=#ffd700>Aura de d\xE9composition</color>"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 74576184482758658
-    m_Localized: "Inflige chaque seconde \xE0 tous les ennemis des d\xE9g\xE2ts \xE9gaux
-      \xE0 votre R\xE9g\xE9n\xE9ration de sant\xE9\\n\\n<color=#ffd700>Co\xFBt: {1}</color>"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 74576184482758659
-    m_Localized: "<color=#ffd700>D\xE9g\xE2ts lourds ultimes</color>"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 74576184482758660
-    m_Localized: "<color=#ADACAC>D\xE9g\xE2ts lourds:</color> <color=#ffd700>+50%</color>\\n<color=#ADACAC>D\xE9g\xE2ts
-      lourds:</color> <color=#ffd700>+3%</color> pour chaque autre arme lourde\\n\\n<color=#ffd700>Co\xFBt:
-      {0}</color>"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 74576184482758661
-    m_Localized: "<color=#ffd700>D\xE9g\xE2ts magiques ultimes</color>"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 74576184482758662
-    m_Localized: "<color=#58CBF8>D\xE9g\xE2ts magiques:</color> <color=#ffd700>+50%</color>\\n<color=#58CBF8>D\xE9g\xE2ts
-      magiques:</color> <color=#ffd700>+3%</color> pour chaque autre arme magique\\n\\n<color=#ffd700>Co\xFBt:
-      {0}</color>"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 74576184482758663
-    m_Localized: "<color=#ffd700>D\xE9g\xE2ts normaux ultimes</color>"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 74576184482758664
-    m_Localized: "<color=#EED976>D\xE9g\xE2ts normaux:</color> <color=#ffd700>+50%</color>\\n<color=#EED976>D\xE9g\xE2ts
-      normaux:</color> <color=#ffd700>+3%</color> pour chaque autre arme normale\\n\\n<color=#ffd700>Co\xFBt:
-      {0}</color>"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 74576184482758665
-    m_Localized: "<color=#ffd700>D\xE9g\xE2ts perforants ultimes</color>"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 74576184482758666
-    m_Localized: "<color=#70D160>D\xE9g\xE2ts perforants:</color> <color=#ffd700>+50%</color>\\n<color=#70D160>D\xE9g\xE2ts
-      perforants:</color> <color=#ffd700>+3%</color> pour chaque autre arme perforante\\n\\n<color=#ffd700>Co\xFBt:
-      {0}</color>"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 74576184482758667
-    m_Localized: "<color=#ffd700>D\xE9g\xE2ts des projectiles ultimes</color>"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 74576184482758668
-    m_Localized: "<color=#FF949A>D\xE9g\xE2ts des projectiles:</color> <color=#ffd700>+50%</color>\\n<color=#FF949A>D\xE9g\xE2ts
-      des projectiles:</color> <color=#ffd700>+3%</color> pour chaque autre arme
-      de ce type\\n\\n<color=#ffd700>Co\xFBt: {0}</color>"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 74576184482758669
-    m_Localized: "<color=#ffd700>Carapace \xE9pineuse</color>"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 74576184482758670
-    m_Localized: "\xC9pines <color=#ffd700>+{0}%</color>\\n\\n<color=#ffd700>Co\xFBt:
-      {1}</color>"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 74738678694182913
-    m_Localized: <color=#ffd700>Contrat</color>
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 74738678694182914
-    m_Localized: "Le prochain boss sera renforc\xE9 : sa sant\xE9 augmentera de <color=#ffd700>500%</color>
-      et ses d\xE9g\xE2ts de <color=#ffd700>100%</color>. Apr\xE8s l'avoir \xE9limin\xE9,
-      vous pourrez obtenir <color=#ffd700>2</color> r\xE9compenses pour la t\xEAte
-      du monstre\\n\\n<color=#ffd700>Co\xFBt: 0</color>"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 74849647629991936
-    m_Localized: "<color=#ffd700>\xC9gide</color>"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 74849647671934976
-    m_Localized: "Sant\xE9 maximale <color=#ffd700>+400</color>\\nSant\xE9 maximale:
-      <color=#ffd700>+20%</color>\\nD\xE9g\xE2ts subis: <color=#ffd700>-7.5%</color>\\n\\n<color=#ffd700>Co\xFBt:
-      3000</color>"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 74576184478564376
-    m_Localized: <color=#ffd700>Mine d'or</color>
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 74576184478564377
-    m_Localized: "Gain d'or: <color=#ffd700>+4</color>\\nGain d'or: <color=#ffd700>+5%</color>\\n\\n<color=#ffd700>Co\xFBt:
-      {0}</color>"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 74576184482758671
-    m_Localized: <color=#BA0606>Renforcement</color>
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 74576184482758672
-    m_Localized: "D\xE9g\xE2ts globaux: <color=#BA0606>+10%</color>\\nVitesse d'attaque:
-      <color=#BA0606>+5%</color>\\nSant\xE9 maximale globale: <color=#BA0606>+15%</color>\\nBouclier
-      global: <color=#BA0606>+15%</color>\\nSoin \xE0 l'\xE9limination: <color=#BA0606>+25</color>\\nGain
-      d'or: <color=#BA0606>+1</color>"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 74576184482758673
-    m_Localized: <color=#BA0606>Projectiles en titane</color>
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 74576184482758674
-    m_Localized: "Augmente les d\xE9g\xE2ts globaux de <color=#BA0606>{0}%</color>"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 74576184482758675
-    m_Localized: "<color=#BA0606>Ru\xE9e vers l'or</color>"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 74576184482758676
-    m_Localized: Augmente le gain d'or par seconde de <color=#BA0606>{0}</color>
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 74576184482758677
-    m_Localized: <color=#BA0606>Gant de Midas</color>
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 74576184482758678
-    m_Localized: "Augmente les d\xE9g\xE2ts globaux de <color=#BA0606>0.5%</color>\n
-      pour chaque <color=#BA0606>100</color> pi\xE8ces d'or non d\xE9pens\xE9es"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 74576184482758679
-    m_Localized: <color=#BA0606>Forteresse</color>
-    m_Metadata:
-      m_Items: []
-  - m_Id: 74576184482758680
-    m_Localized: "Augmente la sant\xE9 maximale globale de <color=#BA0606>{0}%</color>"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 74576184482758681
-    m_Localized: <color=#BA0606>Restauration</color>
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 74576184482758682
-    m_Localized: "Augmente la r\xE9g\xE9n\xE9ration de sant\xE9 globale de <color=#BA0606>{0}%</color>"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 74576184482758683
-    m_Localized: "<color=#BA0606>D\xE9fense magique</color>"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 74576184482758684
-    m_Localized: Augmente le bouclier maximal global de <color=#BA0606>{0}%</color>
-    m_Metadata:
-      m_Items: []
-  - m_Id: 74576184482758685
-    m_Localized: "<color=#BA0606>Fil barbel\xE9</color>"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 74576184482758686
-    m_Localized: "Augmente les d\xE9g\xE2ts globaux des \xE9pines de <color=#BA0606>{0}%</color>"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 74576184482758687
-    m_Localized: <color=#BA0606>Cadence de tir</color>
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 74576184482758688
-    m_Localized: Augmente la vitesse d'attaque de <color=#BA0606>{0}%</color>
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 74576184482758689
-    m_Localized: <color=#BA0606>Murs de mithril</color>
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 74576184482758690
-    m_Localized: "D\xE9g\xE2ts des armes selon la Sant\xE9 maximale: <color=#BA0606>+5%</color>\\nSant\xE9
-      maximale globale: <color=#BA0606>+25%</color>"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 75409454542086144
-    m_Localized: <color=#BA0606>Gros gibier</color>
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 75409454542086145
-    m_Localized: Ennemis par vague <color=#BA0606>+{0}%</color>
+    m_Localized: 
     m_Metadata:
       m_Items: []
   references:

@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using ETS.Multiplayer;
 using UnityEngine;
 
@@ -57,6 +57,12 @@ public class BossManager : MonoBehaviour
 
     /// <summary>Номер босса на поле, начиная с нуля. Нужен награде.</summary>
     public int ActiveBossOrdinal => activeBossOrdinal;
+
+    /// <summary>
+    /// Number of bosses defeated in the current run. The first opened reward screen
+    /// therefore has index 1, the second index 2, and so on.
+    /// </summary>
+    public int DefeatedBossCount { get; private set; }
 
     private void Start()
     {
@@ -264,6 +270,7 @@ public class BossManager : MonoBehaviour
             return;
 
         activeBossEnemy = null;
+        DefeatedBossCount++;
 
         if (AchievementManager.Instance != null)
             AchievementManager.Instance.NotifyBossDefeated();
@@ -279,7 +286,9 @@ public class BossManager : MonoBehaviour
         else
             Debug.LogWarning("[BossManager] BossRewardUI not assigned");
 
-        Debug.Log($"[BossManager] Boss defeated -> reward selections opened: {rewardSelections}.");
+        Debug.Log(
+            $"[BossManager] Boss #{DefeatedBossCount} defeated -> " +
+            $"reward selections opened: {rewardSelections}.");
     }
 
 #if UNITY_EDITOR

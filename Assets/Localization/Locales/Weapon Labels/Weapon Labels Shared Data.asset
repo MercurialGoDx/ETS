@@ -15,6 +15,14 @@ MonoBehaviour:
   m_TableCollectionName: Weapon Labels
   m_TableCollectionNameGuidString: 32a974e0a609fb740a2db5dde9508098
   m_Entries:
+  - m_Id: 82966138590101504
+    m_Key: holy_arrow.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 82966138644627456
+    m_Key: holy_arrow.desc
+    m_Metadata:
+      m_Items: []
   - m_Id: 75581446427762688
     m_Key: coin.name
     m_Metadata:
@@ -71,20 +79,20 @@ MonoBehaviour:
     m_Key: stone.desc
     m_Metadata:
       m_Items: []
+  - m_Id: 82966138644627457
+    m_Key: holy_bolt.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 82966138644627458
+    m_Key: holy_bolt.desc
+    m_Metadata:
+      m_Items: []
   - m_Id: 1385907725787147
     m_Key: bounce.name
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787148
     m_Key: bounce.desc
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1385907725787149
-    m_Key: chain_lighting.name
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1385907725787150
-    m_Key: chain_lighting.desc
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787151
@@ -133,6 +141,14 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 1385907725787162
     m_Key: balista.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 82966138644627459
+    m_Key: holy_bounce.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 82966138644627460
+    m_Key: holy_bounce.desc
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787163
@@ -237,6 +253,22 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 74605534649286656
     m_Key: lighting_death.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 82966138644627461
+    m_Key: holy_chain.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 82966138644627462
+    m_Key: holy_chain.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 82966138644627463
+    m_Key: energy_lance.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 82966138644627464
+    m_Key: energy_lance.desc
     m_Metadata:
       m_Items: []
   m_Metadata:

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c27422c313552df40af37641a13e294d, type: 3}
   m_Name: SpikeT2
   m_EditorClassIdentifier: 
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: ce068ed31c13d2543acee8a84631eaba, type: 3}
   price: 400
   weight: 15
   itemTier: 2

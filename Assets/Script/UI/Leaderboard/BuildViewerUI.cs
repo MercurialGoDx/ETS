@@ -188,6 +188,8 @@ public class BuildViewerUI : MonoBehaviour
 
         Row(StatFormat.L("inv.health"), StatFormat.Int(snapshot.GetStat(BuildStat.Health)));
         Row(StatFormat.L("inv.health_regen"), StatFormat.Rate(snapshot.GetStat(BuildStat.HealthRegen)));
+        Row(StatFormat.L("inv.healing_from_max_health"),
+            StatFormat.PercentPoints(snapshot.GetStat(BuildStat.HealingPercentFromMaxHealth)));
         Row(StatFormat.L("inv.heal_on_kill"), StatFormat.Num(snapshot.GetStat(BuildStat.HealOnKill)));
         Row(StatFormat.L("inv.heal_on_hit"), StatFormat.Num(snapshot.GetStat(BuildStat.HealOnHit)));
         Row(StatFormat.L("inv.heal_amp"), StatFormat.Percent(snapshot.GetStat(BuildStat.HealAmp)));

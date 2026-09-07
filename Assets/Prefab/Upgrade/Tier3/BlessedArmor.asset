@@ -33,3 +33,4 @@ MonoBehaviour:
   descriptionKey: blessed_armor.desc
   startScorePercent: 75
   lossScorePerHitPercent: 10
+  restoreDelay: 30

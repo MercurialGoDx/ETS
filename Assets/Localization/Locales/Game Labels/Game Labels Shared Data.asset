@@ -123,6 +123,10 @@ MonoBehaviour:
     m_Key: inv.health_regen
     m_Metadata:
       m_Items: []
+  - m_Id: 10838762048192735
+    m_Key: inv.healing_from_max_health
+    m_Metadata:
+      m_Items: []
   - m_Id: 11775346651500202
     m_Key: inv.heal_on_kill
     m_Metadata:

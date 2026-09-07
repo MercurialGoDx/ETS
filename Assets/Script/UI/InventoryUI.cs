@@ -354,6 +354,8 @@ public class InventoryUI : MonoBehaviour
             // Только максимум: текущее значение и так видно на полоске HP.
             Row(L("inv.health"), Int(playerHealth.MaxHealth));
             Row(L("inv.health_regen"), Rate(playerHealth.GetTotalRegen()));
+            Row(L("inv.healing_from_max_health"),
+                StatFormat.PercentPoints(playerHealth.HealingPercentFromMissingHealth));
             Row(L("inv.heal_on_kill"), Num(playerHealth.HealOnKillPerEnemy));
             Row(L("inv.heal_on_hit"), Num(playerHealth.HealOnHitFromEnemy));
             Row(L("inv.heal_amp"), Percent(playerHealth.HealAmplificationPercent));
@@ -546,6 +548,8 @@ public class InventoryUI : MonoBehaviour
         {
             snapshot.SetStat(BuildStat.Health, playerHealth.MaxHealth);
             snapshot.SetStat(BuildStat.HealthRegen, playerHealth.GetTotalRegen());
+            snapshot.SetStat(BuildStat.HealingPercentFromMaxHealth,
+                playerHealth.HealingPercentFromMissingHealth);
             snapshot.SetStat(BuildStat.HealOnKill, playerHealth.HealOnKillPerEnemy);
             snapshot.SetStat(BuildStat.HealOnHit, playerHealth.HealOnHitFromEnemy);
             snapshot.SetStat(BuildStat.HealAmp, playerHealth.HealAmplificationPercent);

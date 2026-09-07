@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 612491e6570e47e0a86ba04ffaa8599f, type: 3}
+  m_Script: {fileID: 11500000, guid: c27422c313552df40af37641a13e294d, type: 3}
   m_Name: BR_Shield
   m_EditorClassIdentifier: 
   icon: {fileID: 0}
@@ -31,4 +31,6 @@ MonoBehaviour:
       m_TableCollectionName: GUID:164770c6fc8794c4ba4db6f8c7e72db3
   nameKey: br_shield.name
   descriptionKey: br_shield.desc
-  valuePercent: 35
+  upgrades:
+  - {fileID: 11400000, guid: cb797761aa1ec884689da40b0ef6976e, type: 2}
+  - {fileID: 11400000, guid: d514989ab9a7016458013d0d2f047a43, type: 2}

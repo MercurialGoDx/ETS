@@ -32,6 +32,14 @@ public static class StatFormat
         return fraction > Eps ? "+" + Mathf.RoundToInt(fraction * 100f) + "%" : "—";
     }
 
+    /// <summary>Процент, который уже хранится в процентных пунктах: 5.145 → 5.15%.</summary>
+    public static string PercentPoints(float percent)
+    {
+        return percent > Eps
+            ? percent.ToString("0.##", CultureInfo.InvariantCulture) + "%"
+            : "—";
+    }
+
     /// <summary>Множитель в виде ×1.00 — всегда два знака, чтобы колонка не «дышала».</summary>
     public static string Multiplier(float value)
     {

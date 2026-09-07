@@ -130,6 +130,10 @@ MonoBehaviour:
     m_Localized: "Regeneração de vida"
     m_Metadata:
       m_Items: []
+  - m_Id: 10838762048192735
+    m_Localized: "Cura da vida máxima"
+    m_Metadata:
+      m_Items: []
   - m_Id: 11775346651500202
     m_Localized: "Cura por abate"
     m_Metadata:

@@ -130,6 +130,10 @@ MonoBehaviour:
     m_Localized: "Regeneración de salud"
     m_Metadata:
       m_Items: []
+  - m_Id: 10838762048192735
+    m_Localized: "Curación de salud máxima"
+    m_Metadata:
+      m_Items: []
   - m_Id: 11775346651500202
     m_Localized: "Curación por eliminación"
     m_Metadata:

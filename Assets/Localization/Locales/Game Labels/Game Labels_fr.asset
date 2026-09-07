@@ -131,6 +131,10 @@ MonoBehaviour:
     m_Localized: "Régénération de vie"
     m_Metadata:
       m_Items: []
+  - m_Id: 10838762048192735
+    m_Localized: "Soin selon les PV max"
+    m_Metadata:
+      m_Items: []
   - m_Id: 11775346651500202
     m_Localized: "Soin par élimination"
     m_Metadata:

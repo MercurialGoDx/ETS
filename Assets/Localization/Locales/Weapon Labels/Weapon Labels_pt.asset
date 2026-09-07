@@ -19,297 +19,219 @@ MonoBehaviour:
     m_Items: []
   m_TableData:
   - m_Id: 1385907683844096
-    m_Localized: <color=#ffd700>Machado</color>
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1385907725787136
-    m_Localized: <color=#ffd700>Dano:</color> {0}\n<color=#ffd700>Tipo de dano:</color>
-      {1}\n<color=#ffd700>Velocidade de ataque:</color> {2}\n\n<color=#ffd700>Custo:</color> 
-      {3}
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1385907725787137
-    m_Localized: <color=#ffd700>Besta</color>
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1385907725787138
-    m_Localized: <color=#ffd700>Dano:</color> {0}\n<color=#ffd700>Tipo de dano:</color>
-      {1}\n<color=#ffd700>Velocidade de ataque:</color> {2}\n\n<color=#ffd700>Custo:</color> 
-      {3}
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1385907725787139
-    m_Localized: <color=#ffd700>Orbe do Caos</color>
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1385907725787140
-    m_Localized: <color=#ffd700>Dano:</color> {0}\n<color=#ffd700>Tipo de dano:</color>
-      {1}\n<color=#ffd700>Velocidade de ataque:</color> {2}\n\n<color=#ffd700>Custo:</color> 
-      {3}
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1385907725787141
-    m_Localized: "<color=#ffd700>Orbe M\xE1gico</color>"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1385907725787142
-    m_Localized: <color=#ffd700>Dano:</color> {0}\n<color=#ffd700>Tipo de dano:</color>
-      {1}\n<color=#ffd700>Velocidade de ataque:</color> {2}\n\n<color=#ffd700>Custo:</color> 
-      {3}
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1385907725787143
-    m_Localized: "<color=#ffd700>Lan\xE7a</color>"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1385907725787144
-    m_Localized: <color=#ffd700>Dano:</color> {0}\n<color=#ffd700>Tipo de dano:</color>
-      {1}\n<color=#ffd700>Velocidade de ataque:</color> {2}\n\n<color=#ffd700>Custo:</color> 
-      {3}
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1385907725787145
-    m_Localized: <color=#ffd700>Pedregulho</color>
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1385907725787146
-    m_Localized: <color=#ffd700>Dano:</color> {0}\n<color=#ffd700>Tipo de dano:</color>
-      {1}\n<color=#ffd700>Velocidade de ataque:</color> {2}\n\n<color=#ffd700>Custo:</color> 
-      {3}
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1385907725787147
-    m_Localized: <color=#ffd700>Chakram</color>
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1385907725787148
-    m_Localized: "Ao acertar, ricocheteia para o inimigo mais pr\xF3ximo se ele estiver
-      ao alcance. <color=#ffd700>Repete 3 vezes</color>\\n<color=#ffd700>Dano:</color>
-      {0}\\n<color=#ffd700>Tipo de dano:</color> {1}\\n<color=#ffd700>Velocidade
-      de ataque:</color> {2}\\n\\n<color=#ffd700>Custo:</color>  {3}"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1385907725787149
     m_Localized: 
     m_Metadata:
       m_Items: []
-  - m_Id: 1385907725787150
+  - m_Id: 1385907725787136
+    m_Localized: 
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1385907725787137
+    m_Localized: 
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1385907725787138
+    m_Localized: 
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1385907725787139
+    m_Localized: 
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1385907725787140
+    m_Localized: 
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1385907725787141
+    m_Localized: 
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1385907725787142
+    m_Localized: 
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1385907725787143
+    m_Localized: 
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1385907725787144
+    m_Localized: 
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1385907725787145
+    m_Localized: 
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1385907725787146
+    m_Localized: 
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1385907725787147
+    m_Localized: 
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1385907725787148
     m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787151
-    m_Localized: <color=#ffd700>Flecha de Gelo</color>
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787152
-    m_Localized: Reduz a velocidade do inimigo em 30% por 2 segundos\n<color=#ffd700>Dano:</color>
-      {0}\n<color=#ffd700>Tipo de dano:</color> {1}\n<color=#ffd700>Velocidade de
-      ataque:</color> {2}\n\n<color=#ffd700>Custo:</color>  {3}
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787153
-    m_Localized: <color=#ffd700>Dreno de Vida</color>
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787154
-    m_Localized: "Aumenta a Vida m\xE1xima em 2 ao matar um inimigo\\n<color=#ffd700>Dano:</color>
-      {0}\\n<color=#ffd700>Tipo de dano:</color> {1}\\n<color=#ffd700>Velocidade
-      de ataque:</color> {2}\\n\\n<color=#ffd700>Custo:</color>  {3}"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787155
-    m_Localized: "<color=#ffd700>M\xEDssil Teleguiado</color>"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787156
-    m_Localized: <color=#ffd700>Dano:</color> {0}\n<color=#ffd700>Tipo de dano:</color>
-      {1}\n<color=#ffd700>Velocidade de ataque:</color> {2}\n\n<color=#ffd700>Custo:</color> 
-      {3}
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787157
-    m_Localized: <color=#ffd700>Morteiro</color>
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787158
-    m_Localized: <color=#ffd700>Dano:</color> {0}\n<color=#ffd700>Tipo de dano:</color>
-      {1}\n<color=#ffd700>Velocidade de ataque:</color> {2}\n\n<color=#ffd700>Custo:</color> 
-      {3}
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787159
-    m_Localized: <color=#ffd700>Onda de Choque</color>
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787160
-    m_Localized: "Envia uma onda em dire\xE7\xE3o ao inimigo, causando dano a todos
-      em seu caminho\\n<color=#ffd700>Dano:</color> {0}\\n<color=#ffd700>Tipo de
-      dano:</color> {1}\\n<color=#ffd700>Velocidade de ataque:</color> {2}\\n\\n<color=#ffd700>Custo:</color> 
-      {3}"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787161
-    m_Localized: <color=#ffd700>Balista</color>
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787162
-    m_Localized: <color=#ffd700>Dano:</color> {0}\n<color=#ffd700>Tipo de dano:</color>
-      {1}\n<color=#ffd700>Velocidade de ataque:</color> {2}\n\n<color=#ffd700>Custo:</color> 
-      {3}
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787163
-    m_Localized: <color=#ffd700>Catapulta</color>
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787164
-    m_Localized: "Causa dano em \xE1rea igual a <color=#ffd700>50 + 2%</color> da
-      Vida m\xE1xima da torre\\n<color=#ffd700>Dano:</color> {0}\\n<color=#ffd700>Tipo
-      de dano:</color> {1}\\n<color=#ffd700>Velocidade de ataque:</color> {2}\\n<color=#ffd700>Dano
-      em \xE1rea:</color> Sim\\n\\n<color=#ffd700>Custo:</color>  {3}"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787165
-    m_Localized: "<color=#ffd700>Intimida\xE7\xE3o</color>"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787166
-    m_Localized: "Envia uma onda em dire\xE7\xE3o ao inimigo, causando dano a todos
-      em seu caminho. Cura a torre em <color=#ffd700>10</color> de vida para cada
-      inimigo atingido\\n<color=#ffd700>Dano:</color> {0}\\n<color=#ffd700>Tipo de
-      dano:</color> {1}\\n<color=#ffd700>Velocidade de ataque:</color> {2}\\n\\n<color=#ffd700>Custo:</color> 
-      {3}"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787167
-    m_Localized: <color=#ffd700>Martelo da Tempestade</color>
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787168
-    m_Localized: <color=#ffd700>Dano:</color> {0}\n<color=#ffd700>Tipo de dano:</color>
-      {1}\n<color=#ffd700>Velocidade de ataque:</color> {2}\n\n<color=#ffd700>Custo:</color> 
-      {3}
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787169
-    m_Localized: "<color=#ffd700>Foco M\xE1gico</color>"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787170
-    m_Localized: <color=#ffd700>Dano:</color> {0}\n<color=#ffd700>Tipo de dano:</color>
-      {1}\n<color=#ffd700>Velocidade de ataque:</color> {2}\n\n<color=#ffd700>Custo:</color> 
-      {3}
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787171
-    m_Localized: <color=#ffd700>Tronco</color>
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787172
-    m_Localized: "Lan\xE7a um tronco em dire\xE7\xE3o ao inimigo, causando dano a
-      todos em seu caminho\\n<color=#ffd700>Dano:</color> {0}\\n<color=#ffd700>Tipo
-      de dano:</color> {1}\\n<color=#ffd700>Velocidade de ataque:</color> {2}\\n\\n<color=#ffd700>Custo:</color> 
-      {3}"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787173
-    m_Localized: <color=#ffd700>Tornado</color>
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787174
-    m_Localized: "Ao acertar, empurra o inimigo para longe da torre. Causa dano a
-      todos os inimigos em seu caminho. Troca de alvo ap\xF3s cada disparo\\n<color=#ffd700>Dano:</color>
-      {0}\\n<color=#ffd700>Tipo de dano:</color> {1}\\n<color=#ffd700>Velocidade
-      de ataque:</color> {2}\\n\\n<color=#ffd700>Custo:</color>  {3}"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787175
-    m_Localized: <color=#ffd700>Tempestade de Gelo</color>
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787176
-    m_Localized: "Uma tempestade de gelo cai do c\xE9u, causando dano em \xE1rea\\n<color=#ffd700>Dano:</color>
-      {0}\\n<color=#ffd700>Tipo de dano:</color> {1}\\n<color=#ffd700>Velocidade
-      de ataque:</color> {2}\\n<color=#ffd700>Dano em \xE1rea:</color> Sim\\n\\n<color=#ffd700>Custo:</color> 
-      {3}"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787177
-    m_Localized: "<color=#ffd700>Fogo da Perdi\xE7\xE3o</color>"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787178
-    m_Localized: Cria uma aura de fogo ao redor da torre que causa dano gradual aos
-      inimigos\n<color=#ffd700>Dano:</color> {0}\n<color=#ffd700>Tipo de dano:</color>
-      {1}\n<color=#ffd700>Velocidade de ataque:</color> {2}\n\n<color=#ffd700>Custo:</color> 
-      {3}
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787179
-    m_Localized: <color=#ffd700>Ciclo</color>
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787180
-    m_Localized: "Cria uma for\xE7a m\xE1gica ao redor da torre que causa dano a
-      todos os inimigos no mapa\\n<color=#ffd700>Dano:</color> {0}\\n<color=#ffd700>Tipo
-      de dano:</color> {1}\\n<color=#ffd700>Velocidade de ataque:</color> {2}\\n\\n<color=#ffd700>Custo:</color> 
-      {3}"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787181
-    m_Localized: <color=#ffd700>Asteroide</color>
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787182
-    m_Localized: "Um asteroide cai do c\xE9u, causando grande dano em \xE1rea\\n<color=#ffd700>Dano:</color>
-      {0}\\n<color=#ffd700>Tipo de dano:</color> {1}\\n<color=#ffd700>Velocidade
-      de ataque:</color> {2}\\n<color=#ffd700>Dano em \xE1rea:</color> Sim\\n\\n<color=#ffd700>Custo:</color> 
-      {3}"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787183
-    m_Localized: "<color=#ffd700>L\xE2minas Girat\xF3rias</color>"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 1385907725787184
-    m_Localized: "Cria l\xE2minas em um local aleat\xF3rio por 15 segundos, causando
-      dano aos inimigos ao redor\\n<color=#ffd700>Dano:</color> {0}\\n<color=#ffd700>Tipo
-      de dano:</color> {1}\\n<color=#ffd700>Velocidade de ataque:</color> {2}\\n<color=#ffd700>Dano
-      em \xE1rea:</color> Sim\\n\\n<color=#ffd700>Custo:</color>  {3}"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 75581446427762688
-    m_Localized: <color=#ffd700>Brilhante</color>
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 75581446511648768
-    m_Localized: "Ao matar um inimigo, concede ouro adicional <color=#ffd700>+1</color>\\nRecebe
-      <color=#ffd700>+1</color> de dano base para cada <color=#ffd700>300</color>
-      de ouro n\xE3o gasto, at\xE9 <color=#ffd700>+7</color>\\n<color=#ffd700>Dano:</color>
-      {0}\\n<color=#ffd700>Tipo de dano:</color> {1}\\n<color=#ffd700>Velocidade
-      de ataque:</color> {2}\\n\\n<color=#ffd700>Custo:</color>  {3}"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 74621472677330944
-    m_Localized: <color=#ffd700>Foco de Poder</color>
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 74621472828325888
-    m_Localized: "A cada segundo em que a arma permanece no mesmo alvo, seu dano
-      base aumenta em <color=#ffd700>100%</color>, at\xE9 <color=#ffd700>500%</color>\\n<color=#ffd700>Dano:</color>
-      {0}\\n<color=#ffd700>Tipo de dano:</color> {1}\\n<color=#ffd700>Velocidade
-      de ataque:</color> {2}\\n\\n<color=#ffd700>Custo:</color>  {3}"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 74605534590566400
-    m_Localized: "<color=#ffd700>Tenta\xE7\xE3o</color>"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 74605534649286656
-    m_Localized: "Sempre que esta arma mata um inimigo, todas as c\xF3pias de <color=#ffd700>\"Tenta\xE7\xE3o\"</color>
-      recebem <color=#ffd700>+0.2</color> de dano base\\n<color=#ffd700>Dano:</color>
-      {0}\\n<color=#ffd700>Tipo de dano:</color> {1}\\n<color=#ffd700>Velocidade
-      de ataque:</color> {2}\\n\\n<color=#ffd700>Custo:</color>  {3}"
+    m_Localized: 
     m_Metadata:
       m_Items: []
   references:

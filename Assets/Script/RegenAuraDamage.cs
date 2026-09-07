@@ -284,32 +284,26 @@ public class RegenAuraDamage : MonoBehaviour
     {
         var upgrades = UpgradesManager.Instance;
         var playerHealth = upgrades.playerHealth;
-        var playerShield = upgrades.playerShield;
-        var runtime = upgrades.context != null ? upgrades.context.runtime : null;
 
         // 1) Use the same final regeneration value as healing and the stats UI.
         float totalRegen = playerHealth.GetTotalRegen();
         if (totalRegen <= 0f)
             return;
 
-        // 2) Урон ауры = реген * множитель ауры, усиленный только global- и adaptive-слоями
-        // (как у шипов). Normal-слой (тип оружия, генератор, HP/золото-Normal, тир)
-        // на эту ауру намеренно не действует.
+        // 2) Degen Aura использует тот же набор универсальных множителей, что и шипы:
+        // общий урон, генератор, бонусы от HP/золота, global- и adaptive-слои.
+        // Тип урона и тир намеренно исключены — аура не является оружием.
         float baseDamagePerEnemy = totalRegen * regenAuraMultiplier;
+        TowerAttack towerAttack = upgrades.context != null
+            ? upgrades.context.towerAttack
+            : null;
+        if (towerAttack == null)
+            towerAttack = upgrades.towerAttack;
 
-        float globalBonus = 0f;
-        if (runtime != null)
-        {
-            globalBonus = runtime.globalDamagePercent;
-            if (GoldManager.Instance != null)
-                globalBonus += (GoldManager.Instance.currentGold / 100f) * runtime.globalDamagePer100GoldPercent;
-        }
-
-        float adaptiveBonus = runtime != null && playerShield != null && playerShield.IsShieldActive
-            ? runtime.adaptiveDamageWhileShieldPercent
-            : 0f;
-
-        float damagePerEnemy = baseDamagePerEnemy * (1f + globalBonus) * (1f + adaptiveBonus);
+        float universalDamageMultiplier = towerAttack != null
+            ? towerAttack.GetGlobalDamageMultiplier()
+            : 1f;
+        float damagePerEnemy = baseDamagePerEnemy * universalDamageMultiplier;
 
         // 3) Наносим урон всем врагам на сцене
         // Хранить всех доступных врагов в одном листе
@@ -329,7 +323,7 @@ public class RegenAuraDamage : MonoBehaviour
 
         Debug.Log(
             $"[RegenAura] Tick: regen={totalRegen:F1}, mult={regenAuraMultiplier:F2}, " +
-            $"base={baseDamagePerEnemy:F1}, global=x{1f + globalBonus:F3}, adaptive=x{1f + adaptiveBonus:F3}, " +
+            $"base={baseDamagePerEnemy:F1}, universal=x{universalDamageMultiplier:F3}, " +
             $"final={damagePerEnemy:F1}, enemies={enemies.Length}");
     }
 }

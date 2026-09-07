@@ -14,13 +14,18 @@ public class ExhaustibleDamageReductionUpgrade : UpgradeBaseSO
     [Range(0f, 1000f)]
     public float lossScorePerHitPercent = 10f;
 
+    [Tooltip("Через сколько секунд каждая потеря Damage Reduction восстанавливается. Каждая потеря имеет свой таймер.")]
+    [Min(0.01f)]
+    public float restoreDelay = 20f;
+
     public override void Apply(UpgradeContextSO context)
     {
         if (context?.playerHealth == null) return;
 
         context.playerHealth.AddExhaustibleDamageReduction(
             startScorePercent / 100f,
-            lossScorePerHitPercent / 100f);
+            lossScorePerHitPercent / 100f,
+            restoreDelay);
     }
 
     protected override object[] GetSpecificDescriptionArgs()
