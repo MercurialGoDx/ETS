@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using ETS.Multiplayer;
 using TMPro;
 using UnityEngine;
@@ -34,10 +34,6 @@ public class ShopManager : MonoBehaviour
     // Номер розыгрыша магазина. Нужен только дуэли: предложение адресуется парой
     // (номер ролла, номер слота), поэтому лишний реролл у одного игрока не сдвигает другого.
     private int shopRollIndex;
-
-    // Буферы базовых весов, чтобы не аллоцировать массив на каждый ролл.
-    private float[] duelWeaponWeights;
-    private float[] duelUpgradeWeights;
 
     [Header("Реролл")]
     [Tooltip("Базовая стоимость реролла магазина (золото).")]
@@ -144,16 +140,14 @@ public class ShopManager : MonoBehaviour
 
             if (weapons)
             {
-                var weapon = DuelSession.IsSeeded ? GetDuelWeapon(i) : GetRandomWeaponWeighted();
+                var weapon = GetRandomWeaponWeighted(i);
                 if (weapon == null) slot.Clear();
-                else if (DuelSession.IsSeeded && !IsTierUnlocked(weapon.itemTier)) slot.SetLocked();
                 else slot.SetupWeapon(weapon, this);
             }
             else
             {
-                var upgrade = DuelSession.IsSeeded ? GetDuelUpgrade(i) : GetRandomUpgradeWeighted();
+                var upgrade = GetRandomUpgradeWeighted(i);
                 if (upgrade == null) slot.Clear();
-                else if (DuelSession.IsSeeded && !IsTierUnlocked(upgrade.itemTier)) slot.SetLocked();
                 else slot.SetupUpgrade(upgrade, this);
             }
         }
@@ -180,13 +174,20 @@ public class ShopManager : MonoBehaviour
     /// <summary>
     /// Вес предмета для рулетки магазина. Заблокированный тир даёт 0 — предмет не участвует
     /// ни в сумме весов, ни в розыгрыше, ни в запасном переборе.
+    ///
+    /// В дуэли берётся базовый вес из ассета, без надбавки за прошлые покупки: надбавка —
+    /// состояние конкретного игрока, и из-за неё n-е предложения у двоих разъехались бы уже
+    /// после первой разной покупки. Фильтр по тиру, наоборот, остаётся: пока разблокировки
+    /// одинаковы, одинаков и пул, а кто открыл тир раньше — тот раньше и увидит его предметы.
     /// </summary>
     private static float GetOfferWeight(WeaponDefinition weapon)
     {
         if (weapon == null || !IsTierUnlocked(weapon.itemTier))
             return 0f;
 
-        return UpgradesManager.Instance.RuntimeData.GetWeaponWeight(weapon);
+        return DuelSession.IsSeeded
+            ? weapon.weight
+            : UpgradesManager.Instance.RuntimeData.GetWeaponWeight(weapon);
     }
 
     private static float GetOfferWeight(UpgradeBaseSO upgrade)
@@ -194,7 +195,9 @@ public class ShopManager : MonoBehaviour
         if (upgrade == null || !IsTierUnlocked(upgrade.itemTier))
             return 0f;
 
-        return UpgradesManager.Instance.RuntimeData.GetUpgradeWeight(upgrade);
+        return DuelSession.IsSeeded
+            ? upgrade.weight
+            : UpgradesManager.Instance.RuntimeData.GetUpgradeWeight(upgrade);
     }
 
     private void Update()
@@ -270,18 +273,10 @@ public class ShopManager : MonoBehaviour
                 continue;
             }
 
-            var weapon = DuelSession.IsSeeded ? GetDuelWeapon(i) : GetRandomWeaponWeighted();
+            var weapon = GetRandomWeaponWeighted(i);
             if (weapon == null)
             {
                 slot.Clear();
-            }
-            else if (DuelSession.IsSeeded && !IsTierUnlocked(weapon.itemTier))
-            {
-                // В дуэли пул не фильтруется по тиру — иначе слот сместился бы у того,
-                // кто открыл тир раньше, и магазины игроков разъехались бы. Предмет
-                // закрытого тира выпадает обоим одинаково и показывается закрытым:
-                // видно, что упускаешь, но купить нельзя.
-                slot.SetLocked();
             }
             else
             {
@@ -291,47 +286,20 @@ public class ShopManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Оффер оружия в дуэли. Вес берётся базовый, из ассета: обычная рулетка добавляет
-    /// надбавку за прошлые покупки и перекрёстные модификаторы, а они у игроков свои —
-    /// магазины разъехались бы после первой покупки. Фильтр по тиру тоже снят: гейт тира
-    /// это состояние игрока, из-за него слот сместился бы у того, кто открыл тир раньше.
+    /// Бросок для розыгрыша оффера. В дуэли число берётся из сида матча и адресуется парой
+    /// (номер розыгрыша, номер слота) — лишний реролл у одного игрока не сдвигает другого.
+    /// Слоты заполняются обычным путём, поэтому магазин выглядит и работает как всегда;
+    /// от состояния игрока предложение зависит только через разблокировки (см. GetOfferWeight),
+    /// так что при одинаковых разблокировках n-е предложение у обоих совпадает.
     /// </summary>
-    private WeaponDefinition GetDuelWeapon(int slotIndex)
+    private float OfferRoll(DuelStream stream, int slotIndex)
     {
-        if (availableWeapons == null || availableWeapons.Count == 0)
-            return null;
-
-        if (duelWeaponWeights == null || duelWeaponWeights.Length != availableWeapons.Count)
-            duelWeaponWeights = new float[availableWeapons.Count];
-
-        for (int i = 0; i < availableWeapons.Count; i++)
-            duelWeaponWeights[i] = availableWeapons[i] != null ? availableWeapons[i].weight : 0f;
-
-        int picked = DuelRandom.WeightedPick(DuelSession.Seed, DuelStream.ShopWeapon,
-            DuelRandom.Compose(shopRollIndex, slotIndex), duelWeaponWeights);
-
-        return picked >= 0 ? availableWeapons[picked] : null;
+        return DuelSession.IsSeeded
+            ? DuelRandom.Value01(DuelSession.Seed, stream, DuelRandom.Compose(shopRollIndex, slotIndex))
+            : Random.value;
     }
 
-    /// <summary>Оффер улучшения в дуэли. Правила те же, что у <see cref="GetDuelWeapon"/>.</summary>
-    private UpgradeBaseSO GetDuelUpgrade(int slotIndex)
-    {
-        if (availableUpgrades == null || availableUpgrades.Count == 0)
-            return null;
-
-        if (duelUpgradeWeights == null || duelUpgradeWeights.Length != availableUpgrades.Count)
-            duelUpgradeWeights = new float[availableUpgrades.Count];
-
-        for (int i = 0; i < availableUpgrades.Count; i++)
-            duelUpgradeWeights[i] = availableUpgrades[i] != null ? availableUpgrades[i].weight : 0f;
-
-        int picked = DuelRandom.WeightedPick(DuelSession.Seed, DuelStream.ShopUpgrade,
-            DuelRandom.Compose(shopRollIndex, slotIndex), duelUpgradeWeights);
-
-        return picked >= 0 ? availableUpgrades[picked] : null;
-    }
-
-    private WeaponDefinition GetRandomWeaponWeighted()
+    private WeaponDefinition GetRandomWeaponWeighted(int slotIndex)
     {
         if (availableWeapons == null || availableWeapons.Count == 0)
             return null;
@@ -343,7 +311,7 @@ public class ShopManager : MonoBehaviour
         if (totalWeight <= 0f)
             return null;
 
-        float rnd = Random.value * totalWeight;
+        float rnd = OfferRoll(DuelStream.ShopWeapon, slotIndex) * totalWeight;
         float accum = 0f;
 
         for (int i = 0; i < availableWeapons.Count; i++)
@@ -421,14 +389,10 @@ public class ShopManager : MonoBehaviour
                 continue;
             }
 
-            var upgrade = DuelSession.IsSeeded ? GetDuelUpgrade(i) : GetRandomUpgradeWeighted();
+            var upgrade = GetRandomUpgradeWeighted(i);
             if (upgrade == null)
             {
                 slot.Clear();
-            }
-            else if (DuelSession.IsSeeded && !IsTierUnlocked(upgrade.itemTier))
-            {
-                slot.SetLocked();
             }
             else
             {
@@ -437,7 +401,7 @@ public class ShopManager : MonoBehaviour
         }
     }
 
-    private UpgradeBaseSO GetRandomUpgradeWeighted()
+    private UpgradeBaseSO GetRandomUpgradeWeighted(int slotIndex)
     {
         if (availableUpgrades == null || availableUpgrades.Count == 0)
             return null;
@@ -449,7 +413,7 @@ public class ShopManager : MonoBehaviour
         if (totalWeight <= 0f)
             return null;
 
-        float rnd = Random.value * totalWeight;
+        float rnd = OfferRoll(DuelStream.ShopUpgrade, slotIndex) * totalWeight;
         float accum = 0f;
 
         for (int i = 0; i < availableUpgrades.Count; i++)
