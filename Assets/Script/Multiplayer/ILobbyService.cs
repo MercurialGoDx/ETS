@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 /// <summary>
@@ -43,6 +43,13 @@ public interface ILobbyService
 
     /// <summary>Кто-то вошёл или вышел.</summary>
     event Action MembersChanged;
+
+    /// <summary>
+    /// Участник пропал, и указано — сам ушёл или потерял связь. Отдельно от
+    /// <see cref="MembersChanged"/>: там видно только, что состав изменился, а причину
+    /// Steam сообщает один раз, в момент события.
+    /// </summary>
+    event Action<ulong, LobbyDeparture> MemberLeft;
 
     /// <summary>Изменились данные лобби или участника — например, хост выдал сид.</summary>
     event Action LobbyDataChanged;

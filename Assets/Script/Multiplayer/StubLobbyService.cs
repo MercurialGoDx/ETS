@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using ETS.Multiplayer;
 using UnityEngine;
@@ -16,6 +16,12 @@ public class StubLobbyService : ILobbyService
     private const ulong FakeGuestId = 2;
 
     public event Action MembersChanged;
+
+    // Заглушка живёт в одном процессе: терять связь тут не с кем, событие есть только
+    // ради контракта интерфейса.
+#pragma warning disable 67
+    public event Action<ulong, LobbyDeparture> MemberLeft;
+#pragma warning restore 67
     public event Action LobbyDataChanged;
 
     private readonly List<LobbyMember> members = new List<LobbyMember>();

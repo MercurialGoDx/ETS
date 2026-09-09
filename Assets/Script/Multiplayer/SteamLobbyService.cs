@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using ETS.Multiplayer;
 using UnityEngine;
@@ -26,6 +26,7 @@ public class SteamLobbyService : ILobbyService
     private const int MaxMembers = 2;
 
     public event Action MembersChanged;
+    public event Action<ulong, LobbyDeparture> MemberLeft;
     public event Action LobbyDataChanged;
 
 #if !DISABLESTEAMWORKS
@@ -245,11 +246,36 @@ public class SteamLobbyService : ILobbyService
             return;
 
         RefreshMembers();
+        ReportDeparture(param);
 
         if (isHost && members.Count >= MaxMembers)
             SteamMatchmaking.SetLobbyJoinable(lobbyId, false);
         else if (isHost)
             SteamMatchmaking.SetLobbyJoinable(lobbyId, true);
+    }
+
+
+    /// <summary>
+    /// Steam различает уход и обрыв флагами состояния, и это единственное место, где причина
+    /// вообще известна: по составу лобби потом уже не понять, ушёл человек сам или упала сеть.
+    /// </summary>
+    private void ReportDeparture(LobbyChatUpdate_t param)
+    {
+        var change = (EChatMemberStateChange)param.m_rgfChatMemberStateChange;
+
+        if ((change & EChatMemberStateChange.k_EChatMemberStateChangeDisconnected) != 0)
+        {
+            MemberLeft?.Invoke(param.m_ulSteamIDUserChanged, LobbyDeparture.Disconnected);
+            return;
+        }
+
+        const EChatMemberStateChange gone =
+            EChatMemberStateChange.k_EChatMemberStateChangeLeft
+            | EChatMemberStateChange.k_EChatMemberStateChangeKicked
+            | EChatMemberStateChange.k_EChatMemberStateChangeBanned;
+
+        if ((change & gone) != 0)
+            MemberLeft?.Invoke(param.m_ulSteamIDUserChanged, LobbyDeparture.Left);
     }
 
     private void OnDataUpdate(LobbyDataUpdate_t param)

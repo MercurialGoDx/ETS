@@ -44,8 +44,16 @@ public class DuelSession : MonoBehaviour
     /// обнуляет статику, объект DontDestroyOnLoad при этом выживает, а
     /// RuntimeInitializeOnLoadMethod повторно не вызывается — ссылка терялась насовсем.
     /// </summary>
-    /// <summary>Идёт ли сейчас матч по сиду. Всё сидированное поведение живёт под этим флагом.</summary>
-    public static bool IsSeeded => Instance != null && Instance.seedActive;
+    /// <summary>
+    /// Идёт ли сейчас забег по сиду. Всё сидированное поведение живёт под этим флагом, и
+    /// поэтому он обязан гаснуть вместе с забегом: одного <see cref="seedActive"/> мало —
+    /// он держится, пока игрок не вышел из лобби, и обычный забег, запущенный из меню между
+    /// матчами, унаследовал бы правила дуэли (без паузы на Tab, с сидированным магазином).
+    /// </summary>
+    public static bool IsSeeded => Instance != null && Instance.IsDuelRunActive;
+
+    /// <summary>Свой забег дуэли прямо сейчас идёт. Закончился — правила дуэли снимаются.</summary>
+    private bool IsDuelRunActive => seedActive && runStarted && !localFinished;
 
     /// <summary>Сид матча. Осмыслен только при <see cref="IsSeeded"/>.</summary>
     public static int Seed => Instance != null ? Instance.matchSeed : 0;
@@ -112,6 +120,22 @@ public class DuelSession : MonoBehaviour
     private float waitLeft = -1f;
     private bool opponentWasPresent;
 
+    // Ждём только оборвавшегося. Кто вышел сам — не вернётся, и держать из-за него паузу
+    // означало бы просто отнять у второго игрока минуту.
+    private bool opponentLostConnection;
+
+    // Состояние лобби на прошлом кадре: старт ловим на переходе «нет матча» -> «матч идёт»,
+    // а не по самому значению. Иначе тот, кто вошёл в лобби посреди чужого матча, тут же
+    // запустил бы себе забег с нуля.
+    private string lastSeenState = string.Empty;
+
+    // Матч уже подведён: оба закончили, результаты разосланы. Ждём новой готовности.
+    private bool matchFinished;
+
+    // Свой забег окончен. Свой SteamID сервис наружу не отдаёт, а собственный результат
+    // мы и так пишем сами — флага достаточно.
+    private bool localFinished;
+
     /// <summary>Сколько осталось до старта. Отрицательное — отсчёта нет.</summary>
     public float CountdownLeft => countdownLeft;
 
@@ -169,11 +193,34 @@ public class DuelSession : MonoBehaviour
         DontDestroyOnLoad(host);
     }
 
+    private void OnEnable()
+    {
+        Lobbies.Service.MemberLeft += OnMemberLeft;
+    }
+
+    private void OnDisable()
+    {
+        Lobbies.Service.MemberLeft -= OnMemberLeft;
+    }
+
     private void OnDestroy()
     {
         Untrack();
         if (s_instance == this)
             s_instance = null;
+    }
+
+    /// <summary>
+    /// Причина ухода приходит ровно один раз, в момент события, и запоминается до его
+    /// возвращения: по составу лобби потом уже не отличить обрыв от осознанного выхода.
+    /// </summary>
+    private void OnMemberLeft(ulong memberId, LobbyDeparture reason)
+    {
+        opponentLostConnection = reason == LobbyDeparture.Disconnected;
+
+        Debug.Log(reason == LobbyDeparture.Disconnected
+            ? "[Duel] У соперника оборвалась связь."
+            : "[Duel] Соперник вышел из лобби.");
     }
 
     // ---------- Готовность ----------
@@ -236,6 +283,10 @@ public class DuelSession : MonoBehaviour
             countdownLeft = -1f;
             waitLeft = -1f;
             opponentWasPresent = false;
+            opponentLostConnection = false;
+            lastSeenState = string.Empty;
+            matchFinished = false;
+            localFinished = false;
 
             if (GameSpeedController.Instance != null)
                 GameSpeedController.Instance.UnlockSpeed();
@@ -246,11 +297,24 @@ public class DuelSession : MonoBehaviour
         if (service.IsHost)
             HostTick();
 
-        if (!runStarted && service.GetLobbyValue(KeyState) == StateRunning)
+        string state = service.GetLobbyValue(KeyState);
+        bool matchStarting = state == StateRunning && lastSeenState != StateRunning;
+        if (matchStarting)
+            matchFinished = false;
+
+        // Отсчёт ведём, только если застали сам переход: вошедший в середине чужого матча
+        // не должен запускать себе забег — догонять нечего, он ждёт следующего.
+        if (!runStarted && !matchFinished && (matchStarting || countdownLeft >= 0f))
             TickCountdown();
 
+        lastSeenState = state;
+
         if (runStarted)
+        {
+            WatchLeftToMenu();
             PublishTick();
+            WatchRunEnd();
+        }
 
         WatchOpponent();
         WatchDisconnect();
@@ -306,6 +370,8 @@ public class DuelSession : MonoBehaviour
     {
         runStarted = true;
         isReady = false;
+        localFinished = false;
+        matchFinished = false;
 
         var service = Lobbies.Service;
         service.SetMemberValue(KeyResult, string.Empty);
@@ -501,6 +567,7 @@ public class DuelSession : MonoBehaviour
 
         float time = timeUi != null ? timeUi.ElapsedTime : 0f;
 
+        localFinished = true;
         service.SetMemberValue(KeyStat, BuildStatLine(isAlive: false));
         service.SetMemberValue(KeyResult, time.ToString("0.##", System.Globalization.CultureInfo.InvariantCulture));
 
@@ -573,6 +640,7 @@ public class DuelSession : MonoBehaviour
         if (hasOpponent)
         {
             opponentWasPresent = true;
+            opponentLostConnection = false;
 
             if (waitLeft >= 0f)
             {
@@ -587,11 +655,21 @@ public class DuelSession : MonoBehaviour
         if (!opponentWasPresent)
             return;
 
+        // Ждём только обрыв связи. Кто вышел сам, тот не вернётся, и пауза из-за него —
+        // просто отнятая у второго игрока минута.
+        if (!opponentLostConnection)
+        {
+            opponentWasPresent = false;
+            waitLeft = -1f;
+            ResumeAfterWait();
+            return;
+        }
+
         if (waitLeft < 0f)
         {
             waitLeft = DisconnectWaitSeconds;
             PauseForWait();
-            Debug.Log($"[Duel] Соперник отключился. Ждём {DisconnectWaitSeconds:0} с.");
+            Debug.Log($"[Duel] Связь с соперником потеряна. Ждём {DisconnectWaitSeconds:0} с — место в лобби за ним.");
             return;
         }
 
@@ -601,6 +679,7 @@ public class DuelSession : MonoBehaviour
 
         waitLeft = -1f;
         opponentWasPresent = false;
+        opponentLostConnection = false;
         ResumeAfterWait();
         Debug.Log("[Duel] Соперник не вернулся — забег продолжается без него.");
     }
@@ -620,6 +699,77 @@ public class DuelSession : MonoBehaviour
     }
 
     /// <summary>Ловим момент, когда соперник перестал быть живым, и показываем сообщение один раз.</summary>
+    /// <summary>
+    /// Игрок вернулся в меню, не доиграв. Для дуэли это конец его забега: иначе правила
+    /// дуэли остались бы висеть на обычном забеге, запущенном следующим.
+    /// Пропускаем кадры перезагрузки сцены — там меню показано временно.
+    /// </summary>
+    private void WatchLeftToMenu()
+    {
+        if (localFinished || startDelayFrames >= 0)
+            return;
+
+        var gsm = GameStateManager.Instance;
+        if (gsm == null || !gsm.Is(GameState.Menu))
+            return;
+
+        Debug.Log("[Duel] Забег брошен — возврат в меню.");
+        OnLocalDeath();
+    }
+
+    /// <summary>
+    /// Матч закончился, когда обе стороны прислали результат (а если соперник ушёл — когда
+    /// закончил ты один). Тогда состояние лобби возвращается в исходное, и хост снова может
+    /// стартовать по готовности: без этого KeyState навсегда оставался «running», HostTick
+    /// выходил на первой же строке, и повторная игра не начиналась никогда.
+    /// </summary>
+    private void WatchRunEnd()
+    {
+        var service = Lobbies.Service;
+
+        if (!localFinished)
+            return;
+
+        bool opponentFinished = !TryGetOpponent(out LobbyMember opponent)
+            || !string.IsNullOrEmpty(service.GetMemberValue(opponent.Id, KeyResult));
+
+        if (!opponentFinished)
+            return;
+
+        FinishMatch();
+    }
+
+    /// <summary>
+    /// Возвращает и лобби, и клиента в состояние «между матчами»: снимает сидированные
+    /// правила с обычного забега, отпускает темп и разрешает новую готовность.
+    /// </summary>
+    private void FinishMatch()
+    {
+        if (matchFinished)
+            return;
+
+        matchFinished = true;
+        runStarted = false;
+        seedActive = false;
+        matchSeed = 0;
+        countdownLeft = -1f;
+        waitLeft = -1f;
+        isReady = false;
+
+        var service = Lobbies.Service;
+        service.SetMemberValue(KeyReady, "0");
+
+        // Состояние лобби принадлежит хосту — гость его не перепишет.
+        if (service.IsHost)
+            service.SetLobbyValue(KeyState, string.Empty);
+
+        if (GameSpeedController.Instance != null)
+            GameSpeedController.Instance.UnlockSpeed();
+
+        Untrack();
+        Debug.Log("[Duel] Матч завершён. Готовность сброшена — можно играть снова.");
+    }
+
     private void WatchOpponent()
     {
         OpponentStat stat = GetOpponentStat();

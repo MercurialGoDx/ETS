@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using ETS.Multiplayer;
@@ -36,6 +36,7 @@ public class BossRewardUI : MonoBehaviour
     // Номер босса и порядковый номер выбора — вместе адресуют бросок наград в дуэли.
     private int currentBossOrdinal;
     private int currentSelectionIndex;
+    private int currentRerollIndex;
     private bool isResolvingSelection;
     private CanvasGroup panelCanvasGroup;
 
@@ -74,6 +75,7 @@ public class BossRewardUI : MonoBehaviour
     {
         currentBossOrdinal = bossOrdinal;
         currentSelectionIndex = 0;
+        currentRerollIndex = 0;
         if (gameSpeedPanel != null) gameSpeedPanel.SetActive(false);
 
         prevTimeScale = Time.timeScale;
@@ -102,7 +104,8 @@ public class BossRewardUI : MonoBehaviour
             return;
         }
 
-        List<UpgradeBaseSO> picks = provider.PickThreeUnique(currentBossOrdinal, currentSelectionIndex);
+        List<UpgradeBaseSO> picks = provider.PickThreeUnique(
+            currentBossOrdinal, currentSelectionIndex, currentRerollIndex);
         while (picks.Count < 3) picks.Add(null);
 
         if (card1 != null) card1.Bind(picks[0], OnChosen);
@@ -125,6 +128,7 @@ public class BossRewardUI : MonoBehaviour
 
         remainingSelections--;
         currentSelectionIndex++;
+        currentRerollIndex = 0;
         if (remainingSelections > 0)
         {
             StartCoroutine(ShowNextSelection());
@@ -151,6 +155,7 @@ public class BossRewardUI : MonoBehaviour
         }
 
         isResolvingSelection = true;
+        currentRerollIndex++;
         UpdateRerollUI();
         StartCoroutine(ShowRerolledRewards());
     }

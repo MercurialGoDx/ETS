@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using ETS.Multiplayer;
 using UnityEngine;
 
@@ -12,9 +12,12 @@ public class BossRewardProvider : MonoBehaviour
     /// наград: если один игрок не добил первого босса, его награда за второго обязана совпасть
     /// с чужой наградой за второго, а не за первого.
     /// </summary>
-    public List<UpgradeBaseSO> PickThreeUnique(int bossOrdinal = 0, int selectionIndex = 0)
+    public List<UpgradeBaseSO> PickThreeUnique(int bossOrdinal = 0, int selectionIndex = 0, int rerollIndex = 0)
     {
-        int drawRound = DuelRandom.Compose(bossOrdinal, selectionIndex);
+        // Реролл обязан входить в адрес розыгрыша: иначе в дуэли он вернул бы ту же тройку,
+        // потому что номер босса и номер выбора при обновлении не меняются. Заряды реролла
+        // у игроков свои, так что после обновления их награды законно расходятся.
+        int drawRound = DuelRandom.Compose(DuelRandom.Compose(bossOrdinal, selectionIndex), rerollIndex);
         List<UpgradeBaseSO> candidates = new();
         foreach (var r in rewards)
         {
