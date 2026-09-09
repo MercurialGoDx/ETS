@@ -547,12 +547,12 @@ public class DuelSession : MonoBehaviour
         });
     }
 
-    private static float TotalDamage()
+    private static double TotalDamage()
     {
         if (DamageStatsManager.Instance == null)
-            return 0f;
+            return 0d;
 
-        float total = 0f;
+        double total = 0d;
         foreach (var entry in DamageStatsManager.Instance.GetDamageSorted())
             total += entry.damage;
 
