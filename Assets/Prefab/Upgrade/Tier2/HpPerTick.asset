@@ -9,12 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1d516f74b1489014383b812925af1767, type: 3}
+  m_Script: {fileID: 11500000, guid: c27422c313552df40af37641a13e294d, type: 3}
   m_Name: HpPerTick
   m_EditorClassIdentifier: 
   icon: {fileID: 21300000, guid: ff46709e14860c8448ecc8b54d092ec4, type: 3}
   price: 400
-  weight: 15
+  weight: 20
   itemTier: 2
   weightIncreasePerPurchase: 0
   maxWeightIncreasePurchases: 0
@@ -31,5 +31,6 @@ MonoBehaviour:
       m_TableCollectionName: GUID:164770c6fc8794c4ba4db6f8c7e72db3
   nameKey: health_per_tick.name
   descriptionKey: health_per_tick.desc
-  interval: 10
-  valueFlat: 5
+  upgrades:
+  - {fileID: 11400000, guid: f525f99c67de4704b94cb90a5a6406d2, type: 2}
+  - {fileID: 11400000, guid: ab4e1ac5432dd6440b60de92c93f75b2, type: 2}

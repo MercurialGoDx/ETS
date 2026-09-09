@@ -19,7 +19,7 @@ MonoBehaviour:
   nameKey: hammer.name
   descriptionKey: hammer.desc
   price: 1500
-  damagePerProjectile: 170
+  damagePerProjectile: 150
   fireRate: 0.5
   projectileSpeed: 20
   itemTier: 3

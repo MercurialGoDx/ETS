@@ -17520,12 +17520,12 @@ MonoBehaviour:
   - {fileID: 11400000, guid: d3fec4c77b7a56a45af90feac53e6535, type: 2}
   - {fileID: 11400000, guid: 0e7eb23c723fec5428fcc2e28f7f1437, type: 2}
   - {fileID: 11400000, guid: 641ea8c5d401bf2459863113beefc2da, type: 2}
-  - {fileID: 11400000, guid: 47696bdc5bbcaa848ae69d1fdb16a580, type: 2}
+  - {fileID: 11400000, guid: 050ecc0e1475306438ce7589eef1300d, type: 2}
   - {fileID: 11400000, guid: 3ffbd68e41c0908419118e5f05825df5, type: 2}
-  - {fileID: 11400000, guid: c946fee137a735a46b86e19abfa6c112, type: 2}
+  - {fileID: 11400000, guid: 7e1937f94c811a74e9a91f0fbe04327e, type: 2}
   - {fileID: 11400000, guid: 0500edd442be30c49893c42529655e59, type: 2}
   - {fileID: 11400000, guid: 13df3fcbb6d93b343a6554dac0ecf828, type: 2}
-  - {fileID: 11400000, guid: f525f99c67de4704b94cb90a5a6406d2, type: 2}
+  - {fileID: 11400000, guid: e3adfcda6bbb5bb45b4ccfd672f89b19, type: 2}
   - {fileID: 11400000, guid: 58bdff96a3c213d42927be993e23052d, type: 2}
   - {fileID: 11400000, guid: 2d1c4cca3bd86534c88e63d80fbd336b, type: 2}
   - {fileID: 11400000, guid: 391cb36c999faca45bddd2faad43f679, type: 2}
@@ -17537,10 +17537,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 058696ab7c234cb4fb37651eac0f7f81, type: 2}
   - {fileID: 11400000, guid: c78c8370080a9cb4ba79962baba37aee, type: 2}
   - {fileID: 11400000, guid: afc06ce30a5cc9d45a518b9a78edb388, type: 2}
-  - {fileID: 11400000, guid: d31f91d3f797b3343a20e3fbecc3d09f, type: 2}
+  - {fileID: 11400000, guid: 0a2070e3c22682547bec356112fc671a, type: 2}
   - {fileID: 11400000, guid: 70c0e84603a5c7e4485ba14927f9dcf7, type: 2}
   - {fileID: 11400000, guid: 4f71afb30ce6242479c32ba2a830fdd0, type: 2}
-  - {fileID: 11400000, guid: adc1b31744d9bf94f8102d6f091d293a, type: 2}
+  - {fileID: 11400000, guid: caf5819ee3cb4a6499d30d07170dc977, type: 2}
   - {fileID: 11400000, guid: 2ccc9b6ec489d884588427c0c68af885, type: 2}
   - {fileID: 11400000, guid: b54f5f82755bb66458befd1ef6ac62c0, type: 2}
   - {fileID: 11400000, guid: d20516f439988fc49b9e8dd45c34bd33, type: 2}
@@ -34889,7 +34889,7 @@ MonoBehaviour:
   growthStage2MultiplierDamage: 1.75
   growthStage3MultiplierHealth: 3.25
   growthStage3MultiplierDamage: 2
-  healthAddPerWave: 1.2
+  healthAddPerWave: 0.8
   damageAddPerWave: 0.05
   goldBonusWavePeriod: 0
   goldBonusPerPeriod: 1
@@ -34969,7 +34969,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f722626399b6523409ae568bad117ce0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damageGrowthStartAfterAttacks: 5
+  damageGrowthStartAfterAttacks: 10
   damageGrowthPercentPerAttack: 10
 --- !u!114 &1717298193
 MonoBehaviour:
@@ -44270,6 +44270,10 @@ PrefabInstance:
       propertyPath: healthBarFill
       value: 
       objectReference: {fileID: 1947494121}
+    - target: {fileID: 6206511153299589228, guid: 6b6150d1d8045e5408288fd0d250e315, type: 3}
+      propertyPath: rangedProjectileHitSound
+      value: 
+      objectReference: {fileID: 8300000, guid: 04962fdb6606d1b4c9984ce76abf0a05, type: 3}
     - target: {fileID: 6865799222523052908, guid: 6b6150d1d8045e5408288fd0d250e315, type: 3}
       propertyPath: m_LocalPosition.x
       value: -9.3132e-10

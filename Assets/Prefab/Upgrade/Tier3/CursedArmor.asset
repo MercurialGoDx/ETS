@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f03247d4fa094c588a661e9ab8484f35, type: 3}
   m_Name: CursedArmor
   m_EditorClassIdentifier: 
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: 568f76abb17a4b4459bee742f8b88995, type: 3}
   price: 1500
-  weight: 8
+  weight: 6
   itemTier: 3
   weightIncreasePerPurchase: 0
   maxWeightIncreasePurchases: 0

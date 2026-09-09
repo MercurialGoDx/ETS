@@ -31,7 +31,7 @@ MonoBehaviour:
       m_TableCollectionName: GUID:164770c6fc8794c4ba4db6f8c7e72db3
   nameKey: br_shield_stun.name
   descriptionKey: br_shield_stun.desc
-  firstStunDuration: 5
+  firstStunDuration: 4
   additionalDurationPerStack: 2
   damageMultiplierPerStack: 0.5
   damageWaveSpeed: 20
