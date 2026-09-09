@@ -27895,6 +27895,7 @@ MonoBehaviour:
   entryPrefab: {fileID: 4248988579292721325, guid: bb07aee0db4aa554297f590cdf6f2a3e, type: 3}
   tierHeaderPrefab: {fileID: 6197369965698982421, guid: 1fac7eeb455f77441889832a3e941177, type: 3}
   pauseManager: {fileID: 461532892}
+  journalButton: {fileID: 1180183277}
 --- !u!1001 &1138150373
 PrefabInstance:
   m_ObjectHideFlags: 0

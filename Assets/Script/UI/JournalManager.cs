@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
@@ -31,6 +31,11 @@ public class JournalManager : MonoBehaviour
     [Header("Pause")]
     [SerializeField] private PauseManager pauseManager;
 
+    [Header("Дуэль")]
+    [Tooltip("Кнопка открытия журнала. На время дуэли скрывается: журнал останавливает время, " +
+             "и пока один его листает, второй продолжает играть.")]
+    [SerializeField] private GameObject journalButton;
+
     private readonly List<GameObject> spawnedWeaponItems = new List<GameObject>();
     private readonly List<GameObject> spawnedUpgradeItems = new List<GameObject>();
 
@@ -43,6 +48,10 @@ public class JournalManager : MonoBehaviour
         ItemTier.Tier1, ItemTier.Tier2, ItemTier.Tier3, ItemTier.Tier4
     };
 
+    // Кнопку спрятала именно дуэль. Нужно, чтобы вернуть ровно то, что скрыли сами:
+    // ту же кнопку прячет InventoryUI на время своей панели, и его состояние трогать нельзя.
+    private bool hiddenByDuel;
+
     private void Awake()
     {
         // На старте окно скрыто.
@@ -50,10 +59,40 @@ public class JournalManager : MonoBehaviour
             journalRoot.SetActive(false);
     }
 
+    private void Update()
+    {
+        if (journalButton == null)
+            return;
+
+        bool inDuel = DuelSession.IsSeeded;
+
+        if (inDuel && journalButton.activeSelf)
+        {
+            journalButton.SetActive(false);
+            hiddenByDuel = true;
+
+            // Забег мог начаться с открытым журналом — закрываем, иначе время осталось бы стоять.
+            if (journalRoot != null && journalRoot.activeSelf)
+                Close();
+
+            return;
+        }
+
+        if (!inDuel && hiddenByDuel)
+        {
+            journalButton.SetActive(true);
+            hiddenByDuel = false;
+        }
+    }
+
     // ===================== ОТКРЫТИЕ / ЗАКРЫТИЕ =====================
 
     public void Open()
     {
+        // Вторая защита помимо скрытой кнопки: открыть журнал в дуэли нельзя никаким путём.
+        if (DuelSession.IsSeeded)
+            return;
+
         if (GameStateManager.Instance != null)
         {
             stateBeforeOpen = GameStateManager.Instance.CurrentState;
