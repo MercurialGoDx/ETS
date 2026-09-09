@@ -20917,6 +20917,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: afd6250bcd162ae4db4738bc073fda3f, type: 2}
   - {fileID: 11400000, guid: 7fb87bedef8fe3643b3504a64549599d, type: 2}
   - {fileID: 11400000, guid: bc9866d7772dd0d478a31db23f159196, type: 2}
+  - {fileID: 11400000, guid: 07aa6edcb7b8be145b76f5eaa62b0814, type: 2}
+  - {fileID: 11400000, guid: 88ce1fa9b0b8f1c4e8760ea364946b7a, type: 2}
   rerollPrice: 10
   rerollPriceIncrease: 10
   enableRerollHotkey: 1
