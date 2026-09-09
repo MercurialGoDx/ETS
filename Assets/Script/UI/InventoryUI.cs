@@ -371,7 +371,7 @@ public class InventoryUI : MonoBehaviour
         {
             Row(L("inv.block_chance"), Percent(playerHealth.BlockChance));
             Row(L("inv.damage_reduction"), Percent(playerHealth.DamageReduction));
-            Row(L("inv.spikes_damage"), Num(playerHealth.SpikesCount));
+            Row(L("inv.spikes_damage"), Num(playerHealth.SpikesDamage));
         }
 
         if (towerAttack != null)
@@ -555,7 +555,7 @@ public class InventoryUI : MonoBehaviour
             snapshot.SetStat(BuildStat.HealAmp, playerHealth.HealAmplificationPercent);
             snapshot.SetStat(BuildStat.BlockChance, playerHealth.BlockChance);
             snapshot.SetStat(BuildStat.DamageReduction, playerHealth.DamageReduction);
-            snapshot.SetStat(BuildStat.SpikesDamage, playerHealth.SpikesCount);
+            snapshot.SetStat(BuildStat.SpikesDamage, playerHealth.SpikesDamage);
         }
 
         if (playerShield != null)

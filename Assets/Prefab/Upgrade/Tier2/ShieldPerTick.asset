@@ -9,12 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f88e6af6e55f6f24b8e5e81a3d444452, type: 3}
+  m_Script: {fileID: 11500000, guid: c27422c313552df40af37641a13e294d, type: 3}
   m_Name: ShieldPerTick
   m_EditorClassIdentifier: 
   icon: {fileID: 21300000, guid: 8e83b1b4fcbb78f45ac1f4703be0fd9b, type: 3}
   price: 400
-  weight: 15
+  weight: 20
   itemTier: 2
   weightIncreasePerPurchase: 0
   maxWeightIncreasePurchases: 0
@@ -31,5 +31,6 @@ MonoBehaviour:
       m_TableCollectionName: GUID:164770c6fc8794c4ba4db6f8c7e72db3
   nameKey: shield_per_tick.name
   descriptionKey: shield_per_tick.desc
-  interval: 10
-  valueFlat: 5
+  upgrades:
+  - {fileID: 11400000, guid: adc1b31744d9bf94f8102d6f091d293a, type: 2}
+  - {fileID: 11400000, guid: 211a940cb5572de42bced5ac9ffebdc3, type: 2}

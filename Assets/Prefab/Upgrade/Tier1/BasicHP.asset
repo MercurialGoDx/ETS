@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   icon: {fileID: 21300000, guid: 2636074560be2524593c0ae2376d21f0, type: 3}
   price: 100
-  weight: 25
+  weight: 45
   itemTier: 1
   weightIncreasePerPurchase: 0
   maxWeightIncreasePurchases: 0

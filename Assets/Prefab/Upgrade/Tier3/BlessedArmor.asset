@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5d23e7dd3ba458d81f5bdfd81757e83, type: 3}
   m_Name: BlessedArmor
   m_EditorClassIdentifier: 
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: 9b2b7a4193f06464797c784099bfbed5, type: 3}
   price: 1500
-  weight: 8
+  weight: 6
   itemTier: 3
   weightIncreasePerPurchase: 0
   maxWeightIncreasePurchases: 0
@@ -28,7 +28,7 @@ MonoBehaviour:
   weightIncreaseWeaponPercent: 0
   localizedStringTable:
     m_TableReference:
-      m_TableCollectionName: 
+      m_TableCollectionName: GUID:164770c6fc8794c4ba4db6f8c7e72db3
   nameKey: blessed_armor.name
   descriptionKey: blessed_armor.desc
   startScorePercent: 75

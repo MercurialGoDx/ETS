@@ -9,12 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 413ed8e989c706f47948cfec27499cb6, type: 3}
+  m_Script: {fileID: 11500000, guid: c27422c313552df40af37641a13e294d, type: 3}
   m_Name: Generator
   m_EditorClassIdentifier: 
   icon: {fileID: 21300000, guid: f5b549ca4e7058c4c819bb00afed20c8, type: 3}
   price: 400
-  weight: 15
+  weight: 20
   itemTier: 2
   weightIncreasePerPurchase: 0
   maxWeightIncreasePurchases: 0
@@ -31,5 +31,6 @@ MonoBehaviour:
       m_TableCollectionName: GUID:164770c6fc8794c4ba4db6f8c7e72db3
   nameKey: generator.name
   descriptionKey: generator.desc
-  interval: 20
-  valuePercent: 1
+  upgrades:
+  - {fileID: 11400000, guid: 47696bdc5bbcaa848ae69d1fdb16a580, type: 2}
+  - {fileID: 11400000, guid: 9e06cbdc29a11a34ab236d11ed50b817, type: 2}

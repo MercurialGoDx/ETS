@@ -9,15 +9,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b4deb76f4eafbe64ab57ad244b4e6cc8, type: 3}
-  m_Name: spikeT2 composite 1
+  m_Script: {fileID: 11500000, guid: 0362b1874b9092345a6c273b899e2e4d, type: 3}
+  m_Name: HealOnKill 2 composite
   m_EditorClassIdentifier: 
   icon: {fileID: 0}
   price: 0
   weight: 0
   itemTier: 0
-  weightIncreasePerPurchase: 0
-  maxWeightIncreasePurchases: 0
+  weightIncreasePerPurchase: 2
+  maxWeightIncreasePurchases: 5
   weightDecreaseUpgrades: []
   weightDecreasePercent: 0
   weightIncreaseUpgrades: []
@@ -31,4 +31,4 @@ MonoBehaviour:
       m_TableCollectionName: 
   nameKey: 
   descriptionKey: 
-  valueFlat: 10
+  valueFlat: 100

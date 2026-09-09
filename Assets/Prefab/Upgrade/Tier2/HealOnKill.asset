@@ -9,12 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 750d60213eb590b47811a86e69bfa97f, type: 3}
+  m_Script: {fileID: 11500000, guid: c27422c313552df40af37641a13e294d, type: 3}
   m_Name: HealOnKill
   m_EditorClassIdentifier: 
   icon: {fileID: 21300000, guid: c5c8c47ad84122c4c91d0229f35cd1b0, type: 3}
   price: 400
-  weight: 15
+  weight: 20
   itemTier: 2
   weightIncreasePerPurchase: 0
   maxWeightIncreasePurchases: 0
@@ -31,4 +31,6 @@ MonoBehaviour:
       m_TableCollectionName: GUID:164770c6fc8794c4ba4db6f8c7e72db3
   nameKey: heal_on_kill.name
   descriptionKey: heal_on_kill.desc
-  valueFlat: 15
+  upgrades:
+  - {fileID: 11400000, guid: c946fee137a735a46b86e19abfa6c112, type: 2}
+  - {fileID: 11400000, guid: 807c20d74e97c654e8877bb2c8177af3, type: 2}

@@ -9,12 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a4394a4a4b9815c43896e422c7737c83, type: 3}
+  m_Script: {fileID: 11500000, guid: c27422c313552df40af37641a13e294d, type: 3}
   m_Name: RegenPerTick
   m_EditorClassIdentifier: 
   icon: {fileID: 21300000, guid: c7935be0f2874be4ab40b1cb64ce62c0, type: 3}
   price: 1500
-  weight: 8
+  weight: 6
   itemTier: 3
   weightIncreasePerPurchase: 0
   maxWeightIncreasePurchases: 0
@@ -31,5 +31,6 @@ MonoBehaviour:
       m_TableCollectionName: GUID:164770c6fc8794c4ba4db6f8c7e72db3
   nameKey: regen_per_tick.name
   descriptionKey: regen_per_tick.desc
-  interval: 10
-  valueFlat: 1
+  upgrades:
+  - {fileID: 11400000, guid: d31f91d3f797b3343a20e3fbecc3d09f, type: 2}
+  - {fileID: 11400000, guid: 7f6654ce56643f349940a59b1cf34ad6, type: 2}

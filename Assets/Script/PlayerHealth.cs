@@ -153,12 +153,14 @@ public class PlayerHealth : MonoBehaviour
 
     public float CurrentHealth => currentHealth;
 
-    // Количество шипов для инвентаря: только накопленное плоское значение,
-    // без собственных и общих множителей урона.
+    // Накопленное плоское значение шипов. Оставлено отдельно от боевого урона,
+    // чтобы при необходимости показывать или анализировать именно flat-составляющую.
     public float SpikesCount => spikesBase;
 
-    // Базовый боевой урон шипов с их собственными множителями. Универсальные
-    // оружейные бонусы добавляются через DamageCalculator только при нанесении урона.
+    // Базовый боевой урон шипов, который показывается в инвентаре:
+    // spike flat × spike multiplier × global spike multiplier.
+    // Универсальные бонусы (генератор, global/adaptive damage и т. п.) добавляются
+    // через DamageCalculator только при фактическом нанесении урона.
     public float SpikesDamage => spikesBase * spikesMultiplier * spikesGlobalMultiplier;
     public float SpikesGlobalMultiplier => spikesGlobalMultiplier;
     public float SpikesBossDamageMultiplier => spikesBossDamageMultiplier;
@@ -860,15 +862,19 @@ public class PlayerHealth : MonoBehaviour
 
     public void DealSpikesDamage(Enemy enemy)
     {
-        float damage = damageCalculator.Calculate(new DamageContext
+        var context = new DamageContext
         {
             baseDamage = SpikesDamage,
             damageType = default,
             itemTier = ItemTier.None,
             isSpikes = true
-        });
+        };
 
-        float bossDamageMultiplier = enemy.StatusEffects != null && enemy.StatusEffects.IsBoss
+        DamageCalculationBreakdown breakdown = damageCalculator.CalculateWithBreakdown(context);
+        float damage = breakdown.FinalDamage;
+
+        bool isBoss = enemy.StatusEffects != null && enemy.StatusEffects.IsBoss;
+        float bossDamageMultiplier = isBoss
             ? spikesBossDamageMultiplier
             : 1f;
 
@@ -877,6 +883,25 @@ public class PlayerHealth : MonoBehaviour
             + spikesEnemyAttackStackPercentPerHit * enemyAttackStackCount;
 
         damage *= bossDamageMultiplier * enemyAttackStackMultiplier;
+
+        TowerAttack towerAttack = UpgradesManager.Instance != null
+            ? UpgradesManager.Instance.towerAttack
+            : null;
+        if (towerAttack != null && towerAttack.DebugDamageEnabled)
+        {
+            Debug.Log(
+                $"[DamageDebug] Spikes -> {enemy.name}: " +
+                $"flat={spikesBase:0.###}, " +
+                $"spike=x{spikesMultiplier:0.###}, " +
+                $"global spike=x{spikesGlobalMultiplier:0.###}, " +
+                $"inventory base={SpikesDamage:0.###} | " +
+                $"{breakdown.ToDebugString()} | " +
+                $"boss={isBoss}, boss multiplier=x{bossDamageMultiplier:0.###}, " +
+                $"enemy attacks={enemyAttackStackCount}, " +
+                $"per attack=+{spikesEnemyAttackStackPercentPerHit * 100f:0.##}%, " +
+                $"attack stack=x{enemyAttackStackMultiplier:0.###}, " +
+                $"final={damage:0.###}.");
+        }
 
         DamageStatsManager.Instance?.RegisterDamage(spikesWeapon, damage);
 
