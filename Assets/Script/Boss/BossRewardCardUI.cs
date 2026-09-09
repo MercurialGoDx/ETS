@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Localization.Settings;
@@ -12,6 +12,9 @@ public class BossRewardCardUI : MonoBehaviour
     public Button button;
 
     private UpgradeBaseSO reward;
+
+    /// <summary>Что сейчас лежит на карточке. Нужно автовыбору по истечении таймера.</summary>
+    public UpgradeBaseSO Reward => reward;
     private Action<UpgradeBaseSO> onClick;
 
     public void Bind(UpgradeBaseSO upgrade, Action<UpgradeBaseSO> onClicked)
