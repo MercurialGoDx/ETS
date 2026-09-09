@@ -29,6 +29,9 @@ public class DuelSession : MonoBehaviour
     public const string KeyResult = "duel_result";
     public const string KeyBuild = "duel_build";
 
+    /// <summary>Участник сейчас выбирает награду с босса — второму надо ждать.</summary>
+    public const string KeyPicking = "duel_pick";
+
     public const string StateRunning = "running";
 
     /// <summary>Как часто публикуем свою статистику. Чаще нельзя — Steam режет частые обновления.</summary>
@@ -65,6 +68,14 @@ public class DuelSession : MonoBehaviour
 
     /// <summary>Сколько ждём вернувшегося соперника, прежде чем продолжить без него.</summary>
     public const float DisconnectWaitSeconds = 60f;
+
+    /// <summary>
+    /// Предел ожидания чужого выбора награды. Сам выбор длится ровно
+    /// <see cref="BossRewardUI"/>.duelSelectionSeconds, но флаг снимает клиент соперника,
+    /// и если он упадёт прямо на экране выбора, снять его будет некому. Запас поверх
+    /// десяти секунд закрывает задержку данных лобби.
+    /// </summary>
+    public const float PickWaitLimitSeconds = 20f;
 
     /// <summary>Сколько секунд идёт отсчёт перед стартом.</summary>
     public const float CountdownSeconds = 3f;
@@ -132,6 +143,12 @@ public class DuelSession : MonoBehaviour
     // Матч уже подведён: оба закончили, результаты разосланы. Ждём новой готовности.
     private bool matchFinished;
 
+    // Свой экран выбора награды открыт.
+    private bool localPicking;
+
+    // Ждём, пока соперник выберет награду. Отрицательное — не ждём.
+    private float pickWaitLeft = -1f;
+
     // Свой забег окончен. Свой SteamID сервис наружу не отдаёт, а собственный результат
     // мы и так пишем сами — флага достаточно.
     private bool localFinished;
@@ -141,6 +158,12 @@ public class DuelSession : MonoBehaviour
 
     /// <summary>Сколько осталось ждать соперника. Отрицательное — не ждём.</summary>
     public float WaitLeft => waitLeft;
+
+    /// <summary>Ждём ли мы сейчас, пока соперник выберет награду с босса.</summary>
+    public bool IsWaitingForPick => pickWaitLeft >= 0f;
+
+    /// <summary>Соперник закончил забег, а мы ещё играем.</summary>
+    public event Action OpponentLost;
 
     /// <summary>Выбранный темп матча. До старта его меняет хост.</summary>
     public float SelectedSpeed
@@ -287,6 +310,8 @@ public class DuelSession : MonoBehaviour
             lastSeenState = string.Empty;
             matchFinished = false;
             localFinished = false;
+            localPicking = false;
+            pickWaitLeft = -1f;
 
             if (GameSpeedController.Instance != null)
                 GameSpeedController.Instance.UnlockSpeed();
@@ -312,6 +337,7 @@ public class DuelSession : MonoBehaviour
         if (runStarted)
         {
             WatchLeftToMenu();
+            WatchOpponentPick();
             PublishTick();
             WatchRunEnd();
         }
@@ -372,11 +398,14 @@ public class DuelSession : MonoBehaviour
         isReady = false;
         localFinished = false;
         matchFinished = false;
+        localPicking = false;
+        pickWaitLeft = -1f;
 
         var service = Lobbies.Service;
         service.SetMemberValue(KeyResult, string.Empty);
         service.SetMemberValue(KeyReady, "0");
         service.SetMemberValue(KeyStat, string.Empty);
+        service.SetMemberValue(KeyPicking, "0");
 
         opponentWasAlive = true;
 
@@ -704,6 +733,88 @@ public class DuelSession : MonoBehaviour
     /// дуэли остались бы висеть на обычном забеге, запущенном следующим.
     /// Пропускаем кадры перезагрузки сцены — там меню показано временно.
     /// </summary>
+    /// <summary>
+    /// Победитель решил доиграть в одиночку. Дуэльные правила снимаем: забег продолжается
+    /// обычным — с паузой на Tab и Esc, со свободным выбором темпа. Публиковать статистику
+    /// не перестаём, чтобы выбывший мог досмотреть чужой забег по F3.
+    /// </summary>
+    public void ContinueSolo()
+    {
+        seedActive = false;
+        pickWaitLeft = -1f;
+
+        if (GameSpeedController.Instance != null)
+            GameSpeedController.Instance.UnlockSpeed();
+
+        ResumeAfterWait();
+        Debug.Log("[Duel] Победитель продолжает забег соло.");
+    }
+
+    /// <summary>
+    /// Победитель уходит в меню. Свой забег при этом закончен — иначе матч в лобби остался
+    /// бы висеть незавершённым и второй раз стартовать было бы нечему.
+    /// </summary>
+    public void LeaveToMenu()
+    {
+        OnLocalDeath();
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    /// <summary>
+    /// Экран выбора награды открылся или закрылся. Сообщаем сопернику: пока один выбирает,
+    /// второй стоит на паузе, иначе выбирающий терял бы время забега, а второй — нет.
+    /// </summary>
+    public void SetPicking(bool picking)
+    {
+        if (localPicking == picking)
+            return;
+
+        localPicking = picking;
+
+        if (Lobbies.Service.IsInLobby)
+            Lobbies.Service.SetMemberValue(KeyPicking, picking ? "1" : "0");
+    }
+
+    /// <summary>
+    /// Соперник выбирает награду — держим паузу, пока он не закончит. Предел ожидания нужен
+    /// на случай, если он вылетит прямо на экране выбора: снять флаг тогда будет некому.
+    /// </summary>
+    private void WatchOpponentPick()
+    {
+        bool opponentPicking = !localPicking
+            && TryGetOpponent(out LobbyMember opponent)
+            && Lobbies.Service.GetMemberValue(opponent.Id, KeyPicking) == "1";
+
+        if (opponentPicking)
+        {
+            if (pickWaitLeft < 0f)
+            {
+                pickWaitLeft = PickWaitLimitSeconds;
+                PauseForWait();
+                Debug.Log("[Duel] Соперник выбирает награду — ждём.");
+            }
+            else
+            {
+                pickWaitLeft -= Time.unscaledDeltaTime;
+                if (pickWaitLeft <= 0f)
+                {
+                    pickWaitLeft = -1f;
+                    ResumeAfterWait();
+                    Debug.LogWarning("[Duel] Соперник завис на выборе награды — продолжаем без него.");
+                }
+            }
+
+            return;
+        }
+
+        if (pickWaitLeft < 0f)
+            return;
+
+        pickWaitLeft = -1f;
+        ResumeAfterWait();
+        Debug.Log("[Duel] Соперник выбрал награду, продолжаем.");
+    }
+
     private void WatchLeftToMenu()
     {
         if (localFinished || startDelayFrames >= 0)
@@ -777,7 +888,13 @@ public class DuelSession : MonoBehaviour
             return;
 
         if (opponentWasAlive && !stat.IsAlive)
+        {
             lossBannerLeft = LossBannerSeconds;
+
+            // Экран победы поднимает сцена: у DontDestroyOnLoad-объекта ссылок на UI нет.
+            if (!localFinished)
+                OpponentLost?.Invoke();
+        }
 
         opponentWasAlive = stat.IsAlive;
     }
@@ -820,6 +937,9 @@ public class DuelSession : MonoBehaviour
         if (waitLeft >= 0f)
             DrawWaitBanner();
 
+        if (pickWaitLeft >= 0f)
+            DrawPickBanner();
+
         if (lossBannerLeft > 0f)
             DrawLossBanner();
 
@@ -842,6 +962,14 @@ public class DuelSession : MonoBehaviour
             "Соперник отключился");
         GUI.Label(new Rect(rect.x + 16f, rect.y + 42f, rect.width - 32f, 24f),
             $"Ждём возвращения: {Mathf.CeilToInt(waitLeft)} с");
+    }
+
+    private void DrawPickBanner()
+    {
+        var rect = new Rect(Screen.width * 0.5f - 200f, Screen.height * 0.5f - 26f, 400f, 52f);
+        GUI.Box(rect, string.Empty);
+        GUI.Label(new Rect(rect.x + 16f, rect.y + 16f, rect.width - 32f, 24f),
+            "Соперник выбирает награду с босса…");
     }
 
     private void DrawLossBanner()

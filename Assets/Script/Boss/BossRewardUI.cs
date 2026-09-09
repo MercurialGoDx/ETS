@@ -102,6 +102,10 @@ public class BossRewardUI : MonoBehaviour
         isResolvingSelection = false;
         IsSelectionOpen = true;
 
+        // Пока один выбирает, второй ждёт: иначе выбирающий терял бы время забега, а
+        // второй продолжал бы играть, и матч разъехался бы по времени.
+        DuelSession.Instance?.SetPicking(true);
+
         if (panelRoot != null) panelRoot.SetActive(true);
         SetPanelVisible(true);
 
@@ -292,6 +296,7 @@ public class BossRewardUI : MonoBehaviour
 
         selectionTimeLeft = -1f;
         if (timerText != null) timerText.gameObject.SetActive(false);
+        DuelSession.Instance?.SetPicking(false);
 
         if (panelRoot != null) panelRoot.SetActive(false);
         Time.timeScale = prevTimeScale;
