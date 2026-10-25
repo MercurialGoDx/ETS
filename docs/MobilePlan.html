@@ -1,0 +1,396 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ETS Android-порт</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600&family=Unbounded:wght@500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: шапка со сводкой → дорожка фаз 0–12 (как прогресс сборки) → фазы-аккордеоны слева, решения/риски справа */
+:root {
+  --bg: #eef1f4; --surface: #ffffff; --surface-2: #f6f8fa; --fg: #16202b; --muted: #5a6877;
+  --line: #d8dfe6; --accent: #0d7480; --accent-soft: #d5eef0; --done: #2e8a4f; --done-soft: #dcf0e2;
+  --verify: #8a5a00; --code-bg: #e8edf2;
+  --f-display: "Unbounded", "Golos Text", system-ui, sans-serif;
+  --f-body: "Golos Text", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --f-mono: "JetBrains Mono", ui-monospace, "Cascadia Code", Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #0f151b; --surface: #17202a; --surface-2: #1c2632; --fg: #e4eaf0; --muted: #93a2b2;
+  --line: #2a3644; --accent: #4cc2cc; --accent-soft: #143a40; --done: #5cc483; --done-soft: #17362a;
+  --verify: #e0b45a; --code-bg: #243142; color-scheme: dark; } }
+:root[data-theme="dark"] {
+  --bg: #0f151b; --surface: #17202a; --surface-2: #1c2632; --fg: #e4eaf0; --muted: #93a2b2;
+  --line: #2a3644; --accent: #4cc2cc; --accent-soft: #143a40; --done: #5cc483; --done-soft: #17362a;
+  --verify: #e0b45a; --code-bg: #243142; color-scheme: dark; }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--fg); font: 15px/1.55 var(--f-body);
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 28px 48px; }
+.wrap { max-width: 1240px; margin: 0 auto; display: grid; gap: 22px; }
+h1, h2 { font-family: var(--f-display); text-wrap: balance; margin: 0; }
+h1 { overflow-wrap: anywhere; hyphens: auto; font-size: clamp(20px, 2.4vw, 26px); font-weight: 700; line-height: 1.2; }
+h2 { font-size: 15px; font-weight: 500; letter-spacing: .02em; }
+code { font: 0.86em var(--f-mono); background: var(--code-bg); padding: 1px 5px; border-radius: 4px; overflow-wrap: anywhere; }
+.eyebrow { font: 500 11px var(--f-mono); letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+
+/* шапка */
+header { display: grid; gap: 14px; }
+.status { color: var(--muted); max-width: 80ch; margin: 0; }
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(165px, 100%), 1fr)); gap: 12px; }
+.stat { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; display: grid; gap: 4px; min-width: 0; }
+.stat b { overflow-wrap: anywhere; hyphens: auto;  font: 600 22px var(--f-body); font-variant-numeric: tabular-nums; }
+.stat .big { font-family: var(--f-display); font-size: 26px; color: var(--accent); }
+.stat span:last-child { color: var(--muted); font-size: 13px; }
+.meter { height: 6px; background: var(--line); border-radius: 3px; overflow: hidden; }
+.meter > span { display: block; height: 100%; background: var(--accent); }
+
+/* дорожка фаз */
+.track-wrap { overflow-x: auto; padding-bottom: 4px; }
+.track { display: grid; grid-template-columns: repeat(auto-fill, minmax(118px, 1fr)); gap: 6px; }
+.stop { min-width: 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: 6px; padding: 10px; border-radius: 8px; text-decoration: none; color: var(--fg);
+  background: var(--surface); border: 1px solid var(--line); align-content: start; }
+.stop:hover, .stop:focus-visible { border-color: var(--accent); outline: none; }
+.stop-n { font: 700 18px var(--f-display); color: var(--muted); }
+.stop-name { font-size: 11.5px; line-height: 1.3; color: var(--muted); hyphens: auto; overflow-wrap: break-word; }
+.stop-name code { font-size: 11px; padding: 0 3px; }
+.stop-bar, .ph-bar { height: 4px; background: var(--line); border-radius: 2px; overflow: hidden; }
+.stop-bar > span, .ph-bar > span { display: block; height: 100%; background: var(--done); }
+.stop.done { background: var(--done-soft); border-color: transparent; }
+.stop.done .stop-n { color: var(--done); }
+.stop.current { border: 2px solid var(--accent); background: var(--accent-soft); }
+.stop.current .stop-n, .stop.current .stop-name { color: var(--fg); }
+
+/* основная сетка */
+.main { display: grid; grid-template-columns: minmax(0, 1fr) 380px; gap: 22px; align-items: start; }
+@media (max-width: 980px) { .main { grid-template-columns: minmax(0, 1fr); } }
+.col { display: grid; gap: 10px; min-width: 0; }
+.toolbar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: space-between; }
+.toolbar .btns { display: flex; gap: 8px; flex-wrap: wrap; }
+button { font: 500 13px var(--f-body); color: var(--fg); background: var(--surface); border: 1px solid var(--line);
+  border-radius: 6px; padding: 6px 12px; cursor: pointer; }
+button:hover { border-color: var(--accent); }
+button:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+button[aria-pressed="true"] { background: var(--accent-soft); border-color: var(--accent); }
+
+/* фазы */
+.phase { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; scroll-margin-top: 16px; }
+.phase.current { border: 2px solid var(--accent); }
+.phase summary { list-style: none; cursor: pointer; display: grid; grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 14px; align-items: center; padding: 14px 16px; }
+.phase summary::-webkit-details-marker { display: none; }
+.ph-n { font: 700 20px var(--f-display); color: var(--muted); font-variant-numeric: tabular-nums; }
+.phase.current .ph-n { color: var(--accent); }
+.phase.done .ph-n { color: var(--done); }
+.ph-title { font-weight: 600; font-size: 16px; min-width: 0; }
+.ph-meta { display: grid; grid-template-columns: auto auto 80px; gap: 10px; align-items: center; }
+.ph-count { font: 500 13px var(--f-mono); color: var(--muted); font-variant-numeric: tabular-nums; min-width: 42px; text-align: right; }
+@media (max-width: 560px) { .phase summary { grid-template-columns: auto minmax(0, 1fr); }
+  .ph-meta { grid-column: 1 / -1; grid-template-columns: auto auto minmax(60px, 1fr); } }
+.chip { font: 500 11px var(--f-mono); letter-spacing: .06em; text-transform: uppercase; padding: 3px 8px; border-radius: 999px;
+  background: var(--surface-2); color: var(--muted); border: 1px solid var(--line); white-space: nowrap; }
+.chip.current { background: var(--accent); color: var(--surface); border-color: var(--accent); }
+.chip.done { background: var(--done-soft); color: var(--done); border-color: transparent; }
+.ph-body { padding: 0 16px 16px 16px; border-top: 1px solid var(--line); display: grid; gap: 8px; padding-top: 12px; }
+.list { list-style: none; margin: 0; padding: 0; display: grid; gap: 7px; }
+.item { display: grid; grid-template-columns: 18px minmax(0, 1fr); gap: 10px; align-items: start; }
+.box { width: 16px; height: 16px; margin-top: 3px; border: 1.5px solid var(--muted); border-radius: 4px; position: relative; }
+.item.done .box { background: var(--done); border-color: var(--done); }
+.item.done .box::after { content: ""; position: absolute; left: 4.5px; top: 1px; width: 4px; height: 8px;
+  border: solid var(--surface); border-width: 0 2px 2px 0; transform: rotate(45deg); }
+.item.done .txt { color: var(--muted); text-decoration: line-through; text-decoration-color: var(--line); }
+.item.verify .txt { color: var(--verify); font-weight: 500; }
+.item.verify .box { border-color: var(--verify); border-style: dashed; }
+.self { font: 500 10px var(--f-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--verify);
+  border: 1px solid currentColor; border-radius: 4px; padding: 1px 6px; margin-left: 6px; vertical-align: 2px; white-space: nowrap; }
+.self-dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--verify); margin-left: 6px; vertical-align: 4px; }
+.dot { width: 6px; height: 6px; border-radius: 50%; background: var(--muted); margin: 9px 0 0 5px; }
+.txt { min-width: 0; overflow-wrap: anywhere; }
+.sub { margin: 8px 0 0; font: 500 11px var(--f-mono); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+.note { margin: 0; padding: 8px 12px; background: var(--surface-2); border-radius: 6px; color: var(--muted); font-size: 14px; }
+.para { margin: 0; color: var(--muted); font-size: 14px; }
+body.hide-done .phase.done { display: none; }
+.decisions .item.done .txt { color: var(--fg); text-decoration: none; }
+
+/* правая колонка */
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 16px; display: grid; gap: 12px; min-width: 0; font-size: 14px; }
+.panel.risks .dot { background: var(--verify); }
+details.more > summary { cursor: pointer; color: var(--muted); font-size: 13px; padding: 4px 0; }
+footer { color: var(--muted); font-size: 12px; }
+@media (prefers-reduced-motion: no-preference) { .stop, button { transition: border-color .15s; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <span class="eyebrow">Endless Tower Survivors · план разработки</span>
+    <h1>Порт на Android (одиночная игра + онлайн-лидерборд) + техстек (VContainer, UniTask, Addressables, пулинг, DOTween, Firebase)</h1>
+    <p class="status"><strong>план, реализация не начата</strong> (2026-09-29). Перед стартом каждой фазы — сверка с пользователем.</p>
+    <p class="status">Стратегия: <strong>рефакторинг текущего проекта</strong>, не новый проект. Один проект — два таргета (Windows/Steam и Mobile), платформенное — через Build Profiles + scripting defines + platform overrides.</p>
+    <div class="stats">
+      <div class="stat"><span class="eyebrow">Общий прогресс</span><b class="big">1%</b>
+        <div class="meter"><span style="width:1%"></span></div><span>1 из 107 пунктов</span></div>
+      <div class="stat"><span class="eyebrow">Текущий этап</span><b>Фаза 0 — Подготовка и замер базовой линии</b><span>первая незавершённая фаза</span></div>
+      <div class="stat"><span class="eyebrow">Фазы</span><b>0 / 14</b><span>завершено</span></div>
+      <div class="stat"><span class="eyebrow">Решения</span><b>11 / 11</b><span>принято</span></div>
+    </div>
+  </header>
+
+  <nav class="track-wrap" aria-label="Фазы">
+    <div class="track">
+<a class="stop current" href="#phase-0" title="Фаза 0 — Подготовка и замер базовой линии: 1/7"><span class="stop-n">0<i class="self-dot" title="Делаешь сам"></i></span><span class="stop-name">Подготовка и замер базовой линии</span><span class="stop-bar"><span style="width:14%"></span></span></a>
+<a class="stop todo" href="#phase-1" title="Фаза 1 — Пакеты и структура сборок: 0/6"><span class="stop-n">1</span><span class="stop-name">Пакеты и структура сборок</span><span class="stop-bar"><span style="width:0%"></span></span></a>
+<a class="stop todo" href="#phase-2" title="Фаза 2 — DI на VContainer (замена синглтонов): 0/10"><span class="stop-n">2<i class="self-dot" title="Делаешь сам"></i></span><span class="stop-name">DI на VContainer</span><span class="stop-bar"><span style="width:0%"></span></span></a>
+<a class="stop todo" href="#phase-3" title="Фаза 3 — UniTask (асинхронность): 0/5"><span class="stop-n">3<i class="self-dot" title="Делаешь сам"></i></span><span class="stop-name">UniTask</span><span class="stop-bar"><span style="width:0%"></span></span></a>
+<a class="stop todo" href="#phase-4" title="Фаза 4 — Пулинг с профилированием: 0/9"><span class="stop-n">4<i class="self-dot" title="Делаешь сам"></i></span><span class="stop-name">Пулинг с профилированием</span><span class="stop-bar"><span style="width:0%"></span></span></a>
+<a class="stop todo" href="#phase-5" title="Фаза 5 — CPU-оптимизация симуляции (Jobs/Burst — по замерам): 0/13"><span class="stop-n">5<i class="self-dot" title="Делаешь сам"></i></span><span class="stop-name">CPU-оптимизация симуляции</span><span class="stop-bar"><span style="width:0%"></span></span></a>
+<a class="stop todo" href="#phase-6" title="Фаза 6 — Addressables: 0/7"><span class="stop-n">6<i class="self-dot" title="Делаешь сам"></i></span><span class="stop-name">Addressables</span><span class="stop-bar"><span style="width:0%"></span></span></a>
+<a class="stop todo" href="#phase-7" title="Фаза 7 — Ввод (New Input System): 0/5"><span class="stop-n">7</span><span class="stop-name">Ввод</span><span class="stop-bar"><span style="width:0%"></span></span></a>
+<a class="stop todo" href="#phase-8" title="Фаза 8 — Мобильный UI/UX + DOTween: 0/9"><span class="stop-n">8</span><span class="stop-name">Мобильный UI/UX + DOTween</span><span class="stop-bar"><span style="width:0%"></span></span></a>
+<a class="stop todo" href="#phase-9" title="Фаза 9 — Мобильная производительность и ассеты: 0/7"><span class="stop-n">9</span><span class="stop-name">Мобильная производительность и ассеты</span><span class="stop-bar"><span style="width:0%"></span></span></a>
+<a class="stop todo" href="#phase-10" title="Фаза 10 — Сохранения и жизненный цикл приложения: 0/4"><span class="stop-n">10</span><span class="stop-name">Сохранения и жизненный цикл приложения</span><span class="stop-bar"><span style="width:0%"></span></span></a>
+<a class="stop todo" href="#phase-11" title="Фаза 11 — Firebase: 0/9"><span class="stop-n">11<i class="self-dot" title="Делаешь сам"></i></span><span class="stop-name">Firebase</span><span class="stop-bar"><span style="width:0%"></span></span></a>
+<a class="stop todo" href="#phase-12" title="Фаза 12 — Онлайн-лидерборд (Firestore): 0/12"><span class="stop-n">12<i class="self-dot" title="Делаешь сам"></i></span><span class="stop-name">Онлайн-лидерборд</span><span class="stop-bar"><span style="width:0%"></span></span></a>
+<a class="stop todo" href="#phase-13" title="Фаза 13 — Релиз Android: 0/4"><span class="stop-n">13</span><span class="stop-name">Релиз Android</span><span class="stop-bar"><span style="width:0%"></span></span></a>
+    </div>
+  </nav>
+
+  <div class="main">
+    <div class="col">
+      <div class="toolbar">
+        <h2>Фазы</h2>
+        <div class="btns">
+          <button type="button" id="btn-expand">Развернуть все</button>
+          <button type="button" id="btn-collapse">Свернуть все</button>
+          <button type="button" id="btn-hide" aria-pressed="false">Скрыть завершённые</button>
+        </div>
+      </div>
+<details class="phase current" id="phase-0" open><summary><span class="ph-n">00</span><span class="ph-title">Подготовка и замер базовой линии <span class="self">делаешь сам</span></span><span class="ph-meta"><span class="chip current">В работе</span><span class="ph-count">1/7</span><span class="ph-bar"><span style="width:14%"></span></span></span></summary><div class="ph-body"><p class="note"><strong>Делаешь сам — профилирование:</strong> baseline-замеры (Profiler, Memory Profiler, Frame Debugger на устройстве). Сборку и чистку Claude может сделать сам.</p>
+<ul class="list">
+<li class="item done"><span class="sr">выполнено: </span><span class="box" aria-hidden="true"></span><span class="txt">Ветка <code>mobile</code> от <code>main</code> (2026-10-25); <code>main</code> заморожена, дальше всё мержится в <code>mobile</code></span></li>
+<li class="item"><span class="sr">не выполнено: </span><span class="box" aria-hidden="true"></span><span class="txt">Удалить мёртвое: <code>Assets/Scenes/SampleScene</code>, <code>Script/TempScript</code> (проверить ссылки), Addressables-группы zh/fr/ja/ko</span></li>
+<li class="item"><span class="sr">не выполнено: </span><span class="box" aria-hidden="true"></span><span class="txt">Build Profile <strong>Android</strong>: IL2CPP, ARM64, min API 24+, target API — актуальный для Google Play, AAB, Mobile URP asset + Quality <code>Mobile</code>, define <code>DISABLESTEAMWORKS;PLATFORM_MOBILE</code></span></li>
+<li class="item"><span class="sr">не выполнено: </span><span class="box" aria-hidden="true"></span><span class="txt">Первая сборка «как есть» на реальный телефон (слабый/средний Android) — убедиться, что запускается</span></li>
+<li class="item"><span class="sr">не выполнено: </span><span class="box" aria-hidden="true"></span><span class="txt"><strong>Baseline профилинг</strong> (PC + телефон), записать цифры сюда: FPS/frametime на 1/3 скорости в поздней волне, GC Alloc/кадр, количество Instantiate/Destroy в секунду, draw calls/SetPass, память, размер AAB</span></li>
+<li class="item"><span class="sr">не выполнено: </span><span class="box" aria-hidden="true"></span><span class="txt">Тестовый сценарий для замеров: фиксированный seed/чит-сейв «поздняя волна + босс» (через <code>DebugCheats</code>)</span></li>
+<li class="item"><span class="sr">не выполнено: </span><span class="box" aria-hidden="true"></span><span class="txt"><strong>Замер нагрузки симуляции</strong> (на телефоне, поздняя волна, x1 и x3): максимум одновременно живых врагов и снарядов; мс/кадр по категориям — скрипты врагов (<code>Enemy.Update</code>), Animator, физика (<code>FixedUpdate</code> на x3 вызывается втрое чаще), рендер (скиннинг, частицы, overdraw). Это вход для решения в Фазе 5</span></li>
+</ul></div></details>
+<details class="phase todo" id="phase-1"><summary><span class="ph-n">01</span><span class="ph-title">Пакеты и структура сборок</span><span class="ph-meta"><span class="chip todo">Впереди</span><span class="ph-count">0/6</span><span class="ph-bar"><span style="width:0%"></span></span></span></summary><div class="ph-body"><ul class="list">
+<li class="item"><span class="sr">не выполнено: </span><span class="box" aria-hidden="true"></span><span class="txt">Пакеты: <strong>UniTask</strong> (git/OpenUPM), <strong>VContainer</strong> (git/OpenUPM), <strong>DOTween</strong> (Asset Store / OpenUPM <code>com.demigiant.dotween</code>) + DOTween Setup (модули UI/TMP), <strong>Addressables</strong> — явно в manifest</span></li>
+<li class="item"><span class="sr">не выполнено: </span><span class="box" aria-hidden="true"></span><span class="txt">Defines: <code>VCONTAINER_UNITASK_INTEGRATION</code>, <code>UNITASK_DOTWEEN_SUPPORT</code></span></li>
+<li class="item"><span class="sr">не выполнено: </span><span class="box" aria-hidden="true"></span><span class="txt">asmdef-разбиение (осторожно: из asmdef нельзя ссылаться на <code>Assembly-CSharp</code>, проверить ассеты AssetStore со скриптами): <code>ETS.Core</code> (сервисы/интерфейсы/данные), <code>ETS.Gameplay</code>, <code>ETS.UI</code>, <code>ETS.Platform.Steam</code>, <code>ETS.Platform.Mobile</code>, <code>ETS.Editor</code>, <code>ETS.Tests</code></span></li>
+<li class="item"><span class="sr">не выполнено: </span><span class="box" aria-hidden="true"></span><span class="txt">Минимальный EditMode-тест-проект (баланс-формулы, экономика) — страховка для рефакторинга</span></li>
+<li class="item"><span class="sr">не выполнено: </span><span class="box" aria-hidden="true"></span><span class="txt"><code>link.xml</code> для IL2CPP stripping (VContainer/Firebase/Localization)</span></li>
+<li class="item verify"><span class="sr">не выполнено: </span><span class="box" aria-hidden="true"></span><span class="txt">Проверка: компиляция чистая, игра на ПК без изменений поведения</span></li>
+</ul></div></details>
+<details class="phase todo" id="phase-2"><summary><span class="ph-n">02</span><span class="ph-title">DI на VContainer (замена синглтонов) <span class="self">делаешь сам</span></span><span class="ph-meta"><span class="chip todo">Впереди</span><span class="ph-count">0/10</span><span class="ph-bar"><span style="width:0%"></span></span></span></summary><div class="ph-body"><p class="note"><strong>Делаешь сам — VContainer.</strong> Перед стартом: зачем DI вместо синглтонов, Composition Root, lifetime-ы, тестируемость.</p>
+<ul class="list">
+<li class="item"><span class="sr">не выполнено: </span><span class="box" aria-hidden="true"></span><span class="txt"><code>RootLifetimeScope</code> (проект, DontDestroyOnLoad): конфиги, Save, Audio, Analytics, Platform-сервисы</span></li>
+<li class="item"><span class="sr">не выполнено: </span><span class="box" aria-hidden="true"></span><span class="txt"><code>GameLifetimeScope</code> в <code>MainScene</code>: GameState, Gold, Enemy, Upgrade, Speed, Pool, DamageStats, Shop…</span></li>
+<li class="item"><span class="sr">не выполнено: </span><span class="box" aria-hidden="true"></span><span class="txt">Выделить интерфейсы ключевых сервисов (<code>IGoldService</code>, <code>IGameStateService</code>, <code>ISpeedService</code>, <code>IPoolService</code>, <code>IAudioService</code>, <code>ISaveService</code>, <code>ILeaderboardService</code> — уже есть, <code>IAchievementService</code>, <code>IInputService</code>)</span></li>
+<li class="item"><span class="sr">не выполнено: </span><span class="box" aria-hidden="true"></span><span class="txt">Миграция по одному синглтону: регистрация (<code>RegisterComponentInHierarchy</code> / <code>Register&lt;T&gt;</code>), замена <code>.Instance</code> на <code>[Inject]</code>/конструктор; временный <code>Instance</code> как <code>[Obsolete]</code>-фасад до полного перевода</span></li>
+<li class="item"><span class="sr">не выполнено: </span><span class="box" aria-hidden="true"></span><span class="txt">Порядок: листовые сервисы (Speed, Gold, Audio, DamageStats) → Enemy/Pool → GameState/Upgrade/PlayerHealth</span></li>
+<li class="item"><span class="sr">не выполнено: </span><span class="box" aria-hidden="true"></span><span class="txt">Спавн через фабрики (<code>IObjectResolver.Instantiate</code> только для UI/редких объектов; враги/пули — через пул, Фаза 4)</span></li>
+<li class="item"><span class="sr">не выполнено: </span><span class="box" aria-hidden="true"></span><span class="txt">ScriptableObject-апгрейды (<code>UpgradeSO</code>): зависимости передаются через <code>context</code>, не через инъекцию в SO</span></li>
+<li class="item"><span class="sr">не выполнено: </span><span class="box" aria-hidden="true"></span><span class="txt">Заменить <code>FindObjectOfType</code>/<code>GameObject.Find</code> (~20 мест) на инъекцию</span></li>
+<li class="item"><span class="sr">не выполнено: </span><span class="box" aria-hidden="true"></span><span class="txt">Цель: 0 <code>static Instance</code> в игровом коде (кроме <code>CrashReporter</code> и bootstrap)</span></li>
+<li class="item verify"><span class="sr">не выполнено: </span><span class="box" aria-hidden="true"></span><span class="txt">Проверка: полный забег на ПК до босса без ошибок; тесты зелёные</span></li>
+</ul></div></details>
+<details class="phase todo" id="phase-3"><summary><span class="ph-n">03</span><span class="ph-title">UniTask (асинхронность) <span class="self">делаешь сам</span></span><span class="ph-meta"><span class="chip todo">Впереди</span><span class="ph-count">0/5</span><span class="ph-bar"><span style="width:0%"></span></span></span></summary><div class="ph-body"><p class="note"><strong>Делаешь сам — UniTask.</strong> Перед стартом: чем async лучше корутин, отмена через CancellationToken, PlayerLoop, отсутствие аллокаций.</p>
+<ul class="list">
+<li class="item"><span class="sr">не выполнено: </span><span class="box" aria-hidden="true"></span><span class="txt">Перевести ~13 корутин на <code>async UniTaskVoid/UniTask</code> с <code>destroyCancellationToken</code></span></li>
+<li class="item"><span class="sr">не выполнено: </span><span class="box" aria-hidden="true"></span><span class="txt">Учесть скорость игры/паузу: игровые задержки — <code>DelayType.DeltaTime</code> (зависят от timeScale), UI/меню — <code>ignoreTimeScale: true</code>/<code>DelayType.UnscaledDeltaTime</code></span></li>
+<li class="item"><span class="sr">не выполнено: </span><span class="box" aria-hidden="true"></span><span class="txt">Bootstrap-загрузка (конфиги, Addressables, Firebase init, локализация) — последовательный async pipeline с экраном загрузки (VContainer <code>IAsyncStartable</code>)</span></li>
+<li class="item"><span class="sr">не выполнено: </span><span class="box" aria-hidden="true"></span><span class="txt">Правило: без <code>async void</code>; все подписки/таски отменяются при выгрузке сцены</span></li>
+<li class="item verify"><span class="sr">не выполнено: </span><span class="box" aria-hidden="true"></span><span class="txt">Проверка: пауза/x3/рестарт забега не ломают таймеры; нет утечек тасков (UniTask Tracker window)</span></li>
+</ul></div></details>
+<details class="phase todo" id="phase-4"><summary><span class="ph-n">04</span><span class="ph-title">Пулинг с профилированием <span class="self">делаешь сам</span></span><span class="ph-meta"><span class="chip todo">Впереди</span><span class="ph-count">0/9</span><span class="ph-bar"><span style="width:0%"></span></span></span></summary><div class="ph-body"><p class="note"><strong>Делаешь сам — пулинг и профилирование.</strong> Перед стартом: откуда берутся GC-спайки, как пул их убирает, ProfilerMarker/ProfilerCounter.</p>
+<ul class="list">
+<li class="item"><span class="sr">не выполнено: </span><span class="box" aria-hidden="true"></span><span class="txt">Единый <code>IPoolService</code> (на базе <code>UnityEngine.Pool.ObjectPool&lt;T&gt;</code> или доработанного своего), ключ — prefab / <code>AssetReference</code>; <code>IPoolable { OnSpawn(); OnDespawn(); }</code> для сброса состояния</span></li>
+<li class="item"><span class="sr">не выполнено: </span><span class="box" aria-hidden="true"></span><span class="txt">Перевести на пул все горячие <code>Instantiate/Destroy</code>: VFX попаданий (<code>OnHitVFX</code>, <code>LightingChainBullet</code>, <code>AuraDamageZone</code>, <code>RandomSpawnPortal</code>), <code>EnemyRangedAttack</code>-снаряды, визуалы статусов (<code>EnemyStatusEffectController</code>, <code>EnemyEffectManager</code>, <code>RegenAuraDamage</code>), враги, золото/текст урона</span></li>
+<li class="item"><span class="sr">не выполнено: </span><span class="box" aria-hidden="true"></span><span class="txt">Авто-возврат для ParticleSystem (<code>stopAction = Callback</code>) вместо <code>Destroy(t)</code></span></li>
+<li class="item"><span class="sr">не выполнено: </span><span class="box" aria-hidden="true"></span><span class="txt">Prewarm по волне/боссу (данные из конфига), лимиты размера пула, политика при переполнении</span></li>
+<li class="item"><span class="sr">не выполнено: </span><span class="box" aria-hidden="true"></span><span class="txt"><strong>Профилирование</strong>: <code>ProfilerMarker</code> на Spawn/Despawn, <code>ProfilerCounter</code>-ы (active/inactive/created/misses по каждому пулу) — видны в Profiler и через <code>ProfilerRecorder</code> в релизной сборке</span></li>
+<li class="item"><span class="sr">не выполнено: </span><span class="box" aria-hidden="true"></span><span class="txt">Debug-оверлей (dev-build/чит): таблица пулов, GC Alloc/кадр, FPS</span></li>
+<li class="item"><span class="sr">не выполнено: </span><span class="box" aria-hidden="true"></span><span class="txt">Убрать аллокации в гейм-цикле: <code>OverlapSphere</code> → <code>NonAlloc</code>, <code>GetComponent</code> в Update → кеш, LINQ/boxing в таргетинге <code>TowerAttack</code>, строковые форматирования в UI каждый кадр</span></li>
+<li class="item"><span class="sr">не выполнено: </span><span class="box" aria-hidden="true"></span><span class="txt">Цель: <strong>0 B GC Alloc/кадр</strong> в бою (кроме UI-событий), 0 Instantiate в steady-state</span></li>
+<li class="item verify"><span class="sr">не выполнено: </span><span class="box" aria-hidden="true"></span><span class="txt">Проверка: сравнение с baseline Фазы 0 (записать цифры до/после)</span></li>
+</ul></div></details>
+<details class="phase todo" id="phase-5"><summary><span class="ph-n">05</span><span class="ph-title">CPU-оптимизация симуляции (Jobs/Burst — по замерам) <span class="self">делаешь сам</span></span><span class="ph-meta"><span class="chip todo">Впереди</span><span class="ph-count">0/13</span><span class="ph-bar"><span style="width:0%"></span></span></span></summary><div class="ph-body"><p class="note"><strong>Делаешь сам — профилирование и Jobs/Burst.</strong> Шаги идут по возрастанию цены. Каждый следующий — только если профайлер на целевом телефоне после предыдущего всё ещё показывает узкое место. Полный DOTS/ECS — <strong>не делаем</strong> (переписывание врагов, оружий и эффектов статусов = новый проект).</p>
+<h4 class="sub">Шаг 1 — дёшево, делаем всегда</h4>
+<ul class="list">
+<li class="item"><span class="sr">не выполнено: </span><span class="box" aria-hidden="true"></span><span class="txt"><strong>Update-менеджер</strong>: один <code>ISimulationTick</code> (из DI) обходит массивы активных врагов/снарядов вместо сотен <code>Update()</code> (убирает накладные расходы native→managed вызовов). Регистрация — через пул (Фаза 4)</span></li>
+<li class="item"><span class="sr">не выполнено: </span><span class="box" aria-hidden="true"></span><span class="txt"><strong>Высота рельефа без луча</strong>: <code>SnapToGround</code> (<code>Enemy.cs</code>) — <code>Terrain.SampleHeight</code> или запечённая карта высот вместо <code>Physics.Raycast</code> на каждого врага каждый кадр</span></li>
+<li class="item"><span class="sr">не выполнено: </span><span class="box" aria-hidden="true"></span><span class="txt">Враги как кинематические тела, которые двигаются через transform: проверить цену синхронизации трансформов с физикой (<code>autoSyncTransforms</code>, коллайдеры) — особенно на x3</span></li>
+<li class="item verify"><span class="sr">не выполнено: </span><span class="box" aria-hidden="true"></span><span class="txt">Проверка: мс/кадр скриптов врагов до/после в тестовом сценарии</span></li>
+</ul>
+<h4 class="sub">Шаг 2 — анимация врагов (если узкое место — Animator/скиннинг)</h4>
+<ul class="list">
+<li class="item"><span class="sr">не выполнено: </span><span class="box" aria-hidden="true"></span><span class="txt">Массовые враги без Animator: анимации запекаются в текстуру (VAT), проигрываются шейдером + GPU instancing; Animator остаётся только у боссов</span></li>
+<li class="item verify"><span class="sr">не выполнено: </span><span class="box" aria-hidden="true"></span><span class="txt">Проверка: мс Animator + рендер скиннинга до/после, draw calls</span></li>
+</ul>
+<h4 class="sub">Шаг 3 — Jobs + Burst (если скрипты врагов всё ещё &gt; ~3–4 мс/кадр на целевом телефоне)</h4>
+<ul class="list">
+<li class="item"><span class="sr">не выполнено: </span><span class="box" aria-hidden="true"></span><span class="txt">Пакеты <code>com.unity.burst</code>, <code>com.unity.collections</code>, <code>com.unity.mathematics</code>; проверить Burst в IL2CPP ARM64-сборке</span></li>
+<li class="item"><span class="sr">не выполнено: </span><span class="box" aria-hidden="true"></span><span class="txt">Данные врагов (позиция, скорость, множители замедления, состояние) — в <code>NativeArray</code>, владелец — менеджер врагов; MonoBehaviour остаётся «представлением»</span></li>
+<li class="item"><span class="sr">не выполнено: </span><span class="box" aria-hidden="true"></span><span class="txt">Движение и разворот — <code>IJobParallelForTransform</code> + <code>TransformAccessArray</code>; привязка к земле — карта высот в job или пачка <code>RaycastCommand</code></span></li>
+<li class="item"><span class="sr">не выполнено: </span><span class="box" aria-hidden="true"></span><span class="txt">Движение массовых снарядов (ракеты, отскоки) — тот же подход, если их сотни</span></li>
+<li class="item"><span class="sr">не выполнено: </span><span class="box" aria-hidden="true"></span><span class="txt">(При тысячах врагов) пространственная сетка (spatial hash) в job для поиска целей и AoE вместо перебора <code>EnemyManager.GetEnemiesInRange</code></span></li>
+<li class="item"><span class="sr">не выполнено: </span><span class="box" aria-hidden="true"></span><span class="txt">Один sync point за кадр (Schedule в начале кадра, Complete перед использованием), без <code>Complete()</code> сразу после Schedule</span></li>
+<li class="item verify"><span class="sr">не выполнено: </span><span class="box" aria-hidden="true"></span><span class="txt">Проверка: мс/кадр до/после, загрузка ядер в Profiler (Timeline), отсутствие регрессий геймплея (отбрасывание, замедление, оглушение, ледяная тюрьма)</span></li>
+</ul></div></details>
+<details class="phase todo" id="phase-6"><summary><span class="ph-n">06</span><span class="ph-title">Addressables <span class="self">делаешь сам</span></span><span class="ph-meta"><span class="chip todo">Впереди</span><span class="ph-count">0/7</span><span class="ph-bar"><span style="width:0%"></span></span></span></summary><div class="ph-body"><p class="note"><strong>Делаешь сам — Addressables.</strong> Перед стартом: чем лучше Resources и прямых ссылок, группы, handle/Release, память.</p>
+<ul class="list">
+<li class="item"><span class="sr">не выполнено: </span><span class="box" aria-hidden="true"></span><span class="txt">Группы: <code>Core</code> (локальная, в билде), <code>Weapons</code>, <code>Enemies+Bosses</code>, <code>VFX</code>, <code>Audio_Music</code> (streaming), <code>Audio_SFX</code>, <code>UI</code>, <code>Localization</code> (почистить)</span></li>
+<li class="item"><span class="sr">не выполнено: </span><span class="box" aria-hidden="true"></span><span class="txt"><code>BalanceConfig</code>: <code>Resources.Load</code> → Addressables (или оставить в Core с прямой ссылкой — решить)</span></li>
+<li class="item"><span class="sr">не выполнено: </span><span class="box" aria-hidden="true"></span><span class="txt">Тяжёлое грузить по требованию: музыка, боссы, VFX ультимейтов, иконки журнала/инвентаря</span></li>
+<li class="item"><span class="sr">не выполнено: </span><span class="box" aria-hidden="true"></span><span class="txt"><code>IAssetProvider</code> поверх Addressables (async на UniTask, учёт handle/Release, кеш) — интеграция с <code>IPoolService</code> (пул держит handle, пока жив)</span></li>
+<li class="item"><span class="sr">не выполнено: </span><span class="box" aria-hidden="true"></span><span class="txt">Analyze rules: нет дублей ассетов между группами/сценой</span></li>
+<li class="item"><span class="sr">не выполнено: </span><span class="box" aria-hidden="true"></span><span class="txt">(Опционально) удалённый каталог + контент-апдейты</span></li>
+<li class="item verify"><span class="sr">не выполнено: </span><span class="box" aria-hidden="true"></span><span class="txt">Проверка: Memory Profiler — ассеты выгружаются после забега; размер AAB vs baseline</span></li>
+</ul></div></details>
+<details class="phase todo" id="phase-7"><summary><span class="ph-n">07</span><span class="ph-title">Ввод (New Input System)</span><span class="ph-meta"><span class="chip todo">Впереди</span><span class="ph-count">0/5</span><span class="ph-bar"><span style="width:0%"></span></span></span></summary><div class="ph-body"><ul class="list">
+<li class="item"><span class="sr">не выполнено: </span><span class="box" aria-hidden="true"></span><span class="txt"><code>IInputService</code> с событиями (Zoom, Pause/Back, SpeedChange, ToggleInventory, Reroll, Buy…)</span></li>
+<li class="item"><span class="sr">не выполнено: </span><span class="box" aria-hidden="true"></span><span class="txt">Реализация PC (клавиатура/мышь — текущие хоткеи) и Mobile (EnhancedTouch: pinch-zoom, tap, long-press)</span></li>
+<li class="item"><span class="sr">не выполнено: </span><span class="box" aria-hidden="true"></span><span class="txt">Перевести 7 файлов с legacy <code>Input.*</code>; <code>CameraZoom</code> → pinch; Android «Назад» = Pause/закрыть панель</span></li>
+<li class="item"><span class="sr">не выполнено: </span><span class="box" aria-hidden="true"></span><span class="txt"><code>activeInputHandler</code> → только New Input System; <code>InputSystemUIInputModule</code> в EventSystem</span></li>
+<li class="item verify"><span class="sr">не выполнено: </span><span class="box" aria-hidden="true"></span><span class="txt">Проверка: ПК-управление без регрессий; на телефоне зум/пауза/назад работают</span></li>
+</ul></div></details>
+<details class="phase todo" id="phase-8"><summary><span class="ph-n">08</span><span class="ph-title">Мобильный UI/UX + DOTween</span><span class="ph-meta"><span class="chip todo">Впереди</span><span class="ph-count">0/9</span><span class="ph-bar"><span style="width:0%"></span></span></span></summary><div class="ph-body"><ul class="list">
+<li class="item"><span class="sr">не выполнено: </span><span class="box" aria-hidden="true"></span><span class="txt">Тултипы: hover → tap-to-inspect / long-press (единый <code>ITooltipTrigger</code> c PC-hover и Mobile-tap); <code>WeaponTooltip</code> — якорь к слоту вместо <code>Input.mousePosition</code></span></li>
+<li class="item"><span class="sr">не выполнено: </span><span class="box" aria-hidden="true"></span><span class="txt">Покупка в магазине: «тап = выбор + инфо, повторный тап/кнопка = купить» (защита от случайных покупок)</span></li>
+<li class="item"><span class="sr">не выполнено: </span><span class="box" aria-hidden="true"></span><span class="txt"><code>SafeArea</code>-компонент на корневые панели; CanvasScaler под мобилки (единый reference, фикс 2580×1440)</span></li>
+<li class="item"><span class="sr">не выполнено: </span><span class="box" aria-hidden="true"></span><span class="txt">Хоткеи → экранные кнопки: скорость x1/x2/x3, пауза, инвентарь, реролл</span></li>
+<li class="item"><span class="sr">не выполнено: </span><span class="box" aria-hidden="true"></span><span class="txt">Player Settings: только Landscape Left/Right. Раскладки под телефон в landscape, минимум 48dp для кнопок, размер шрифтов, скролл инвентаря/журнала/статистики</span></li>
+<li class="item"><span class="sr">не выполнено: </span><span class="box" aria-hidden="true"></span><span class="txt">Убрать <code>ResolutionPreset</code> из мобильного меню настроек (добавить: качество графики, FPS 30/60, вибрация)</span></li>
+<li class="item"><span class="sr">не выполнено: </span><span class="box" aria-hidden="true"></span><span class="txt"><strong>DOTween</strong>: анимации панелей, кнопок, счётчика золота, попапов урона/награды босса — заменить ручные Lerp-анимации UI; UI-твины <code>SetUpdate(true)</code> (работают на паузе), <code>SetLink(gameObject)</code>/Kill при уничтожении, <code>DOTween.SetTweensCapacity</code> + <code>SetRecyclable</code>; UniTask-await твинов в UI-флоу</span></li>
+<li class="item"><span class="sr">не выполнено: </span><span class="box" aria-hidden="true"></span><span class="txt">Не использовать DOTween в горячем геймплей-коде на каждого врага/пулю (аллокации) — только UI/редкие эффекты</span></li>
+<li class="item verify"><span class="sr">не выполнено: </span><span class="box" aria-hidden="true"></span><span class="txt">Проверка: скриншоты на 16:9, 19.5:9, 20:9, планшет 4:3; с вырезом; прогон всех экранов</span></li>
+</ul></div></details>
+<details class="phase todo" id="phase-9"><summary><span class="ph-n">09</span><span class="ph-title">Мобильная производительность и ассеты</span><span class="ph-meta"><span class="chip todo">Впереди</span><span class="ph-count">0/7</span><span class="ph-bar"><span style="width:0%"></span></span></span></summary><div class="ph-body"><ul class="list">
+<li class="item"><span class="sr">не выполнено: </span><span class="box" aria-hidden="true"></span><span class="txt">Platform overrides текстур: ASTC, max 1024–2048, mipmaps где нужно; атласы UI (SpriteAtlas)</span></li>
+<li class="item"><span class="sr">не выполнено: </span><span class="box" aria-hidden="true"></span><span class="txt">Аудио: музыка Vorbis + Streaming, SFX ADPCM/Vorbis Decompress On Load, моно где можно</span></li>
+<li class="item"><span class="sr">не выполнено: </span><span class="box" aria-hidden="true"></span><span class="txt">URP Mobile: без лишних post-process, shadow distance/cascades, MSAA, render scale (настраиваемый)</span></li>
+<li class="item"><span class="sr">не выполнено: </span><span class="box" aria-hidden="true"></span><span class="txt">Шейдеры (<code>IcePrison*</code>, <code>HolyChainLightning</code>, <code>BasicPixelation</code>, частицы): упростить/LOD для мобилок, strip неиспользуемых вариантов</span></li>
+<li class="item"><span class="sr">не выполнено: </span><span class="box" aria-hidden="true"></span><span class="txt">Частицы: лимиты max particles, меньше overdraw при x3 скорости</span></li>
+<li class="item"><span class="sr">не выполнено: </span><span class="box" aria-hidden="true"></span><span class="txt"><code>Application.targetFrameRate</code>, Adaptive Performance (термотроттлинг) — по результатам замеров</span></li>
+<li class="item verify"><span class="sr">не выполнено: </span><span class="box" aria-hidden="true"></span><span class="txt">Проверка: стабильные 60 FPS (или 30 на слабых) в тестовом сценарии, нагрев/батарея за 20 минут</span></li>
+</ul></div></details>
+<details class="phase todo" id="phase-10"><summary><span class="ph-n">10</span><span class="ph-title">Сохранения и жизненный цикл приложения</span><span class="ph-meta"><span class="chip todo">Впереди</span><span class="ph-count">0/4</span><span class="ph-bar"><span style="width:0%"></span></span></span></summary><div class="ph-body"><ul class="list">
+<li class="item"><span class="sr">не выполнено: </span><span class="box" aria-hidden="true"></span><span class="txt"><code>ISaveService</code> (JSON в persistentDataPath, версия схемы, атомарная запись); миграция из <code>PlayerPrefs</code></span></li>
+<li class="item"><span class="sr">не выполнено: </span><span class="box" aria-hidden="true"></span><span class="txt">Автосейв забега на <code>OnApplicationPause(true)</code>/<code>OnApplicationFocus(false)</code> + восстановление при запуске</span></li>
+<li class="item"><span class="sr">не выполнено: </span><span class="box" aria-hidden="true"></span><span class="txt">Авто-пауза при сворачивании, звук при потере фокуса</span></li>
+<li class="item verify"><span class="sr">не выполнено: </span><span class="box" aria-hidden="true"></span><span class="txt">Проверка: свернуть/убить приложение посреди волны → продолжить с того же места</span></li>
+</ul></div></details>
+<details class="phase todo" id="phase-11"><summary><span class="ph-n">11</span><span class="ph-title">Firebase <span class="self">делаешь сам</span></span><span class="ph-meta"><span class="chip todo">Впереди</span><span class="ph-count">0/9</span><span class="ph-bar"><span style="width:0%"></span></span></span></summary><div class="ph-body"><p class="note"><strong>Делаешь сам — Firebase.</strong> Перед стартом: что даёт каждый модуль (Crashlytics, Analytics, Remote Config, Auth), как инициализировать, приватность.</p>
+<ul class="list">
+<li class="item"><span class="sr">не выполнено: </span><span class="box" aria-hidden="true"></span><span class="txt">Firebase-проект, Android-приложение, <code>google-services.json</code> (решить: в git или через CI-секрет), EDM4U resolve</span></li>
+<li class="item"><span class="sr">не выполнено: </span><span class="box" aria-hidden="true"></span><span class="txt">Вся Firebase-логика в <code>ETS.Platform.Mobile</code> за интерфейсами; для PC/редактора — Null/Steam-реализации</span></li>
+<li class="item"><span class="sr">не выполнено: </span><span class="box" aria-hidden="true"></span><span class="txt">Init через async bootstrap (Фаза 3): <code>CheckAndFixDependenciesAsync</code> до использования</span></li>
+<li class="item"><span class="sr">не выполнено: </span><span class="box" aria-hidden="true"></span><span class="txt"><strong>Crashlytics</strong> — поверх/вместо <code>CrashReporter</code> на мобилке (логи + custom keys: волна, билд, скорость)</span></li>
+<li class="item"><span class="sr">не выполнено: </span><span class="box" aria-hidden="true"></span><span class="txt"><strong>Analytics</strong> — <code>IAnalyticsService</code>: run_start/run_end (время, волна, причина), wave_reached, weapon_bought, upgrade_bought, reroll, boss_killed, tutorial_step; словарь событий в <code>docs/</code></span></li>
+<li class="item"><span class="sr">не выполнено: </span><span class="box" aria-hidden="true"></span><span class="txt"><strong>Remote Config</strong> — оверрайды баланса (<code>BalanceConfig</code>) с дефолтами в билде; A/B-готовность</span></li>
+<li class="item"><span class="sr">не выполнено: </span><span class="box" aria-hidden="true"></span><span class="txt"><strong>Auth (анонимный вход)</strong> — стабильный uid игрока без регистрации (основа лидерборда)</span></li>
+<li class="item"><span class="sr">не выполнено: </span><span class="box" aria-hidden="true"></span><span class="txt">Согласие на сбор данных (GDPR — Analytics/Crashlytics), Privacy Policy + Data safety form для Google Play</span></li>
+<li class="item verify"><span class="sr">не выполнено: </span><span class="box" aria-hidden="true"></span><span class="txt">Проверка: события в DebugView, тестовый краш в консоли Crashlytics, RC-значение применяется</span></li>
+</ul></div></details>
+<details class="phase todo" id="phase-12"><summary><span class="ph-n">12</span><span class="ph-title">Онлайн-лидерборд (Firestore) <span class="self">делаешь сам</span></span><span class="ph-meta"><span class="chip todo">Впереди</span><span class="ph-count">0/12</span><span class="ph-bar"><span style="width:0%"></span></span></span></summary><div class="ph-body"><p class="note"><strong>Делаешь сам — Firebase Auth + Firestore.</strong> Перед стартом: модель данных, запросы, Security Rules, почему не доверяем клиенту.</p>
+<p class="note">Игра остаётся одиночной: никакого лобби/матчмейкинга/синхронизации. Онлайн — только асинхронные «отправить рекорд» и «прочитать топ».</p>
+<ul class="list">
+<li class="item"><span class="sr">не выполнено: </span><span class="box" aria-hidden="true"></span><span class="txt">Удалить пакет <code>com.unity.multiplayer.center</code></span></li>
+<li class="item"><span class="sr">не выполнено: </span><span class="box" aria-hidden="true"></span><span class="txt">Перевести <code>ILeaderboardService</code> на UniTask (<code>UniTask&lt;List&lt;LeaderboardEntry&gt;&gt; GetTopAsync</code>, <code>UniTask SubmitTimeAsync</code>) — Steam-реализация адаптируется, UI не меняется</span></li>
+<li class="item"><span class="sr">не выполнено: </span><span class="box" aria-hidden="true"></span><span class="txt"><code>FirestoreLeaderboardService : ILeaderboardService</code>: коллекция <code>leaderboard/{uid}</code> — <code>{ name, timeSeconds, build: int[], appVersion, updatedAt }</code>; топ = <code>orderBy(timeSeconds desc).limit(N)</code>; своя позиция — count-запрос <code>timeSeconds &gt; мой</code></span></li>
+<li class="item"><span class="sr">не выполнено: </span><span class="box" aria-hidden="true"></span><span class="txt">Отправка только если результат лучше личного рекорда; офлайн — очередь и отправка при появлении сети</span></li>
+<li class="item"><span class="sr">не выполнено: </span><span class="box" aria-hidden="true"></span><span class="txt">Ник игрока: экран ввода при первой отправке (длина, фильтр символов/мата), смена в настройках; аватар — сгенерированный (инициал/цвет) вместо Steam-аватарки</span></li>
+<li class="item"><span class="sr">не выполнено: </span><span class="box" aria-hidden="true"></span><span class="txt"><code>BuildViewerUI</code> работает с <code>build</code> из Firestore (тот же <code>BuildSnapshot.Decode</code>)</span></li>
+<li class="item"><span class="sr">не выполнено: </span><span class="box" aria-hidden="true"></span><span class="txt"><strong>Security Rules</strong>: писать только в свой <code>{uid}</code>, <code>timeSeconds</code> только растёт, валидация типов/размеров (<code>build</code> ≤ 64, <code>name</code> ≤ N символов), <code>timeSeconds</code> в правдоподобных пределах</span></li>
+<li class="item"><span class="sr">не выполнено: </span><span class="box" aria-hidden="true"></span><span class="txt">Античит (базовый): проверка правдоподобности (время ↔ волна ↔ урон) на клиенте + в rules; Cloud Function-валидация / Play Integrity — отложено (требует тарифа Blaze)</span></li>
+<li class="item"><span class="sr">не выполнено: </span><span class="box" aria-hidden="true"></span><span class="txt">Регистрация сервиса в VContainer по платформе: PC → <code>SteamLeaderboardService</code>, Android → Firestore</span></li>
+<li class="item"><span class="sr">не выполнено: </span><span class="box" aria-hidden="true"></span><span class="txt">Выделить <code>IAchievementService</code> из <code>AchievementManager</code>: PC → Steam, мобилки → <code>NullAchievementService</code></span></li>
+<li class="item"><span class="sr">не выполнено: </span><span class="box" aria-hidden="true"></span><span class="txt"><strong>Модерация ников</strong> (UGC — требование политики Google Play): фильтр мата/запрещённых слов при вводе, кнопка «пожаловаться» на запись в таблице (коллекция <code>reports</code>), возможность скрыть запись (флаг <code>hidden</code> правится из Firebase Console)</span></li>
+<li class="item verify"><span class="sr">не выполнено: </span><span class="box" aria-hidden="true"></span><span class="txt">Проверка: 2 устройства/эмулятора → оба рекорда в топе, просмотр билда чужого игрока, попытка записать в чужой документ / уменьшить время отклоняется rules (Firebase Emulator / Rules Playground)</span></li>
+</ul></div></details>
+<details class="phase todo" id="phase-13"><summary><span class="ph-n">13</span><span class="ph-title">Релиз Android</span><span class="ph-meta"><span class="chip todo">Впереди</span><span class="ph-count">0/4</span><span class="ph-bar"><span style="width:0%"></span></span></span></summary><div class="ph-body"><ul class="list">
+<li class="item"><span class="sr">не выполнено: </span><span class="box" aria-hidden="true"></span><span class="txt">Keystore, версионирование (versionCode из CI/скрипта), AAB, Play Console: internal testing</span></li>
+<li class="item"><span class="sr">не выполнено: </span><span class="box" aria-hidden="true"></span><span class="txt">Иконки/сплэш/скриншоты стора, локализованные описания (en/ru/de/es/pt)</span></li>
+<li class="item"><span class="sr">не выполнено: </span><span class="box" aria-hidden="true"></span><span class="txt">Pre-launch report, Android vitals (ANR/краши), тесты на 3–5 устройствах</span></li>
+<li class="item"><span class="sr">не выполнено: </span><span class="box" aria-hidden="true"></span><span class="txt">(По желанию) PC-сборка из <code>mobile</code> не сломана — Steam-код остаётся за define</span></li>
+</ul></div></details>
+    </div>
+    <aside class="col">
+<section class="panel decisions"><h2>Решения</h2><ul class="list">
+<li class="item done"><span class="sr">выполнено: </span><span class="box" aria-hidden="true"></span><span class="txt"><strong>DI: VContainer</strong> (утверждено 2026-09-29)</span></li>
+<li class="item done"><span class="sr">выполнено: </span><span class="box" aria-hidden="true"></span><span class="txt"><strong>Платформа: только Android</strong> (2026-10-25: iOS исключён — платная подписка Apple Developer Program $99/год). Код остаётся без Android-специфики за пределами платформенных сервисов, так что к iOS можно вернуться позже без переделок.</span></li>
+<li class="item done"><span class="sr">выполнено: </span><span class="box" aria-hidden="true"></span><span class="txt"><strong>Ориентация: только landscape</strong> (Landscape Left/Right, autorotate между ними)</span></li>
+<li class="item done"><span class="sr">выполнено: </span><span class="box" aria-hidden="true"></span><span class="txt"><strong>Без монетизации</strong> (ни рекламы, ни IAP; UMP-согласие нужно только под аналитику)</span></li>
+<li class="item done"><span class="sr">выполнено: </span><span class="box" aria-hidden="true"></span><span class="txt"><strong>Только одиночная игра, без лобби/мультиплеера.</strong> Аудит: сетевого кода в проекте нет (Netcode/Lobby/Matchmaking отсутствуют), есть лишь пакет <code>com.unity.multiplayer.center</code> — удалить. Единственная онлайн-функция — <strong>таблица лидеров</strong> (асинхронная: отправка рекорда + чтение топа).</span></li>
+<li class="item done"><span class="sr">выполнено: </span><span class="box" aria-hidden="true"></span><span class="txt"><strong>Лидерборд — Firebase Auth (анонимный) + Firestore</strong> (утверждено 2026-10-25). Почему не Google Play Games: к записи GPGS можно приложить лишь <code>scoreTag</code> ≤ 64 символа, а наш <code>BuildSnapshot</code> — до 64 int → просмотр билда игрока (<code>BuildViewerUI</code>) потерялся бы. Firestore хранит снимок целиком, существующий UI лидерборда переиспользуется, Firebase всё равно в стеке.</span></li>
+<li class="item done"><span class="sr">выполнено: </span><span class="box" aria-hidden="true"></span><span class="txt"><strong>Firebase-модули: Analytics + Crashlytics + Remote Config + Auth + Firestore.</strong> Облачных сейвов нет.</span></li>
+<li class="item done"><span class="sr">выполнено: </span><span class="box" aria-hidden="true"></span><span class="txt"><strong>Addressables — только локальные группы</strong> (всё внутри билда). Удалённый каталог требует хостинга (CDN), версионирования каталога и даёт выигрыш только при частых контент-апдейтах без релиза — для нас не нужен. Ценность Addressables здесь — загрузка/выгрузка по требованию (память на слабых телефонах). Переход на удалённый каталог позже возможен без переделки кода (меняется только профиль групп).</span></li>
+<li class="item done"><span class="sr">выполнено: </span><span class="box" aria-hidden="true"></span><span class="txt"><strong>Достижений на мобилках нет.</strong> <code>AchievementManager</code> (Steam) живёт только в PC-сборке; на мобилках — <code>NullAchievementService</code>.</span></li>
+<li class="item done"><span class="sr">выполнено: </span><span class="box" aria-hidden="true"></span><span class="txt"><strong>Ветки (2026-10-25):</strong> <code>mobile</code> — основная ветка мобильной разработки. Фича-ветки создаются от <code>mobile</code> и мержатся в <code>mobile</code>. <code>main</code> заморожена на последнем PC/Steam-состоянии и больше не трогается (никаких merge в обе стороны). Подробно — <code>docs/Git.md</code>.</span></li>
+<li class="item done"><span class="sr">выполнено: </span><span class="box" aria-hidden="true"></span><span class="txt"><strong>Режим работы — обучение (2026-10-25):</strong> VContainer, UniTask, пулинг и профилирование, Addressables, Firebase пользователь внедряет <strong>сам</strong>. Claude объясняет: зачем это делаем, какие преимущества даёт, как сделать по шагам, на что смотреть при проверке — и формулирует, как это объяснить на собеседовании. Остальное (UI, ввод, ассеты, сборка) Claude может делать сам по согласованию.</span></li>
+</ul></section>
+<section class="panel risks"><h2>Риски</h2><ul class="list">
+<li class="item plain"><span class="dot" aria-hidden="true"></span><span class="txt">Переход на asmdef может сломать ссылки на скрипты из AssetStore-пакетов → делать первым и отдельно.</span></li>
+<li class="item plain"><span class="dot" aria-hidden="true"></span><span class="txt">DI-миграция затрагивает сотни мест → строго по одному сервису, с Play-проверкой после каждого.</span></li>
+<li class="item plain"><span class="dot" aria-hidden="true"></span><span class="txt"><code>Time.timeScale</code> (x1/x2/x3/пауза) влияет на UniTask/DOTween — явно выбирать scaled/unscaled.</span></li>
+<li class="item plain"><span class="dot" aria-hidden="true"></span><span class="txt">Firebase + IL2CPP stripping + EDM4U — частый источник проблем сборки → отдельная тестовая сборка сразу после подключения.</span></li>
+<li class="item plain"><span class="dot" aria-hidden="true"></span><span class="txt">Firebase не для продакшна на Desktop → не включать в PC-сборку.</span></li>
+<li class="item plain"><span class="dot" aria-hidden="true"></span><span class="txt">Jobs/Burst усложняют код (данные в NativeArray, sync points, отладка) и на телефонах дают меньше, чем на ПК (мало мощных ядер) → только по замерам, после Update-менеджера и VAT-анимации.</span></li>
+<li class="item plain"><span class="dot" aria-hidden="true"></span><span class="txt">Лидерборд без серверной валидации взламываем (клиент пишет свой результат) → rules + проверки правдоподобности сейчас, серверная проверка — если читеры станут проблемой.</span></li>
+<li class="item plain"><span class="dot" aria-hidden="true"></span><span class="txt">Бесплатный тариф Firestore (Spark): 50k чтений/день — кешировать топ (TTL ~1–5 мин), не перечитывать на каждое открытие.</span></li>
+</ul></section>
+<section class="panel "><h2>Принципы миграции</h2><ul class="list">
+<li class="item plain"><span class="dot" aria-hidden="true"></span><span class="txt">Постепенно (strangler): каждая фаза оставляет игру <strong>играбельной на ПК</strong>; между фазами — Play-проверка.</span></li>
+<li class="item plain"><span class="dot" aria-hidden="true"></span><span class="txt">Сначала инфраструктура и архитектура, потом мобильный UX — иначе новый UI придётся переписывать под DI.</span></li>
+<li class="item plain"><span class="dot" aria-hidden="true"></span><span class="txt">Горячие объекты (враги, пули, VFX) <strong>не резолвим через DI поштучно</strong> — получают контекст через фабрику/пул (<code>Init(...)</code>), чтобы не платить за инъекцию на каждый спавн.</span></li>
+<li class="item plain"><span class="dot" aria-hidden="true"></span><span class="txt">Всё платформенное — за интерфейсами с реализациями под PC/Mobile (+ Null-реализации для редактора/тестов).</span></li>
+<li class="item plain"><span class="dot" aria-hidden="true"></span><span class="txt">Каждая фаза: <code>refresh_unity(compile)</code> + <code>read_console(error)</code> чисто, Play-тест, коммит.</span></li>
+<li class="item plain"><span class="dot" aria-hidden="true"></span><span class="txt">Каждая фаза — своя ветка от <code>mobile</code> (<code>feature/…</code>, <code>refactor/…</code>), после проверки мерж в <code>mobile</code>.</span></li>
+<li class="item plain"><span class="dot" aria-hidden="true"></span><span class="txt">Фазы с пометкой <strong>«Делаешь сам»</strong> — учебные: сначала объяснение (зачем / преимущества / как / вопросы с собеседований), потом реализация руками пользователя, Claude — ревью и помощь при ошибках.</span></li>
+</ul></section>
+      <details class="more"><summary>Исходный аудит проекта</summary>
+<section class="panel "><h2>Исходное состояние (аудит 2026-09-29)</h2><ul class="list">
+<li class="item plain"><span class="dot" aria-hidden="true"></span><span class="txt">Unity 6000.0.80f1, URP 17. <code>Mobile_RPAsset</code>/<code>Mobile_Renderer</code> + Quality <code>Mobile</code> уже есть. Сцена одна — <code>MainScene</code>.</span></li>
+<li class="item plain"><span class="dot" aria-hidden="true"></span><span class="txt">226 скриптов (~23.7k строк), всё в <code>Assembly-CSharp</code>, <strong>нет asmdef и тестов</strong>.</span></li>
+<li class="item plain"><span class="dot" aria-hidden="true"></span><span class="txt"><strong>17 синглтонов</strong> <code>static Instance</code> (GameStateManager, GoldManager, EnemyManager, PoolManager, UpgradeManager, SpeedManager, AudioManager, PlayerHealth, DamageStatsManager, ShopUnlockService, AchievementManager, SteamManager, …), <strong>~321 обращение</strong> <code>.Instance</code>.</span></li>
+<li class="item plain"><span class="dot" aria-hidden="true"></span><span class="txt">Корутины: ~13 <code>IEnumerator</code>; <code>timeScale</code> используется в ~25 местах (скорость x1/x2/x3 + пауза).</span></li>
+<li class="item plain"><span class="dot" aria-hidden="true"></span><span class="txt">Анимации UI вручную (<code>Lerp/SmoothDamp</code> ~29 мест, <code>PressOffsetUI</code>, <code>ButtonState</code>).</span></li>
+<li class="item plain"><span class="dot" aria-hidden="true"></span><span class="txt">Пул: <code>PoolObject/</code> (свой <code>ObjectPool&lt;T&gt;</code> + <code>PoolManager</code>, ключ — prefab), но VFX/снаряды в горячих путях идут через <code>Instantiate</code>: <code>OnHitVFX</code>, <code>LightingChainBullet</code>, <code>AuraDamageZone</code>, <code>RandomSpawnPortal</code>, <code>EnemyRangedAttack</code>, <code>EnemyStatusEffectController</code>, <code>EnemyEffectManager</code>, <code>RegenAuraDamage</code>.</span></li>
+<li class="item plain"><span class="dot" aria-hidden="true"></span><span class="txt">Addressables 2.9.1 уже в проекте транзитивно (через Localization). В группах остались мёртвые таблицы zh/fr/ja/ko. <code>Resources.Load&lt;BalanceConfig&gt;</code> в <code>BalanceService</code>.</span></li>
+<li class="item plain"><span class="dot" aria-hidden="true"></span><span class="txt">Ввод: legacy <code>Input.*</code> в 7 рабочих файлах (<code>CameraZoom</code>, <code>ShopManager</code>, <code>InventoryUI</code>, <code>GameSpeedScripting</code>, <code>PauseMenu</code>, <code>WeaponTooltip</code>, <code>BuildViewerUI</code>, <code>ButtonState</code>), <code>activeInputHandler: 2</code> (Both).</span></li>
+<li class="item plain"><span class="dot" aria-hidden="true"></span><span class="txt">Hover-тултипы (<code>IPointerEnterHandler</code>) в ~10 UI-скриптах. Canvas 1920×1080/2560×1440 (+ опечатка 2580×1440).</span></li>
+<li class="item plain"><span class="dot" aria-hidden="true"></span><span class="txt">Steam уже изолирован <code>#if !DISABLESTEAMWORKS</code>, лидерборд — за <code>ILeaderboardService</code>.</span></li>
+<li class="item plain"><span class="dot" aria-hidden="true"></span><span class="txt">Сохранения — <code>PlayerPrefs</code>; свой <code>CrashReporter</code> (файлы в persistentDataPath).</span></li>
+<li class="item plain"><span class="dot" aria-hidden="true"></span><span class="txt">Ассеты: AssetStore 615 МБ, Sound 361 МБ, Texture 184 МБ.</span></li>
+</ul></section>
+      </details>
+<section class="panel "><h2>Review</h2><p class="para"><em>(заполняется по мере выполнения фаз: цифры baseline и после, что сделано, отклонения от плана)</em></p></section>
+    </aside>
+  </div>
+  <footer>Сгенерировано из <code>docs/MobilePlan.md</code> · 25.10.2026 17:45 · обновить: <code>python3 tools/gen_plan_html.py</code></footer>
+</div>
+<script>
+(function () {
+  var phases = document.querySelectorAll("details.phase");
+  document.getElementById("btn-expand").onclick = function () { phases.forEach(function (d) { d.open = true; }); };
+  document.getElementById("btn-collapse").onclick = function () { phases.forEach(function (d) { d.open = false; }); };
+  var hide = document.getElementById("btn-hide");
+  function setHide(v) { document.body.classList.toggle("hide-done", v); hide.setAttribute("aria-pressed", v); }
+  try { setHide(localStorage.getItem("ets-plan-hide-done") === "1"); } catch (e) {}
+  hide.onclick = function () {
+    var v = hide.getAttribute("aria-pressed") !== "true"; setHide(v);
+    try { localStorage.setItem("ets-plan-hide-done", v ? "1" : "0"); } catch (e) {}
+  };
+  document.querySelectorAll(".stop").forEach(function (a) {
+    a.addEventListener("click", function () {
+      var d = document.querySelector(a.getAttribute("href")); if (d) d.open = true;
+    });
+  });
+})();
+</script>
+</body>
+</html>
