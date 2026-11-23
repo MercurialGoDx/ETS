@@ -41,6 +41,16 @@ public class ResolutionPresets : MonoBehaviour
 
     private void Start()
     {
+        // На телефоне разрешение задаёт система; SetResolution с настольным пресетом
+        // растянул бы картинку. Лимит кадров вместо этого — в меню паузы (MobileHud).
+        if (MobilePlatform.IsMobile)
+        {
+            if (resolutionDropdown != null) resolutionDropdown.gameObject.SetActive(false);
+            if (fullscreenToggle != null) fullscreenToggle.gameObject.SetActive(false);
+            enabled = false;
+            return;
+        }
+
         BuildAvailablePresets();
         BuildDropdown();
         LoadPrefsToUI();

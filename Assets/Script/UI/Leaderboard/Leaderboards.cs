@@ -61,7 +61,11 @@ public static class Leaderboards
         {
             if (s_service == null)
             {
-                if (SteamManager.Initialized)
+                // На телефоне Steam нет, а заглушка показала бы выдуманных игроков.
+                // До онлайн-таблицы на Firestore (Фаза 12) — личные рекорды на устройстве.
+                if (MobilePlatform.IsMobile)
+                    s_service = new LocalLeaderboardService();
+                else if (SteamManager.Initialized)
                     s_service = new SteamLeaderboardService(s_steamLeaderboardName, s_createIfMissing);
                 else
                     s_service = new StubLeaderboardService();

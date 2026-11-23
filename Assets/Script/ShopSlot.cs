@@ -169,6 +169,9 @@ public class ShopSlot : ItemSlotBase
     // ==== КЛИК ====
     public override void OnPointerClick(PointerEventData eventData)
     {
+        // Удержание пальцем — осмотр предмета, а не покупка (см. ItemSlotBase).
+        if (ConsumeTouchInspect()) return;
+
         // Закрытый слот не покупается. Проверка здесь, а не через Button.interactable:
         // StateRestrictedButton перезаписывает interactable при каждой смене GameState
         // и снял бы замок на переходе Preparing -> Playing.

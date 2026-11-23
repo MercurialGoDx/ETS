@@ -4,9 +4,10 @@
 // pumps callbacks each frame and shuts it down cleanly. Everything is compiled out on platforms
 // where Steamworks is unavailable (DISABLESTEAMWORKS), so non-Steam builds keep working.
 
+// UnityEngine нужен и без Steam: класс-заглушка ниже всё равно MonoBehaviour.
+using UnityEngine;
 #if !DISABLESTEAMWORKS
 using System.Collections;
-using UnityEngine;
 using Steamworks;
 #endif
 

@@ -27,6 +27,31 @@ public class PauseManager : MonoBehaviour
         canPause = value;
     }
 
+    /// <summary>Можно ли сейчас открыть паузу (идёт забег и не открыта другая панель).</summary>
+    public bool CanPause => canPause;
+
+    public bool IsPaused => isPaused;
+
+    /// <summary>То же, что Esc, — для экранной кнопки паузы на телефоне.</summary>
+    public void TogglePause()
+    {
+        if (!canPause) return;
+
+        if (isPaused)
+            ResumeGame();
+        else
+            Pause();
+    }
+
+    // На телефоне игрок может свернуть приложение посреди боя (звонок, шторка, кнопка «Домой»).
+    // Забег не должен идти без него: открываем обычное меню паузы, и по возвращении он сам
+    // решает, когда продолжить. На ПК сворачивание окна поведение не меняет.
+    private void OnApplicationPause(bool pauseStatus)
+    {
+        if (pauseStatus && MobilePlatform.IsMobile && canPause && !isPaused)
+            Pause();
+    }
+
     private void Update()
     {
         if (!canPause) return;

@@ -144,6 +144,17 @@ public class InventoryUI : MonoBehaviour
             TryOpen();
     }
 
+    public bool IsOpen => isOpen;
+
+    /// <summary>Экранная кнопка инвентаря на телефоне — то же, что toggleKey.</summary>
+    public void Toggle()
+    {
+        if (isOpen)
+            Close();
+        else
+            TryOpen();
+    }
+
     private void TryOpen()
     {
         // Открывается во время забега и на экране смерти — посмотреть, с чем закончил.

@@ -88,6 +88,16 @@ public class LobbyPanelUI : MonoBehaviour
 
     private void Awake()
     {
+        // Мобильная версия только одиночная (docs/MobilePlan.md): дуэль держится на Steam-лобби,
+        // которого на телефоне нет. Прячем вход в лобби целиком, а не оставляем нерабочую кнопку.
+        if (MobilePlatform.IsMobile)
+        {
+            if (openButton != null) openButton.gameObject.SetActive(false);
+            if (root != null) root.SetActive(false);
+            enabled = false;
+            return;
+        }
+
         if (openButton != null) openButton.onClick.AddListener(Open);
         if (createButton != null) createButton.onClick.AddListener(OnCreate);
         if (joinButton != null) joinButton.onClick.AddListener(OnJoin);
