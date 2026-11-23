@@ -3,7 +3,7 @@ using UnityEngine;
 
 public readonly struct DamageStatEntry
 {
-    public DamageStatEntry(WeaponDefinition weapon, UpgradeBaseSO upgrade, float damage)
+    public DamageStatEntry(WeaponDefinition weapon, UpgradeBaseSO upgrade, double damage)
     {
         Weapon = weapon;
         Upgrade = upgrade;
@@ -12,7 +12,7 @@ public readonly struct DamageStatEntry
 
     public WeaponDefinition Weapon { get; }
     public UpgradeBaseSO Upgrade { get; }
-    public float Damage { get; }
+    public double Damage { get; }
     public Sprite Icon => Weapon != null ? Weapon.icon : Upgrade != null ? Upgrade.icon : null;
 
     public string GetLocalizedName()
@@ -30,8 +30,11 @@ public class DamageStatsManager : MonoBehaviour
 {
     public static DamageStatsManager Instance { get; private set; }
 
-    private readonly Dictionary<WeaponDefinition, float> damageByWeapon = new();
-    private readonly Dictionary<UpgradeBaseSO, float> damageByUpgrade = new();
+    // Урон одного попадания в боевой системе остаётся float, но накопительная
+    // статистика хранится в double: длительный забег может легко выйти за пределы int,
+    // а float начинает терять единицы уже на сравнительно небольших суммах.
+    private readonly Dictionary<WeaponDefinition, double> damageByWeapon = new();
+    private readonly Dictionary<UpgradeBaseSO, double> damageByUpgrade = new();
 
     private void Awake()
     {
@@ -50,7 +53,7 @@ public class DamageStatsManager : MonoBehaviour
             return;
 
         if (!damageByWeapon.ContainsKey(weapon))
-            damageByWeapon[weapon] = 0f;
+            damageByWeapon[weapon] = 0d;
 
         damageByWeapon[weapon] += damage;
     }
@@ -61,14 +64,14 @@ public class DamageStatsManager : MonoBehaviour
             return;
 
         if (!damageByUpgrade.ContainsKey(upgrade))
-            damageByUpgrade[upgrade] = 0f;
+            damageByUpgrade[upgrade] = 0d;
 
         damageByUpgrade[upgrade] += damage;
     }
 
-    public List<(WeaponDefinition weapon, float damage)> GetDamageSorted()
+    public List<(WeaponDefinition weapon, double damage)> GetDamageSorted()
     {
-        var result = new List<(WeaponDefinition weapon, float damage)>();
+        var result = new List<(WeaponDefinition weapon, double damage)>();
 
         foreach (var pair in damageByWeapon)
         {

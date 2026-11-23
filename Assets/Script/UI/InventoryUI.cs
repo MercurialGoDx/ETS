@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using ETS.Multiplayer;
 using UnityEngine;
 
 /// <summary>
@@ -163,6 +164,10 @@ public class InventoryUI : MonoBehaviour
 
         // Ставим игру на паузу. GameState.Paused сам выставляет Time.timeScale = 0,
         // а возврат в прежнее состояние восстановит скорость, выбранную кнопками x1/x2/x3.
+        // В дуэли пауза запрещена: пока один изучает статистику, второй горит.
+        if (DuelSession.IsSeeded)
+            pausedByPanel = false;
+
         if (pausedByPanel && GameStateManager.Instance != null)
         {
             stateBeforeOpen = GameStateManager.Instance.CurrentState;

@@ -1,3 +1,4 @@
+using ETS.Multiplayer;
 using UnityEngine;
 
 public class GameSpeedController : MonoBehaviour
@@ -16,6 +17,10 @@ public class GameSpeedController : MonoBehaviour
     private float _baseFixedDeltaTime;
 
     public float CurrentSpeed { get; private set; } = 1f;
+
+    /// <summary>Темп зафиксирован и не переключается. Нужно дуэли: разная скорость
+    /// у игроков сделала бы сравнение результатов бессмысленным.</summary>
+    public bool IsLocked { get; private set; }
 
     public System.Action<float> OnSpeedChanged;
 
@@ -69,8 +74,26 @@ public class GameSpeedController : MonoBehaviour
     public void SetX2() => ApplySpeed(speedX2);
     public void SetX3() => ApplySpeed(speedX3);
 
+    /// <summary>
+    /// Ставит темп и запрещает дальнейшее переключение — и с клавиш, и с экранных кнопок.
+    /// Единственный способ сменить скорость после этого — <see cref="UnlockSpeed"/>.
+    /// </summary>
+    public void LockSpeed(float value)
+    {
+        IsLocked = false;
+        ApplySpeed(value);
+        IsLocked = true;
+    }
+
+    public void UnlockSpeed() => IsLocked = false;
+
     public void ApplySpeed(float value)
     {
+        // Одна точка отсечения: SetX1/X2/X3 публичные и висят на кнопках интерфейса,
+        // защищать только ввод с клавиатуры было недостаточно.
+        if (IsLocked)
+            return;
+
         if (GameStateManager.Instance.Is(GameState.Playing))
         {
             CurrentSpeed = value;

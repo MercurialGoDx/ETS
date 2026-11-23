@@ -20,7 +20,7 @@ public class WeaponStatItemUI : MonoBehaviour, IPointerEnterHandler, IPointerExi
     private WeaponDefinition currentWeapon;
     private UpgradeBaseSO currentUpgrade;
 
-    public void Setup(WeaponDefinition weapon, float damage)
+    public void Setup(WeaponDefinition weapon, double damage)
     {
         currentWeapon = weapon;
         currentUpgrade = null;
@@ -38,7 +38,7 @@ public class WeaponStatItemUI : MonoBehaviour, IPointerEnterHandler, IPointerExi
         SetupContent(stat.Icon, stat.GetLocalizedName(), stat.Damage);
     }
 
-    private void SetupContent(Sprite icon, string displayName, float damage)
+    private void SetupContent(Sprite icon, string displayName, double damage)
     {
 
         if (iconImage != null)
@@ -51,7 +51,9 @@ public class WeaponStatItemUI : MonoBehaviour, IPointerEnterHandler, IPointerExi
             nameText.text = displayName;
 
         if (damageText != null)
-            damageText.text = Mathf.RoundToInt(damage).ToString("N0", CultureInfo.InvariantCulture);
+            // Форматируем double напрямую. Mathf.RoundToInt сначала сужал сумму до
+            // 32-битного int и после ~2,147 млрд показывал отрицательное значение.
+            damageText.text = damage.ToString("N0", CultureInfo.InvariantCulture);
     }
 
     public void OnPointerEnter(PointerEventData eventData)

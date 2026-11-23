@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Localization;
 using UnityEngine.Localization.Settings;
@@ -64,12 +64,9 @@ public abstract class UpgradeBaseSO : ScriptableObject
 
     public virtual string GetLocalizedName()
     {
-        var stringTable = localizedStringTable.GetTable();
+        var stringTable = ResolveTable();
         if (stringTable == null)
-        {
-            Debug.LogError($"Localization table not found for upgrade: {name}");
             return nameKey;
-        }
 
         var entry = stringTable.GetEntry(nameKey);
         return entry?.GetLocalizedString() ?? nameKey;
@@ -77,17 +74,35 @@ public abstract class UpgradeBaseSO : ScriptableObject
 
     public virtual string GetLocalizedDescription()
     {
-        var stringTable = localizedStringTable.GetTable();
+        var stringTable = ResolveTable();
         if (stringTable == null)
-        {
-            Debug.LogError($"Localization table not found for upgrade: {name}");
             return descriptionKey;
-        }
 
         var entry = stringTable.GetEntry(descriptionKey);
         if (entry == null) return descriptionKey;
 
         return entry.GetLocalizedString(GetDescriptionArgs());
+    }
+
+    /// <summary>
+    /// Таблица улучшения или null. Ссылка может быть не назначена — ассеты заводят раньше,
+    /// чем переводы, — и тогда GetTable() не возвращает null, а кидает ArgumentException.
+    /// Раньше это исключение вылетало наружу и роняло отрисовку слота магазина целиком:
+    /// предмет просто не появлялся, а консоль забивалась "Empty Table Reference".
+    /// </summary>
+    private StringTable ResolveTable()
+    {
+        if (localizedStringTable == null || localizedStringTable.IsEmpty)
+        {
+            Debug.LogWarning($"[{name}] Не назначена таблица локализации — показываю ключ.");
+            return null;
+        }
+
+        var table = localizedStringTable.GetTable();
+        if (table == null)
+            Debug.LogWarning($"[{name}] Таблица локализации не найдена — показываю ключ.");
+
+        return table;
     }
 
     protected virtual object[] GetDescriptionArgs()
@@ -112,7 +127,7 @@ public abstract class UpgradeBaseSO : ScriptableObject
     /// </summary>
     protected string GetLocalizedDamageType(WeaponDamageType damageType)
     {
-        var stringTable = localizedStringTable.GetTable();
+        var stringTable = ResolveTable();
         if (stringTable != null)
         {
             var entry = stringTable.GetEntry("dtype." + damageType.ToString().ToLowerInvariant());

@@ -1,4 +1,5 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using ETS.Multiplayer;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -29,6 +30,10 @@ public class ShopManager : MonoBehaviour
     [Header("Доступные товары (пул для рандома)")]
     public List<WeaponDefinition> availableWeapons;
     public List<UpgradeBaseSO> availableUpgrades;
+
+    // Номер розыгрыша магазина. Нужен только дуэли: предложение адресуется парой
+    // (номер ролла, номер слота), поэтому лишний реролл у одного игрока не сдвигает другого.
+    private int shopRollIndex;
 
     [Header("Реролл")]
     [Tooltip("Базовая стоимость реролла магазина (золото).")]
@@ -135,15 +140,15 @@ public class ShopManager : MonoBehaviour
 
             if (weapons)
             {
-                var weapon = GetRandomWeaponWeighted();
-                if (weapon != null) slot.SetupWeapon(weapon, this);
-                else slot.Clear();
+                var weapon = GetRandomWeaponWeighted(i);
+                if (weapon == null) slot.Clear();
+                else slot.SetupWeapon(weapon, this);
             }
             else
             {
-                var upgrade = GetRandomUpgradeWeighted();
-                if (upgrade != null) slot.SetupUpgrade(upgrade, this);
-                else slot.Clear();
+                var upgrade = GetRandomUpgradeWeighted(i);
+                if (upgrade == null) slot.Clear();
+                else slot.SetupUpgrade(upgrade, this);
             }
         }
     }
@@ -169,13 +174,20 @@ public class ShopManager : MonoBehaviour
     /// <summary>
     /// Вес предмета для рулетки магазина. Заблокированный тир даёт 0 — предмет не участвует
     /// ни в сумме весов, ни в розыгрыше, ни в запасном переборе.
+    ///
+    /// В дуэли берётся базовый вес из ассета, без надбавки за прошлые покупки: надбавка —
+    /// состояние конкретного игрока, и из-за неё n-е предложения у двоих разъехались бы уже
+    /// после первой разной покупки. Фильтр по тиру, наоборот, остаётся: пока разблокировки
+    /// одинаковы, одинаков и пул, а кто открыл тир раньше — тот раньше и увидит его предметы.
     /// </summary>
     private static float GetOfferWeight(WeaponDefinition weapon)
     {
         if (weapon == null || !IsTierUnlocked(weapon.itemTier))
             return 0f;
 
-        return UpgradesManager.Instance.RuntimeData.GetWeaponWeight(weapon);
+        return DuelSession.IsSeeded
+            ? weapon.weight
+            : UpgradesManager.Instance.RuntimeData.GetWeaponWeight(weapon);
     }
 
     private static float GetOfferWeight(UpgradeBaseSO upgrade)
@@ -183,7 +195,9 @@ public class ShopManager : MonoBehaviour
         if (upgrade == null || !IsTierUnlocked(upgrade.itemTier))
             return 0f;
 
-        return UpgradesManager.Instance.RuntimeData.GetUpgradeWeight(upgrade);
+        return DuelSession.IsSeeded
+            ? upgrade.weight
+            : UpgradesManager.Instance.RuntimeData.GetUpgradeWeight(upgrade);
     }
 
     private void Update()
@@ -259,19 +273,33 @@ public class ShopManager : MonoBehaviour
                 continue;
             }
 
-            var weapon = GetRandomWeaponWeighted();
-            if (weapon != null)
+            var weapon = GetRandomWeaponWeighted(i);
+            if (weapon == null)
             {
-                slot.SetupWeapon(weapon, this);
+                slot.Clear();
             }
             else
             {
-                slot.Clear();
+                slot.SetupWeapon(weapon, this);
             }
         }
     }
 
-    private WeaponDefinition GetRandomWeaponWeighted()
+    /// <summary>
+    /// Бросок для розыгрыша оффера. В дуэли число берётся из сида матча и адресуется парой
+    /// (номер розыгрыша, номер слота) — лишний реролл у одного игрока не сдвигает другого.
+    /// Слоты заполняются обычным путём, поэтому магазин выглядит и работает как всегда;
+    /// от состояния игрока предложение зависит только через разблокировки (см. GetOfferWeight),
+    /// так что при одинаковых разблокировках n-е предложение у обоих совпадает.
+    /// </summary>
+    private float OfferRoll(DuelStream stream, int slotIndex)
+    {
+        return DuelSession.IsSeeded
+            ? DuelRandom.Value01(DuelSession.Seed, stream, DuelRandom.Compose(shopRollIndex, slotIndex))
+            : Random.value;
+    }
+
+    private WeaponDefinition GetRandomWeaponWeighted(int slotIndex)
     {
         if (availableWeapons == null || availableWeapons.Count == 0)
             return null;
@@ -283,7 +311,7 @@ public class ShopManager : MonoBehaviour
         if (totalWeight <= 0f)
             return null;
 
-        float rnd = Random.value * totalWeight;
+        float rnd = OfferRoll(DuelStream.ShopWeapon, slotIndex) * totalWeight;
         float accum = 0f;
 
         for (int i = 0; i < availableWeapons.Count; i++)
@@ -361,19 +389,19 @@ public class ShopManager : MonoBehaviour
                 continue;
             }
 
-            var upgrade = GetRandomUpgradeWeighted();
-            if (upgrade != null)
+            var upgrade = GetRandomUpgradeWeighted(i);
+            if (upgrade == null)
             {
-                slot.SetupUpgrade(upgrade, this);
+                slot.Clear();
             }
             else
             {
-                slot.Clear();
+                slot.SetupUpgrade(upgrade, this);
             }
         }
     }
 
-    private UpgradeBaseSO GetRandomUpgradeWeighted()
+    private UpgradeBaseSO GetRandomUpgradeWeighted(int slotIndex)
     {
         if (availableUpgrades == null || availableUpgrades.Count == 0)
             return null;
@@ -385,7 +413,7 @@ public class ShopManager : MonoBehaviour
         if (totalWeight <= 0f)
             return null;
 
-        float rnd = Random.value * totalWeight;
+        float rnd = OfferRoll(DuelStream.ShopUpgrade, slotIndex) * totalWeight;
         float accum = 0f;
 
         for (int i = 0; i < availableUpgrades.Count; i++)
@@ -516,6 +544,7 @@ public class ShopManager : MonoBehaviour
     {
         SetupWeaponSlotsRandom();
         SetupUpgradeSlotsRandom();
+        shopRollIndex++;
     }
 
     public void RerollShop()

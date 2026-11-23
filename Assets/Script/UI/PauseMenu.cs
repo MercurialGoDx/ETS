@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -17,6 +17,10 @@ public class PauseManager : MonoBehaviour
     // Пауза запрещена до старта забега: GameStartController.OnReadyClicked() включит её
     // через SetCanPause(true). Так Esc не ставит игру на паузу в главном меню/подготовке.
     private bool canPause = false;
+
+    // Останавливали ли мы время сами. В дуэли не останавливаем — там меню открывается
+    // поверх идущего забега, — и тогда возвращать состояние на выходе тоже нечего.
+    private bool didFreezeTime;
 
     public void SetCanPause(bool value)
     {
@@ -42,7 +46,12 @@ public class PauseManager : MonoBehaviour
     private void Pause()
     {
         isPaused = true;
-        GameStateManager.Instance.SetState(GameState.Paused);
+
+        // В дуэли время не останавливаем: пока один сидит в меню паузы, второй играет,
+        // и остановка отдала бы ему фору.
+        didFreezeTime = !DuelSession.IsSeeded;
+        if (didFreezeTime)
+            GameStateManager.Instance.SetState(GameState.Paused);
 
         pauseMenuCanvas.gameObject.SetActive(true);
         if (pauseMenuCanvas != null)
@@ -62,8 +71,11 @@ public class PauseManager : MonoBehaviour
     {
         isPaused = false;
 
-        Debug.Log($"123Previous state was :{GameStateManager.Instance.PreviousState}");
-        GameStateManager.Instance.SetState(GameStateManager.Instance.PreviousState);
+        if (didFreezeTime)
+        {
+            GameStateManager.Instance.SetState(GameStateManager.Instance.PreviousState);
+            didFreezeTime = false;
+        }
 
         pauseMenuCanvas.gameObject.SetActive(false);
         if (pauseMenuCanvas != null)
