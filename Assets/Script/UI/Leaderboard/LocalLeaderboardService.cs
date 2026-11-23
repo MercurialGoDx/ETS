@@ -33,9 +33,19 @@ public class LocalLeaderboardService : ILeaderboardService
         public List<Run> runs = new List<Run>();
     }
 
+    private readonly string filePath;
     private Storage storage;
 
-    private static string FilePath => Path.Combine(Application.persistentDataPath, FileName);
+    public LocalLeaderboardService()
+        : this(Path.Combine(Application.persistentDataPath, FileName))
+    {
+    }
+
+    /// <summary>Путь задаётся явно в тестах, чтобы не трогать настоящие рекорды игрока.</summary>
+    public LocalLeaderboardService(string filePath)
+    {
+        this.filePath = filePath;
+    }
 
     public void GetTop(int count, Action<List<LeaderboardEntry>> onDone)
     {
@@ -80,9 +90,9 @@ public class LocalLeaderboardService : ILeaderboardService
         storage = new Storage();
         try
         {
-            if (File.Exists(FilePath))
+            if (File.Exists(filePath))
             {
-                var loaded = JsonUtility.FromJson<Storage>(File.ReadAllText(FilePath));
+                var loaded = JsonUtility.FromJson<Storage>(File.ReadAllText(filePath));
                 if (loaded != null && loaded.runs != null)
                     storage = loaded;
             }
@@ -90,22 +100,22 @@ public class LocalLeaderboardService : ILeaderboardService
         catch (Exception e)
         {
             // Повреждённый файл не должен ломать экран рекордов — начинаем заново.
-            Debug.LogWarning("[LocalLeaderboard] Не удалось прочитать " + FilePath + ": " + e.Message);
+            Debug.LogWarning("[LocalLeaderboard] Не удалось прочитать " + filePath + ": " + e.Message);
         }
 
         return storage;
     }
 
-    private static void Save(Storage data)
+    private void Save(Storage data)
     {
-        string tempPath = FilePath + ".tmp";
+        string tempPath = filePath + ".tmp";
         try
         {
             File.WriteAllText(tempPath, JsonUtility.ToJson(data));
-            if (File.Exists(FilePath))
-                File.Replace(tempPath, FilePath, null);
+            if (File.Exists(filePath))
+                File.Replace(tempPath, filePath, null);
             else
-                File.Move(tempPath, FilePath);
+                File.Move(tempPath, filePath);
         }
         catch (Exception e)
         {

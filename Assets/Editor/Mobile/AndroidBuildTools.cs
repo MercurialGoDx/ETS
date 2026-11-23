@@ -65,6 +65,17 @@ namespace ETS.Mobile.Editor
                 + ", IL2CPP ARM64, API 24+, landscape, defines " + string.Join(";", MobileDefines));
         }
 
+        /// <summary>
+        /// Первый шаг на чистой машине: без Android-define Steamworks.NET не компилируется
+        /// под Android, и -executeMethod на Android-таргете не запустится. Поэтому настройки
+        /// применяются с Windows-таргета (-buildTarget StandaloneWindows64), а сборка — следующим запуском.
+        /// </summary>
+        public static void ApplyAndroidPlayerSettingsCli()
+        {
+            ApplyAndroidPlayerSettings();
+            EditorApplication.Exit(0);
+        }
+
         private static void MergeDefines(NamedBuildTarget target, string[] required)
         {
             var current = PlayerSettings.GetScriptingDefineSymbols(target)

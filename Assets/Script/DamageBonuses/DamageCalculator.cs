@@ -5,13 +5,22 @@ using System.Text;
 
 public readonly struct DamageBonusContribution
 {
-    public DamageBonusContribution(string label, float bonusValue)
+    private readonly IDamageBonusProvider bonus;
+    private readonly DamageContext context;
+
+    public DamageBonusContribution(IDamageBonusProvider bonus, DamageContext context, float bonusValue)
     {
-        Label = label;
+        this.bonus = bonus;
+        this.context = context;
         BonusValue = bonusValue;
     }
 
-    public string Label { get; }
+    // Подпись строится только по запросу (ToDebugString): расчёт идёт на каждом попадании,
+    // и раньше строки для отладки собирались всегда, даже при выключенном debugDamage.
+    public string Label => bonus is IDamageBonusDebugProvider debugProvider
+        ? debugProvider.GetDebugLabel(context, BonusValue)
+        : bonus.GetType().Name;
+
     public float BonusValue { get; }
 }
 
@@ -154,7 +163,7 @@ public class DamageCalculator
                     break;
             }
 
-            contributions.Add(new DamageBonusContribution(GetLabel(bonus, ctx, bonusValue), bonusValue));
+            contributions.Add(new DamageBonusContribution(bonus, ctx, bonusValue));
         }
 
         float finalDamage = ctx.baseDamage
@@ -169,13 +178,5 @@ public class DamageCalculator
             adaptiveBonus,
             finalDamage,
             contributions);
-    }
-
-    private static string GetLabel(IDamageBonusProvider bonus, DamageContext ctx, float bonusValue)
-    {
-        if (bonus is IDamageBonusDebugProvider debugProvider)
-            return debugProvider.GetDebugLabel(ctx, bonusValue);
-
-        return bonus.GetType().Name;
     }
 }

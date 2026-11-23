@@ -19,6 +19,8 @@ public class MobileHud : MonoBehaviour
     private const float ButtonGap = 12f;
     private const string ButtonSpriteName = "basic_button";
     private const string JournalButtonName = "JournalButton";
+    // «Tab — закрыть» в инвентаре и просмотре билда: на телефоне клавиши нет, закрывает крестик.
+    private const string KeyboardHintKey = "inv.hint_close";
 
     private static readonly Color IconColor = new Color(0.96f, 0.92f, 0.82f);
     private static readonly Color FallbackButtonColor = new Color(0.16f, 0.13f, 0.11f, 0.92f);
@@ -54,6 +56,7 @@ public class MobileHud : MonoBehaviour
 
         BuildBattleControls();
         BuildFrameRateButton();
+        HideKeyboardHints();
 
         if (GameStateManager.Instance != null)
             GameStateManager.Instance.OnStateChanged += OnStateChanged;
@@ -206,6 +209,20 @@ public class MobileHud : MonoBehaviour
     {
         if (fpsLabel != null)
             fpsLabel.text = MobilePlatform.TargetFps + " FPS";
+    }
+
+    private static void HideKeyboardHints()
+    {
+        var labels = FindObjectsByType<LocalizeStringEvent>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+        foreach (var label in labels)
+        {
+            var entry = label.StringReference.TableEntryReference;
+            if (entry.ReferenceType == UnityEngine.Localization.Tables.TableEntryReference.Type.Name
+                && entry.Key == KeyboardHintKey)
+            {
+                label.gameObject.SetActive(false);
+            }
+        }
     }
 
     // ===================== ПОСТРОЕНИЕ КНОПОК =====================
