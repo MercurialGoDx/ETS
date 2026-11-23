@@ -146,6 +146,9 @@ public class InventoryUI : MonoBehaviour
 
     public bool IsOpen => isOpen;
 
+    /// <summary>Корень окна — мобильный HUD ставит в его шапку крестик закрытия.</summary>
+    public GameObject PanelRoot => panelRoot;
+
     /// <summary>Экранная кнопка инвентаря на телефоне — то же, что toggleKey.</summary>
     public void Toggle()
     {

@@ -69,6 +69,9 @@ public class BuildViewerUI : MonoBehaviour
 
     private bool isOpen;
 
+    /// <summary>Корень окна — мобильный HUD ставит в его шапку крестик закрытия.</summary>
+    public GameObject PanelRoot => panelRoot;
+
     private void Awake()
     {
         if (panelRoot != null)
