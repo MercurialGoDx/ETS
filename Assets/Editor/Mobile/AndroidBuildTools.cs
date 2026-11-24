@@ -146,9 +146,36 @@ namespace ETS.Mobile.Editor
 
         public static void BuildReleaseAabCli() => ExitWith(Build(development: false, appBundle: true));
 
+        /// <summary>
+        /// Development APK с дополнительной x86_64-библиотекой для эмулятора на ПК: образы
+        /// эмулятора x86_64, а трансляция ARM в них работает не для всех IL2CPP-сборок.
+        /// Архитектуры проекта после сборки возвращаются к ARM64 — в Google Play x86_64 не нужен.
+        /// </summary>
+        [MenuItem(MenuRoot + "Build Emulator APK (arm64 + x86_64)")]
+        public static void BuildEmulatorApk() => BuildForEmulator();
+
+        public static void BuildEmulatorApkCli() => ExitWith(BuildForEmulator());
+
+        private static bool BuildForEmulator()
+        {
+            try
+            {
+                return Build(development: true, appBundle: false, "ETS-emulator",
+                    AndroidArchitecture.ARM64 | AndroidArchitecture.X86_64);
+            }
+            finally
+            {
+                PlayerSettings.Android.targetArchitectures = AndroidArchitecture.ARM64;
+                AssetDatabase.SaveAssets();
+            }
+        }
+
         private static void ExitWith(bool ok) => EditorApplication.Exit(ok ? 0 : 1);
 
         private static bool Build(bool development, bool appBundle)
+            => Build(development, appBundle, development ? "ETS-dev" : "ETS-release", AndroidArchitecture.ARM64);
+
+        private static bool Build(bool development, bool appBundle, string fileName, AndroidArchitecture architectures)
         {
             if (!BuildPipeline.IsBuildTargetSupported(BuildTargetGroup.Android, BuildTarget.Android))
             {
@@ -160,6 +187,7 @@ namespace ETS.Mobile.Editor
                 EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTargetGroup.Android, BuildTarget.Android);
 
             ApplyAndroidPlayerSettings();
+            PlayerSettings.Android.targetArchitectures = architectures;
             EditorUserBuildSettings.buildAppBundle = appBundle;
 
             if (!appBundle)
@@ -169,7 +197,6 @@ namespace ETS.Mobile.Editor
                 PlayerSettings.Android.useCustomKeystore = false;
             }
 
-            string fileName = development ? "ETS-dev" : "ETS-release";
             string path = Path.Combine(BuildRoot, fileName + (appBundle ? ".aab" : ".apk"));
             Directory.CreateDirectory(BuildRoot);
 
