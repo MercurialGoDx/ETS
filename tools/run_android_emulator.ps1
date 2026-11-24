@@ -1,4 +1,4 @@
-# Запуск ETS на эмуляторе Android без телефона.
+﻿# Запуск ETS на эмуляторе Android без телефона.
 #
 # Требует: SDK эмулятора в %LOCALAPPDATA%\Android\Sdk (emulator, platform-tools,
 # system-images;android-34;google_apis;x86_64), AVD «ETS_Phone» и APK из
