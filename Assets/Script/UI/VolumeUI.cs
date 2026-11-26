@@ -17,8 +17,24 @@ public class VolumeUI : MonoBehaviour
     private const string SoundVolumeKey = "sound_volume";
     private const float DefaultVolume = 0.5f;
 
+    // Подпись слайдера в главном меню — соседний объект без ссылки из кода.
+    private const string MenuSliderLabelName = "MusicTxt";
+
     private void Start()
     {
+        // На телефоне громкость регулируют кнопки самого телефона, а тонкий слайдер
+        // в главном меню мешает касаниям. В меню паузы слайдеры остаются: там раздельные
+        // музыка и звуки, которых нет в системной громкости.
+        if (MobilePlatform.IsMobile && menuSlider != null)
+        {
+            menuSlider.gameObject.SetActive(false);
+            Transform label = menuSlider.transform.parent != null
+                ? menuSlider.transform.parent.Find(MenuSliderLabelName)
+                : null;
+            if (label != null)
+                label.gameObject.SetActive(false);
+        }
+
         float musicVolume = LoadMusicVolume();
         float soundVolume = PlayerPrefs.GetFloat(SoundVolumeKey, DefaultVolume);
 

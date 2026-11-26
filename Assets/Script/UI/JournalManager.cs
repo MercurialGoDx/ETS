@@ -87,10 +87,21 @@ public class JournalManager : MonoBehaviour
 
     // ===================== ОТКРЫТИЕ / ЗАКРЫТИЕ =====================
 
+    public bool IsOpen => journalRoot != null && journalRoot.activeSelf;
+
     public void Open()
     {
         // Вторая защита помимо скрытой кнопки: открыть журнал в дуэли нельзя никаким путём.
         if (DuelSession.IsSeeded)
+            return;
+
+        // Поверх уже открытого окна (инвентарь, пауза) журнал запомнил бы Paused как
+        // «состояние до открытия» и после закрытия оставил бы игру стоять навсегда.
+        // Во время выбора награды босса — то же: время держит само окно награды.
+        if (IsOpen || BossRewardUI.IsSelectionOpen)
+            return;
+        if (GameStateManager.Instance != null
+            && (GameStateManager.Instance.Is(GameState.Paused) || GameStateManager.Instance.Is(GameState.Menu)))
             return;
 
         if (GameStateManager.Instance != null)

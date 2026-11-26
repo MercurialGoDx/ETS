@@ -160,6 +160,10 @@ public class InventoryUI : MonoBehaviour
 
     private void TryOpen()
     {
+        // Окно награды само держит время; пауза панели сняла бы её не туда.
+        if (BossRewardUI.IsSelectionOpen)
+            return;
+
         // Открывается во время забега и на экране смерти — посмотреть, с чем закончил.
         // В меню и в обычной паузе не нужен.
         if (GameStateManager.Instance != null)

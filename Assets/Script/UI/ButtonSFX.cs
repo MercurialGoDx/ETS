@@ -36,6 +36,7 @@ public class ButtonSFX : MonoBehaviour, IPointerEnterHandler, IPointerClickHandl
     public void OnPointerEnter(PointerEventData eventData)
     {
         if (!CanPlay()) return;
+        if (MobilePlatform.IsTouch(eventData)) return;
         PlayOneShotSafe(hoverClip, hoverVolume);
     }
 

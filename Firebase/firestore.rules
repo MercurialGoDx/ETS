@@ -1,0 +1,48 @@
+rules_version = '2';
+
+// Правила Firestore для онлайн-таблицы рекордов ETS (Android).
+// Клиент: Assets/Script/Mobile/Firebase/FirestoreLeaderboardService.cs.
+// Выкладка: Firebase Console → Firestore Database → Rules → вставить → Publish,
+// либо `firebase deploy --only firestore:rules` из этой папки.
+//
+// Одна запись на игрока: leaderboard/{uid}. Писать может только сам игрок
+// (анонимный вход), время может только расти, поля и размеры ограничены.
+// Клиентские результаты всё равно не доверенные — это защита от порчи чужих
+// записей и мусора, а не античит.
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    match /leaderboard/{uid} {
+      allow read: if true;
+
+      allow create: if isOwner(uid) && validEntry(request.resource.data);
+
+      allow update: if isOwner(uid)
+        && validEntry(request.resource.data)
+        && request.resource.data.timeSeconds >= resource.data.timeSeconds;
+
+      allow delete: if false;
+    }
+
+    // Всё остальное закрыто.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    function isOwner(uid) {
+      return request.auth != null && request.auth.uid == uid;
+    }
+
+    function validEntry(data) {
+      return data.keys().hasOnly(['name', 'timeSeconds', 'details', 'gameVersion', 'updatedAt'])
+        && data.name is string
+        && data.name.size() >= 3 && data.name.size() <= 16
+        && data.name.matches('^[\\p{L}\\p{N}_.\\- ]+$')
+        && data.timeSeconds is number
+        && data.timeSeconds >= 0 && data.timeSeconds <= 86400
+        && (!('details' in data) || (data.details is list && data.details.size() <= 64))
+        && (!('gameVersion' in data) || (data.gameVersion is string && data.gameVersion.size() <= 32))
+        && data.updatedAt == request.time;
+    }
+  }
+}

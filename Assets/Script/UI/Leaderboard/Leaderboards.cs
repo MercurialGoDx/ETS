@@ -61,10 +61,10 @@ public static class Leaderboards
         {
             if (s_service == null)
             {
-                // На телефоне Steam нет, а заглушка показала бы выдуманных игроков.
-                // До онлайн-таблицы на Firestore (Фаза 12) — личные рекорды на устройстве.
+                // На телефоне Steam нет, а заглушка показала бы выдуманных игроков:
+                // онлайн-таблица на Firestore с локальными рекордами как запасом без сети.
                 if (MobilePlatform.IsMobile)
-                    s_service = new LocalLeaderboardService();
+                    s_service = CreateMobileService();
                 else if (SteamManager.Initialized)
                     s_service = new SteamLeaderboardService(s_steamLeaderboardName, s_createIfMissing);
                 else
@@ -72,6 +72,15 @@ public static class Leaderboards
             }
             return s_service;
         }
+    }
+
+    private static ILeaderboardService CreateMobileService()
+    {
+#if PLATFORM_MOBILE
+        return new FirestoreLeaderboardService();
+#else
+        return new LocalLeaderboardService();
+#endif
     }
 
     // Сброс статики при входе в Play Mode (на случай отключённого Domain Reload).

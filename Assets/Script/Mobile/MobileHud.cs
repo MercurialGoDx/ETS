@@ -16,12 +16,12 @@ using UnityEngine.UI;
 /// </summary>
 public class MobileHud : MonoBehaviour
 {
-    // 48 dp — рекомендованный Android минимум для зоны касания; 1 dp = 1/160 дюйма.
-    private const float MinTouchTargetInches = 48f / 160f;
     private const float ButtonGap = 28f;
     private const string ButtonSpriteName = "basic_button";
     private const string JournalButtonName = "JournalButton";
     private const string KeyboardHintKey = "inv.hint_close";
+    private const float CloseButtonSize = 64f;
+    private const float CloseButtonInset = 12f;
 
     private static readonly Color IconColor = new Color(0.96f, 0.92f, 0.82f);
     private static readonly Color FallbackButtonColor = new Color(0.16f, 0.13f, 0.11f, 0.92f);
@@ -29,6 +29,11 @@ public class MobileHud : MonoBehaviour
     private PauseManager pauseManager;
     private InventoryUI inventory;
     private BuildViewerUI buildViewer;
+    private JournalManager journal;
+    private LeaderboardUI leaderboard;
+    private DamageStatisticsUI statisticsWindow;
+    private StartMenu startMenu;
+    private bool buildViewerWasOpen;
     private Canvas gameCanvas;
     private RectTransform anchorButton;
 
@@ -45,6 +50,10 @@ public class MobileHud : MonoBehaviour
         pauseManager = FindFirstObjectByType<PauseManager>(FindObjectsInactive.Include);
         inventory = FindFirstObjectByType<InventoryUI>(FindObjectsInactive.Include);
         buildViewer = FindFirstObjectByType<BuildViewerUI>(FindObjectsInactive.Include);
+        journal = FindFirstObjectByType<JournalManager>(FindObjectsInactive.Include);
+        leaderboard = FindFirstObjectByType<LeaderboardUI>(FindObjectsInactive.Include);
+        statisticsWindow = FindFirstObjectByType<DamageStatisticsUI>(FindObjectsInactive.Include);
+        startMenu = FindFirstObjectByType<StartMenu>(FindObjectsInactive.Include);
         buttonSprite = FindLoadedSprite(ButtonSpriteName);
 
         if (inventory != null)
@@ -60,6 +69,7 @@ public class MobileHud : MonoBehaviour
         BuildBattleControls();
         ReplaceKeyboardHintsWithCloseButtons();
         BuildFrameRateButton();
+        GuardGoldSpendingButtons();
 
         if (GameStateManager.Instance != null)
             GameStateManager.Instance.OnStateChanged += OnStateChanged;
@@ -90,10 +100,54 @@ public class MobileHud : MonoBehaviour
             if (shouldShow)
                 LayoutButtons();
         }
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+            HandleBack();
     }
+
+    private void LateUpdate()
+    {
+        // Просмотр билда закрывается по Esc сам. Запоминаем, был ли он открыт к концу кадра,
+        // чтобы то же нажатие «Назад» не закрыло ещё и таблицу под ним.
+        buildViewerWasOpen = IsActive(buildViewer != null ? buildViewer.PanelRoot : null);
+    }
+
+    /// <summary>
+    /// «Назад» Android приходит как Esc. Пауза, инвентарь и просмотр билда ловят его сами;
+    /// здесь — окна, которые на ПК закрывались только мышью: журнал, статистика урона
+    /// на экране поражения и таблица рекордов в главном меню.
+    /// </summary>
+    private void HandleBack()
+    {
+        if (journal != null && journal.IsOpen)
+        {
+            journal.Close();
+            return;
+        }
+
+        if (statisticsWindow != null && statisticsWindow.gameObject.activeInHierarchy && startMenu != null)
+        {
+            startMenu.CloseStatistics();
+            return;
+        }
+
+        if (leaderboard != null && leaderboard.gameObject.activeInHierarchy && !buildViewerWasOpen
+            && !IsActive(buildViewer != null ? buildViewer.PanelRoot : null))
+        {
+            leaderboard.Close();
+        }
+    }
+
+    private static bool IsActive(GameObject go) => go != null && go.activeInHierarchy;
 
     private static void OnStateChanged(GameState state)
     {
+#if PLATFORM_MOBILE
+        // Начало боя после подготовки — в аналитику; конец пишет таблица рекордов вместе со временем.
+        if (state == GameState.Playing && GameStateManager.Instance.PreviousState == GameState.Preparing)
+            FirebaseServices.LogEvent("run_start");
+#endif
+
         // Во время боя экран не гаснет: игрок может смотреть на автобой, не касаясь его.
         // В меню и на паузе телефон засыпает как обычно.
         Screen.sleepTimeout = state == GameState.Playing ? SleepTimeout.NeverSleep : SleepTimeout.SystemSetting;
@@ -126,41 +180,40 @@ public class MobileHud : MonoBehaviour
     }
 
     /// <summary>
-    /// Пауза — слева от журнала, инвентарь — под ним. Без журнала в сцене — в правом верхнем углу.
-    /// Размер не меньше 48 dp на этом экране и не меньше кнопки журнала.
+    /// Пауза — слева от журнала, инвентарь — под ним, того же видимого размера, что книга.
+    /// Границы книги берутся по мировым углам: в сцене она увеличена через localScale,
+    /// и rect без масштаба давал наложение. Зону касания до 48 dp добирает MinTouchArea.
     /// </summary>
     private void LayoutButtons()
     {
-        float size = TouchTargetSize(gameCanvas, anchorButton != null ? anchorButton.rect.height : 100f);
-
-        Vector2 anchor = new Vector2(1f, 1f);
-        Vector2 origin = new Vector2(-24f - size, -24f - size);
-        float journalSize = size;
-
+        Vector2 bottomLeft;
+        Vector2 topRight;
         if (anchorButton != null)
         {
-            anchor = anchorButton.anchorMin;
-            journalSize = Mathf.Max(anchorButton.rect.width, anchorButton.rect.height);
-            // Левый нижний угол кнопки журнала в координатах её якоря.
-            origin = anchorButton.anchoredPosition - Vector2.Scale(anchorButton.pivot, anchorButton.rect.size);
+            var corners = new Vector3[4];
+            anchorButton.GetWorldCorners(corners);
+            bottomLeft = controlsRoot.InverseTransformPoint(corners[0]);
+            topRight = controlsRoot.InverseTransformPoint(corners[2]);
+        }
+        else
+        {
+            Rect area = controlsRoot.rect;
+            topRight = new Vector2(area.xMax - 24f, area.yMax - 24f);
+            bottomLeft = topRight - new Vector2(110f, 110f);
         }
 
-        Place(pauseButton, anchor, size, origin + new Vector2(-ButtonGap - size, 0f));
+        float size = topRight.y - bottomLeft.y;
+        Vector2 center = controlsRoot.rect.center;
+        Place(pauseButton, size, new Vector2(bottomLeft.x - ButtonGap - size, bottomLeft.y) - center);
         if (inventoryButton != null)
-            Place(inventoryButton, anchor, size, origin + new Vector2(journalSize - size, -ButtonGap - size));
+            Place(inventoryButton, size, new Vector2(topRight.x - size, bottomLeft.y - ButtonGap - size) - center);
     }
 
-    private static float TouchTargetSize(Canvas canvas, float designSize)
+    private static void Place(RectTransform rect, float size, Vector2 bottomLeft)
     {
-        float scale = canvas != null && canvas.rootCanvas.scaleFactor > 0f ? canvas.rootCanvas.scaleFactor : 1f;
-        float minPixels = Screen.dpi > 0f ? Screen.dpi * MinTouchTargetInches : 0f;
-        return Mathf.Max(designSize, minPixels / scale);
-    }
-
-    private static void Place(RectTransform rect, Vector2 anchor, float size, Vector2 bottomLeft)
-    {
-        rect.anchorMin = anchor;
-        rect.anchorMax = anchor;
+        var middle = new Vector2(0.5f, 0.5f);
+        rect.anchorMin = middle;
+        rect.anchorMax = middle;
         rect.pivot = Vector2.zero;
         rect.sizeDelta = new Vector2(size, size);
         rect.anchoredPosition = bottomLeft;
@@ -191,17 +244,25 @@ public class MobileHud : MonoBehaviour
             if (text != null)
                 text.enabled = false;
 
-            var rect = (RectTransform)label.transform;
-            RectTransform button = CreateButton(rect, "MobileCloseButton", close);
+            // Крестик — в правый верхний угол самой панели и не выше шапки:
+            // привязка к подписи с размером 48 dp вылезала за рамку и на заголовок.
+            var panel = (RectTransform)CloseTargetPanel(label.transform).transform;
+            RectTransform button = CreateButton(panel, "MobileCloseButton", close);
             button.gameObject.AddComponent<LayoutElement>().ignoreLayout = true;
-            float size = TouchTargetSize(label.GetComponentInParent<Canvas>(true), Mathf.Max(64f, rect.rect.height * 1.6f));
-            button.anchorMin = new Vector2(1f, 0.5f);
-            button.anchorMax = new Vector2(1f, 0.5f);
-            button.pivot = new Vector2(1f, 0.5f);
-            button.sizeDelta = new Vector2(size, size);
-            button.anchoredPosition = Vector2.zero;
+            button.anchorMin = Vector2.one;
+            button.anchorMax = Vector2.one;
+            button.pivot = Vector2.one;
+            button.sizeDelta = new Vector2(CloseButtonSize, CloseButtonSize);
+            button.anchoredPosition = new Vector2(-CloseButtonInset, -CloseButtonInset);
             AddCloseIcon(button);
         }
+    }
+
+    private GameObject CloseTargetPanel(Transform label)
+    {
+        if (inventory != null && inventory.PanelRoot != null && label.IsChildOf(inventory.PanelRoot.transform))
+            return inventory.PanelRoot;
+        return buildViewer.PanelRoot;
     }
 
     private UnityAction CloseActionFor(Transform label)
@@ -269,10 +330,10 @@ public class MobileHud : MonoBehaviour
         // копия выйдет втрое крупнее. Высота не меньше 48 dp с учётом этого масштаба.
         Vector3 scale = languageButton.localScale;
         rect.localScale = scale;
-        float scaleY = Mathf.Max(0.01f, scale.y);
         Vector2 size = languageButton.rect.size;
-        size.y = Mathf.Max(size.y, TouchTargetSize(parent.GetComponentInParent<Canvas>(true), 0f) / scaleY);
         rect.sizeDelta = new Vector2(size.x * 0.75f, size.y);
+        // Видимый размер — как у кнопки языка, зона касания до 48 dp — невидимым отступом.
+        clone.AddComponent<MinTouchArea>();
         float gap = 16f;
         rect.anchoredPosition = languageButton.anchoredPosition + new Vector2(
             (1f - languageButton.pivot.x) * languageButton.rect.width * scale.x
@@ -317,6 +378,26 @@ public class MobileHud : MonoBehaviour
             fpsLabel.text = MobilePlatform.TargetFps + " FPS";
     }
 
+    // ===================== КНОПКИ С ЦЕНОЙ =====================
+
+    /// <summary>
+    /// Реролл и разблокировка слота тратят золото по клику, а описание с ценой показывают
+    /// только «наведением». На телефоне удержание должно быть осмотром, а не покупкой.
+    /// </summary>
+    private static void GuardGoldSpendingButtons()
+    {
+        foreach (var tooltip in FindObjectsByType<RerollButtonTooltip>(FindObjectsInactive.Include, FindObjectsSortMode.None))
+            AddHoldInspect(tooltip.gameObject);
+        foreach (var tooltip in FindObjectsByType<UnlockUpgradeButtonTooltip>(FindObjectsInactive.Include, FindObjectsSortMode.None))
+            AddHoldInspect(tooltip.gameObject);
+    }
+
+    private static void AddHoldInspect(GameObject target)
+    {
+        if (target.GetComponent<Selectable>() != null && target.GetComponent<TouchHoldInspect>() == null)
+            target.AddComponent<TouchHoldInspect>();
+    }
+
     // ===================== ПОСТРОЕНИЕ КНОПОК =====================
 
     private RectTransform CreateButton(Transform parent, string name, UnityAction onClick)
@@ -339,6 +420,7 @@ public class MobileHud : MonoBehaviour
         var button = go.GetComponent<Button>();
         button.targetGraphic = image;
         button.onClick.AddListener(onClick);
+        go.AddComponent<MinTouchArea>();
         return rect;
     }
 

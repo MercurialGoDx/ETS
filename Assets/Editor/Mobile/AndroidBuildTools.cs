@@ -58,6 +58,10 @@ namespace ETS.Mobile.Editor
             // перекрывают HUD без правки каждого Canvas. Цена — чёрные поля по бокам
             // на телефонах с вырезом; это заметно лишь в горизонтали и только у края.
             PlayerSettings.Android.renderOutsideSafeArea = false;
+
+            // Ровная подача кадров (Swappy): на экранах 90/120 Гц кадр, чуть не успевший
+            // в 16,6 мс, иначе показывается через 25 мс, и 60 FPS превращаются в рваные ~49.
+            PlayerSettings.Android.optimizedFramePacing = true;
             PlayerSettings.Android.startInFullscreen = true;
 
             AssetDatabase.SaveAssets();

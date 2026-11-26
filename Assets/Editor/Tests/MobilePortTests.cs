@@ -208,4 +208,28 @@ namespace ETS.Mobile.Editor.Tests
             Assert.IsNull(BuildSnapshot.Decode(new int[0]));
         }
     }
+
+    public class NicknameRulesTests
+    {
+        [TestCase("Vadim", "Vadim")]
+        [TestCase("  Вадим  ", "Вадим")]
+        [TestCase("Tower  Boss", "Tower Boss")]
+        [TestCase("a_b-c.d", "a_b-c.d")]
+        public void TryNormalize_AcceptsAndCleansValidNames(string input, string expected)
+        {
+            Assert.IsTrue(NicknameRules.TryNormalize(input, out string nickname));
+            Assert.AreEqual(expected, nickname);
+        }
+
+        [TestCase(null)]
+        [TestCase("")]
+        [TestCase("ab")]
+        [TestCase("12345678901234567")]
+        [TestCase("bad<name>")]
+        [TestCase("emoji😀")]
+        public void TryNormalize_RejectsInvalidNames(string input)
+        {
+            Assert.IsFalse(NicknameRules.TryNormalize(input, out _));
+        }
+    }
 }

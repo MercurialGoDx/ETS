@@ -27,15 +27,21 @@ public class PauseManager : MonoBehaviour
         canPause = value;
     }
 
-    /// <summary>Можно ли сейчас открыть паузу (идёт забег и не открыта другая панель).</summary>
-    public bool CanPause => canPause;
+    /// <summary>
+    /// Можно ли сейчас открыть паузу: идёт забег, не открыта другая панель, не выбирается
+    /// награда босса (она сама держит Time.timeScale = 0, а выход из паузы вернул бы скорость
+    /// под открытым окном) и это не экран поражения.
+    /// </summary>
+    public bool CanPause => canPause
+        && !BossRewardUI.IsSelectionOpen
+        && (GameStateManager.Instance == null || !GameStateManager.Instance.Is(GameState.GameOver));
 
     public bool IsPaused => isPaused;
 
     /// <summary>То же, что Esc, — для экранной кнопки паузы на телефоне.</summary>
     public void TogglePause()
     {
-        if (!canPause) return;
+        if (!isPaused && !CanPause) return;
 
         if (isPaused)
             ResumeGame();
@@ -48,13 +54,14 @@ public class PauseManager : MonoBehaviour
     // решает, когда продолжить. На ПК сворачивание окна поведение не меняет.
     private void OnApplicationPause(bool pauseStatus)
     {
-        if (pauseStatus && MobilePlatform.IsMobile && canPause && !isPaused)
+        if (pauseStatus && MobilePlatform.IsMobile && CanPause && !isPaused)
             Pause();
     }
 
     private void Update()
     {
-        if (!canPause) return;
+        if (!isPaused && !CanPause) return;
+        if (isPaused && !canPause) return;
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             if (!isPaused)

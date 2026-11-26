@@ -18,6 +18,10 @@ public static class MobileBootstrap
         MobilePlatform.ApplyFrameRate();
         Input.multiTouchEnabled = true;
 
+#if PLATFORM_MOBILE
+        FirebaseServices.Initialize();
+#endif
+
         // Подписка переживает перезагрузку сцены («Главное меню» грузит MainScene заново),
         // поэтому снимаем прежнюю на случай отключённого Domain Reload в редакторе.
         SceneManager.sceneLoaded -= OnSceneLoaded;
