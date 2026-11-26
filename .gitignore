@@ -170,3 +170,14 @@ CLAUDE.md
 # Build report artifacts (generated)
 /Assets/BuildReports/
 /Assets/BuildReports.meta
+
+# ----------------------------------------------------------------------------
+# Firebase: конфиг с API-ключом не коммитим — репозиторий публичный.
+# Файл передаётся в команде лично; SDK генерирует из него ресурсы для Android.
+# ----------------------------------------------------------------------------
+/Firebase/google-services.json
+/Assets/google-services.json
+/Assets/google-services.json.meta
+/Assets/StreamingAssets/google-services-desktop.json
+/Assets/StreamingAssets/google-services-desktop.json.meta
+/Assets/Plugins/Android/FirebaseApp.androidlib/res/values/google-services.xml
