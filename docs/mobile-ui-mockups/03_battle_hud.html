@@ -1,0 +1,338 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Боевой HUD и магазин в бою — макет для телефона · ETS</title>
+<style>
+/* ═══════════════ Шрифты игры (из репозитория, без сети) ═══════════════ */
+@font-face{font-family:"Oswald";font-weight:600;src:url("../../Assets/TextMesh%20Pro/New%20Folder/Oswald-SemiBold.ttf") format("truetype")}
+@font-face{font-family:"Kelly Slab";src:url("../../Assets/TextMesh%20Pro/New%20Folder/KellySlab-Regular.ttf") format("truetype")}
+
+/* ═══════════════ Общий визуальный язык ═══════════════
+   1 CSS-пиксель внутри .screen = 1 dp. Экран Galaxy S23: 2340×1080 px при 2,625 px/dp = 891×411 dp.
+   Поэтому «48px» в этом файле = 48 dp = 126 физических пикселей на телефоне. */
+:root{
+  --stone-950:#100e14; --stone-900:#17151c; --stone-850:#1d1a23; --stone-800:#232029; --stone-700:#2f2b37;
+  --stone-600:#403c47; --stone-500:#57525f; --stone-400:#77717f;
+  --glint:#3bb48c;              /* бирюзовый блик на верхней грани кнопок basic_button */
+  --parch:#f4e3c6; --parch-2:#e9d2b2; --parch-3:#d8bb92; --ink:#3a2a1b; --ink-2:#6b5236;
+  --gold:#f5b82e; --gold-2:#ffd66b; --gold-dk:#9b6510;
+  --cta:#f07a10; --cta-hi:#ffa043; --cta-dk:#8f3e07;
+  --hp:#d83b35; --hp-dk:#6e1512; --shield:#58a9e8; --ok:#55c24a; --bad:#e2504a;
+  --bone:#f3efe6; --dim:#a79fb2; --mute:#6f6878;
+  /* тиры — те же цвета, что tierColors в InventoryUI/BuildViewerUI */
+  --t1:#878780; --t2:#1c9e75; --t3:#7f78de; --t4:#f09e26;
+  --f-head:"Oswald","Arial Narrow",Impact,sans-serif;
+  --f-body:"Kelly Slab",Georgia,serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:#0b0a0e;color:var(--bone);font-family:var(--f-body);
+  background-image:radial-gradient(ellipse at 20% 0,#1f2a22 0,transparent 50%),radial-gradient(ellipse at 90% 100%,#221c2c 0,transparent 55%)}
+a{color:var(--gold)}
+
+/* ── шапка листа ── */
+.sheet-head{display:flex;flex-wrap:wrap;gap:12px 24px;align-items:center;padding:14px 24px;border-bottom:1px solid #2b2733;background:#121016}
+.sheet-head h1{font:600 22px/1.1 var(--f-head);letter-spacing:.05em;text-transform:uppercase;margin:0}
+.sheet-head .crumbs{font-size:13px;color:var(--dim)}
+.sheet-head .tools{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap}
+.tgl{font:600 12px var(--f-head);letter-spacing:.08em;text-transform:uppercase;color:var(--dim);background:#1d1a23;
+  border:1px solid #3a3544;border-radius:6px;padding:7px 11px;cursor:pointer;user-select:none}
+.tgl.on{color:#10140f;background:var(--glint);border-color:var(--glint)}
+
+/* ── сцена: экран телефона, вписанный в окно ── */
+.stage{padding:18px 24px 8px;display:flex;justify-content:center}
+.device{position:relative;padding:14px;border-radius:46px;background:#050506;box-shadow:0 0 0 2px #2a2830,0 30px 80px rgba(0,0,0,.7)}
+.screen-wrap{position:relative;overflow:hidden;border-radius:32px}
+.screen{position:relative;width:891px;height:411px;overflow:hidden;transform-origin:0 0;
+  background:#2b3a22;font-family:var(--f-body);color:var(--bone);font-size:12px;line-height:1.3}
+body.tablet .screen{width:1024px;height:768px}
+body.wide .screen{width:914px;height:411px}
+.dev-label{position:absolute;left:50%;bottom:-2px;transform:translate(-50%,100%);font:600 11px var(--f-head);letter-spacing:.1em;color:#77717f;text-transform:uppercase;white-space:nowrap;padding-top:6px}
+
+/* ── безопасная зона (S23: камера-«точка» у короткого края, скругления, жестовая полоска) ── */
+.safe-ov{position:absolute;inset:0;pointer-events:none;display:none;z-index:900}
+body.show-safe .safe-ov{display:block}
+.safe-ov .hole{position:absolute;left:10px;top:50%;width:14px;height:14px;margin-top:-7px;border-radius:50%;background:#000;box-shadow:0 0 0 2px #333}
+.safe-ov .zone{position:absolute;left:34px;right:34px;top:8px;bottom:14px;border:1.5px dashed #ff5fd2;border-radius:6px}
+.safe-ov .zone::after{content:"безопасная зона: по 34 dp слева/справа, 8 сверху, 14 снизу";position:absolute;left:8px;top:4px;
+  font:600 9px var(--f-head);letter-spacing:.06em;color:#ff5fd2;text-transform:uppercase;background:rgba(0,0,0,.6);padding:1px 5px;border-radius:3px}
+.safe-ov .gest{position:absolute;left:50%;bottom:4px;width:120px;height:4px;margin-left:-60px;border-radius:3px;background:rgba(255,255,255,.55)}
+.safe-ov .cut{position:absolute;top:0;bottom:0;width:34px;background:repeating-linear-gradient(45deg,rgba(255,95,210,.13) 0 6px,transparent 6px 12px)}
+
+/* ── подсветка зон касания: метка «ш×в dp», красная если меньше 48 ── */
+body.show-taps .tap{outline:1.5px solid #39d0ff;outline-offset:0}
+body.show-taps .tap.small{outline-color:#ff4646}
+.tap-badge{position:absolute;z-index:950;font:600 8px/1 var(--f-head);background:#39d0ff;color:#002;padding:1px 3px;border-radius:2px;pointer-events:none;white-space:nowrap}
+.tap-badge.small{background:#ff4646;color:#fff}
+
+/* ── подпись к макету ── */
+.notes{max-width:1180px;margin:22px auto 60px;padding:0 24px;display:grid;grid-template-columns:1.25fr 1fr;gap:28px}
+.notes h2{font:600 15px var(--f-head);letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin:0 0 10px}
+.notes ul{margin:0;padding-left:18px;line-height:1.55;font-size:14.5px;color:#d9d3c8}
+.notes li{margin-bottom:7px}
+.notes b{color:#fff}
+.notes .decide li{color:#f3dfb4}
+.notes .card{background:#15131a;border:1px solid #2b2733;border-radius:10px;padding:16px 18px}
+@media (max-width:900px){.notes{grid-template-columns:1fr}}
+
+/* ═══════════════ Компоненты интерфейса игры ═══════════════ */
+.H{font-family:var(--f-head);font-weight:600;letter-spacing:.04em}
+.up{text-transform:uppercase}
+/* каменная панель */
+.panel{position:relative;background:linear-gradient(180deg,var(--stone-700),var(--stone-800));border:2px solid #0d0c10;border-radius:8px;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.08),inset 0 0 0 1px rgba(255,255,255,.03),0 6px 18px rgba(0,0,0,.55)}
+.panel.glint::before{content:"";position:absolute;left:10px;right:10px;top:-2px;height:2px;border-radius:2px;background:linear-gradient(90deg,transparent,var(--glint),transparent)}
+.well{background:var(--stone-900);border:1px solid #0a090c;border-radius:6px;box-shadow:inset 0 2px 8px rgba(0,0,0,.6)}
+/* плашка-заголовок (headling.png) */
+.plank{display:flex;align-items:center;justify-content:center;height:30px;padding:0 22px;background:url("../../Assets/Texture/UI/new/headling.png") center/100% 100% no-repeat;
+  font:600 15px var(--f-head);letter-spacing:.08em;text-transform:uppercase;text-shadow:0 2px 0 rgba(0,0,0,.6)}
+/* пергамент (txt_block.png) */
+.parch{background:url("../../Assets/Texture/UI/new/txt_block.png") center/100% 100% no-repeat;color:var(--ink)}
+.parch-flat{background:linear-gradient(180deg,var(--parch),var(--parch-2));color:var(--ink);border:2px solid #2a2530;border-radius:6px;box-shadow:inset 0 0 18px rgba(120,80,30,.25)}
+/* кнопки: обычная (basic_button), главная (active_button), нажатая (pressed_button), погашенная */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:48px;padding:0 18px;
+  background:url("../../Assets/Texture/UI/new/basic_button.png") center/100% 100% no-repeat;
+  font:600 15px var(--f-head);letter-spacing:.05em;color:#fff;text-shadow:0 2px 0 rgba(0,0,0,.55);white-space:nowrap}
+.btn.cta{background-image:url("../../Assets/Texture/UI/new/active_button.png");font-size:18px}
+.btn.pressed{background-image:url("../../Assets/Texture/UI/new/pressed_button.png");transform:translateY(2px)}
+.btn.off{filter:grayscale(1) brightness(.6);color:#bbb}
+.btn small{font:400 11px var(--f-body);letter-spacing:0;opacity:.8;text-shadow:none}
+.ibtn{display:grid;place-items:center;width:48px;height:48px;border-radius:10px;background:linear-gradient(180deg,var(--stone-600),var(--stone-800));
+  border:2px solid #0d0c10;box-shadow:inset 0 2px 0 rgba(255,255,255,.1),0 3px 0 rgba(0,0,0,.5)}
+.ibtn svg{width:24px;height:24px;fill:var(--bone)}
+.close{width:48px;height:48px;background:url("../../Assets/Texture/UI/Ui_template/Close%20Button.png") center/34px 34px no-repeat}
+/* монета и цена */
+.coin{display:inline-block;width:1em;height:1em;vertical-align:-.12em;background:url("../../Assets/Texture/UI/new/goldcoin.png") center/150% auto no-repeat;border-radius:50%}
+.gold{color:var(--gold-2);font-family:var(--f-head);font-weight:600}
+.lack{color:var(--bad)!important}
+/* предметы с рамкой тира */
+.item{position:relative;border-radius:8px;background:var(--stone-900);border:2px solid var(--tc,#555);overflow:hidden;
+  box-shadow:inset 0 0 14px color-mix(in srgb,var(--tc,#555) 35%,transparent)}
+.item img{position:absolute;inset:8%;width:84%;height:84%;object-fit:contain}
+.item.t1{--tc:var(--t1)} .item.t2{--tc:var(--t2)} .item.t3{--tc:var(--t3)} .item.t4{--tc:var(--t4)}
+.item.t4{box-shadow:inset 0 0 16px color-mix(in srgb,var(--t4) 55%,transparent),0 0 10px color-mix(in srgb,var(--t4) 45%,transparent)}
+.pips{position:absolute;left:4px;top:3px;display:flex;gap:2px}
+.pips i{width:5px;height:5px;transform:rotate(45deg);background:var(--tc);box-shadow:0 0 0 1px rgba(0,0,0,.7)}
+.stack{position:absolute;right:3px;bottom:1px;font:600 12px var(--f-head);text-shadow:0 1px 0 #000,0 0 3px #000}
+.tagT{display:inline-block;font:600 10px/1 var(--f-head);letter-spacing:.06em;padding:3px 5px;border-radius:3px;color:#111;background:var(--tc)}
+.t1 .tagT,.tagT.t1{background:var(--t1)} .tagT.t2{background:var(--t2)} .tagT.t3{background:var(--t3)} .tagT.t4{background:var(--t4)}
+/* полосы */
+.bar{position:relative;height:16px;border-radius:4px;background:#0c0b0f;border:1px solid #000;overflow:hidden}
+.bar>i{position:absolute;left:0;top:0;bottom:0;border-radius:3px}
+.bar>span{position:absolute;inset:0;display:grid;place-items:center;font:600 11px var(--f-head);text-shadow:0 1px 0 #000}
+.lock{background:url("../../Assets/Texture/UI/new/lock.png") center/46% auto no-repeat}
+/* фон игрового мира (скриншот сцены не в git — рисуем похожий луг) */
+.world{position:absolute;inset:0;background:
+  radial-gradient(ellipse 30% 22% at 50% 52%,rgba(210,210,190,.35),transparent 70%),
+  linear-gradient(170deg,transparent 0 30%,rgba(150,140,120,.55) 30.5% 33%,transparent 33.5%),
+  radial-gradient(ellipse at 15% 85%,#6a1d1d 0 3%,transparent 3.5%),radial-gradient(ellipse at 70% 30%,#6a1d1d 0 2%,transparent 2.5%),
+  radial-gradient(ellipse at 50% 0,#9b8a6f 0 22%,transparent 40%),
+  radial-gradient(ellipse at 50% 60%,#5f8c2a,#3f6a1c 70%);}
+.world .tower{position:absolute;left:50%;top:44%;width:44px;height:84px;margin:-42px 0 0 -22px;background:url("../../Assets/Texture/UI/Tower_2.png") center/contain no-repeat;filter:drop-shadow(0 8px 6px rgba(0,0,0,.5))}
+.dim-bg{position:absolute;inset:0;background:rgba(8,7,10,.72);backdrop-filter:blur(2px)}
+.vit{position:absolute;left:40px;top:10px;width:230px;display:flex;flex-direction:column;gap:4px}
+.vit .row{display:flex;align-items:center;gap:6px}
+.vit .ic{width:20px;height:20px;flex:none;display:grid;place-items:center}
+.vit .ic svg{width:18px;height:18px}
+.vit .bar{flex:1;height:20px}
+.vit .bar span{font-size:12.5px}
+.vit .bar.sh{height:14px}
+.vit .bar.sh span{font-size:10.5px}
+.kills{display:flex;gap:4px;margin:3px 0 0 26px}
+.kills .k{position:relative;width:30px;height:30px}
+.kills .k .item{position:absolute;inset:0;border-width:1.5px;border-radius:6px}
+.kills .k .item .pips{display:none}
+.kills .k b{position:absolute;right:-3px;bottom:-4px;font:600 10px var(--f-head);background:#000;border-radius:3px;padding:0 3px;color:#fff}
+.top{position:absolute;left:50%;top:8px;transform:translateX(-50%);width:330px;text-align:center}
+.clock{font:600 26px/1 var(--f-head);letter-spacing:.06em;text-shadow:0 2px 0 #000,0 0 8px rgba(0,0,0,.6)}
+.wave{display:flex;align-items:center;gap:8px;margin-top:3px;font:600 11px var(--f-head);letter-spacing:.08em;text-transform:uppercase;text-shadow:0 1px 0 #000}
+.wave .bar{flex:1;height:7px}
+.boss{margin-top:6px;position:relative;height:26px;background:url("../../Assets/Texture/UI/new/bossbar_back.png") center/100% 100% no-repeat;padding:7px 14px}
+.boss i{display:block;height:12px;width:64%;background:url("../../Assets/Texture/UI/new/bossbar_filling.png") left/100% 100% no-repeat;border-radius:2px}
+.boss span{position:absolute;inset:0;display:grid;place-items:center;font:600 11px var(--f-head);letter-spacing:.06em;text-shadow:0 1px 0 #000}
+.tr{position:absolute;right:40px;top:10px;display:flex;gap:8px}
+.ibtn.book{background:url("../../Assets/Texture/UI/journal.png") center/cover;border:none}
+.spd{width:62px;font:600 20px var(--f-head);color:var(--gold-2);text-shadow:0 2px 0 #000}
+.spd small{display:block;font-size:8px;letter-spacing:.1em;color:var(--dim);margin-top:-4px}
+/* магазин в бою */
+.bshop{position:absolute;right:40px;bottom:12px;width:452px;padding:8px;display:grid;grid-template-columns:118px 1fr;gap:8px}
+.bshop .handle{position:absolute;left:50%;top:-30px;width:110px;height:48px;margin-left:-55px;display:flex;justify-content:center;align-items:flex-start;font-size:10px;color:var(--dim)}
+.bshop .handle span{display:block;width:90px;height:20px;margin-top:12px;line-height:18px;text-align:center;border-radius:8px 8px 0 0;background:var(--stone-700);border:2px solid #0d0c10;border-bottom:none}
+.side{display:flex;flex-direction:column;gap:6px}
+.purse{padding:5px 8px;position:relative}
+.purse .v{font:600 24px/1 var(--f-head);color:var(--gold-2);display:flex;align-items:center;gap:5px;text-shadow:0 2px 0 #000}
+.purse .v .coin{width:20px;height:20px}
+.purse small{font-size:10px;color:var(--ok);font-family:var(--f-head)}
+.float{position:absolute;font:600 16px var(--f-head);text-shadow:0 2px 0 #000}
+.float.minus{right:-4px;top:-14px;color:var(--bad)}
+.rr{height:52px;display:flex;align-items:center;gap:6px;padding:0 6px}
+.ring{position:relative;width:38px;height:38px;flex:none;border-radius:50%;background:conic-gradient(var(--glint) 0 35%,#0b0a0e 35% 100%);display:grid;place-items:center}
+.ring::before{content:"";position:absolute;inset:4px;border-radius:50%;background:var(--stone-700)}
+.ring svg{position:relative;width:19px;height:19px;fill:var(--gold-2)}
+.rr b{font:600 13px var(--f-head)}
+.rr .gold{margin-left:auto;font-size:14px}
+.shup{height:48px;display:flex;align-items:center;gap:6px;padding:0 6px;border-radius:8px;background:linear-gradient(180deg,#3d3446,#2a2431);border:2px solid #0b0a0d}
+.shup .pic{width:34px;height:34px;flex:none;background:url("../../Assets/Texture/UI/upgrade_shop1.png") center/cover;border-radius:5px}
+.up b{font:600 11px/1.1 var(--f-head)}
+.shup .gold{font-size:12px}
+.g{display:grid;grid-template-columns:repeat(5,1fr);gap:5px}
+.s{position:relative;height:70px;border-radius:7px;background:var(--stone-900);border:1px solid #0a090c;display:flex;flex-direction:column;align-items:center;justify-content:center;padding-top:2px}
+.s .item{width:50px;height:50px}
+.s .p{font:600 13px/1 var(--f-head);color:var(--gold-2);display:flex;align-items:center;gap:2px;margin-top:2px}
+.s.can{box-shadow:0 0 0 1px rgba(245,184,46,.45),0 0 10px rgba(245,184,46,.22)}
+.s.poor .item{filter:saturate(.3) brightness(.65)}
+.s.poor .p{color:var(--bad)}
+.s.lk{background:repeating-linear-gradient(135deg,#141218 0 8px,#18161d 8px 16px)}
+.s.lk .lock{width:30px;height:30px;background-size:contain}
+.s.just{background:radial-gradient(circle,#4b3b12,#17151c 70%)}
+.s.just::after{content:"✓";position:absolute;font:600 28px var(--f-head);color:var(--gold-2);text-shadow:0 0 10px var(--gold)}
+/* мир: враги, урон */
+.en{position:absolute;width:16px;height:16px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#efeadb,#8c8778);box-shadow:0 2px 3px rgba(0,0,0,.5)}
+.dmg{position:absolute;font:600 13px var(--f-head);color:#fff;text-shadow:0 1px 0 #000,0 0 3px #000}
+.dmg.crit{color:var(--gold-2);font-size:17px}
+.gpop{position:absolute;font:600 12px var(--f-head);color:var(--gold-2);text-shadow:0 1px 0 #000}
+.fly{position:absolute;width:34px;height:34px;border-radius:7px;border:2px solid var(--t2);background:url("../../Assets/Texture/Weapon/IceBullet.png") center/80% no-repeat,#17151c;box-shadow:0 0 14px var(--t2)}
+.trail{position:absolute;height:2px;background:linear-gradient(90deg,transparent,rgba(28,158,117,.9));transform-origin:right center}
+.toast{position:absolute;left:50%;top:92px;transform:translateX(-50%);padding:6px 14px 6px 8px;display:flex;align-items:center;gap:8px;border-radius:8px;background:rgba(18,16,22,.88);border:1px solid var(--t2);font-size:12px}
+.toast .item{width:30px;height:30px}
+.toast .item .pips{display:none}
+.toast b{font-family:var(--f-head);color:#bff0dc}
+</style>
+</head>
+<body>
+<header class="sheet-head">
+  <div>
+    <div class="crumbs"><a href="index.html">← Все макеты</a> · Endless Tower Survivors · мобильный UI</div>
+    <h1>Боевой HUD и магазин в бою</h1>
+  </div>
+  <div class="tools">
+    <span class="tgl on" data-dev="phone">S23 · 2340×1080</span>
+    <span class="tgl" data-dev="wide">20:9 · 2400×1080</span>
+    <span class="tgl" data-dev="tablet">Планшет 4:3</span>
+    <span class="tgl" data-flag="show-safe">Безопасная зона</span>
+    <span class="tgl" data-flag="show-taps">Зоны касания</span>
+    <span class="tgl" data-flag="px">1:1 в пикселях</span>
+  </div>
+</header>
+<div class="stage"><div class="device"><div class="screen-wrap"><div class="screen" id="screen">
+<div class="world"><div class="tower"></div></div>
+<i class="en" style="left:180px;top:150px"></i><i class="en" style="left:210px;top:168px"></i><i class="en" style="left:640px;top:120px"></i>
+<i class="en" style="left:705px;top:160px"></i><i class="en" style="left:300px;top:300px"></i><i class="en" style="left:330px;top:322px"></i><i class="en" style="left:120px;top:250px"></i>
+<span class="dmg" style="left:178px;top:128px">38</span><span class="dmg crit" style="left:640px;top:96px">114!</span><span class="dmg" style="left:300px;top:278px">21</span>
+<span class="gpop" style="left:215px;top:184px">+3 <i class="coin"></i></span>
+
+<div class="vit">
+  <div class="row"><div class="ic"><svg viewBox="0 0 24 24"><path fill="#e2504a" d="M12 21s-8-5.3-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 10c0 5.7-8 11-8 11z"/></svg></div>
+    <div class="bar"><i style="width:72%;background:linear-gradient(180deg,#f0574f,#a11f1a)"></i><span>311 / 430</span></div></div>
+  <div class="row"><div class="ic"><svg viewBox="0 0 24 24"><path fill="#58a9e8" d="M12 2l8 3v6c0 5-3.5 9.4-8 11-4.5-1.6-8-6-8-11V5z"/></svg></div>
+    <div class="bar sh"><i style="width:55%;background:linear-gradient(180deg,#7cc2f2,#2f6fa8)"></i><span>66 / 120</span></div></div>
+  <div class="kills">
+    <div class="k"><div class="item t1"><img src="../../Assets/Texture/Weapon/Spear.png" alt=""><div class="pips"><i></i></div></div><b>41</b></div><div class="k"><div class="item t2"><img src="../../Assets/Texture/Weapon/IceBullet.png" alt=""><div class="pips"><i></i><i></i></div></div><b>17</b></div><div class="k"><div class="item t3"><img src="../../Assets/Texture/Weapon/Ballista.png" alt=""><div class="pips"><i></i><i></i><i></i></div></div><b>6</b></div><div class="k"><div class="item t3"><img src="../../Assets/Texture/Upgrade/Replicate.png" alt=""><div class="pips"><i></i><i></i><i></i></div></div></div>
+  </div>
+</div>
+
+<div class="top">
+  <div class="clock">08:41</div>
+  <div class="wave">Волна 12 <div class="bar"><i style="width:40%;background:var(--bone)"></i></div> босс 1:19</div>
+</div>
+
+<div class="toast"><div class="item t2"><img src="../../Assets/Texture/Weapon/IceBullet.png" alt=""><div class="pips"><i></i><i></i></div></div><span><b>Ледяная стрела ×2</b> · стак добавлен</span></div>
+
+<div class="tr">
+  <div class="ibtn spd tap">×2<small>скорость</small></div>
+  <div class="ibtn tap" title="Пауза"><svg viewBox="0 0 24 24"><path d="M7 5h3.5v14H7zm6.5 0H17v14h-3.5z"/></svg></div>
+  <div class="ibtn tap" title="Инвентарь"><svg viewBox="0 0 24 24"><path d="M4 7h16v13H4zM8 7V5a4 4 0 0 1 8 0v2h-2V5a2 2 0 0 0-4 0v2z"/></svg></div>
+  <div class="ibtn book tap" title="Журнал"></div>
+</div>
+
+
+<div class="fly" style="left:476px;top:150px;transform:scale(.8)"></div>
+
+<div class="bshop panel glint">
+  <div class="handle tap"><span>▼ свернуть</span></div>
+  <div class="side">
+    <div class="purse well"><div class="v"><i class="coin"></i>1 284</div><small>+12/с</small><span class="float minus">−400</span></div>
+    <div class="rr panel tap"><div class="ring"><svg viewBox="0 0 24 24"><path d="M12 4a8 8 0 0 1 7.7 6h-2.1A6 6 0 0 0 6.3 9.5L9 12H3V6l1.9 1.9A8 8 0 0 1 12 4zm-7.7 10h2.1a6 6 0 0 0 11.3.5L15 12h6v6l-1.9-1.9A8 8 0 0 1 4.3 14z"/></svg></div><b>0:07</b><span class="gold"><i class="coin"></i>30</span></div>
+    <div class="shup tap"><div class="pic"></div><b>Магазин<br><span class="gold"><i class="coin"></i>1 500</span></b></div>
+  </div>
+  <div>
+    <div class="g">
+      <div class="s can tap"><div class="item t2"><img src="../../Assets/Texture/Weapon/Mortar.png" alt=""><div class="pips"><i></i><i></i></div></div><div class="p"><i class="coin"></i>400</div></div>
+      <div class="s just"><div class="item t2"><img src="../../Assets/Texture/Weapon/IceBullet.png" alt=""><div class="pips"><i></i><i></i></div></div></div>
+      <div class="s can tap"><div class="item t1"><img src="../../Assets/Texture/Weapon/Axe.png" alt=""><div class="pips"><i></i></div></div><div class="p"><i class="coin"></i>100</div></div>
+      <div class="s poor tap"><div class="item t3"><img src="../../Assets/Texture/Weapon/Catapult.png" alt=""><div class="pips"><i></i><i></i><i></i></div></div><div class="p"><i class="coin"></i>1 500</div></div>
+      <div class="s lk"><div class="lock"></div></div>
+      <div class="s can tap"><div class="item t2"><img src="../../Assets/Texture/Upgrade/BasicArmor.png" alt=""><div class="pips"><i></i><i></i></div></div><div class="p"><i class="coin"></i>400</div></div>
+      <div class="s can tap"><div class="item t1"><img src="../../Assets/Texture/Upgrade/Basic_Damage.png" alt=""><div class="pips"><i></i></div></div><div class="p"><i class="coin"></i>100</div></div>
+      <div class="s poor tap"><div class="item t3"><img src="../../Assets/Texture/Upgrade/GoldMine.png" alt=""><div class="pips"><i></i><i></i><i></i></div></div><div class="p"><i class="coin"></i>1 500</div></div>
+      <div class="s can tap"><div class="item t1"><img src="../../Assets/Texture/Upgrade/BasicPiercing.png" alt=""><div class="pips"><i></i></div></div><div class="p"><i class="coin"></i>100</div></div>
+      <div class="s lk"><div class="lock"></div></div>
+    </div>
+  </div>
+</div>
+<div class="safe-ov"><div class="cut" style="left:0"></div><div class="cut" style="right:0"></div><div class="hole"></div><div class="zone"></div><div class="gest"></div></div>
+</div></div><div class="dev-label" id="devlabel"></div></div></div>
+<section class="notes">
+<div class="card">
+<h2>Что изменено и почему</h2>
+<ul>
+<li><b>Магазин в бою — компактная версия того же магазина:</b> слоты 50 dp с рамкой тира и ценой. Те, что по карману, подсвечены золотом; дорогие приглушены, цена красная. Решение «могу купить?» принимается за полсекунды, не отрываясь от боя. Магазин сворачивается язычком «▼», если нужно увидеть поле.</li>
+<li><b>Обратная связь при покупке:</b> в слоте появляется галочка, иконка летит к башне, у кошелька всплывает «−400», сверху — короткий тост «Ледяная стрела ×2 · стак добавлен». Сейчас купленный слот просто пустеет, и непонятно, что произошло.</li>
+<li><b>Сверху в центре — время, волна и таймер босса.</b> Это главный счёт забега (по нему строится рейтинг), а сейчас он стоит внизу в центре, там, где игроку мешает палец.</li>
+<li><b>Скорость — одна кнопка, которая переключает ×1 → ×2 → ×3</b>, рядом с паузой. Сейчас три квадрата X1/X2/X3 по ~30 dp висят посреди поля боя.</li>
+<li><b>Все системные кнопки собраны в ряд справа сверху</b> по 48 dp: скорость, пауза, инвентарь, журнал. Сейчас книга, пауза и инвентарь разного размера и стиля.</li>
+<li><b>У полос здоровья и щита есть значки</b>, щит голубой. Под ними — стаки убийств оружия (<code>WeaponKillStacksPanelUI</code>), мельче, чтобы не спорить с полосой здоровья.</li>
+<li><b>История покупок убрана с экрана в инвентарь.</b> На 6" колонка иконок слева закрывает поле, где идут враги.</li>
+<li><b>Числа урона и «+3 золота»</b> — шрифт Oswald с обводкой, криты крупнее и золотые. Так они читаются на зелёной траве.</li>
+</ul>
+</div>
+<div class="card decide">
+<h2>Решить владельцу</h2>
+<ul>
+<li>Как в бою работает покупка: тоже через подтверждение или сразу. На макете слоты «по карману» подсвечены, чтобы мгновенная покупка была безопаснее.</li>
+<li>Убрать ли историю покупок с экрана (или показывать её только на ПК).</li>
+<li>Нужен ли тост о покупке или хватит анимации иконки и «−400».</li>
+<li>Размер магазина в бою: 452×200 dp, это около 25% экрана. Альтернатива — шторка снизу, которая выезжает по касанию.</li>
+</ul>
+</div>
+</section>
+<script>
+(function(){
+  var body=document.body, scr=document.getElementById('screen'), wrap=scr.parentNode, lab=document.getElementById('devlabel');
+  var dev={phone:[891.4,411.4,2.625,'Galaxy S23 · 2340×1080 px · 891×411 dp'],wide:[914.3,411.4,2.625,'20:9 · 2400×1080 px · 914×411 dp'],tablet:[1024,768,2,'Планшет 4:3 · 2048×1536 px · 1024×768 dp']};
+  var cur='phone';
+  function fit(){
+    var d=dev[cur], px=body.classList.contains('px');
+    var avail=Math.min(window.innerWidth-80, 1900), k=px? d[2]/(window.devicePixelRatio||1) : Math.min(avail/d[0], (window.innerHeight*0.82)/d[1]);
+    scr.style.transform='scale('+k+')'; wrap.style.width=(d[0]*k)+'px'; wrap.style.height=(d[1]*k)+'px';
+    lab.textContent=d[3]+(px?' · 1:1':' · вписано в окно');
+  }
+  function taps(){
+    document.querySelectorAll('.tap-badge').forEach(function(b){b.remove()});
+    if(!body.classList.contains('show-taps'))return;
+    var sr=scr.getBoundingClientRect(), k=sr.width/scr.offsetWidth;
+    scr.querySelectorAll('.tap').forEach(function(el){
+      var r=el.getBoundingClientRect(); if(!r.width)return;
+      var w=Math.round(r.width/k), h=Math.round(r.height/k), small=(w<48||h<48);
+      el.classList.toggle('small',small);
+      var b=document.createElement('span'); b.className='tap-badge'+(small?' small':''); b.textContent=w+'×'+h;
+      b.style.left=((r.left-sr.left)/k)+'px'; b.style.top=((r.top-sr.top)/k)+'px'; scr.appendChild(b);
+    });
+  }
+  document.querySelectorAll('.tgl').forEach(function(t){
+    t.addEventListener('click',function(){
+      if(t.dataset.dev){cur=t.dataset.dev;document.querySelectorAll('[data-dev]').forEach(function(x){x.classList.toggle('on',x===t)});
+        body.classList.toggle('tablet',cur==='tablet');body.classList.toggle('wide',cur==='wide');}
+      else{body.classList.toggle(t.dataset.flag);t.classList.toggle('on');}
+      fit();taps();
+    });
+  });
+  window.addEventListener('resize',function(){fit();taps()});
+  fit();
+  
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Мобильный UI — макеты окон · Endless Tower Survivors</title>
+<style>
+@font-face{font-family:"Oswald";font-weight:600;src:url("../../Assets/TextMesh%20Pro/New%20Folder/Oswald-SemiBold.ttf") format("truetype")}
+@font-face{font-family:"Kelly Slab";src:url("../../Assets/TextMesh%20Pro/New%20Folder/KellySlab-Regular.ttf") format("truetype")}
+:root{--gold:#f5b82e;--gold-2:#ffd66b;--glint:#3bb48c;--dim:#a79fb2;--bone:#f3efe6;
+  --t1:#878780;--t2:#1c9e75;--t3:#7f78de;--t4:#f09e26}
+*{box-sizing:border-box}
+body{margin:0;background:#0b0a0e;color:var(--bone);font-family:"Kelly Slab",Georgia,serif;
+  background-image:radial-gradient(ellipse at 20% 0,#1f2a22 0,transparent 50%),radial-gradient(ellipse at 90% 100%,#221c2c 0,transparent 55%)}
+.wrap{max-width:1180px;margin:0 auto;padding:34px 24px 70px}
+h1{font:600 34px/1.1 Oswald,Impact,sans-serif;letter-spacing:.04em;text-transform:uppercase;margin:0 0 10px}
+h2{font:600 16px Oswald,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin:42px 0 14px}
+p.lead{max-width:860px;font-size:16px;line-height:1.6;color:#d9d3c8;margin:0}
+p.lead a,.foot a{color:var(--gold)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:14px}
+.card{position:relative;display:flex;flex-direction:column;gap:8px;padding:16px 18px 18px;border-radius:12px;text-decoration:none;color:inherit;
+  background:linear-gradient(180deg,#2f2b37,#211e27);border:2px solid #0d0c10;box-shadow:inset 0 1px 0 rgba(255,255,255,.07),0 8px 20px rgba(0,0,0,.45);transition:transform .15s,box-shadow .15s}
+.card::before{content:"";position:absolute;left:14px;right:14px;top:-2px;height:2px;background:linear-gradient(90deg,transparent,var(--glint),transparent)}
+.card:hover{transform:translateY(-3px);box-shadow:inset 0 1px 0 rgba(255,255,255,.07),0 14px 30px rgba(0,0,0,.6),0 0 0 2px var(--glint)}
+.card .n{font:600 12px Oswald,sans-serif;letter-spacing:.12em;color:var(--dim)}
+.card b{font:600 21px/1.1 Oswald,sans-serif;letter-spacing:.03em}
+.card span{font-size:13.5px;line-height:1.45;color:#cfc8bb}
+.card .pri{position:absolute;right:14px;top:14px;font:600 10px Oswald,sans-serif;letter-spacing:.1em;text-transform:uppercase;padding:3px 7px;border-radius:4px}
+.pri.p1{background:#e2504a;color:#fff}.pri.p2{background:var(--gold);color:#2a1a00}.pri.p3{background:#57525f;color:#fff}
+.lang{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
+.box{background:#15131a;border:1px solid #2b2733;border-radius:10px;padding:16px 18px}
+.box h3{margin:0 0 10px;font:600 13px Oswald,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--dim)}
+.sw{display:flex;align-items:center;gap:10px;font-size:13px;margin:5px 0}
+.sw i{width:30px;height:20px;border-radius:4px;border:1px solid rgba(255,255,255,.15);flex:none}
+.sw code{margin-left:auto;color:var(--dim);font-size:12px}
+.tier{display:flex;gap:8px}
+.tier div{flex:1;height:62px;border-radius:8px;background:#17151c;border:2px solid var(--c);display:flex;flex-direction:column;align-items:center;justify-content:center;font:600 15px Oswald,sans-serif;box-shadow:inset 0 0 14px color-mix(in srgb,var(--c) 35%,transparent)}
+.tier div small{font:400 10px "Kelly Slab",serif;color:var(--dim)}
+.type p{margin:6px 0;display:flex;align-items:baseline;gap:12px}
+.type p small{color:var(--dim);font-size:11px;font-family:"Kelly Slab",serif;min-width:92px}
+.btns{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.b{height:48px;display:grid;place-items:center;font:600 15px Oswald,sans-serif;color:#fff;text-shadow:0 2px 0 rgba(0,0,0,.55);background:url("../../Assets/Texture/UI/new/basic_button.png") center/100% 100%}
+.b.cta{background-image:url("../../Assets/Texture/UI/new/active_button.png")}
+.b.pr{background-image:url("../../Assets/Texture/UI/new/pressed_button.png");transform:translateY(2px)}
+.b.off{filter:grayscale(1) brightness(.6);color:#bbb}
+.b.dg{background:linear-gradient(180deg,#7b2a25,#4f1714);border:2px solid #1d0806;border-radius:6px}
+.lbl{font-size:11px;color:var(--dim);text-align:center;margin-top:3px}
+.foot{margin-top:40px;font-size:13.5px;color:var(--dim);line-height:1.6}
+code{font-family:Consolas,monospace;font-size:.92em;color:#e6d7b5}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Мобильный UI — макеты окон</h1>
+  <p class="lead">Endless Tower Survivors, Android, горизонтальная ориентация. Каждое окно — отдельный HTML-файл: экран Galaxy S23 2340×1080 (891×411 dp). Переключатели в шапке макета показывают 20:9 и планшет 4:3, безопасную зону с камерой и подсветку зон касания (красным — меньше 48 dp). Под экраном — что изменено и почему, и что решить владельцу. Полный разбор текущих окон — в <a href="../MobileUIReview.md">docs/MobileUIReview.md</a>.</p>
+  <p class="lead" style="margin-top:10px;font-size:13.5px;color:var(--dim)">Картинки и шрифты берутся из <code>Assets/</code> относительными путями, поэтому открывайте файлы из клона репозитория. Для подсветки зон касания нужен JavaScript.</p>
+
+  <h2>Окна</h2>
+  <div class="grid">
+    <a class="card" href="02_shop_prepare.html"><span class="pri p1">критично</span><span class="n">02</span><b>Магазин: подготовка</b><span>Слоты с рамкой тира и ценой, выбор → карточка предмета → «Купить», обновление с кольцом таймера, большая «В бой».</span></a>
+    <a class="card" href="03_battle_hud.html"><span class="pri p1">критично</span><span class="n">03</span><b>Боевой HUD</b><span>Время и волна сверху, кнопки 48 dp в одном ряду, компактный магазин со сворачиванием, обратная связь при покупке.</span></a>
+    <a class="card" href="04_inventory.html"><span class="pri p1">критично</span><span class="n">04</span><b>Инвентарь и характеристики</b><span>Сетки по тирам, карточка предмета, характеристики по группам без строк с прочерками, вкладки «Покупки» и «Урон».</span></a>
+    <a class="card" href="06_boss_reward.html"><span class="pri p2">важно</span><span class="n">06</span><b>Награда за босса</b><span>Лента «Босс повержен!», цвет редкости, «сейчас → будет», выбор и подтверждение раздельно.</span></a>
+    <a class="card" href="07_defeat_stats.html"><span class="pri p2">важно</span><span class="n">07</span><b>Поражение и итоги</b><span>Время как главная цифра, «Рекорд!», место в мире, урон долями по тирам, кнопка «Ещё раз».</span></a>
+    <a class="card" href="05_journal.html"><span class="pri p2">важно</span><span class="n">05</span><b>Журнал</b><span>Одно окно вместо трёх, коллекция с прогрессом и силуэтами, описание по касанию, фильтр по тирам.</span></a>
+    <a class="card" href="08_pause_settings.html"><span class="pri p2">важно</span><span class="n">08</span><b>Пауза и настройки</b><span>Состояние забега, действия слева и настройки справа, мобильные настройки (графика, FPS, вибрация).</span></a>
+    <a class="card" href="01_main_menu.html"><span class="pri p3">косметика</span><span class="n">01</span><b>Главное меню</b><span>Одна главная кнопка «Играть», рекорд и место под логотипом, служебные кнопки убраны в настройки.</span></a>
+    <a class="card" href="09_leaderboard.html"><span class="pri p3">косметика</span><span class="n">09</span><b>Таблица рекордов</b><span>Строки 50 dp с билдом, топ-3 и своя строка закреплены, превью чужого билда без отдельного окна.</span></a>
+  </div>
+
+  <h2>Общий визуальный язык</h2>
+  <div class="lang">
+    <div class="box">
+      <h3>Палитра</h3>
+      <div class="sw"><i style="background:#232029"></i>Тёмный камень — панели<code>#232029 / #2f2b37</code></div>
+      <div class="sw"><i style="background:#17151c"></i>Колодец — слоты, списки<code>#17151c</code></div>
+      <div class="sw"><i style="background:#3bb48c"></i>Бирюзовый блик — активное<code>#3bb48c</code></div>
+      <div class="sw"><i style="background:#f4e3c6"></i>Пергамент — только тексты<code>#f4e3c6 / ink #3a2a1b</code></div>
+      <div class="sw"><i style="background:#ffd66b"></i>Золото — деньги, рекорд<code>#ffd66b</code></div>
+      <div class="sw"><i style="background:#f07a10"></i>Оранжевое дерево — главное действие<code>active_button</code></div>
+      <div class="sw"><i style="background:#e2504a"></i>Красный — нехватка, опасное действие<code>#e2504a</code></div>
+    </div>
+    <div class="box">
+      <h3>Тиры (цвета из <code>tierColors</code>)</h3>
+      <div class="tier">
+        <div style="--c:var(--t1)">I<small>100</small></div><div style="--c:var(--t2)">II<small>400</small></div><div style="--c:var(--t3)">III<small>1 500</small></div><div style="--c:var(--t4)">IV<small>3 000</small></div>
+      </div>
+      <p style="font-size:12.5px;color:#cfc8bb;line-height:1.5;margin:12px 0 0">Тир всегда подаётся тремя признаками: цвет рамки, количество ромбиков в углу и цифра в карточке. Так тир различают и дальтоники, и все остальные, кто играет при ярком солнце. У тира IV рамка толще и светится.</p>
+    </div>
+    <div class="box type">
+      <h3>Типографика (sp на телефоне)</h3>
+      <p><small>Главная цифра</small><span style="font:600 30px Oswald">18:42</span></p>
+      <p><small>Заголовок окна</small><span style="font:600 16px Oswald;letter-spacing:.08em;text-transform:uppercase">Инвентарь</span></p>
+      <p><small>Число / цена</small><span style="font:600 14px Oswald;color:var(--gold-2)">1 500</span></p>
+      <p><small>Текст, подписи</small><span style="font-size:12.5px">Kelly Slab 12–13 sp</span></p>
+      <p><small>Минимум</small><span style="font-size:10px;color:var(--dim)">10 sp — только вторичное</span></p>
+    </div>
+    <div class="box">
+      <h3>Состояния кнопок</h3>
+      <div class="btns">
+        <div><div class="b cta">Играть</div><div class="lbl">главное действие</div></div>
+        <div><div class="b">Рекорды</div><div class="lbl">обычная</div></div>
+        <div><div class="b pr">Нажата</div><div class="lbl">нажатие: −2 dp и спрайт</div></div>
+        <div><div class="b off">Недоступна</div><div class="lbl">погашена, но на месте</div></div>
+        <div style="grid-column:1/-1"><div class="b dg">Сдаться и выйти</div><div class="lbl">опасное — только с подтверждением</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="foot">
+    Анимации и отклик (в макетах нарисованы статично): нажатие — сжатие до 96% за 60 мс с короткой вибрацией; появление окна — подъём на 12 dp и проявление за 180 мс, фон затемняется отдельно; покупка — иконка летит из слота к башне, у кошелька «−цена», в слоте галочка; новый рекорд — плашка «Рекорд!» с лёгким покачиванием. Все анимации должны работать на паузе (unscaled time) — см. Фазу 8 в <code>docs/MobilePlan.md</code>.
+  </div>
+</div>
+</body>
+</html>
