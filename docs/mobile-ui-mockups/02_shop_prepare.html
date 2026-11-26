@@ -132,6 +132,12 @@ body.show-taps .tap.small{outline-color:#ff4646}
   radial-gradient(ellipse at 50% 60%,#5f8c2a,#3f6a1c 70%);}
 .world .tower{position:absolute;left:50%;top:44%;width:44px;height:84px;margin:-42px 0 0 -22px;background:url("../../Assets/Texture/UI/Tower_2.png") center/contain no-repeat;filter:drop-shadow(0 8px 6px rgba(0,0,0,.5))}
 .dim-bg{position:absolute;inset:0;background:rgba(8,7,10,.72);backdrop-filter:blur(2px)}
+/* режим рендера в PNG: ?render — только экран 1:1 */
+body.render{background:#000}
+body.render .sheet-head,body.render .notes,body.render .dev-label{display:none}
+body.render .stage{padding:0;display:block}
+body.render .device{padding:0;border-radius:0;box-shadow:none;background:none}
+body.render .screen-wrap{border-radius:0}
 /* верхний левый угол: здоровье и щит */
 .vit{position:absolute;left:40px;top:10px;width:230px;display:flex;flex-direction:column;gap:4px}
 .vit .row{display:flex;align-items:center;gap:6px}
@@ -187,11 +193,11 @@ body.show-taps .tap.small{outline-color:#ff4646}
 .go{height:84px!important;flex-direction:column;gap:0!important;font-size:24px!important;letter-spacing:.1em!important;text-transform:uppercase}
 .go small{font-size:11px!important;text-transform:none;letter-spacing:0}
 /* карточка выбранного предмета */
-.card-sel{position:absolute;right:236px;bottom:202px;width:430px;display:grid;grid-template-columns:64px 1fr;gap:2px 12px;padding:12px 22px 12px 18px}
+.card-sel{position:absolute;right:200px;bottom:202px;width:400px;display:grid;grid-template-columns:64px 1fr;gap:2px 12px;padding:12px 22px 12px 18px}
 .card-sel .item{width:64px;height:64px;grid-row:span 2}
 .card-sel h3{margin:0;font:600 18px/1.1 var(--f-head);letter-spacing:.02em;color:#3b1f0c}
 .card-sel .sub{display:flex;gap:6px;align-items:center;font-size:11px;color:var(--ink-2)}
-.card-sel p{grid-column:1/-1;margin:2px 0 0;font-size:12px;line-height:1.3}
+.card-sel p{padding-left:6px;grid-column:1/-1;margin:2px 0 0;font-size:12px;line-height:1.3}
 .card-sel p b{color:#7a2d00}
 .card-sel .buy{grid-column:1/-1;display:flex;gap:8px;margin-top:6px}
 .card-sel .buy .btn{flex:1;height:48px}
@@ -241,14 +247,14 @@ body.tablet .card-sel{bottom:240px}
   <div class="item t2"><img src="../../Assets/Texture/Weapon/IceBullet.png" alt=""><div class="pips"><i></i><i></i></div></div>
   <h3>Ледяная стрела</h3>
   <div class="sub"><span class="tagT t2">ТИР II</span> Оружие · магия · замедляет</div>
-  <p>Выпускает стрелу, которая наносит <b>38 урона</b> и замедляет цель на <b>30%</b> на 2 с. У вас уже есть <b>1 шт.</b> — новая добавит стак.</p>
+  <p>Стрела: <b>38 урона</b>, замедляет цель на <b>30%</b> на 2 с. У вас уже <b>1 шт.</b> — купленная добавит стак.</p>
   <div class="buy"><div class="btn tap">Отмена</div><div class="btn cta tap">Купить · <i class="coin"></i> 400</div></div>
 </div>
 
 <div class="dock panel glint">
   <div class="money">
     <div class="purse well"><div class="v"><i class="coin"></i>516</div><small>доход <b>+8/с</b> начнётся после «В бой»</small></div>
-    <div class="shopup tap"><div class="pic"></div><div><b>Улучшить магазин</b><span>+1 слот и тир III · <span class="gold lack"><i class="coin"></i> 750</span></span></div></div>
+    <div class="shopup tap"><div class="pic"></div><div><b>Улучшить магазин</b><span>+1 слот, тир III <span class="gold lack"><i class="coin"></i> 750</span></span></div></div>
   </div>
   <div class="grid">
     <div class="rowlbl">Оружие</div>
@@ -300,10 +306,11 @@ body.tablet .card-sel{bottom:240px}
 (function(){
   var body=document.body, scr=document.getElementById('screen'), wrap=scr.parentNode, lab=document.getElementById('devlabel');
   var dev={phone:[891.4,411.4,2.625,'Galaxy S23 · 2340×1080 px · 891×411 dp'],wide:[914.3,411.4,2.625,'20:9 · 2400×1080 px · 914×411 dp'],tablet:[1024,768,2,'Планшет 4:3 · 2048×1536 px · 1024×768 dp']};
-  var cur='phone';
+  var cur='phone'; if(/render/.test(location.search)){body.classList.add('render'); if(/tablet/.test(location.search)){cur='tablet';body.classList.add('tablet');}}
   function fit(){
     var d=dev[cur], px=body.classList.contains('px');
     var avail=Math.min(window.innerWidth-80, 1900), k=px? d[2]/(window.devicePixelRatio||1) : Math.min(avail/d[0], (window.innerHeight*0.82)/d[1]);
+    if(body.classList.contains('render')) k=window.innerWidth/d[0];
     scr.style.transform='scale('+k+')'; wrap.style.width=(d[0]*k)+'px'; wrap.style.height=(d[1]*k)+'px';
     lab.textContent=d[3]+(px?' · 1:1':' · вписано в окно');
   }

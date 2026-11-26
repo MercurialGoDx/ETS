@@ -132,6 +132,12 @@ body.show-taps .tap.small{outline-color:#ff4646}
   radial-gradient(ellipse at 50% 60%,#5f8c2a,#3f6a1c 70%);}
 .world .tower{position:absolute;left:50%;top:44%;width:44px;height:84px;margin:-42px 0 0 -22px;background:url("../../Assets/Texture/UI/Tower_2.png") center/contain no-repeat;filter:drop-shadow(0 8px 6px rgba(0,0,0,.5))}
 .dim-bg{position:absolute;inset:0;background:rgba(8,7,10,.72);backdrop-filter:blur(2px)}
+/* режим рендера в PNG: ?render — только экран 1:1 */
+body.render{background:#000}
+body.render .sheet-head,body.render .notes,body.render .dev-label{display:none}
+body.render .stage{padding:0;display:block}
+body.render .device{padding:0;border-radius:0;box-shadow:none;background:none}
+body.render .screen-wrap{border-radius:0}
 .vit{position:absolute;left:40px;top:10px;width:230px;display:flex;flex-direction:column;gap:4px}
 .vit .row{display:flex;align-items:center;gap:6px}
 .vit .ic{width:20px;height:20px;flex:none;display:grid;place-items:center}
@@ -285,7 +291,7 @@ body.show-taps .tap.small{outline-color:#ff4646}
 <li><b>Все системные кнопки собраны в ряд справа сверху</b> по 48 dp: скорость, пауза, инвентарь, журнал. Сейчас книга, пауза и инвентарь разного размера и стиля.</li>
 <li><b>У полос здоровья и щита есть значки</b>, щит голубой. Под ними — стаки убийств оружия (<code>WeaponKillStacksPanelUI</code>), мельче, чтобы не спорить с полосой здоровья.</li>
 <li><b>История покупок убрана с экрана в инвентарь.</b> На 6" колонка иконок слева закрывает поле, где идут враги.</li>
-<li><b>Числа урона и «+3 золота»</b> — шрифт Oswald с обводкой, криты крупнее и золотые. Так они читаются на зелёной траве.</li>
+<li><b>Числа урона и «+3 золота»</b> — шрифт Oswald с обводкой; крупные попадания (выше среднего для оружия) — крупнее и золотые. Так они читаются на зелёной траве.</li>
 </ul>
 </div>
 <div class="card decide">
@@ -302,10 +308,11 @@ body.show-taps .tap.small{outline-color:#ff4646}
 (function(){
   var body=document.body, scr=document.getElementById('screen'), wrap=scr.parentNode, lab=document.getElementById('devlabel');
   var dev={phone:[891.4,411.4,2.625,'Galaxy S23 · 2340×1080 px · 891×411 dp'],wide:[914.3,411.4,2.625,'20:9 · 2400×1080 px · 914×411 dp'],tablet:[1024,768,2,'Планшет 4:3 · 2048×1536 px · 1024×768 dp']};
-  var cur='phone';
+  var cur='phone'; if(/render/.test(location.search)){body.classList.add('render'); if(/tablet/.test(location.search)){cur='tablet';body.classList.add('tablet');}}
   function fit(){
     var d=dev[cur], px=body.classList.contains('px');
     var avail=Math.min(window.innerWidth-80, 1900), k=px? d[2]/(window.devicePixelRatio||1) : Math.min(avail/d[0], (window.innerHeight*0.82)/d[1]);
+    if(body.classList.contains('render')) k=window.innerWidth/d[0];
     scr.style.transform='scale('+k+')'; wrap.style.width=(d[0]*k)+'px'; wrap.style.height=(d[1]*k)+'px';
     lab.textContent=d[3]+(px?' · 1:1':' · вписано в окно');
   }

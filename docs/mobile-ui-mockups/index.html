@@ -55,7 +55,7 @@ code{font-family:Consolas,monospace;font-size:.92em;color:#e6d7b5}
   <p class="lead">Endless Tower Survivors, Android, горизонтальная ориентация. Каждое окно — отдельный HTML-файл: экран Galaxy S23 2340×1080 (891×411 dp). Переключатели в шапке макета показывают 20:9 и планшет 4:3, безопасную зону с камерой и подсветку зон касания (красным — меньше 48 dp). Под экраном — что изменено и почему, и что решить владельцу. Полный разбор текущих окон — в <a href="../MobileUIReview.md">docs/MobileUIReview.md</a>.</p>
   <p class="lead" style="margin-top:10px;font-size:13.5px;color:var(--dim)">Картинки и шрифты берутся из <code>Assets/</code> относительными путями, поэтому открывайте файлы из клона репозитория. Для подсветки зон касания нужен JavaScript.</p>
 
-  <h2>Окна</h2>
+  <h2>Все окна · направление A «Крепость»</h2>
   <div class="grid">
     <a class="card" href="02_shop_prepare.html"><span class="pri p1">критично</span><span class="n">02</span><b>Магазин: подготовка</b><span>Слоты с рамкой тира и ценой, выбор → карточка предмета → «Купить», обновление с кольцом таймера, большая «В бой».</span></a>
     <a class="card" href="03_battle_hud.html"><span class="pri p1">критично</span><span class="n">03</span><b>Боевой HUD</b><span>Время и волна сверху, кнопки 48 dp в одном ряду, компактный магазин со сворачиванием, обратная связь при покупке.</span></a>
@@ -68,7 +68,28 @@ code{font-family:Consolas,monospace;font-size:.92em;color:#e6d7b5}
     <a class="card" href="09_leaderboard.html"><span class="pri p3">косметика</span><span class="n">09</span><b>Таблица рекордов</b><span>Строки 50 dp с билдом, топ-3 и своя строка закреплены, превью чужого билда без отдельного окна.</span></a>
   </div>
 
-  <h2>Общий визуальный язык</h2>
+  <h2>Направления визуального языка для ключевых окон</h2>
+  <p class="lead" style="font-size:14px">Окна выше — направление <b>A · Крепость</b>: тёмный камень и пергамент из ассетов игры, переложенные под телефон. Ниже два направления, придуманные заново, без опоры на вид Steam-версии. Сравнение и выбор — в заметке Obsidian «03 — Направления дизайна».</p>
+  <div class="grid">
+    <a class="card" href="B1_shop_hud.html"><span class="n">B1</span><b>B · Турнирный стяг — магазин и HUD</b><span>Яркая геральдика, плитки цвета тира, магазин-конвейер с вкладками.</span></a>
+    <a class="card" href="B2_inventory.html"><span class="n">B2</span><b>B — инвентарь «башня-кукла»</b><span>Оружие висит на башне, 6 медалей-характеристик, полка улучшений.</span></a>
+    <a class="card" href="B3_boss_reward.html"><span class="n">B3</span><b>B — награда за босса</b><span>Коллекционные карточки, залитые цветом редкости, переворот при появлении.</span></a>
+    <a class="card" href="B4_run_summary.html"><span class="n">B4</span><b>B — итоги забега</b><span>Золотое время, медали-цели, «Герой забега», большая «Ещё раз!».</span></a>
+    <a class="card" href="C1_shop_hud.html"><span class="n">C1</span><b>C · Рунический планшет — магазин и HUD</b><span>Тёмное стекло, рейка магазина справа, осмотр с «до → после», урон за 10 с.</span></a>
+    <a class="card" href="C2_inventory.html"><span class="n">C2</span><b>C — инвентарь-таблица</b><span>Сортировка по урону, доля урона, бонусы по типам столбиками.</span></a>
+    <a class="card" href="C3_boss_reward.html"><span class="n">C3</span><b>C — награда за босса</b><span>Трофейные плиты со сравнением параметров, подтверждение удержанием.</span></a>
+    <a class="card" href="C4_run_summary.html"><span class="n">C4</span><b>C — итоги с хроникой</b><span>График здоровья и урона по времени, боссы и покупки на графике.</span></a>
+  </div>
+
+  <h2>Соревновательный режим 1 на 1 (предложение)</h2>
+  <div class="grid">
+    <a class="card" href="D1_duel_match.html"><span class="n">D1</span><b>Соперник найден</b><span>VS-экран, лига и рейтинг, пометка «призрак», правила матча, отсчёт.</span></a>
+    <a class="card" href="D2_duel_hud.html"><span class="n">D2</span><b>Бой 1 на 1</b><span>Полоса соперника, лента его событий, «кто впереди», Буря и набег.</span></a>
+    <a class="card" href="D3_duel_result.html"><span class="n">D3</span><b>Итог дуэли</b><span>Сравнение «вы / соперник», очки лиги, сундук и серия побед.</span></a>
+  </div>
+  <p class="lead" style="font-size:13.5px;margin-top:10px">Полное описание режима — <a href="../MobileDuelProposal.md">docs/MobileDuelProposal.md</a>.</p>
+
+  <h2>Общий визуальный язык (A)</h2>
   <div class="lang">
     <div class="box">
       <h3>Палитра</h3>

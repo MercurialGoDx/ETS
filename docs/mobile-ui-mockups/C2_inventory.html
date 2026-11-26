@@ -1,0 +1,322 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>C · Рунический планшет — инвентарь-таблица — макет для телефона · ETS</title>
+<style>
+/* ═══════════════ Шрифты игры (из репозитория, без сети) ═══════════════ */
+@font-face{font-family:"Oswald";font-weight:600;src:url("../../Assets/TextMesh%20Pro/New%20Folder/Oswald-SemiBold.ttf") format("truetype")}
+@font-face{font-family:"Kelly Slab";src:url("../../Assets/TextMesh%20Pro/New%20Folder/KellySlab-Regular.ttf") format("truetype")}
+
+/* ═══════════════ Общий визуальный язык ═══════════════
+   1 CSS-пиксель внутри .screen = 1 dp. Экран Galaxy S23: 2340×1080 px при 2,625 px/dp = 891×411 dp.
+   Поэтому «48px» в этом файле = 48 dp = 126 физических пикселей на телефоне. */
+:root{
+  --stone-950:#100e14; --stone-900:#17151c; --stone-850:#1d1a23; --stone-800:#232029; --stone-700:#2f2b37;
+  --stone-600:#403c47; --stone-500:#57525f; --stone-400:#77717f;
+  --glint:#3bb48c;              /* бирюзовый блик на верхней грани кнопок basic_button */
+  --parch:#f4e3c6; --parch-2:#e9d2b2; --parch-3:#d8bb92; --ink:#3a2a1b; --ink-2:#6b5236;
+  --gold:#f5b82e; --gold-2:#ffd66b; --gold-dk:#9b6510;
+  --cta:#f07a10; --cta-hi:#ffa043; --cta-dk:#8f3e07;
+  --hp:#d83b35; --hp-dk:#6e1512; --shield:#58a9e8; --ok:#55c24a; --bad:#e2504a;
+  --bone:#f3efe6; --dim:#a79fb2; --mute:#6f6878;
+  /* тиры — те же цвета, что tierColors в InventoryUI/BuildViewerUI */
+  --t1:#878780; --t2:#1c9e75; --t3:#7f78de; --t4:#f09e26;
+  --f-head:"Oswald","Arial Narrow",Impact,sans-serif;
+  --f-body:"Kelly Slab",Georgia,serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:#0b0a0e;color:var(--bone);font-family:var(--f-body);
+  background-image:radial-gradient(ellipse at 20% 0,#1f2a22 0,transparent 50%),radial-gradient(ellipse at 90% 100%,#221c2c 0,transparent 55%)}
+a{color:var(--gold)}
+
+/* ── шапка листа ── */
+.sheet-head{display:flex;flex-wrap:wrap;gap:12px 24px;align-items:center;padding:14px 24px;border-bottom:1px solid #2b2733;background:#121016}
+.sheet-head h1{font:600 22px/1.1 var(--f-head);letter-spacing:.05em;text-transform:uppercase;margin:0}
+.sheet-head .crumbs{font-size:13px;color:var(--dim)}
+.sheet-head .tools{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap}
+.tgl{font:600 12px var(--f-head);letter-spacing:.08em;text-transform:uppercase;color:var(--dim);background:#1d1a23;
+  border:1px solid #3a3544;border-radius:6px;padding:7px 11px;cursor:pointer;user-select:none}
+.tgl.on{color:#10140f;background:var(--glint);border-color:var(--glint)}
+
+/* ── сцена: экран телефона, вписанный в окно ── */
+.stage{padding:18px 24px 8px;display:flex;justify-content:center}
+.device{position:relative;padding:14px;border-radius:46px;background:#050506;box-shadow:0 0 0 2px #2a2830,0 30px 80px rgba(0,0,0,.7)}
+.screen-wrap{position:relative;overflow:hidden;border-radius:32px}
+.screen{position:relative;width:891px;height:411px;overflow:hidden;transform-origin:0 0;
+  background:#2b3a22;font-family:var(--f-body);color:var(--bone);font-size:12px;line-height:1.3}
+body.tablet .screen{width:1024px;height:768px}
+body.wide .screen{width:914px;height:411px}
+.dev-label{position:absolute;left:50%;bottom:-2px;transform:translate(-50%,100%);font:600 11px var(--f-head);letter-spacing:.1em;color:#77717f;text-transform:uppercase;white-space:nowrap;padding-top:6px}
+
+/* ── безопасная зона (S23: камера-«точка» у короткого края, скругления, жестовая полоска) ── */
+.safe-ov{position:absolute;inset:0;pointer-events:none;display:none;z-index:900}
+body.show-safe .safe-ov{display:block}
+.safe-ov .hole{position:absolute;left:10px;top:50%;width:14px;height:14px;margin-top:-7px;border-radius:50%;background:#000;box-shadow:0 0 0 2px #333}
+.safe-ov .zone{position:absolute;left:34px;right:34px;top:8px;bottom:14px;border:1.5px dashed #ff5fd2;border-radius:6px}
+.safe-ov .zone::after{content:"безопасная зона: по 34 dp слева/справа, 8 сверху, 14 снизу";position:absolute;left:8px;top:4px;
+  font:600 9px var(--f-head);letter-spacing:.06em;color:#ff5fd2;text-transform:uppercase;background:rgba(0,0,0,.6);padding:1px 5px;border-radius:3px}
+.safe-ov .gest{position:absolute;left:50%;bottom:4px;width:120px;height:4px;margin-left:-60px;border-radius:3px;background:rgba(255,255,255,.55)}
+.safe-ov .cut{position:absolute;top:0;bottom:0;width:34px;background:repeating-linear-gradient(45deg,rgba(255,95,210,.13) 0 6px,transparent 6px 12px)}
+
+/* ── подсветка зон касания: метка «ш×в dp», красная если меньше 48 ── */
+body.show-taps .tap{outline:1.5px solid #39d0ff;outline-offset:0}
+body.show-taps .tap.small{outline-color:#ff4646}
+.tap-badge{position:absolute;z-index:950;font:600 8px/1 var(--f-head);background:#39d0ff;color:#002;padding:1px 3px;border-radius:2px;pointer-events:none;white-space:nowrap}
+.tap-badge.small{background:#ff4646;color:#fff}
+
+/* ── подпись к макету ── */
+.notes{max-width:1180px;margin:22px auto 60px;padding:0 24px;display:grid;grid-template-columns:1.25fr 1fr;gap:28px}
+.notes h2{font:600 15px var(--f-head);letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin:0 0 10px}
+.notes ul{margin:0;padding-left:18px;line-height:1.55;font-size:14.5px;color:#d9d3c8}
+.notes li{margin-bottom:7px}
+.notes b{color:#fff}
+.notes .decide li{color:#f3dfb4}
+.notes .card{background:#15131a;border:1px solid #2b2733;border-radius:10px;padding:16px 18px}
+@media (max-width:900px){.notes{grid-template-columns:1fr}}
+
+/* ═══════════════ Компоненты интерфейса игры ═══════════════ */
+.H{font-family:var(--f-head);font-weight:600;letter-spacing:.04em}
+.up{text-transform:uppercase}
+/* каменная панель */
+.panel{position:relative;background:linear-gradient(180deg,var(--stone-700),var(--stone-800));border:2px solid #0d0c10;border-radius:8px;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.08),inset 0 0 0 1px rgba(255,255,255,.03),0 6px 18px rgba(0,0,0,.55)}
+.panel.glint::before{content:"";position:absolute;left:10px;right:10px;top:-2px;height:2px;border-radius:2px;background:linear-gradient(90deg,transparent,var(--glint),transparent)}
+.well{background:var(--stone-900);border:1px solid #0a090c;border-radius:6px;box-shadow:inset 0 2px 8px rgba(0,0,0,.6)}
+/* плашка-заголовок (headling.png) */
+.plank{display:flex;align-items:center;justify-content:center;height:30px;padding:0 22px;background:url("../../Assets/Texture/UI/new/headling.png") center/100% 100% no-repeat;
+  font:600 15px var(--f-head);letter-spacing:.08em;text-transform:uppercase;text-shadow:0 2px 0 rgba(0,0,0,.6)}
+/* пергамент (txt_block.png) */
+.parch{background:url("../../Assets/Texture/UI/new/txt_block.png") center/100% 100% no-repeat;color:var(--ink)}
+.parch-flat{background:linear-gradient(180deg,var(--parch),var(--parch-2));color:var(--ink);border:2px solid #2a2530;border-radius:6px;box-shadow:inset 0 0 18px rgba(120,80,30,.25)}
+/* кнопки: обычная (basic_button), главная (active_button), нажатая (pressed_button), погашенная */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:48px;padding:0 18px;
+  background:url("../../Assets/Texture/UI/new/basic_button.png") center/100% 100% no-repeat;
+  font:600 15px var(--f-head);letter-spacing:.05em;color:#fff;text-shadow:0 2px 0 rgba(0,0,0,.55);white-space:nowrap}
+.btn.cta{background-image:url("../../Assets/Texture/UI/new/active_button.png");font-size:18px}
+.btn.pressed{background-image:url("../../Assets/Texture/UI/new/pressed_button.png");transform:translateY(2px)}
+.btn.off{filter:grayscale(1) brightness(.6);color:#bbb}
+.btn small{font:400 11px var(--f-body);letter-spacing:0;opacity:.8;text-shadow:none}
+.ibtn{display:grid;place-items:center;width:48px;height:48px;border-radius:10px;background:linear-gradient(180deg,var(--stone-600),var(--stone-800));
+  border:2px solid #0d0c10;box-shadow:inset 0 2px 0 rgba(255,255,255,.1),0 3px 0 rgba(0,0,0,.5)}
+.ibtn svg{width:24px;height:24px;fill:var(--bone)}
+.close{width:48px;height:48px;background:url("../../Assets/Texture/UI/Ui_template/Close%20Button.png") center/34px 34px no-repeat}
+/* монета и цена */
+.coin{display:inline-block;width:1em;height:1em;vertical-align:-.12em;background:url("../../Assets/Texture/UI/new/goldcoin.png") center/150% auto no-repeat;border-radius:50%}
+.gold{color:var(--gold-2);font-family:var(--f-head);font-weight:600}
+.lack{color:var(--bad)!important}
+/* предметы с рамкой тира */
+.item{position:relative;border-radius:8px;background:var(--stone-900);border:2px solid var(--tc,#555);overflow:hidden;
+  box-shadow:inset 0 0 14px color-mix(in srgb,var(--tc,#555) 35%,transparent)}
+.item img{position:absolute;inset:8%;width:84%;height:84%;object-fit:contain}
+.item.t1{--tc:var(--t1)} .item.t2{--tc:var(--t2)} .item.t3{--tc:var(--t3)} .item.t4{--tc:var(--t4)}
+.item.t4{box-shadow:inset 0 0 16px color-mix(in srgb,var(--t4) 55%,transparent),0 0 10px color-mix(in srgb,var(--t4) 45%,transparent)}
+.pips{position:absolute;left:4px;top:3px;display:flex;gap:2px}
+.pips i{width:5px;height:5px;transform:rotate(45deg);background:var(--tc);box-shadow:0 0 0 1px rgba(0,0,0,.7)}
+.stack{position:absolute;right:3px;bottom:1px;font:600 12px var(--f-head);text-shadow:0 1px 0 #000,0 0 3px #000}
+.tagT{display:inline-block;font:600 10px/1 var(--f-head);letter-spacing:.06em;padding:3px 5px;border-radius:3px;color:#111;background:var(--tc)}
+.t1 .tagT,.tagT.t1{background:var(--t1)} .tagT.t2{background:var(--t2)} .tagT.t3{background:var(--t3)} .tagT.t4{background:var(--t4)}
+/* полосы */
+.bar{position:relative;height:16px;border-radius:4px;background:#0c0b0f;border:1px solid #000;overflow:hidden}
+.bar>i{position:absolute;left:0;top:0;bottom:0;border-radius:3px}
+.bar>span{position:absolute;inset:0;display:grid;place-items:center;font:600 11px var(--f-head);text-shadow:0 1px 0 #000}
+.lock{background:url("../../Assets/Texture/UI/new/lock.png") center/46% auto no-repeat}
+/* фон игрового мира (скриншот сцены не в git — рисуем похожий луг) */
+.world{position:absolute;inset:0;background:
+  radial-gradient(ellipse 30% 22% at 50% 52%,rgba(210,210,190,.35),transparent 70%),
+  linear-gradient(170deg,transparent 0 30%,rgba(150,140,120,.55) 30.5% 33%,transparent 33.5%),
+  radial-gradient(ellipse at 15% 85%,#6a1d1d 0 3%,transparent 3.5%),radial-gradient(ellipse at 70% 30%,#6a1d1d 0 2%,transparent 2.5%),
+  radial-gradient(ellipse at 50% 0,#9b8a6f 0 22%,transparent 40%),
+  radial-gradient(ellipse at 50% 60%,#5f8c2a,#3f6a1c 70%);}
+.world .tower{position:absolute;left:50%;top:44%;width:44px;height:84px;margin:-42px 0 0 -22px;background:url("../../Assets/Texture/UI/Tower_2.png") center/contain no-repeat;filter:drop-shadow(0 8px 6px rgba(0,0,0,.5))}
+.dim-bg{position:absolute;inset:0;background:rgba(8,7,10,.72);backdrop-filter:blur(2px)}
+/* режим рендера в PNG: ?render — только экран 1:1 */
+body.render{background:#000}
+body.render .sheet-head,body.render .notes,body.render .dev-label{display:none}
+body.render .stage{padding:0;display:block}
+body.render .device{padding:0;border-radius:0;box-shadow:none;background:none}
+body.render .screen-wrap{border-radius:0}
+/* ═══ Направление C · «Рунический планшет» ═══
+   Тактический минимализм: тёмное стекло поверх мира, тонкие линии, срезанные углы, моноширинные цифры,
+   один холодный акцент + светящиеся цвета тиров. Данные важнее декора. */
+:root{
+  --c-bg:rgba(10,14,19,.86); --c-bg-2:rgba(18,25,33,.92); --c-line:#2a3846; --c-line-2:#3d5163;
+  --c-txt:#e6eef5; --c-dim:#8798a8; --c-mute:#566676;
+  --c-acc:#4fe3d0; --c-warn:#ffb547; --c-bad:#ff5f6d; --c-ok:#7cf29a;
+  --c-t1:#b6c0cb; --c-t2:#3ee0a0; --c-t3:#9b8cff; --c-t4:#ffb547;
+  --mono:"Cascadia Mono","Consolas","DejaVu Sans Mono",ui-monospace,monospace;
+}
+.Cg{background:var(--c-bg);border:1px solid var(--c-line);backdrop-filter:blur(6px);
+  clip-path:polygon(10px 0,100% 0,100% calc(100% - 10px),calc(100% - 10px) 100%,0 100%,0 10px)}
+.Cg2{background:var(--c-bg-2);border:1px solid var(--c-line)}
+.Ccorner{position:relative}
+.Ccorner::before,.Ccorner::after{content:"";position:absolute;width:12px;height:12px;border:2px solid var(--c-acc);pointer-events:none}
+.Ccorner::before{left:-1px;top:-1px;border-right:none;border-bottom:none}
+.Ccorner::after{right:-1px;bottom:-1px;border-left:none;border-top:none}
+.Clbl{font:600 10px var(--f-head);letter-spacing:.22em;text-transform:uppercase;color:var(--c-dim)}
+.Cnum{font-family:var(--mono);font-weight:700;letter-spacing:-.02em;color:var(--c-txt)}
+.Cbtn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 18px;border:1px solid var(--c-line-2);background:rgba(24,34,44,.9);
+  font:600 14px var(--f-head);letter-spacing:.14em;text-transform:uppercase;color:var(--c-txt);
+  clip-path:polygon(8px 0,100% 0,100% calc(100% - 8px),calc(100% - 8px) 100%,0 100%,0 8px)}
+.Cbtn.pri{background:var(--c-acc);border-color:var(--c-acc);color:#04201c}
+.Cbtn.ghost{background:transparent}
+.Cbtn.warn{background:transparent;border-color:var(--c-bad);color:var(--c-bad)}
+.Cbtn small{font:400 10px var(--mono);letter-spacing:0;text-transform:none;opacity:.8}
+/* плитка: тёмное стекло, светящаяся нижняя грань и римская цифра цвета тира */
+.Ctile{position:relative;background:linear-gradient(180deg,rgba(20,28,37,.95),rgba(12,17,23,.95));border:1px solid var(--c-line);overflow:hidden;
+  clip-path:polygon(8px 0,100% 0,100% calc(100% - 8px),calc(100% - 8px) 100%,0 100%,0 8px);box-shadow:inset 0 -3px 0 var(--tc),inset 0 -22px 22px -18px var(--tc)}
+.Ctile.k1{--tc:var(--c-t1)}.Ctile.k2{--tc:var(--c-t2)}.Ctile.k3{--tc:var(--c-t3)}.Ctile.k4{--tc:var(--c-t4)}
+.Ctile img{position:absolute;left:20%;top:9%;width:60%;height:56%;object-fit:contain;border-radius:3px}
+.Ctile .tn{position:absolute;left:5px;top:3px;font:600 10px var(--f-head);letter-spacing:.08em;color:var(--tc)}
+.Ctile .price{position:absolute;right:6px;bottom:6px;font:700 13px var(--mono);color:var(--c-warn)}
+.Ctile .cnt{position:absolute;right:5px;top:3px;font:700 12px var(--mono);color:var(--c-txt)}
+.Cbar{position:relative;height:6px;background:#0b1015;border:1px solid var(--c-line)}
+.Cbar>i{position:absolute;left:0;top:0;bottom:0}
+.Cdot{display:inline-block;width:6px;height:6px;background:var(--c-acc);box-shadow:0 0 8px var(--c-acc)}
+
+.bg{position:absolute;inset:0;background:#0a0e13}
+.bg::after{content:"";position:absolute;inset:0;background:linear-gradient(rgba(79,227,208,.04) 1px,transparent 1px) 0 0/100% 24px,linear-gradient(90deg,rgba(79,227,208,.04) 1px,transparent 1px) 0 0/24px 100%}
+.wrap{position:absolute;left:34px;right:34px;top:8px;bottom:12px;display:grid;grid-template-columns:minmax(0,1fr) 236px;grid-template-rows:48px minmax(0,1fr);gap:8px 10px}
+.hd{grid-column:1/-1;display:flex;align-items:center;gap:8px}
+.hd h1{margin:0 8px 0 0;font:600 18px var(--f-head);letter-spacing:.2em;text-transform:uppercase}
+.hd .Cbtn{padding:0 14px;font-size:12px}
+.hd .Cbtn.on{border-color:var(--c-acc);color:var(--c-acc);background:rgba(79,227,208,.1)}
+.hd .sp{flex:1}
+.hd .x{width:48px;padding:0;font-size:18px}
+.tbl{padding:4px 10px;display:flex;flex-direction:column;min-height:0}
+.th,.tr{display:grid;grid-template-columns:48px minmax(0,1fr) 54px 62px 70px 1.1fr;gap:10px;align-items:center}
+.th{height:30px;border-bottom:1px solid var(--c-line)}
+.th span{font:600 9.5px var(--f-head);letter-spacing:.16em;color:var(--c-dim);text-transform:uppercase}
+.th span.s{color:var(--c-acc)}
+.th span.s::after{content:" ▼"}
+.tr{height:52px;border-bottom:1px solid rgba(42,56,70,.6)}
+.tr .Ctile{width:44px;height:44px}
+.tr .nm{font-size:13px;color:var(--c-txt);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tr .nm small{display:block;font:600 9.5px var(--f-head);letter-spacing:.12em;text-transform:uppercase;color:var(--tc2)}
+.tr .Cnum{font-size:13px;text-align:right}
+.tr .Cnum.d{color:var(--c-dim)}
+.tr .Cbar{height:8px}
+.tr.sel{background:rgba(79,227,208,.07);box-shadow:inset 3px 0 0 var(--c-acc)}
+.side{display:flex;flex-direction:column;gap:8px;min-height:0}
+.box{padding:8px 10px}
+.box .row{display:flex;justify-content:space-between;align-items:baseline;font-size:12px;color:var(--c-dim);padding:2px 0}
+.box .row b{font:700 13px var(--mono);color:var(--c-txt)}
+.box .row b.p{color:var(--c-ok)}
+.radar{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;align-items:end;height:60px;margin-top:6px}
+.radar i{display:block;background:linear-gradient(180deg,var(--c-acc),rgba(79,227,208,.15))}
+.radar i.z{background:#1a232d;height:4px!important}
+.rl{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;font:600 8.5px var(--f-head);color:var(--c-dim);text-align:center;margin-top:3px;letter-spacing:.04em}
+</style>
+</head>
+<body>
+<header class="sheet-head">
+  <div>
+    <div class="crumbs"><a href="index.html">← Все макеты</a> · Endless Tower Survivors · мобильный UI</div>
+    <h1>C · Рунический планшет — инвентарь-таблица</h1>
+  </div>
+  <div class="tools">
+    <span class="tgl on" data-dev="phone">S23 · 2340×1080</span>
+    <span class="tgl" data-dev="wide">20:9 · 2400×1080</span>
+    <span class="tgl" data-dev="tablet">Планшет 4:3</span>
+    <span class="tgl" data-flag="show-safe">Безопасная зона</span>
+    <span class="tgl" data-flag="show-taps">Зоны касания</span>
+    <span class="tgl" data-flag="px">1:1 в пикселях</span>
+  </div>
+</header>
+<div class="stage"><div class="device"><div class="screen-wrap"><div class="screen" id="screen">
+<div class="bg"></div>
+<div class="wrap">
+  <div class="hd">
+    <h1>Арсенал</h1>
+    <div class="Cbtn on tap">Оружие 7</div><div class="Cbtn tap">Улучшения 12</div><div class="Cbtn tap">Покупки</div>
+    <div class="sp"></div>
+    <span class="Clbl">волна 12 · 08:41 · пауза</span>
+    <div class="Cbtn x tap">✕</div>
+  </div>
+  <div class="tbl Cg">
+    <div class="th"><span></span><span>Предмет</span><span>Стак</span><span>Убийств</span><span class="s">Урон</span><span>Доля урона</span></div>
+    <div class="tr tap" style="--tc2:var(--c-t4)"><div class="Ctile k4"><img src="../../Assets/Texture/Weapon/Blizard.png" alt=""><b class="tn">IV</b></div><div class="nm">Ледяная буря<small>IV · магия</small></div><div class="Cnum d">×1</div><div class="Cnum">412</div><div class="Cnum">96 120</div><div class="Cbar"><i style="width:100%;background:var(--c-t4)"></i></div></div>
+    <div class="tr tap" style="--tc2:var(--c-t3)"><div class="Ctile k3"><img src="../../Assets/Texture/Weapon/Ballista.png" alt=""><b class="tn">III</b></div><div class="nm">Балиста<small>III · колющий</small></div><div class="Cnum d">×2</div><div class="Cnum">288</div><div class="Cnum">61 900</div><div class="Cbar"><i style="width:64%;background:var(--c-t3)"></i></div></div>
+    <div class="tr sel tap" style="--tc2:var(--c-t2)"><div class="Ctile k2"><img src="../../Assets/Texture/Weapon/IceBullet.png" alt=""><b class="tn">II</b></div><div class="nm">Ледяная стрела<small>II · магия · выбрано</small></div><div class="Cnum">×2</div><div class="Cnum">17</div><div class="Cnum">22 140</div><div class="Cbar"><i style="width:23%;background:var(--c-t2)"></i></div></div>
+    <div class="tr tap" style="--tc2:var(--c-t3)"><div class="Ctile k3"><img src="../../Assets/Texture/Weapon/Log.png" alt=""><b class="tn">III</b></div><div class="nm">Бревно<small>III · тяжёлый</small></div><div class="Cnum d">×1</div><div class="Cnum">64</div><div class="Cnum">18 400</div><div class="Cbar"><i style="width:19%;background:var(--c-t3)"></i></div></div>
+    <div class="tr tap" style="--tc2:var(--c-t1)"><div class="Ctile k1"><img src="../../Assets/Texture/Weapon/Spear.png" alt=""><b class="tn">I</b></div><div class="nm">Копьё<small>I · колющий</small></div><div class="Cnum">×3</div><div class="Cnum">41</div><div class="Cnum">9 870</div><div class="Cbar"><i style="width:10%;background:var(--c-t1)"></i></div></div>
+  </div>
+  <div class="side">
+    <div class="box Cg Ccorner">
+      <div class="Clbl" style="margin-bottom:4px">Башня</div>
+      <div class="row">Здоровье<b>311 / 430</b></div>
+      <div class="row">Щит · блок<b>66 · 8%</b></div>
+      <div class="row">Урон ×<b class="p">1.40</b></div>
+      <div class="row">Атака ×<b class="p">1.25</b></div>
+      <div class="row">Доход<b>12/с +20%</b></div>
+      <div class="row">Враг: HP · урон<b>184 · 9</b></div>
+    </div>
+    <div class="box Cg">
+      <div class="Clbl">Бонус по типам</div>
+      <div class="radar"><i style="height:100%"></i><i style="height:66%"></i><i style="height:34%"></i><i class="z"></i><i class="z"></i><i class="z"></i><i style="height:18%"></i></div>
+      <div class="rl"><span>МАГ</span><span>КОЛ</span><span>ОБЫ</span><span>СНА</span><span>ТЯЖ</span><span>ХАО</span><span>СВЯ</span></div>
+    </div>
+    <div class="Cbtn ghost tap" style="width:100%">Все 26 параметров</div>
+  </div>
+</div>
+<div class="safe-ov"><div class="cut" style="left:0"></div><div class="cut" style="right:0"></div><div class="hole"></div><div class="zone"></div><div class="gest"></div></div>
+</div></div><div class="dev-label" id="devlabel"></div></div></div>
+<section class="notes">
+<div class="card">
+<h2>Идея</h2>
+<ul>
+<li><b>Инвентарь — сортируемая таблица</b>: предмет, стак, убийства, урон, доля урона. Сортировка по урону сразу отвечает на главный вопрос жанра: что тащит билд и что можно не качать.</li>
+<li><b>Строки 52 dp</b> — удобно листать пальцем. Тир — светящаяся грань плитки и подпись цветом тира.</li>
+<li><b>Справа сводка башни</b> моноширинными числами. Бонус урона по типам — столбики (все 7 типов в одном взгляде, нулевые — серые черточки).</li>
+<li>Статистика урона (сейчас доступна только после смерти) встроена прямо в инвентарь и доступна во время забега.</li>
+</ul>
+</div>
+<div class="card decide">
+<h2>Решить владельцу</h2>
+<ul>
+<li>Таблица удобна опытным, но новичку суховата. Можно сделать её режимом «Подробно» рядом с сеткой иконок из A.</li>
+<li>Для колонок «Убийств» и «Урон» во время забега нужно, чтобы <code>DamageStatsManager</code> отдавал данные в реальном времени (сейчас они собираются для экрана после смерти).</li>
+</ul>
+</div>
+</section>
+<script>
+(function(){
+  var body=document.body, scr=document.getElementById('screen'), wrap=scr.parentNode, lab=document.getElementById('devlabel');
+  var dev={phone:[891.4,411.4,2.625,'Galaxy S23 · 2340×1080 px · 891×411 dp'],wide:[914.3,411.4,2.625,'20:9 · 2400×1080 px · 914×411 dp'],tablet:[1024,768,2,'Планшет 4:3 · 2048×1536 px · 1024×768 dp']};
+  var cur='phone'; if(/render/.test(location.search)){body.classList.add('render'); if(/tablet/.test(location.search)){cur='tablet';body.classList.add('tablet');}}
+  function fit(){
+    var d=dev[cur], px=body.classList.contains('px');
+    var avail=Math.min(window.innerWidth-80, 1900), k=px? d[2]/(window.devicePixelRatio||1) : Math.min(avail/d[0], (window.innerHeight*0.82)/d[1]);
+    if(body.classList.contains('render')) k=window.innerWidth/d[0];
+    scr.style.transform='scale('+k+')'; wrap.style.width=(d[0]*k)+'px'; wrap.style.height=(d[1]*k)+'px';
+    lab.textContent=d[3]+(px?' · 1:1':' · вписано в окно');
+  }
+  function taps(){
+    document.querySelectorAll('.tap-badge').forEach(function(b){b.remove()});
+    if(!body.classList.contains('show-taps'))return;
+    var sr=scr.getBoundingClientRect(), k=sr.width/scr.offsetWidth;
+    scr.querySelectorAll('.tap').forEach(function(el){
+      var r=el.getBoundingClientRect(); if(!r.width)return;
+      var w=Math.round(r.width/k), h=Math.round(r.height/k), small=(w<48||h<48);
+      el.classList.toggle('small',small);
+      var b=document.createElement('span'); b.className='tap-badge'+(small?' small':''); b.textContent=w+'×'+h;
+      b.style.left=((r.left-sr.left)/k)+'px'; b.style.top=((r.top-sr.top)/k)+'px'; scr.appendChild(b);
+    });
+  }
+  document.querySelectorAll('.tgl').forEach(function(t){
+    t.addEventListener('click',function(){
+      if(t.dataset.dev){cur=t.dataset.dev;document.querySelectorAll('[data-dev]').forEach(function(x){x.classList.toggle('on',x===t)});
+        body.classList.toggle('tablet',cur==='tablet');body.classList.toggle('wide',cur==='wide');}
+      else{body.classList.toggle(t.dataset.flag);t.classList.toggle('on');}
+      fit();taps();
+    });
+  });
+  window.addEventListener('resize',function(){fit();taps()});
+  fit();
+  
+})();
+</script>
+</body>
+</html>
