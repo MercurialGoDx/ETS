@@ -334,7 +334,7 @@ footer { color: var(--muted); font-size: 12px; }
 <li class="item plain"><span class="dot" aria-hidden="true"></span><span class="txt"><strong>Устройство:</strong> Samsung Galaxy S23 (SM-S911B, Android 16, 2340×1080, 120 Гц) по USB через adb. Касания, магазин, экранные кнопки работают; Development-сборка в бою — в среднем ~49 FPS при цели 60 (кадры 16/25 мс), батарея 28,9 → 33,2 °C за минуту. Включён Optimized Frame Pacing, повторный замер не делался.</span></li>
 <li class="item plain"><span class="dot" aria-hidden="true"></span><span class="txt"><strong>Найдено на телефоне и исправлено:</strong> журнал поверх инвентаря оставлял игру в Paused навсегда («подвисание»); пауза/журнал/инвентарь во время награды босса и на экране поражения; «Назад» не закрывала журнал, статистику и таблицу; кнопка паузы налезала на увеличенную через localScale книгу; крестики выходили за шапку; реролл и разблокировка тратили золото при попытке прочитать цену; лишний слайдер музыки в меню и звук наведения при касании.</span></li>
 <li class="item plain"><span class="dot" aria-hidden="true"></span><span class="txt"><strong>Firebase:</strong> проект <code>endlesstowersurvivors</code>, Firestore europe-west3. SDK 14.2.0 урезан до 5 модулей без iOS/tvOS/macOS/Linux (65 МБ), плагины только Editor + Android, зависимости через Gradle-шаблоны (EDM4U). На S23 подтверждены инициализация, Crashlytics и анонимный вход. <code>google-services.json</code> и сгенерированные из него файлы в git не попадают (репозиторий публичный) — передаются в команде лично.</span></li>
-<li class="item plain"><span class="dot" aria-hidden="true"></span><span class="txt"><strong>Онлайн-таблица:</strong> одна запись на игрока <code>leaderboard/{uid}</code>, ник вводится при первом попадании в таблицу, локальные рекорды — запас без сети. Правила — <code>Firebase/firestore.rules</code>, выкладываются владельцем в консоли. Сквозная запись/чтение ещё не проверены (нужны опубликованные правила).</span></li>
+<li class="item plain"><span class="dot" aria-hidden="true"></span><span class="txt"><strong>Онлайн-таблица:</strong> одна запись на игрока <code>leaderboard/{uid}</code>, ник вводится при первом попадании в таблицу, локальные рекорды — запас без сети. Правила — <code>Firebase/firestore.rules</code>, выкладываются владельцем в консоли. Правила опубликованы; сквозная проверка на S23 пройдена: забег → поражение → ввод ника (кириллица) → запись <code>leaderboard/{uid}</code> принята правилами (время, снимок билда из 27 значений, версия, серверное время) → таблица в игре.</span></li>
 <li class="item plain"><span class="dot" aria-hidden="true"></span><span class="txt"><strong>Открыто по аудиту:</strong> подтверждение перед переходом в Discord; осмотр касанием в журнале/истории покупок; выход в меню с экрана подготовки; тексты обучения про клавиши; pinch поверх UI; рендер (Forward+, FSR, HDR, Bloom 6 итераций, Terrain без инстансинга); частицы с GPU instancing не рисуются на Vulkan; вырез/скругления экрана.</span></li>
 </ul>
 <h4 class="sub">Порт в <code>feature/android-port</code> — 2026-11-23 (Claude Code)</h4>
@@ -354,7 +354,7 @@ footer { color: var(--muted); font-size: 12px; }
 </ul></section>
     </aside>
   </div>
-  <footer>Сгенерировано из <code>docs/MobilePlan.md</code> · 26.11.2026 13:49 · обновить: <code>python3 tools/gen_plan_html.py</code></footer>
+  <footer>Сгенерировано из <code>docs/MobilePlan.md</code> · 26.11.2026 14:18 · обновить: <code>python3 tools/gen_plan_html.py</code></footer>
 </div>
 <script>
 (function () {
